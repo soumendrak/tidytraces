@@ -1,244 +1,57 @@
 {
-  "date": "2026-10-17",
-  "story_window": "2026-10-16",
-  "dek": "Scoped telemetry credentials, agent investigation across traces and spend, visual evaluation experiments, and stable releases improving telemetry fidelity and server visibility.",
+  "date": "2026-10-18",
+  "story_window": "2026-10-17",
+  "dek": "One practical evaluation guide: calibrate LLM judges, test irrelevant input changes, and preserve the evidence behind scores.",
   "stories": [
     {
-      "title": "SlopGrid offers no-code visual model comparisons in a first-party Show HN",
-      "url": "https://news.ycombinator.com/item?id=50118127",
-      "publisher": "Hacker News · klntsky",
-      "published": "2026-10-16",
+      "title": "A practical guide puts LLM judges through calibration and paired-input checks",
+      "url": "https://www.itechguides.com/how-to-use-ai-generated-evaluations-without-letting-model-bias-skew-your-results/",
+      "publisher": "iTechGuides",
+      "published": "2026-10-17",
       "category_key": "evals",
-      "summary": "The developer describes arranging one-shot visual LLM benchmarks, including SVG and static website outputs, without writing code.",
+      "summary": "The guide recommends task-specific rubrics, independent human calibration, controlled input perturbations, and versioned evidence for LLM-as-a-judge workflows. It offers practical guidance rather than new experimental results.",
       "body": [
-        "SlopGrid’s developer introduced a tool for arranging one-shot visual model benchmarks without writing code. In the original Show HN post, the author says the interface prioritizes use from a phone and supports text, images, SVG outputs, and complete static websites. The announcement also describes editing chat history sent to a chat-completion API, suggesting possible red-team experiments while acknowledging that the author has not yet found impressive uses for that capability. The reported benefit is a better personal intuition for model strengths and weaknesses; the post provides no controlled accuracy, reliability, or cost comparison.",
-        "For an evaluation team, visual examples can help identify tasks worth turning into repeatable tests. Our editorial recommendation is to preserve the exact input, model identity, generation settings, and output before comparing results. Separate appearance from functional correctness when judging a generated website or SVG. Repeat promising comparisons and use a defined rubric before drawing conclusions about production suitability. A convenient one-shot comparison is exploratory evidence, with substantial uncertainty about repeatability and task coverage."
+        "An October 17 iTechGuides guide lays out a practical validation workflow for teams using language models to score AI outputs. Its central recommendation is to specify the decision a score will support before choosing a judge. The guide then calls for observable rubric criteria, examples of missing evidence and critical failures, and calibration against independent human ratings on representative and difficult cases.",
+        "For robustness checks, it recommends paired inputs that preserve substance while changing features that should be irrelevant: answer order, identity or authority cues, formatting, and response length. Reviewers should compare the supporting evidence and explanations as well as the scores. It also advises retaining distributions, subgroup denominators, repeat-run variation, and disagreements rather than relying on an overall average.",
+        "The operational record matters alongside the rating: judge versions, prompts, datasets, aggregation rules, and escalation thresholds should travel with evaluation results. The article is a synthesis of evaluation practices, not a new benchmark or evidence that any particular judge is unbiased. Its proposed checks give operators a concrete way to investigate score changes before treating them as changes in application quality."
       ],
       "format": "full",
-      "takeaway": "Use visual comparisons to discover test cases; require repeatable inputs and explicit judgments before treating a gallery as a production benchmark.",
-      "image": "/edition-images/2026-10-17/slopgrid-benchmarks.webp",
+      "takeaway": "Treat a score shift as a measurement question: check judge, rubric, input-order sensitivity, and sample changes before concluding that application quality changed.",
+      "image": "/edition-images/2026-10-18/judge-validation.webp",
       "image_width": 1440,
       "image_height": 960,
       "image_provenance": {
         "kind": "generated-editorial",
         "generator": "built-in-imagegen",
-        "prompt": "Use case: infographic-diagram. Asset type: standalone newspaper editorial infographic, landscape 3:2 PNG. Primary request: SLOPGRID: EXPLORE, THEN TEST. Three panels: 'FIXED INPUT' with a prompt card; 'VISUAL OUTPUTS' with small generic SVG, image and website icons; 'REPEAT + JUDGE' with checklist. First two panels joined by arrow; last panel separated by dashed rule labelled 'EDITORIAL NEXT STEP'. Source fact: creator describes no-code one-shot visual LLM benchmarks supporting images, SVG, static websites. Do not imply automated scoring exists. Style: warm off-white newsprint, crisp dark ink, restrained brick red and muted teal, generous spacing, bold readable serif title, clean readable labels at article width. Use only specified short text plus small footer 'AI-GENERATED EDITORIAL'. Avoid fake screenshots, logos, tiny text, invented statistics, unnecessary decoration. All labels must be spelled accurately. Make this a distinct illustration with a clear visual hierarchy.",
+        "prompt": "Use case: infographic-diagram\nAsset type: newspaper story infographic, standalone PNG, landscape 1536 by 1024.\nPrimary request: depict a conceptual validation workflow for LLM judges, based on the October 17 iTechGuides practical guide. Source-supported guidance: define the decision and rubric; calibrate against qualified human judgments; test paired inputs with identical substance but swapped answer order or changed formatting; preserve disagreement and versions. This is a conceptual workflow, not experimental results.\nStyle: warm cream newsprint, dark ink, restrained teal and rust accents, bold newspaper serif headings, generous spacing. Four clear connected panels, simple document and magnifier icons, readable short labels at article width.\nText verbatim: title \"CHECK THE JUDGE\"; subtitle \"Conceptual validation workflow\"; panels \"DEFINE THE RUBRIC\", \"CALIBRATE WITH HUMANS\", \"TEST PAIRED INPUTS\", \"RECORD DISAGREEMENT\"; small labels under panels respectively \"Decision and criteria\", \"Independent reference ratings\", \"Same substance, changed order\", \"Keep versions and evidence\". Arrows connect left to right or in a two-by-two reading sequence.\nConstraints: only these texts, no numerical metrics, no performance claims, no logos, no footer, no watermark. Depict guidance, not a software product architecture.",
         "based_on": [
-          "https://news.ycombinator.com/item?id=50118127"
+          "https://www.itechguides.com/how-to-use-ai-generated-evaluations-without-letting-model-bias-skew-your-results/"
         ],
         "reviewed": true,
-        "sha256": "872b939212e6b0209844cccb6f11bfb7ffe6059961643809b76fe555d372b57c",
+        "sha256": "3339f4fe48300a97bd625c2a2ffffe56723250c7ae68b70e0ecf15c0b733be87",
         "optimization": {
           "format": "webp",
           "quality": 82,
           "max_width": 1440,
-          "source_sha256": "b0d6ecfa7eae76d3df13a5a20eb6ff2c2fef4e701a8691096d93ba45cbe02a78"
-        }
-      },
-      "source": "hn",
-      "interest_score": 7,
-      "hn_id": "50118127",
-      "comments": "https://news.ycombinator.com/item?id=50118127",
-      "dedupe_key": "hn-original:50118127",
-      "score_reason": "Directly relevant evaluation discovery tool, but supported only by a small first-party announcement without controlled results.",
-      "source_evidence": {
-        "url": "https://news.ycombinator.com/item?id=50118127",
-        "publication_date": "2026-10-16",
-        "raw_date": "2026-10-16T13:26:03.000Z",
-        "method": "Original first-party Show HN text and official HN API Unix timestamp 1792157163; not a linked older article.",
-        "api": "https://hacker-news.firebaseio.com/v0/item/50118127.json"
-      }
-    },
-    {
-      "title": "Langfuse scopes project keys for ingestion, feedback, and reporting",
-      "url": "https://langfuse.com/changelog/2026-10-16-project-api-key-permissions",
-      "publisher": "Langfuse",
-      "published": "2026-10-16",
-      "category_key": "observability",
-      "summary": "New project API keys can receive Full access, Viewer, Ingestion, or Scores ingestion permissions; existing keys retain their access.",
-      "body": [
-        "Langfuse now lets users choose permissions when creating a project API key. Its dated announcement separates four access levels: Full access, Viewer, Ingestion, and Scores ingestion. An Ingestion key can create traces, scores, and media without reading traces, prompts, or datasets. Scores ingestion is limited to submitting scores, while Viewer provides read-only project access for reporting. The configuration lives in Project Settings under API Keys. Existing keys retain their current access, so the feature does not automatically narrow credentials already deployed in applications.",
-        "For teams collecting sensitive agent conversations, this provides a practical way to reduce the data exposed by a leaked telemetry credential. Our editorial recommendation is to inventory integrations by the operations they actually perform, then create separate keys for application telemetry, user feedback, and reporting. Verify both permitted and denied operations with each replacement before rotating it into production. Treat feedback submission as a separate trust boundary: a score-only key limits access but does not prove that submitted feedback is authentic. Keep credential scope, expiration, and application-side validation as distinct controls."
-      ],
-      "format": "full",
-      "takeaway": "Apply the narrowest scope to each integration and explicitly rotate old keys; creating new permission levels does not restrict existing credentials.",
-      "image": "/edition-images/2026-10-17/langfuse-key-permissions.webp",
-      "image_width": 1440,
-      "image_height": 960,
-      "image_provenance": {
-        "kind": "generated-editorial",
-        "generator": "built-in-imagegen",
-        "prompt": "Use case: infographic-diagram. Asset type: standalone newspaper editorial infographic, landscape 3:2 PNG. Primary request: A KEY FOR EACH JOB. Three equal columns with separate key icons and exact labels: 'INGESTION' / 'Traces, scores, media'; 'SCORES INGESTION' / 'Scores only'; 'VIEWER' / 'Read only'. Footer exact text 'Existing keys keep their access'. These are Langfuse project API key permissions announced October 16, 2026. No arrows suggesting inheritance. Do not depict ingestion reading data. Style: warm off-white newsprint, crisp dark ink, restrained brick red and muted teal, generous spacing, bold readable serif title, clean readable labels at article width. Use only specified short text plus small footer 'AI-GENERATED EDITORIAL'. Avoid fake screenshots, logos, tiny text, invented statistics, unnecessary decoration. All labels must be spelled accurately. Make this a distinct illustration with a clear visual hierarchy.",
-        "based_on": [
-          "https://langfuse.com/changelog/2026-10-16-project-api-key-permissions"
-        ],
-        "reviewed": true,
-        "sha256": "fd5b8a9e1181a22ba3135d90699f563acd79047d56fd5adf46ee4f11521fbfc4",
-        "optimization": {
-          "format": "webp",
-          "quality": 82,
-          "max_width": 1440,
-          "source_sha256": "de98d4ebe25ca0067b606a451a3e23c618e860f9b43eb2abe618ae7c399f6287"
-        }
+          "source_sha256": "809ddb1ae348b1429655b368c5e5d6cab60aecfcad305717654501f87b70fc1e"
+        },
+        "bytes": 150610,
+        "original_file": "judge-validation-original.png",
+        "review_note": "Original PNG and final WebP visually inspected. All requested headings and labels correct; conceptual workflow clearly identified, readable at article width; no metrics, footer or watermark."
       },
       "source": "news",
-      "interest_score": 8,
-      "dedupe_key": "article:langfuse.com/changelog/2026-10-16-project-api-key-permissions",
-      "score_reason": "A concrete access-control change directly reduces exposure of production AI traces and evaluation data.",
-      "source_evidence": {
-        "url": "https://langfuse.com/changelog/2026-10-16-project-api-key-permissions",
-        "publication_date": "2026-10-16",
-        "raw_date": "2026-10-16",
-        "method": "Explicit original October 16, 2026 date immediately above the headline on the primary changelog article."
-      }
-    },
-    {
-      "title": "Honeycomb’s O11yDay recap connects agent failures, traces, and spend",
-      "url": "https://www.honeycomb.io/blog/everything-we-talked-about-o11yday-london-2026",
-      "publisher": "Honeycomb · Ken Rimple",
-      "published": "2026-10-16",
-      "category_key": "agents",
-      "summary": "A conference recap describes investigating an internal review agent across a conversation timeline and fleet view, plus lessons from operating an incident helper.",
-      "body": [
-        "Honeycomb’s October 16 conference recap describes debugging its internal code-review agent by moving from an anomaly alert into Canvas, then into a conversation timeline and a fleet view. The account links failures and spending to a change from reviewing each pull request once to reviewing every commit. A separate HelloFresh session describes repairing incomplete agent telemetry through an OpenTelemetry pipeline, then applying static checks and a model judge. These are reported demonstrations and practitioner accounts, rather than independently reproduced results or evidence that every previewed capability is generally available.",
-        "The operational lesson is to connect an individual execution with the policy that determines how often it runs. Our editorial recommendation is to preserve request identity across retries, examine both tool outcomes and model calls, and compare cost against accepted work. When changing review frequency or model choice, record the rollout boundary alongside quality and latency signals. A lower price per call can still increase total spend or reviewer burden if the workflow performs more calls or produces less useful findings."
-      ],
-      "format": "full",
-      "takeaway": "Measure the cost and usefulness of the whole agent workflow, and annotate behavior changes so fleet trends can be traced back to individual executions.",
-      "image": "/edition-images/2026-10-17/honeycomb-agent-investigation.webp",
-      "image_width": 1440,
-      "image_height": 960,
-      "image_provenance": {
-        "kind": "generated-editorial",
-        "generator": "built-in-imagegen",
-        "prompt": "Use case: infographic-diagram. Asset type: standalone newspaper editorial infographic, landscape 3:2 PNG. Primary request: FOLLOW THE AGENT WORK. Three connected panels labelled 'ALERT', 'CONVERSATION', 'FLEET'. Alert has simple warning icon; conversation has generic model and tool call timeline; fleet has three agent icons and simple cost magnifier, no numerical chart. Caption 'Conceptual investigation path'. Based on Honeycomb October 16 O11yDay recap describing alert to Canvas to Agent Timeline to AI Ecosystem. Include small 'Canvas' beneath ALERT; 'Agent Timeline' beneath CONVERSATION; 'AI Ecosystem' beneath FLEET. Do not invent metrics or imply general availability of previews. Style: warm off-white newsprint, crisp dark ink, restrained brick red and muted teal, generous spacing, bold readable serif title, clean readable labels at article width. Use only specified short text plus small footer 'AI-GENERATED EDITORIAL'. Avoid fake screenshots, logos, tiny text, invented statistics, unnecessary decoration. All labels must be spelled accurately. Make this a distinct illustration with a clear visual hierarchy.",
-        "based_on": [
-          "https://www.honeycomb.io/blog/everything-we-talked-about-o11yday-london-2026"
-        ],
-        "reviewed": true,
-        "sha256": "006515bb67abd970bc3572b84e6c3531a9627a60407d82888707ddcf35e9e449",
-        "optimization": {
-          "format": "webp",
-          "quality": 82,
-          "max_width": 1440,
-          "source_sha256": "4057e02d8671fe0ddffaa7293315c09672a0d53bca9634f44b373e784d32af89"
-        }
-      },
-      "source": "news",
-      "interest_score": 8,
-      "dedupe_key": "article:www.honeycomb.io/blog/everything-we-talked-about-o11yday-london-2026",
-      "score_reason": "Concrete production investigation examples connect agent telemetry coverage, workflow changes, and cost; claims remain attributed to the recap.",
-      "source_evidence": {
-        "url": "https://www.honeycomb.io/blog/everything-we-talked-about-o11yday-london-2026",
-        "publication_date": "2026-10-16",
-        "raw_date": "2026-10-16T14:26:42+00:00",
-        "method": "Primary article JSON-LD datePublished, agreeing with visible October 16, 2026 byline; dateModified excluded."
-      }
-    },
-    {
-      "title": "Langfuse’s October 16 releases improve ingestion semantics and gateway visibility",
-      "url": "https://github.com/langfuse/langfuse/releases/tag/v4.63.0",
-      "publisher": "Langfuse · GitHub releases",
-      "published": "2026-10-16",
-      "category_key": "observability",
-      "summary": "Three same-day stable releases cover ingestion measurements, metadata and usage normalization fixes, and gateway error attribution and overhead measurement.",
-      "body": [
-        "Langfuse shipped three stable releases on October 16, with distinct observability changes across v4.61.0, v4.62.0, and v4.63.0. The first adds measurements around synchronous OpenTelemetry ingestion work and preparation paths, and excludes internal evaluation environments from evaluator backfills. The second fixes per-key metadata decoding on third-party spans exported through recent Langfuse SDK majors. It also derives completion start time from AI SDK 7’s time-to-first-chunk field and preserves OpenAI usage normalization when providers introduce additional usage fields. The latest release adds gateway error attribution by origin and gateway overhead measurement. These entries establish intended changes, without quantifying performance or proving coverage in a particular deployment.",
-        "For operators, the shared theme is preserving meaning as telemetry crosses adapters and routing layers. Our editorial recommendation is to replay representative third-party spans, streaming responses, and provider usage payloads after upgrading. Compare decoded metadata and timing fields with the original payload, then exercise failures from both the gateway and upstream provider. Observe ingestion work separately from end-to-end request latency. A healthy export request alone does not establish that its usage, timing, or failure attribution survived normalization correctly."
-      ],
-      "format": "full",
-      "takeaway": "Validate telemetry meaning across adapters and distinguish gateway overhead from upstream failures before interpreting dashboards after an upgrade.",
-      "image": "/edition-images/2026-10-17/langfuse-oct16-releases.webp",
-      "image_width": 1440,
-      "image_height": 960,
-      "image_provenance": {
-        "kind": "generated-editorial",
-        "generator": "built-in-imagegen",
-        "prompt": "Use case: infographic-diagram. Asset type: standalone newspaper editorial infographic, landscape 3:2 PNG. Primary request: PRESERVE TELEMETRY MEANING. Three columns, exact headings 'v4.61.0', 'v4.62.0', 'v4.63.0'. Below headings respectively exact labels 'Measure ingestion work', 'Decode metadata + usage', 'Attribute gateway errors'. Simple distinct diagrams: span into stopwatch; payload into labelled fields; gateway branching to upstream and local error markers. Footer 'Editorial check: replay representative payloads'. Source supported changes: ingestion instrumentation, metadata decoding and usage normalization fixes, gateway error-origin attribution and overhead measurement. No invented performance numbers. Style: warm off-white newsprint, crisp dark ink, restrained brick red and muted teal, generous spacing, bold readable serif title, clean readable labels at article width. Use only specified short text plus small footer 'AI-GENERATED EDITORIAL'. Avoid fake screenshots, logos, tiny text, invented statistics, unnecessary decoration. All labels must be spelled accurately. Make this a distinct illustration with a clear visual hierarchy.",
-        "based_on": [
-          "https://github.com/langfuse/langfuse/releases/tag/v4.63.0",
-          "https://github.com/langfuse/langfuse/releases/tag/v4.61.0",
-          "https://github.com/langfuse/langfuse/releases/tag/v4.62.0"
-        ],
-        "reviewed": true,
-        "sha256": "393b2559cd858035d578d8be1ef53056dc5e2c5e4090a05898024d8e56e5b918",
-        "optimization": {
-          "format": "webp",
-          "quality": 82,
-          "max_width": 1440,
-          "source_sha256": "334df819a5befe2cce1f8c3999e4dc8c23c49c3d0a5c4d0fd8139fb062a41f2a"
-        }
-      },
-      "source": "github",
-      "interest_score": 8,
-      "dedupe_key": "release:langfuse/langfuse/releases/tag/v4.63.0",
-      "covered_dedupe_keys": [
-        "release:langfuse/langfuse/releases/tag/v4.61.0",
-        "release:langfuse/langfuse/releases/tag/v4.62.0"
-      ],
-      "score_reason": "Specific stable-release changes address telemetry fidelity and attribution across ingestion and inference routing.",
-      "source_evidence": {
-        "url": "https://github.com/langfuse/langfuse/releases/tag/v4.63.0",
-        "publication_date": "2026-10-16",
-        "raw_date": "2026-10-16T14:33:33Z",
-        "method": "Official GitHub release API published_at; draft:false and prerelease:false. v4.61.0 and v4.62.0 separately verified for the same day.",
-        "additional_releases": [
-          {
-            "url": "https://github.com/langfuse/langfuse/releases/tag/v4.61.0",
-            "raw_date": "2026-10-16T08:20:32Z"
-          },
-          {
-            "url": "https://github.com/langfuse/langfuse/releases/tag/v4.62.0",
-            "raw_date": "2026-10-16T10:00:05Z"
-          }
-        ]
-      }
-    },
-    {
-      "title": "Phoenix v20.23.0 adds OTLP export for server logs",
-      "url": "https://github.com/Arize-ai/phoenix/releases/tag/arize-phoenix-v20.23.0",
-      "publisher": "Arize Phoenix · GitHub release",
-      "published": "2026-10-16",
-      "category_key": "observability",
-      "summary": "Phoenix’s stable release adds server-log export over OTLP and fixes how the playground forwards Bedrock tool results.",
-      "body": [
-        "Phoenix v20.23.0 adds server-log export over OTLP. Its release notes also fix the playground’s handling of Bedrock tool results by forwarding them directly as text, and add documentation for Atomic Agents tracing. The short announcement does not provide deployment configuration, delivery guarantees, or performance measurements. Our editorial recommendation is to verify that server logs arrive at the intended receiver and remain distinguishable from application traces. Test a Bedrock tool-result round trip separately; a server logging feature does not establish correct application-level tool behavior."
-      ],
-      "format": "brief",
-      "brief_reason": "The stable release has one terse server-log export entry and a narrow playground fix; it gives no configuration walkthrough or benchmark.",
-      "takeaway": "Check the observability server’s own log delivery alongside application traces, using a known event rather than assuming export implies receipt.",
-      "image": "/edition-images/2026-10-17/phoenix-otlp-server-logs.webp",
-      "image_width": 1440,
-      "image_height": 960,
-      "image_provenance": {
-        "kind": "generated-editorial",
-        "generator": "built-in-imagegen",
-        "prompt": "Use case: infographic-diagram. Asset type: standalone newspaper editorial infographic, landscape 3:2 PNG. Primary request: OBSERVE THE SERVER TOO. Simple left-to-right flow of three clear boxes with exact labels 'PHOENIX SERVER', 'OTLP', 'LOG RECEIVER'. First box has small server icon; middle a transport arrow; last log page icon. Source fact Phoenix v20.23.0 adds export of server logs over OTLP. Bottom separate dashed box exact text 'EDITORIAL CHECK: VERIFY ARRIVAL'. No guaranteed delivery claim, no invented configuration fields. Footer 'Phoenix v20.23.0'. Style: warm off-white newsprint, crisp dark ink, restrained brick red and muted teal, generous spacing, bold readable serif title, clean readable labels at article width. Use only specified short text plus small footer 'AI-GENERATED EDITORIAL'. Avoid fake screenshots, logos, tiny text, invented statistics, unnecessary decoration. All labels must be spelled accurately. Make this a distinct illustration with a clear visual hierarchy.",
-        "based_on": [
-          "https://github.com/Arize-ai/phoenix/releases/tag/arize-phoenix-v20.23.0"
-        ],
-        "reviewed": true,
-        "sha256": "bf5dc286f9241ec8a0d410d84cddfd74737d8ed5b72bed8d839bdbd94b449ae3",
-        "optimization": {
-          "format": "webp",
-          "quality": 82,
-          "max_width": 1440,
-          "source_sha256": "471b9aa5489d246a2dbc374c434d40390b0e2b0fecaa8ef2d7c45ce5920b5ce6"
-        }
-      },
-      "source": "github",
       "interest_score": 7,
-      "dedupe_key": "release:Arize-ai/phoenix/releases/tag/arize-phoenix-v20.23.0",
-      "score_reason": "A useful server-operations feature and specific tool-result fix, with sparse release-note detail.",
+      "dedupe_key": "article:itechguides.com/how-to-use-ai-generated-evaluations-without-letting-model-bias-skew-your-results",
+      "score_reason": "Concrete evaluation validation practices with direct operator relevance, but a general synthesis without a new implementation, dataset, or measured result.",
       "source_evidence": {
-        "url": "https://github.com/Arize-ai/phoenix/releases/tag/arize-phoenix-v20.23.0",
-        "publication_date": "2026-10-16",
-        "raw_date": "2026-10-16T03:16:52Z",
-        "method": "Official GitHub release API published_at with draft:false and prerelease:false; release heading also dated 2026-10-16."
+        "url": "https://www.itechguides.com/how-to-use-ai-generated-evaluations-without-letting-model-bias-skew-your-results/",
+        "publication_date": "2026-10-17",
+        "raw_date": "2026-10-17T16:27:21+00:00",
+        "method": "Original publisher article: article:published_time and Article JSON-LD datePublished agree; visible time element reads October 17, 2026 with datetime 2026-10-17T17:27:21+01:00. Direct HTTP source saved in extra-0.html; dateModified was not used.",
+        "evidence_file": "extra-0.html"
       }
     }
   ],
-  "edition": "AI Observability Daily",
   "research": {
     "status": "complete",
     "completed_sources": [
@@ -259,103 +72,185 @@
       "https://www.splunk.com/en_us/blog/observability.html",
       "https://www.dynatrace.com/news/",
       "https://langfuse.com/changelog",
-      "https://langfuse.com/changelog/2026-10-16-project-api-key-permissions",
-      "https://www.honeycomb.io/blog/everything-we-talked-about-o11yday-london-2026",
-      "https://arize.com/blog/ai-agent-permissions/",
-      "https://arize.com/blog/eu-ai-act-compliance-ai-agents/",
-      "https://www.datadoghq.com/blog/ai/introducing-scout-sre-specialized-model-bits-ai/",
-      "https://www.datadoghq.com/blog/ai-agent-security-lessons/"
+      "https://www.itechguides.com/how-to-use-ai-generated-evaluations-without-letting-model-bias-skew-your-results/",
+      "https://www.anthropic.com/news/an-update-on-independent-evaluators"
     ],
-    "excluded": [
-      {
-        "url": "https://bdtechtalks.com/2025/12/29/llm-tool-use-agentic-ai/",
-        "title": "The evolution of LLM tool-use from API calls to agentic applications (2025)",
-        "reason": "Linked article is explicitly from 2025; resurfaced HN submission is not original publication evidence."
-      },
-      {
-        "url": "https://news.ycombinator.com/item?id=50125397",
-        "title": "Ask HN: Social network with AI agents – why bad, why good?",
-        "reason": "General discussion of social-network agents; no concrete AI-observability or evaluation implementation."
-      },
-      {
-        "url": "https://stoke.money",
-        "title": "Show HN: Stoke Money – Personal finance app built around a cash flow forecast",
-        "reason": "Personal finance app; outside the AI-observability beat."
-      },
-      {
-        "url": "https://www.ft.com/content/5a310aee-f555-4266-874c-b1b4db20186d",
-        "title": "Anthropic assigned highest junk credit rating in June",
-        "reason": "Corporate credit-rating story; outside the AI-observability beat."
-      },
-      {
-        "url": "https://news.ycombinator.com/item?id=50121562",
-        "title": "Anthropic Console overcharged my card 100x due to internationalization input bug",
-        "reason": "Unverified billing-input anecdote; does not describe an AI telemetry, evaluation, or inference-cost measurement implementation."
-      },
-      {
-        "url": "https://www.nytimes.com/interactive/2026/10/15/upshot/ai-data-center-math.html",
-        "title": "It took an octillion calculations to train GPT 6 Astra",
-        "reason": "Article URL is dated October 15; general training-compute story outside the window and beat."
-      },
-      {
-        "url": "https://frankdenneman.ai/2026-10-13-agent-or-flowchart-find-the-box-you-cant-finish-drawing/",
-        "title": "Agent or Flowchart? Find the Box You Can't Finish Drawing",
-        "reason": "Primary URL is dated October 13; HN resurfacing excluded."
-      },
-      {
-        "url": "https://news.ycombinator.com/item?id=50115335",
-        "title": "AI as a part of capitalism – the right way to go",
-        "reason": "General AI/capitalism discussion; outside beat."
-      },
-      {
-        "url": "https://gitsu.app/",
-        "title": "Show HN: Gitsu.app – A Linear-alternative built on GitHub Projects",
-        "reason": "GitHub Projects task-management app; outside beat."
-      },
-      {
-        "url": "https://whosellsdata.com/",
-        "title": "AI training data and RL environment vendors",
-        "reason": "Training-data vendor directory; no concrete production observability or evaluation change."
-      },
-      {
-        "url": "https://wayseer.app/",
-        "title": "Show HN: Wayseer – A native desktop app for browsing real-time data",
-        "reason": "General real-time-data desktop app; no demonstrated AI-operational telemetry relevance."
-      },
-      {
-        "url": "https://arize.com/blog/ai-agent-permissions/",
-        "reason": "Original article:published_time is 2026-10-15T14:52:58+00:00; outside frozen day."
-      },
-      {
-        "url": "https://arize.com/blog/eu-ai-act-compliance-ai-agents/",
-        "reason": "Original article:published_time is 2026-10-13T16:00:15+00:00; outside frozen day."
-      },
-      {
-        "url": "https://www.datadoghq.com/blog/ai/introducing-scout-sre-specialized-model-bits-ai/",
-        "reason": "Primary JSON-LD datePublished and visible time element both October 15, 2026."
-      },
-      {
-        "url": "https://www.datadoghq.com/blog/ai-agent-security-lessons/",
-        "reason": "Primary JSON-LD datePublished and visible time element both August 27, 2026."
-      }
-    ],
-    "note": "Scoped sweep of configured News surfaces plus focused date searches; no claim of exhaustive web coverage. Supplied discovery and successful outer-runner source-fetch.log reused to preserve the write boundary. All 12 HN candidates rechecked through official API; 4 stable GitHub candidates rechecked through release API. Three distinct same-day Langfuse releases grouped into one story. All 3 existing issues read and checked for URL, headline, and event overlap.",
+    "note": "Scoped official-source sweep plus exact-date web searches. No claim of exhaustive coverage. Initial web fetch failures for X, HN API and the guide were resolved with direct HTTP, saved as evidence. Supplied discovery file reused; fresh read-only HN query/item and GitHub API checks recorded in run directory rather than overwriting source-candidates outside authorized write scope. Retained guide is the original publisher’s practical advice, a synthesis rather than new empirical research. No secondhand NIST research claims reproduced as findings.",
     "source_counts": {
-      "hn": {
-        "candidates": 12,
-        "retained": 1,
-        "excluded": 11
-      },
-      "news": {
-        "configured_surfaces": 11,
-        "retained": 2
-      },
-      "github": {
-        "repositories_checked": 8,
-        "candidate_releases": 4,
-        "retained_stories": 2
+      "hn_candidates": 10,
+      "github_repositories": 8,
+      "github_releases_checked": 701,
+      "retained": {
+        "hn": 0,
+        "news": 1,
+        "github": 0
       }
     },
+    "hn_checks": [
+      {
+        "query": "observability",
+        "status": "complete",
+        "hits": 0,
+        "pages": 0,
+        "url": "https://hn.algolia.com/api/v1/search_by_date?query=observability&tags=story&numericFilters=created_at_i%3E%3D1792195200%2Ccreated_at_i%3C1792281600&hitsPerPage=100&page=0"
+      },
+      {
+        "query": "LLM evaluation",
+        "status": "complete",
+        "hits": 1,
+        "pages": 1,
+        "url": "https://hn.algolia.com/api/v1/search_by_date?query=LLM+evaluation&tags=story&numericFilters=created_at_i%3E%3D1792195200%2Ccreated_at_i%3C1792281600&hitsPerPage=100&page=0"
+      },
+      {
+        "query": "AI tracing",
+        "status": "complete",
+        "hits": 8,
+        "pages": 1,
+        "url": "https://hn.algolia.com/api/v1/search_by_date?query=AI+tracing&tags=story&numericFilters=created_at_i%3E%3D1792195200%2Ccreated_at_i%3C1792281600&hitsPerPage=100&page=0"
+      },
+      {
+        "query": "agent telemetry",
+        "status": "complete",
+        "hits": 0,
+        "pages": 0,
+        "url": "https://hn.algolia.com/api/v1/search_by_date?query=agent+telemetry&tags=story&numericFilters=created_at_i%3E%3D1792195200%2Ccreated_at_i%3C1792281600&hitsPerPage=100&page=0"
+      },
+      {
+        "query": "langfuse",
+        "status": "complete",
+        "hits": 1,
+        "pages": 1,
+        "url": "https://hn.algolia.com/api/v1/search_by_date?query=langfuse&tags=story&numericFilters=created_at_i%3E%3D1792195200%2Ccreated_at_i%3C1792281600&hitsPerPage=100&page=0"
+      }
+    ],
+    "hn_items": [
+      {
+        "id": "50134215",
+        "title": "Apple releases RSI-Inference: evaluating agents for self-improving LLM inference",
+        "url": "https://twitter.com/onloglogn/status/2111170954944823685",
+        "time": "2026-10-17T19:23:11.000Z",
+        "status": "complete"
+      },
+      {
+        "id": "50136210",
+        "title": "Doctors, Lawyers and Engineers joining AI's $400-an-Hour gig economy",
+        "url": "https://www.bloomberg.com/news/articles/2026-10-16/ai-training-jobs-are-attracting-doctors-lawyers-and-engineers",
+        "time": "2026-10-17T23:33:37.000Z",
+        "status": "complete"
+      },
+      {
+        "id": "50134197",
+        "title": "Show HN: Task629 - Personal development tracking through task descriptions",
+        "url": "https://github.com/sudo-bendg/task629",
+        "time": "2026-10-17T19:22:06.000Z",
+        "status": "complete"
+      },
+      {
+        "id": "50134189",
+        "title": "I need an opinion on my app",
+        "time": "2026-10-17T19:21:08.000Z",
+        "status": "complete"
+      },
+      {
+        "id": "50132747",
+        "title": "Why the Creators of AI Do Not Understand Their Own Creations",
+        "time": "2026-10-17T16:54:50.000Z",
+        "status": "complete"
+      },
+      {
+        "id": "50132550",
+        "title": "AI lab offers free plumbing and HVAC repairs to train AI robots",
+        "url": "https://www.tomshardware.com/tech-industry/artificial-intelligence/ai-lab-offers-free-plumbing-and-hvac-repairs-across-three-cities-to-train-ai-robots-wearable-sensors-record-video-of-repair-work-for-robotics-training-free-services-also-include-electrical-work-air-duct-cleaning-and-carpet-cleaning",
+        "time": "2026-10-17T16:35:35.000Z",
+        "status": "complete"
+      },
+      {
+        "id": "50131950",
+        "title": "Show HN: I built an AI cycling coach",
+        "url": "https://cuore.fit/",
+        "time": "2026-10-17T15:27:31.000Z",
+        "status": "complete"
+      },
+      {
+        "id": "50129015",
+        "title": "Meta to scrape content from business customers for model training",
+        "url": "https://www.theregister.com/ai-and-ml/2026/10/16/meta-grants-itself-right-to-scrape-content-from-business-customers-for-model-training/5303658",
+        "time": "2026-10-17T08:14:06.000Z",
+        "status": "complete"
+      },
+      {
+        "id": "50127187",
+        "title": "Publishers' Trust in Nippan Dented by Unauthorized Book Sales for AI Training",
+        "url": "https://japannews.yomiuri.co.jp/science-nature/technology/20261014-353599/",
+        "time": "2026-10-17T02:08:03.000Z",
+        "status": "complete"
+      },
+      {
+        "id": "50132339",
+        "title": "Ttype – Minimalist terminal typing test with typewriter soundscapes",
+        "url": "https://github.com/laguser/ttype",
+        "time": "2026-10-17T16:11:47.000Z",
+        "status": "complete"
+      }
+    ],
+    "github_checks": [
+      {
+        "repository": "langfuse/langfuse",
+        "status": "complete",
+        "releases_checked": 100,
+        "candidates": [],
+        "url": "https://api.github.com/repos/langfuse/langfuse/releases?per_page=100"
+      },
+      {
+        "repository": "Arize-ai/phoenix",
+        "status": "complete",
+        "releases_checked": 100,
+        "candidates": [],
+        "url": "https://api.github.com/repos/Arize-ai/phoenix/releases?per_page=100"
+      },
+      {
+        "repository": "Arize-ai/openinference",
+        "status": "complete",
+        "releases_checked": 100,
+        "candidates": [],
+        "url": "https://api.github.com/repos/Arize-ai/openinference/releases?per_page=100"
+      },
+      {
+        "repository": "langchain-ai/langsmith-sdk",
+        "status": "complete",
+        "releases_checked": 100,
+        "candidates": [],
+        "url": "https://api.github.com/repos/langchain-ai/langsmith-sdk/releases?per_page=100"
+      },
+      {
+        "repository": "braintrustdata/braintrust-sdk",
+        "status": "complete",
+        "releases_checked": 97,
+        "candidates": [],
+        "url": "https://api.github.com/repos/braintrustdata/braintrust-sdk/releases?per_page=100"
+      },
+      {
+        "repository": "wandb/weave",
+        "status": "complete",
+        "releases_checked": 100,
+        "candidates": [],
+        "url": "https://api.github.com/repos/wandb/weave/releases?per_page=100"
+      },
+      {
+        "repository": "langwatch/langwatch",
+        "status": "complete",
+        "releases_checked": 100,
+        "candidates": [],
+        "url": "https://api.github.com/repos/langwatch/langwatch/releases?per_page=100"
+      },
+      {
+        "repository": "Helicone/helicone",
+        "status": "complete",
+        "releases_checked": 4,
+        "candidates": [],
+        "url": "https://api.github.com/repos/Helicone/helicone/releases?per_page=100"
+      }
+    ],
     "news_checks": [
       {
         "name": "Arize AI",
@@ -363,7 +258,8 @@
         "status": "checked",
         "http_status": 200,
         "evidence_file": "source-0.txt",
-        "result": "Arize index reviewed; two recent relevant primary pages checked and excluded for October 15/13 publication."
+        "text_file": "source-0-text.txt",
+        "result": "Official index inspected; no October 17 primary article identified. Dates and article list retained in source-0-text.txt."
       },
       {
         "name": "Langfuse",
@@ -371,7 +267,8 @@
         "status": "checked",
         "http_status": 200,
         "evidence_file": "source-1.txt",
-        "result": "Langfuse blog latest monthly update September 30; changelog separately checked and October 16 key-permissions article retained."
+        "text_file": "source-1-text.txt",
+        "result": "Blog inspected; latest listed update September 30. Changelog separately checked; newest entry October 16, already covered."
       },
       {
         "name": "LangSmith",
@@ -379,7 +276,8 @@
         "status": "checked",
         "http_status": 200,
         "evidence_file": "source-2.txt",
-        "result": "LangChain recent stories start October 15; older October 14/13 stories excluded, including historical duplicates."
+        "text_file": "source-2-text.txt",
+        "result": "Recent stories dated October 15 and earlier; no October 17 article identified."
       },
       {
         "name": "Braintrust",
@@ -387,7 +285,8 @@
         "status": "checked",
         "http_status": 200,
         "evidence_file": "source-3.txt",
-        "result": "Braintrust latest listed story October 15; no in-window item identified."
+        "text_file": "source-3-text.txt",
+        "result": "Newest post October 15; no October 17 item identified."
       },
       {
         "name": "OpenTelemetry",
@@ -395,7 +294,8 @@
         "status": "checked",
         "http_status": 200,
         "evidence_file": "source-4.txt",
-        "result": "OpenTelemetry latest listed story October 15; hostmetrics October 13 already covered in history."
+        "text_file": "source-4-text.txt",
+        "result": "Newest blog post October 15; no October 17 item identified."
       },
       {
         "name": "Elastic Observability Labs",
@@ -403,7 +303,8 @@
         "status": "checked",
         "http_status": 200,
         "evidence_file": "source-5.txt",
-        "result": "Elastic Observability Labs article index reviewed; no qualifying October 16 AI-operational item found. CMS update timestamp not used as publication proof."
+        "text_file": "source-5-text.txt",
+        "result": "Newest listed Observability Labs post October 13; no October 17 item identified."
       },
       {
         "name": "Datadog",
@@ -411,7 +312,8 @@
         "status": "checked",
         "http_status": 200,
         "evidence_file": "source-6.txt",
-        "result": "Datadog featured relevant articles followed to primary pages; original dates October 15 and August 27. Targeted date search found no eligible October 16 item."
+        "text_file": "source-6-text.txt",
+        "result": "Official blog list inspected and exact date search supplemented; no eligible October 17 publication identified."
       },
       {
         "name": "Honeycomb",
@@ -419,7 +321,8 @@
         "status": "checked",
         "http_status": 200,
         "evidence_file": "source-7.txt",
-        "result": "Honeycomb dated October 16 recap followed to primary page; original date verified and agent-operations material retained."
+        "text_file": "source-7-text.txt",
+        "result": "Newest post October 16, already covered in history; no October 17 item identified."
       },
       {
         "name": "DigitalOcean",
@@ -427,7 +330,8 @@
         "status": "checked",
         "http_status": 200,
         "evidence_file": "source-8.txt",
-        "result": "DigitalOcean latest posts October 15 and October 13; earlier October 12 agent material excluded."
+        "text_file": "source-8-text.txt",
+        "result": "Latest visible posts October 15 and earlier; no October 17 item identified."
       },
       {
         "name": "Splunk Observability",
@@ -435,7 +339,8 @@
         "status": "checked",
         "http_status": 200,
         "evidence_file": "source-9.txt",
-        "result": "Splunk surface returned a no-results article list in both web and HTTP access; supplemented with targeted date/site search. No eligible primary article identified; this limited surface does not establish an exhaustive absence."
+        "text_file": "source-9-text.txt",
+        "result": "Official category surface returns No results in web and direct HTTP. Targeted site/date search performed; no eligible primary item found. This is a limited discovery surface, not an inaccessible candidate article."
       },
       {
         "name": "Dynatrace",
@@ -443,49 +348,8 @@
         "status": "checked",
         "http_status": 200,
         "evidence_file": "source-10.txt",
-        "result": "Dynatrace dated news/blog list reviewed; newest visible entries October 15. No qualifying October 16 item identified."
-      }
-    ],
-    "github_checks": [
-      {
-        "repository": "langfuse/langfuse",
-        "releases_checked": 100,
-        "coverage": "latest 100 releases; not a global GitHub search"
-      },
-      {
-        "repository": "Arize-ai/phoenix",
-        "releases_checked": 100,
-        "coverage": "latest 100 releases; not a global GitHub search"
-      },
-      {
-        "repository": "Arize-ai/openinference",
-        "releases_checked": 100,
-        "coverage": "latest 100 releases; not a global GitHub search"
-      },
-      {
-        "repository": "langchain-ai/langsmith-sdk",
-        "releases_checked": 100,
-        "coverage": "latest 100 releases; not a global GitHub search"
-      },
-      {
-        "repository": "braintrustdata/braintrust-sdk",
-        "releases_checked": 97,
-        "coverage": "latest 100 releases; not a global GitHub search"
-      },
-      {
-        "repository": "wandb/weave",
-        "releases_checked": 100,
-        "coverage": "latest 100 releases; not a global GitHub search"
-      },
-      {
-        "repository": "langwatch/langwatch",
-        "releases_checked": 100,
-        "coverage": "latest 100 releases; not a global GitHub search"
-      },
-      {
-        "repository": "Helicone/helicone",
-        "releases_checked": 4,
-        "coverage": "latest 100 releases; not a global GitHub search"
+        "text_file": "source-10-text.txt",
+        "result": "News/blog list inspected; newest blog entries October 15. No October 17 item identified."
       }
     ],
     "history_checked": [
@@ -503,18 +367,93 @@
         "file": "2026-10-15.json",
         "stories": 6,
         "sha256": "a4b9839fb73d0b41a5ef943fb36b7ddd3f49529f4a46ae075959b606ee9f6ecc"
+      },
+      {
+        "file": "2026-10-16.json",
+        "stories": 6,
+        "sha256": "000d9e8600fba77ccaf9dbe01d60e002dce9165f20f09fe340a177612a3baebd"
+      },
+      {
+        "file": "2026-10-17.json",
+        "stories": 5,
+        "sha256": "40ca896564230c0088f621ba45b33bd7515d0b6cb31a5a230915f7aa8f8f93f4"
+      }
+    ],
+    "excluded": [
+      {
+        "url": "https://twitter.com/onloglogn/status/2111170954944823685",
+        "hn_id": "50134215",
+        "reason": "Original X post visible timestamp is October 16, 2026 at 7:02 PM, confirmed in source-11-text.txt; October 17 HN submission is resurfacing."
+      },
+      {
+        "url": "https://www.bloomberg.com/news/articles/2026-10-16/ai-training-jobs-are-attracting-doctors-lawyers-and-engineers",
+        "hn_id": "50136210",
+        "reason": "AI training labor market; no concrete AI observability implementation."
+      },
+      {
+        "url": "https://github.com/sudo-bendg/task629",
+        "hn_id": "50134197",
+        "reason": "Personal task tracking; outside AI observability."
+      },
+      {
+        "url": "https://news.ycombinator.com/item?id=50134189",
+        "hn_id": "50134189",
+        "reason": "Request for app opinions; no substantive AI observability publication."
+      },
+      {
+        "url": "https://news.ycombinator.com/item?id=50132747",
+        "hn_id": "50132747",
+        "reason": "General AI understanding discussion; no operational observability or evaluation method."
+      },
+      {
+        "url": "https://www.tomshardware.com/tech-industry/artificial-intelligence/ai-lab-offers-free-plumbing-and-hvac-repairs-across-three-cities-to-train-ai-robots-wearable-sensors-record-video-of-repair-work-for-robotics-training-free-services-also-include-electrical-work-air-duct-cleaning-and-carpet-cleaning",
+        "hn_id": "50132550",
+        "reason": "Robotics training data collection; outside AI observability."
+      },
+      {
+        "url": "https://cuore.fit/",
+        "hn_id": "50131950",
+        "reason": "Cycling coach application; outside AI observability."
+      },
+      {
+        "url": "https://www.theregister.com/ai-and-ml/2026/10/16/meta-grants-itself-right-to-scrape-content-from-business-customers-for-model-training/5303658",
+        "hn_id": "50129015",
+        "reason": "Training-data policy report; outside AI observability."
+      },
+      {
+        "url": "https://japannews.yomiuri.co.jp/science-nature/technology/20261014-353599/",
+        "hn_id": "50127187",
+        "reason": "Book licensing/training data news; outside AI observability."
+      },
+      {
+        "url": "https://github.com/laguser/ttype",
+        "hn_id": "50132339",
+        "reason": "Terminal typing test; outside AI observability."
+      },
+      {
+        "url": "https://www.anthropic.com/news/an-update-on-independent-evaluators",
+        "reason": "Original datePublished 2026-10-15T17:20:00.000Z, visible October 15. dateModified October 16 and October 17 secondary coverage do not qualify.",
+        "evidence_file": "extra-1.html"
+      },
+      {
+        "url": "https://www.mitaiconference.org/research-slam",
+        "reason": "October 17 is an event date, not proven original publication date. Programme listing is not a dated published evaluation result."
+      },
+      {
+        "url": "https://heardin.ai/stories/irregular-evaluation-misconfiguration-lets-frontier-models-reach-the-real-internet",
+        "reason": "Secondary retrospective of July/August disclosures; no verified October 17 primary publication."
       }
     ],
     "searches": [
-      "\"October 16, 2026\" \"observability\"",
-      "\"2026-10-16\" \"evaluation\" LLM",
-      "\"October 16, 2026\" LangSmith Braintrust Arize",
-      "site:langchain.com/blog \"2026\" \"October 16\"",
-      "site:braintrust.dev/blog \"2026-10-16\"",
-      "site:arize.com/blog \"October 16, 2026\"",
-      "site:splunk.com/en_us/blog/observability \"October 16, 2026\"",
-      "site:datadoghq.com/blog \"October 16, 2026\"",
-      "site:elastic.co/observability-labs/blog \"2026\" \"October 16\""
+      "\"2026-10-17\" \"observability\"",
+      "\"October 17, 2026\" \"evaluation\" AI",
+      "\"2026-10-17\" (site:arize.com OR site:braintrust.dev OR site:langchain.com OR site:langfuse.com)",
+      "site:langchain.com/blog \"October 17, 2026\"",
+      "site:braintrust.dev/blog \"October 17, 2026\"",
+      "site:splunk.com/en_us/blog/observability \"October 17, 2026\"",
+      "site:datadoghq.com/blog \"Oct 17, 2026\"",
+      "site:arize.com/blog \"October 17, 2026\"",
+      "site:langfuse.com \"2026-10-17\""
     ]
   },
   "name": "Tidy Traces — AI Observability Daily",
