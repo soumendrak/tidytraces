@@ -1,27 +1,27 @@
-# AI Observability Daily — 2026-10-18
+# AI Observability Daily — 2026-10-19
 
 By Soumendra Kumar Sahoo
 
 Canonical: https://tidytraces.com/
-Coverage window: 2026-10-17
+Coverage window: 2026-10-18
 
-One practical evaluation guide: calibrate LLM judges, test irrelevant input changes, and preserve the evidence behind scores.
+One practical guide examines how to verify agent outcomes, tool permissions, and side effects independently. No eligible HN stories or stable watchlist releases were found for October 18.
 
-## A practical guide puts LLM judges through calibration and paired-input checks
+## An agent evaluation guide separates successful outcomes from permitted actions
 
-Source: iTechGuides — https://www.itechguides.com/how-to-use-ai-generated-evaluations-without-letting-model-bias-skew-your-results/
-Published: 2026-10-17
+Source: iTechGuides — https://www.itechguides.com/how-to-prove-your-ai-agent-works-a-practical-evals-and-safety-guide/
+Published: 2026-10-18
 Channel: news
 
-An October 17 iTechGuides guide lays out a practical validation workflow for teams using language models to score AI outputs. Its central recommendation is to specify the decision a score will support before choosing a judge. The guide then calls for observable rubric criteria, examples of missing evidence and critical failures, and calibration against independent human ratings on representative and difficult cases.
+An October 18 iTechGuides guide proposes evaluating an agent against a versioned task contract before interpreting its success rate. The contract specifies the starting state, required outcome, available tools, permission limits, prohibited side effects, and acceptable escalation. Its worked refund example distinguishes a completed payment from the authorization and audit steps that should precede it. The article recommends inspecting the resulting payment state independently rather than trusting an agent’s completion message.
 
-For robustness checks, it recommends paired inputs that preserve substance while changing features that should be irrelevant: answer order, identity or authority cues, formatting, and response length. Reviewers should compare the supporting evidence and explanations as well as the scores. It also advises retaining distributions, subgroup denominators, repeat-run variation, and disagreements rather than relying on an overall average.
+The practical instrumentation requirement is to preserve tool arguments, authorization decisions, returned values, retries, latency, and relevant state changes alongside agent, policy, fixture, and evaluator versions. Outcome checks and permission checks remain separate: a forbidden action can invalidate an otherwise successful run, while a safe escalation can respect policy without completing the customer’s request. The guide also recommends segmenting failures by severity and workflow so averages do not conceal costly exceptions.
 
-The operational record matters alongside the rating: judge versions, prompts, datasets, aggregation rules, and escalation thresholds should travel with evaluation results. The article is a synthesis of evaluation practices, not a new benchmark or evidence that any particular judge is unbiased. Its proposed checks give operators a concrete way to investigate score changes before treating them as changes in application quality.
+This is instructional synthesis with an illustrative scenario, not a measured deployment study or a new standard. Its operational value depends on implementing reliable fixtures, independent assertions, and appropriately protected traces; recording a trace alone does not prove that the final outcome was correct.
 
-Why it matters: Treat a score shift as a measurement question: check judge, rubric, input-order sensitivity, and sample changes before concluding that application quality changed.
+Why it matters: Pair each consequential tool action with an authorization record and an independent state check; report task completion and policy compliance as separate results.
 
-![A practical guide puts LLM judges through calibration and paired-input checks](/edition-images/2026-10-18/judge-validation.webp)
+![An agent evaluation guide separates successful outcomes from permitted actions](/edition-images/2026-10-19/agent-checks.webp)
 
 ---
 

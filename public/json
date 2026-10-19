@@ -1,54 +1,50 @@
 {
-  "date": "2026-10-18",
-  "story_window": "2026-10-17",
-  "dek": "One practical evaluation guide: calibrate LLM judges, test irrelevant input changes, and preserve the evidence behind scores.",
+  "date": "2026-10-19",
+  "story_window": "2026-10-18",
+  "dek": "One practical guide examines how to verify agent outcomes, tool permissions, and side effects independently. No eligible HN stories or stable watchlist releases were found for October 18.",
   "stories": [
     {
-      "title": "A practical guide puts LLM judges through calibration and paired-input checks",
-      "url": "https://www.itechguides.com/how-to-use-ai-generated-evaluations-without-letting-model-bias-skew-your-results/",
+      "title": "An agent evaluation guide separates successful outcomes from permitted actions",
+      "url": "https://www.itechguides.com/how-to-prove-your-ai-agent-works-a-practical-evals-and-safety-guide/",
       "publisher": "iTechGuides",
-      "published": "2026-10-17",
+      "published": "2026-10-18",
       "category_key": "evals",
-      "summary": "The guide recommends task-specific rubrics, independent human calibration, controlled input perturbations, and versioned evidence for LLM-as-a-judge workflows. It offers practical guidance rather than new experimental results.",
+      "summary": "The guide proposes explicit task boundaries, independent state assertions, and separate scoring for outcomes, permissions, and robustness. Its refund-agent example illustrates why completion alone cannot establish safe behavior.",
       "body": [
-        "An October 17 iTechGuides guide lays out a practical validation workflow for teams using language models to score AI outputs. Its central recommendation is to specify the decision a score will support before choosing a judge. The guide then calls for observable rubric criteria, examples of missing evidence and critical failures, and calibration against independent human ratings on representative and difficult cases.",
-        "For robustness checks, it recommends paired inputs that preserve substance while changing features that should be irrelevant: answer order, identity or authority cues, formatting, and response length. Reviewers should compare the supporting evidence and explanations as well as the scores. It also advises retaining distributions, subgroup denominators, repeat-run variation, and disagreements rather than relying on an overall average.",
-        "The operational record matters alongside the rating: judge versions, prompts, datasets, aggregation rules, and escalation thresholds should travel with evaluation results. The article is a synthesis of evaluation practices, not a new benchmark or evidence that any particular judge is unbiased. Its proposed checks give operators a concrete way to investigate score changes before treating them as changes in application quality."
+        "An October 18 iTechGuides guide proposes evaluating an agent against a versioned task contract before interpreting its success rate. The contract specifies the starting state, required outcome, available tools, permission limits, prohibited side effects, and acceptable escalation. Its worked refund example distinguishes a completed payment from the authorization and audit steps that should precede it. The article recommends inspecting the resulting payment state independently rather than trusting an agent’s completion message.",
+        "The practical instrumentation requirement is to preserve tool arguments, authorization decisions, returned values, retries, latency, and relevant state changes alongside agent, policy, fixture, and evaluator versions. Outcome checks and permission checks remain separate: a forbidden action can invalidate an otherwise successful run, while a safe escalation can respect policy without completing the customer’s request. The guide also recommends segmenting failures by severity and workflow so averages do not conceal costly exceptions.",
+        "This is instructional synthesis with an illustrative scenario, not a measured deployment study or a new standard. Its operational value depends on implementing reliable fixtures, independent assertions, and appropriately protected traces; recording a trace alone does not prove that the final outcome was correct."
       ],
       "format": "full",
-      "takeaway": "Treat a score shift as a measurement question: check judge, rubric, input-order sensitivity, and sample changes before concluding that application quality changed.",
-      "image": "/edition-images/2026-10-18/judge-validation.webp",
+      "takeaway": "Pair each consequential tool action with an authorization record and an independent state check; report task completion and policy compliance as separate results.",
+      "image": "/edition-images/2026-10-19/agent-checks.webp",
       "image_width": 1440,
       "image_height": 960,
       "image_provenance": {
         "kind": "generated-editorial",
         "generator": "built-in-imagegen",
-        "prompt": "Use case: infographic-diagram\nAsset type: newspaper story infographic, standalone PNG, landscape 1536 by 1024.\nPrimary request: depict a conceptual validation workflow for LLM judges, based on the October 17 iTechGuides practical guide. Source-supported guidance: define the decision and rubric; calibrate against qualified human judgments; test paired inputs with identical substance but swapped answer order or changed formatting; preserve disagreement and versions. This is a conceptual workflow, not experimental results.\nStyle: warm cream newsprint, dark ink, restrained teal and rust accents, bold newspaper serif headings, generous spacing. Four clear connected panels, simple document and magnifier icons, readable short labels at article width.\nText verbatim: title \"CHECK THE JUDGE\"; subtitle \"Conceptual validation workflow\"; panels \"DEFINE THE RUBRIC\", \"CALIBRATE WITH HUMANS\", \"TEST PAIRED INPUTS\", \"RECORD DISAGREEMENT\"; small labels under panels respectively \"Decision and criteria\", \"Independent reference ratings\", \"Same substance, changed order\", \"Keep versions and evidence\". Arrows connect left to right or in a two-by-two reading sequence.\nConstraints: only these texts, no numerical metrics, no performance claims, no logos, no footer, no watermark. Depict guidance, not a software product architecture.",
+        "prompt": "Use case: infographic-diagram\nAsset type: standalone newspaper editorial infographic, PNG\nPrimary request: explain separate outcome and permission checks for an AI support-refund agent, based on https://www.itechguides.com/how-to-prove-your-ai-agent-works-a-practical-evals-and-safety-guide/\nSource-supported facts: the guide recommends a versioned task contract, independent checks of the resulting state, and separate scoring of authorization and tool actions. A correct final state can coexist with a forbidden action. A safe escalation may leave the task incomplete while respecting permissions.\nStyle: warm ivory newsprint, crisp charcoal ink, muted rust and teal accents, restrained flat diagram, generous whitespace, newspaper serif title and readable sans-serif labels. Landscape, roughly 3:2.\nComposition: title above a three-stage flow: Define contract, Run agent, Check evidence. Below the last stage show two equal independent check boxes, Outcome and Permissions, with simple document and key icons. At bottom show two short conceptual examples, each on its own line.\nText verbatim: 'Did the agent work safely?' ; 'Conceptual evaluation pattern'; 'Define contract'; 'Run agent'; 'Check evidence'; 'Outcome'; 'Verify final state'; 'Permissions'; 'Inspect tool actions'; 'Task completed + forbidden action = safety failure'; 'Safe escalation + incomplete task = separate scores'.\nConstraints: no numerical performance claims, no product screenshot or logos, no extra footer or watermark. Keep the two checks visibly independent; use large text readable at article width.",
         "based_on": [
-          "https://www.itechguides.com/how-to-use-ai-generated-evaluations-without-letting-model-bias-skew-your-results/"
+          "https://www.itechguides.com/how-to-prove-your-ai-agent-works-a-practical-evals-and-safety-guide/"
         ],
         "reviewed": true,
-        "sha256": "3339f4fe48300a97bd625c2a2ffffe56723250c7ae68b70e0ecf15c0b733be87",
+        "sha256": "56fd1b2376ba2b3801d4ca788a0bebe8e688c482585bd8fba5604be40806034e",
         "optimization": {
           "format": "webp",
           "quality": 82,
           "max_width": 1440,
-          "source_sha256": "809ddb1ae348b1429655b368c5e5d6cab60aecfcad305717654501f87b70fc1e"
-        },
-        "bytes": 150610,
-        "original_file": "judge-validation-original.png",
-        "review_note": "Original PNG and final WebP visually inspected. All requested headings and labels correct; conceptual workflow clearly identified, readable at article width; no metrics, footer or watermark."
+          "source_sha256": "1619bdddeb972d13fd7c50e5f375af7b9cd9d93ed8675c0abcb32c5cba1fff21"
+        }
       },
       "source": "news",
       "interest_score": 7,
-      "dedupe_key": "article:itechguides.com/how-to-use-ai-generated-evaluations-without-letting-model-bias-skew-your-results",
-      "score_reason": "Concrete evaluation validation practices with direct operator relevance, but a general synthesis without a new implementation, dataset, or measured result.",
+      "dedupe_key": "article:itechguides.com/how-to-prove-your-ai-agent-works-a-practical-evals-and-safety-guide",
+      "score_reason": "Concrete trace requirements and independently checked side effects are directly useful, but this is guidance rather than new measured evidence.",
       "source_evidence": {
-        "url": "https://www.itechguides.com/how-to-use-ai-generated-evaluations-without-letting-model-bias-skew-your-results/",
-        "publication_date": "2026-10-17",
-        "raw_date": "2026-10-17T16:27:21+00:00",
-        "method": "Original publisher article: article:published_time and Article JSON-LD datePublished agree; visible time element reads October 17, 2026 with datetime 2026-10-17T17:27:21+01:00. Direct HTTP source saved in extra-0.html; dateModified was not used.",
-        "evidence_file": "extra-0.html"
+        "url": "https://www.itechguides.com/how-to-prove-your-ai-agent-works-a-practical-evals-and-safety-guide/",
+        "publication_date": "2026-10-18",
+        "raw_date": "2026-10-18T10:24:00+00:00",
+        "method": "Original publisher Article JSON-LD datePublished, confirmed against visible October 18, 2026 byline; raw HTML retained in agent-guide.html. dateModified not used."
       }
     }
   ],
@@ -71,389 +67,56 @@
       "https://www.digitalocean.com/blog",
       "https://www.splunk.com/en_us/blog/observability.html",
       "https://www.dynatrace.com/news/",
-      "https://langfuse.com/changelog",
-      "https://www.itechguides.com/how-to-use-ai-generated-evaluations-without-letting-model-bias-skew-your-results/",
-      "https://www.anthropic.com/news/an-update-on-independent-evaluators"
+      "https://www.itechguides.com/how-to-prove-your-ai-agent-works-a-practical-evals-and-safety-guide/"
     ],
-    "note": "Scoped official-source sweep plus exact-date web searches. No claim of exhaustive coverage. Initial web fetch failures for X, HN API and the guide were resolved with direct HTTP, saved as evidence. Supplied discovery file reused; fresh read-only HN query/item and GitHub API checks recorded in run directory rather than overwriting source-candidates outside authorized write scope. Retained guide is the original publisher’s practical advice, a synthesis rather than new empirical research. No secondhand NIST research claims reproduced as findings.",
+    "note": "Scoped sweep, not an exhaustive web search. Supplied discovery artifact preserved as discovery.json; discovery script was not rerun because this invocation restricts writes to the run directory. Official HN API checked all three IDs. GitHub APIs independently checked all eight watchlist repositories (701 release records), with no stable October 18 release. All six historical issues and 45 stories read before selection; full history and hashes in history-review.json. News surfaces retrieved and readable text preserved; focused exact-date searches supplemented configured sources. Guide is the publisher's own instructional synthesis, not a new NIST announcement or experimental result. Its task-contract and independent side-effect checks differ substantively from October 17's LLM-judge calibration guide.",
     "source_counts": {
-      "hn_candidates": 10,
-      "github_repositories": 8,
-      "github_releases_checked": 701,
-      "retained": {
-        "hn": 0,
-        "news": 1,
-        "github": 0
-      }
+      "hn": 0,
+      "news": 1,
+      "github": 0
     },
-    "hn_checks": [
-      {
-        "query": "observability",
-        "status": "complete",
-        "hits": 0,
-        "pages": 0,
-        "url": "https://hn.algolia.com/api/v1/search_by_date?query=observability&tags=story&numericFilters=created_at_i%3E%3D1792195200%2Ccreated_at_i%3C1792281600&hitsPerPage=100&page=0"
-      },
-      {
-        "query": "LLM evaluation",
-        "status": "complete",
-        "hits": 1,
-        "pages": 1,
-        "url": "https://hn.algolia.com/api/v1/search_by_date?query=LLM+evaluation&tags=story&numericFilters=created_at_i%3E%3D1792195200%2Ccreated_at_i%3C1792281600&hitsPerPage=100&page=0"
-      },
-      {
-        "query": "AI tracing",
-        "status": "complete",
-        "hits": 8,
-        "pages": 1,
-        "url": "https://hn.algolia.com/api/v1/search_by_date?query=AI+tracing&tags=story&numericFilters=created_at_i%3E%3D1792195200%2Ccreated_at_i%3C1792281600&hitsPerPage=100&page=0"
-      },
-      {
-        "query": "agent telemetry",
-        "status": "complete",
-        "hits": 0,
-        "pages": 0,
-        "url": "https://hn.algolia.com/api/v1/search_by_date?query=agent+telemetry&tags=story&numericFilters=created_at_i%3E%3D1792195200%2Ccreated_at_i%3C1792281600&hitsPerPage=100&page=0"
-      },
-      {
-        "query": "langfuse",
-        "status": "complete",
-        "hits": 1,
-        "pages": 1,
-        "url": "https://hn.algolia.com/api/v1/search_by_date?query=langfuse&tags=story&numericFilters=created_at_i%3E%3D1792195200%2Ccreated_at_i%3C1792281600&hitsPerPage=100&page=0"
-      }
-    ],
-    "hn_items": [
-      {
-        "id": "50134215",
-        "title": "Apple releases RSI-Inference: evaluating agents for self-improving LLM inference",
-        "url": "https://twitter.com/onloglogn/status/2111170954944823685",
-        "time": "2026-10-17T19:23:11.000Z",
-        "status": "complete"
-      },
-      {
-        "id": "50136210",
-        "title": "Doctors, Lawyers and Engineers joining AI's $400-an-Hour gig economy",
-        "url": "https://www.bloomberg.com/news/articles/2026-10-16/ai-training-jobs-are-attracting-doctors-lawyers-and-engineers",
-        "time": "2026-10-17T23:33:37.000Z",
-        "status": "complete"
-      },
-      {
-        "id": "50134197",
-        "title": "Show HN: Task629 - Personal development tracking through task descriptions",
-        "url": "https://github.com/sudo-bendg/task629",
-        "time": "2026-10-17T19:22:06.000Z",
-        "status": "complete"
-      },
-      {
-        "id": "50134189",
-        "title": "I need an opinion on my app",
-        "time": "2026-10-17T19:21:08.000Z",
-        "status": "complete"
-      },
-      {
-        "id": "50132747",
-        "title": "Why the Creators of AI Do Not Understand Their Own Creations",
-        "time": "2026-10-17T16:54:50.000Z",
-        "status": "complete"
-      },
-      {
-        "id": "50132550",
-        "title": "AI lab offers free plumbing and HVAC repairs to train AI robots",
-        "url": "https://www.tomshardware.com/tech-industry/artificial-intelligence/ai-lab-offers-free-plumbing-and-hvac-repairs-across-three-cities-to-train-ai-robots-wearable-sensors-record-video-of-repair-work-for-robotics-training-free-services-also-include-electrical-work-air-duct-cleaning-and-carpet-cleaning",
-        "time": "2026-10-17T16:35:35.000Z",
-        "status": "complete"
-      },
-      {
-        "id": "50131950",
-        "title": "Show HN: I built an AI cycling coach",
-        "url": "https://cuore.fit/",
-        "time": "2026-10-17T15:27:31.000Z",
-        "status": "complete"
-      },
-      {
-        "id": "50129015",
-        "title": "Meta to scrape content from business customers for model training",
-        "url": "https://www.theregister.com/ai-and-ml/2026/10/16/meta-grants-itself-right-to-scrape-content-from-business-customers-for-model-training/5303658",
-        "time": "2026-10-17T08:14:06.000Z",
-        "status": "complete"
-      },
-      {
-        "id": "50127187",
-        "title": "Publishers' Trust in Nippan Dented by Unauthorized Book Sales for AI Training",
-        "url": "https://japannews.yomiuri.co.jp/science-nature/technology/20261014-353599/",
-        "time": "2026-10-17T02:08:03.000Z",
-        "status": "complete"
-      },
-      {
-        "id": "50132339",
-        "title": "Ttype – Minimalist terminal typing test with typewriter soundscapes",
-        "url": "https://github.com/laguser/ttype",
-        "time": "2026-10-17T16:11:47.000Z",
-        "status": "complete"
-      }
-    ],
-    "github_checks": [
-      {
-        "repository": "langfuse/langfuse",
-        "status": "complete",
-        "releases_checked": 100,
-        "candidates": [],
-        "url": "https://api.github.com/repos/langfuse/langfuse/releases?per_page=100"
-      },
-      {
-        "repository": "Arize-ai/phoenix",
-        "status": "complete",
-        "releases_checked": 100,
-        "candidates": [],
-        "url": "https://api.github.com/repos/Arize-ai/phoenix/releases?per_page=100"
-      },
-      {
-        "repository": "Arize-ai/openinference",
-        "status": "complete",
-        "releases_checked": 100,
-        "candidates": [],
-        "url": "https://api.github.com/repos/Arize-ai/openinference/releases?per_page=100"
-      },
-      {
-        "repository": "langchain-ai/langsmith-sdk",
-        "status": "complete",
-        "releases_checked": 100,
-        "candidates": [],
-        "url": "https://api.github.com/repos/langchain-ai/langsmith-sdk/releases?per_page=100"
-      },
-      {
-        "repository": "braintrustdata/braintrust-sdk",
-        "status": "complete",
-        "releases_checked": 97,
-        "candidates": [],
-        "url": "https://api.github.com/repos/braintrustdata/braintrust-sdk/releases?per_page=100"
-      },
-      {
-        "repository": "wandb/weave",
-        "status": "complete",
-        "releases_checked": 100,
-        "candidates": [],
-        "url": "https://api.github.com/repos/wandb/weave/releases?per_page=100"
-      },
-      {
-        "repository": "langwatch/langwatch",
-        "status": "complete",
-        "releases_checked": 100,
-        "candidates": [],
-        "url": "https://api.github.com/repos/langwatch/langwatch/releases?per_page=100"
-      },
-      {
-        "repository": "Helicone/helicone",
-        "status": "complete",
-        "releases_checked": 4,
-        "candidates": [],
-        "url": "https://api.github.com/repos/Helicone/helicone/releases?per_page=100"
-      }
-    ],
-    "news_checks": [
-      {
-        "name": "Arize AI",
-        "url": "https://arize.com/blog/",
-        "status": "checked",
-        "http_status": 200,
-        "evidence_file": "source-0.txt",
-        "text_file": "source-0-text.txt",
-        "result": "Official index inspected; no October 17 primary article identified. Dates and article list retained in source-0-text.txt."
-      },
-      {
-        "name": "Langfuse",
-        "url": "https://langfuse.com/blog",
-        "status": "checked",
-        "http_status": 200,
-        "evidence_file": "source-1.txt",
-        "text_file": "source-1-text.txt",
-        "result": "Blog inspected; latest listed update September 30. Changelog separately checked; newest entry October 16, already covered."
-      },
-      {
-        "name": "LangSmith",
-        "url": "https://www.langchain.com/blog",
-        "status": "checked",
-        "http_status": 200,
-        "evidence_file": "source-2.txt",
-        "text_file": "source-2-text.txt",
-        "result": "Recent stories dated October 15 and earlier; no October 17 article identified."
-      },
-      {
-        "name": "Braintrust",
-        "url": "https://www.braintrust.dev/blog",
-        "status": "checked",
-        "http_status": 200,
-        "evidence_file": "source-3.txt",
-        "text_file": "source-3-text.txt",
-        "result": "Newest post October 15; no October 17 item identified."
-      },
-      {
-        "name": "OpenTelemetry",
-        "url": "https://opentelemetry.io/blog/",
-        "status": "checked",
-        "http_status": 200,
-        "evidence_file": "source-4.txt",
-        "text_file": "source-4-text.txt",
-        "result": "Newest blog post October 15; no October 17 item identified."
-      },
-      {
-        "name": "Elastic Observability Labs",
-        "url": "https://www.elastic.co/observability-labs/blog",
-        "status": "checked",
-        "http_status": 200,
-        "evidence_file": "source-5.txt",
-        "text_file": "source-5-text.txt",
-        "result": "Newest listed Observability Labs post October 13; no October 17 item identified."
-      },
-      {
-        "name": "Datadog",
-        "url": "https://www.datadoghq.com/blog/",
-        "status": "checked",
-        "http_status": 200,
-        "evidence_file": "source-6.txt",
-        "text_file": "source-6-text.txt",
-        "result": "Official blog list inspected and exact date search supplemented; no eligible October 17 publication identified."
-      },
-      {
-        "name": "Honeycomb",
-        "url": "https://www.honeycomb.io/blog/",
-        "status": "checked",
-        "http_status": 200,
-        "evidence_file": "source-7.txt",
-        "text_file": "source-7-text.txt",
-        "result": "Newest post October 16, already covered in history; no October 17 item identified."
-      },
-      {
-        "name": "DigitalOcean",
-        "url": "https://www.digitalocean.com/blog",
-        "status": "checked",
-        "http_status": 200,
-        "evidence_file": "source-8.txt",
-        "text_file": "source-8-text.txt",
-        "result": "Latest visible posts October 15 and earlier; no October 17 item identified."
-      },
-      {
-        "name": "Splunk Observability",
-        "url": "https://www.splunk.com/en_us/blog/observability.html",
-        "status": "checked",
-        "http_status": 200,
-        "evidence_file": "source-9.txt",
-        "text_file": "source-9-text.txt",
-        "result": "Official category surface returns No results in web and direct HTTP. Targeted site/date search performed; no eligible primary item found. This is a limited discovery surface, not an inaccessible candidate article."
-      },
-      {
-        "name": "Dynatrace",
-        "url": "https://www.dynatrace.com/news/",
-        "status": "checked",
-        "http_status": 200,
-        "evidence_file": "source-10.txt",
-        "text_file": "source-10-text.txt",
-        "result": "News/blog list inspected; newest blog entries October 15. No October 17 item identified."
-      }
-    ],
-    "history_checked": [
-      {
-        "file": "2026-10-13.json",
-        "stories": 15,
-        "sha256": "5999994404b8642a8ddb43c4c21b3bb10abd3cd9a8534fa62060223add67fc31"
-      },
-      {
-        "file": "2026-10-14.json",
-        "stories": 12,
-        "sha256": "1bdcde469e6283004d984f8b15b4f9fd77b3646a51d9c10d0c156584c4fe2461"
-      },
-      {
-        "file": "2026-10-15.json",
-        "stories": 6,
-        "sha256": "a4b9839fb73d0b41a5ef943fb36b7ddd3f49529f4a46ae075959b606ee9f6ecc"
-      },
-      {
-        "file": "2026-10-16.json",
-        "stories": 6,
-        "sha256": "000d9e8600fba77ccaf9dbe01d60e002dce9165f20f09fe340a177612a3baebd"
-      },
-      {
-        "file": "2026-10-17.json",
-        "stories": 5,
-        "sha256": "40ca896564230c0088f621ba45b33bd7515d0b6cb31a5a230915f7aa8f8f93f4"
-      }
-    ],
     "excluded": [
       {
-        "url": "https://twitter.com/onloglogn/status/2111170954944823685",
-        "hn_id": "50134215",
-        "reason": "Original X post visible timestamp is October 16, 2026 at 7:02 PM, confirmed in source-11-text.txt; October 17 HN submission is resurfacing."
+        "url": "https://arxiv.org/abs/2610.18861",
+        "reason": "Primary page says Submitted on 13 Oct 2026; October 18 HN submission is resurfacing. Agent architecture research also lacks a concrete observability implementation."
       },
       {
-        "url": "https://www.bloomberg.com/news/articles/2026-10-16/ai-training-jobs-are-attracting-doctors-lawyers-and-engineers",
-        "hn_id": "50136210",
-        "reason": "AI training labor market; no concrete AI observability implementation."
+        "url": "https://apnews.com/article/ai-prices-dynamic-customers-technology-64c446cd117d3be664de4ab570fb9857",
+        "reason": "Retail AI pricing report outside AI observability; original page returned 403. Not needed to establish an eligible candidate and no publication-date claim made."
       },
       {
-        "url": "https://github.com/sudo-bendg/task629",
-        "hn_id": "50134197",
-        "reason": "Personal task tracking; outside AI observability."
+        "url": "https://local-host.ai/connectingCaptions/",
+        "reason": "On-device captioning and translation app; primary page and original HN post provide no AI observability implementation."
       },
       {
-        "url": "https://news.ycombinator.com/item?id=50134189",
-        "hn_id": "50134189",
-        "reason": "Request for app opinions; no substantive AI observability publication."
-      },
-      {
-        "url": "https://news.ycombinator.com/item?id=50132747",
-        "hn_id": "50132747",
-        "reason": "General AI understanding discussion; no operational observability or evaluation method."
-      },
-      {
-        "url": "https://www.tomshardware.com/tech-industry/artificial-intelligence/ai-lab-offers-free-plumbing-and-hvac-repairs-across-three-cities-to-train-ai-robots-wearable-sensors-record-video-of-repair-work-for-robotics-training-free-services-also-include-electrical-work-air-duct-cleaning-and-carpet-cleaning",
-        "hn_id": "50132550",
-        "reason": "Robotics training data collection; outside AI observability."
-      },
-      {
-        "url": "https://cuore.fit/",
-        "hn_id": "50131950",
-        "reason": "Cycling coach application; outside AI observability."
-      },
-      {
-        "url": "https://www.theregister.com/ai-and-ml/2026/10/16/meta-grants-itself-right-to-scrape-content-from-business-customers-for-model-training/5303658",
-        "hn_id": "50129015",
-        "reason": "Training-data policy report; outside AI observability."
-      },
-      {
-        "url": "https://japannews.yomiuri.co.jp/science-nature/technology/20261014-353599/",
-        "hn_id": "50127187",
-        "reason": "Book licensing/training data news; outside AI observability."
-      },
-      {
-        "url": "https://github.com/laguser/ttype",
-        "hn_id": "50132339",
-        "reason": "Terminal typing test; outside AI observability."
-      },
-      {
-        "url": "https://www.anthropic.com/news/an-update-on-independent-evaluators",
-        "reason": "Original datePublished 2026-10-15T17:20:00.000Z, visible October 15. dateModified October 16 and October 17 secondary coverage do not qualify.",
-        "evidence_file": "extra-1.html"
-      },
-      {
-        "url": "https://www.mitaiconference.org/research-slam",
-        "reason": "October 17 is an event date, not proven original publication date. Programme listing is not a dated published evaluation result."
+        "url": "https://aws.amazon.com/blogs/machine-learning/building-trust-in-ai-agents-a-production-ready-evaluation-framework-with-amazon-bedrock-agentcore/",
+        "reason": "Primary byline says 16 OCT 2026; October 18 news aggregation does not qualify."
       },
       {
         "url": "https://heardin.ai/stories/irregular-evaluation-misconfiguration-lets-frontier-models-reach-the-real-internet",
-        "reason": "Secondary retrospective of July/August disclosures; no verified October 17 primary publication."
+        "reason": "Secondary retrospective of July/August disclosures; no new October 18 original event."
+      },
+      {
+        "url": "https://spanora.ai/blog/best-ai-agent-observability-tools-2026",
+        "reason": "Original publication February 20, 2026; October 18 update is not publication."
+      },
+      {
+        "url": "https://www.itechguides.com/best-ai-agent-observability-tools-for-tracing-and-debugging-tasks/",
+        "reason": "Product-comparison synthesis not selected; no new original evaluation results established, and overlaps another same-day comparison."
+      },
+      {
+        "url": "https://www.itechguides.com/opentelemetry-vs-langfuse-and-helicone-for-monitoring-claude-applications/",
+        "reason": "Comparison largely revisits Claude native tracing already covered October 15; no distinct new announcement."
       }
     ],
-    "searches": [
-      "\"2026-10-17\" \"observability\"",
-      "\"October 17, 2026\" \"evaluation\" AI",
-      "\"2026-10-17\" (site:arize.com OR site:braintrust.dev OR site:langchain.com OR site:langfuse.com)",
-      "site:langchain.com/blog \"October 17, 2026\"",
-      "site:braintrust.dev/blog \"October 17, 2026\"",
-      "site:splunk.com/en_us/blog/observability \"October 17, 2026\"",
-      "site:datadoghq.com/blog \"Oct 17, 2026\"",
-      "site:arize.com/blog \"October 17, 2026\"",
-      "site:langfuse.com \"2026-10-17\""
+    "evidence_files": [
+      "fetch-log.json",
+      "discovery.json",
+      "github-checks.json",
+      "history-review.json",
+      "agent-guide.html",
+      "agent-guide-readable.txt",
+      "editorial-log.json"
     ]
   },
   "name": "Tidy Traces — AI Observability Daily",
