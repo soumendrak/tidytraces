@@ -1,50 +1,272 @@
 {
-  "date": "2026-10-19",
-  "story_window": "2026-10-18",
-  "dek": "One practical guide examines how to verify agent outcomes, tool permissions, and side effects independently. No eligible HN stories or stable watchlist releases were found for October 18.",
+  "date": "2026-10-20",
+  "story_window": "2026-10-19",
+  "dek": "Six developments connect agent traces to evaluation and operational checks: Laminar’s failure-analysis loop, more inspectable experiments, a shared production-and-test graph, and targeted instrumentation improvements.",
   "stories": [
     {
-      "title": "An agent evaluation guide separates successful outcomes from permitted actions",
-      "url": "https://www.itechguides.com/how-to-prove-your-ai-agent-works-a-practical-evals-and-safety-guide/",
-      "publisher": "iTechGuides",
-      "published": "2026-10-18",
-      "category_key": "evals",
-      "summary": "The guide proposes explicit task boundaries, independent state assertions, and separate scoring for outcomes, permissions, and robustness. Its refund-agent example illustrates why completion alone cannot establish safe behavior.",
+      "title": "Laminar presents a trace-analysis loop that turns recurring agent failures into evals",
+      "url": "https://news.ycombinator.com/item?id=50154029",
+      "publisher": "Laminar",
+      "published": "2026-10-19",
+      "category_key": "agents",
+      "summary": "Laminar’s first-party Launch HN describes flow-1, its Signals investigation harness, and clustering that connects production traces to regression datasets.",
       "body": [
-        "An October 18 iTechGuides guide proposes evaluating an agent against a versioned task contract before interpreting its success rate. The contract specifies the starting state, required outcome, available tools, permission limits, prohibited side effects, and acceptable escalation. Its worked refund example distinguishes a completed payment from the authorization and audit steps that should precede it. The article recommends inspecting the resulting payment state independently rather than trusting an agent’s completion message.",
-        "The practical instrumentation requirement is to preserve tool arguments, authorization decisions, returned values, retries, latency, and relevant state changes alongside agent, policy, fixture, and evaluator versions. Outcome checks and permission checks remain separate: a forbidden action can invalidate an otherwise successful run, while a safe escalation can respect policy without completing the customer’s request. The guide also recommends segmenting failures by severity and workflow so averages do not conceal costly exceptions.",
-        "This is instructional synthesis with an illustrative scenario, not a measured deployment study or a new standard. Its operational value depends on implementing reliable fixtures, independent assertions, and appropriately protected traces; recording a trace alone does not prove that the final outcome was correct."
+        "Laminar’s founders used an October 19 Launch HN post to describe how their flow-1 model searches agent traces for failures that successful API calls can hide. The announcement is a first-party explanation of the workflow, not evidence that the underlying model first shipped that day. Their central example is an agent selecting the wrong document or interface control even though its tools report success.",
+        "The Signals harness presents spans as files. Starting with a compressed trace and a user’s instruction, the model searches across spans and opens relevant content, then returns findings using a configurable JSON schema. Laminar says it groups similar findings into clusters so teams can inspect repeated failure patterns and build evaluation datasets from the associated traces. The founders describe reinforcement-learning post-training on synthetic investigations rather than a generic prompt wrapped around an off-the-shelf judge.",
+        "This is useful as a concrete design for connecting monitoring to regression testing. Performance and cost comparisons remain Laminar’s own benchmark claims, not independently verified results. Teams still need to check detection quality against labeled examples from their workloads before relying on automated findings."
       ],
       "format": "full",
-      "takeaway": "Pair each consequential tool action with an authorization record and an independent state check; report task completion and policy compliance as separate results.",
-      "image": "/edition-images/2026-10-19/agent-checks.webp",
+      "takeaway": "Evaluate the complete path from trace evidence to clustered failures to regression cases, not just whether a judge produces plausible explanations.",
+      "image": "/edition-images/2026-10-20/laminar-trace-eval-loop.webp",
       "image_width": 1440,
       "image_height": 960,
       "image_provenance": {
         "kind": "generated-editorial",
         "generator": "built-in-imagegen",
-        "prompt": "Use case: infographic-diagram\nAsset type: standalone newspaper editorial infographic, PNG\nPrimary request: explain separate outcome and permission checks for an AI support-refund agent, based on https://www.itechguides.com/how-to-prove-your-ai-agent-works-a-practical-evals-and-safety-guide/\nSource-supported facts: the guide recommends a versioned task contract, independent checks of the resulting state, and separate scoring of authorization and tool actions. A correct final state can coexist with a forbidden action. A safe escalation may leave the task incomplete while respecting permissions.\nStyle: warm ivory newsprint, crisp charcoal ink, muted rust and teal accents, restrained flat diagram, generous whitespace, newspaper serif title and readable sans-serif labels. Landscape, roughly 3:2.\nComposition: title above a three-stage flow: Define contract, Run agent, Check evidence. Below the last stage show two equal independent check boxes, Outcome and Permissions, with simple document and key icons. At bottom show two short conceptual examples, each on its own line.\nText verbatim: 'Did the agent work safely?' ; 'Conceptual evaluation pattern'; 'Define contract'; 'Run agent'; 'Check evidence'; 'Outcome'; 'Verify final state'; 'Permissions'; 'Inspect tool actions'; 'Task completed + forbidden action = safety failure'; 'Safe escalation + incomplete task = separate scores'.\nConstraints: no numerical performance claims, no product screenshot or logos, no extra footer or watermark. Keep the two checks visibly independent; use large text readable at article width.",
+        "prompt": "Use case: infographic-diagram. Asset type: standalone landscape 3:2 PNG newspaper editorial infographic. Style warm ivory paper, crisp charcoal ink, muted teal and rust, bold serif title, large readable sans-serif labels, generous whitespace. Conceptual explanatory illustration, not a product screenshot. No invented metrics, no logos, no watermark or footer. Source https://news.ycombinator.com/item?id=50154029. Source-supported workflow: Laminar Signals harness exposes spans as files to investigate traces, produces structured findings, groups related findings into clusters, builds eval datasets from associated traces. Title exact 'From traces to regression cases'. Four linked panels exact text 'Inspect spans'; 'Structured findings'; 'Cluster failures'; 'Build eval datasets'. Under title small text 'Conceptual monitoring-to-evaluation loop'. Use file stacks, magnifying glass, grouped cards, checklist imagery. Do not imply independent detection accuracy or new model release.",
         "based_on": [
-          "https://www.itechguides.com/how-to-prove-your-ai-agent-works-a-practical-evals-and-safety-guide/"
+          "https://news.ycombinator.com/item?id=50154029"
         ],
         "reviewed": true,
-        "sha256": "56fd1b2376ba2b3801d4ca788a0bebe8e688c482585bd8fba5604be40806034e",
+        "sha256": "05a224eec845ee208008ac4c05e06deeec1cfa42f593de793d8abc03669f7a4a",
         "optimization": {
           "format": "webp",
           "quality": 82,
           "max_width": 1440,
-          "source_sha256": "1619bdddeb972d13fd7c50e5f375af7b9cd9d93ed8675c0abcb32c5cba1fff21"
+          "source_sha256": "9479623923419434235e6cb235e16875324f5ba24883fa7b9ece487179a54254"
+        }
+      },
+      "source": "hn",
+      "interest_score": 8,
+      "hn_id": "50154029",
+      "comments": "https://news.ycombinator.com/item?id=50154029",
+      "dedupe_key": "hn-original:50154029",
+      "score_reason": "A detailed first-party implementation connects trace inspection with recurring-failure detection and evaluation datasets, while performance claims remain vendor-reported.",
+      "source_evidence": {
+        "url": "https://news.ycombinator.com/item?id=50154029",
+        "publication_date": "2026-10-19",
+        "raw_date": "2026-10-19T16:00:18Z",
+        "method": "Official HN item API time=1792425618 converted to UTC; original post identifies Robert and Din from Laminar and contains the first-party Launch HN announcement."
+      }
+    },
+    {
+      "title": "Langfuse connects experiment trade-offs to the individual regressions behind them",
+      "url": "https://langfuse.com/changelog/2026-10-19-experiments",
+      "publisher": "Langfuse",
+      "published": "2026-10-19",
+      "category_key": "evals",
+      "summary": "Experiment comparisons add metric charts, baseline statistics, threshold filters, and in-context human review.",
+      "body": [
+        "Langfuse has updated its Experiments page to make quality, cost, and latency comparisons easier to investigate together. Teams can chart metrics across runs and read summary statistics for each score relative to a baseline. The change matters because an aggregate improvement can conceal a regression elsewhere: a cheaper candidate is not necessarily a better candidate if the quality measure that matters to the application deteriorates.",
+        "The comparison view connects those run-level changes to individual dataset items. Reviewers can filter scores below a threshold within one run or across runs, select the metrics displayed as columns, and adjust row height for longer outputs. Keyboard navigation supports adding a human score, corrected output, or comment without leaving the comparison. Operators can therefore move from spotting a changed metric to inspecting the examples behind it in the same workflow. The announcement describes review capabilities, not an automatic release gate or proof that any particular evaluator is reliable."
+      ],
+      "format": "full",
+      "takeaway": "Use run-level comparisons to locate trade-offs, then inspect failing examples before accepting a candidate.",
+      "image": "/edition-images/2026-10-20/langfuse-experiment-review.webp",
+      "image_width": 1440,
+      "image_height": 960,
+      "image_provenance": {
+        "kind": "generated-editorial",
+        "generator": "built-in-imagegen",
+        "prompt": "Use case: infographic-diagram. Asset: standalone landscape newspaper editorial infographic, 3:2 PNG. Source https://langfuse.com/changelog/2026-10-19-experiments. Concept: compare baseline and candidate across quality, cost, latency, then threshold-filter dataset rows and review individual examples. Style warm ivory newsprint, crisp charcoal ink, muted teal/rust, serif title and large sans-serif labels, generous whitespace. Exact title: From metrics to examples. Exact labels: Baseline; Candidate; Quality; Cost; Latency; Filter low scores; Review examples; Human score; Correction; Comment. Flow baseline/candidate to three equal metric cards then filter then human review cards. No numerical claims, no logos or fake screenshot, no automatic release gate implication, no footer or watermark.\n",
+        "based_on": [
+          "https://langfuse.com/changelog/2026-10-19-experiments"
+        ],
+        "reviewed": true,
+        "sha256": "afa7e470875b214e6ffed3645e89a38e9bdb75f2e2a90dee04af161d60dc4351",
+        "optimization": {
+          "format": "webp",
+          "quality": 82,
+          "max_width": 1440,
+          "source_sha256": "1b7aac44747e169d21f5094fcaab3a5ca0bbec4af8944fe2269968aa2b50fa2a"
+        }
+      },
+      "source": "news",
+      "interest_score": 8,
+      "score_reason": "Concrete experiment-review improvements connect quality and operating cost comparisons to inspectable examples.",
+      "dedupe_key": "article:langfuse.com/changelog/2026-10-19-experiments",
+      "source_evidence": {
+        "url": "https://langfuse.com/changelog/2026-10-19-experiments",
+        "publication_date": "2026-10-19",
+        "raw_date": "2026-10-19",
+        "method": "Original article/changelog page displays October 19, 2026 beside its title/byline, not a modification timestamp. ISO date is the normalization of that visible label.",
+        "raw_label": "October 19, 2026"
+      }
+    },
+    {
+      "title": "Numan tests its health-coaching agent through the same graph it ships",
+      "url": "https://www.langchain.com/blog/how-numan-built-an-eval-first-ai-health-coach-with-langgraph-and-langsmith",
+      "publisher": "LangChain",
+      "published": "2026-10-19",
+      "category_key": "evals",
+      "summary": "A first-party implementation separates category-level release gates from experimental conversation simulations.",
+      "body": [
+        "Numan describes an evaluation architecture for Nu, its health-coaching agent, that avoids maintaining a separate imitation of production. Tests exercise the same LangGraph graph used by the application, including its supervisor, specialist agents, and safety guards. LangSmith records real and simulated conversations as traces and holds the datasets, experiments, and reviewer annotations. This keeps the measured system aligned with the deployed implementation rather than a copied prompt.",
+        "The team replaced a single average score with category-level judgments and narrowed single-turn rubrics to behavior one reply can actually demonstrate. Existing safety probes gate releases, while daily human review checks sampled conversations. A newer simulated-conversation layer lets a model play a responsive persona instead of following a fixed script. That layer remains a prototype: its engineering-written criteria do not gate releases or support safety claims until clinician sign-off. Continuous online evaluation is also described as a next step, not an operating capability. The case study offers implementation lessons, not independently verified clinical outcomes."
+      ],
+      "format": "full",
+      "takeaway": "Keep evaluation on the production execution path and distinguish validated gates from experimental checks.",
+      "image": "/edition-images/2026-10-20/numan-shared-eval-path.webp",
+      "image_width": 1440,
+      "image_height": 960,
+      "image_provenance": {
+        "kind": "generated-editorial",
+        "generator": "built-in-imagegen",
+        "prompt": "Use case: infographic-diagram. Asset: standalone landscape newspaper editorial infographic, 3:2 PNG. Source https://www.langchain.com/blog/how-numan-built-an-eval-first-ai-health-coach-with-langgraph-and-langsmith. Source-supported concept: production conversations and offline tests run through the same LangGraph implementation and LangSmith records traces. Existing safety probes gate releases; simulated-persona evaluation remains a prototype and does not gate releases until clinician sign-off of criteria. Style warm ivory newsprint, crisp charcoal ink, muted teal/rust, serif title and large sans-serif labels, generous whitespace. Exact title: Test the graph you ship. Main flow: two input boxes Production conversations and Offline tests feed one Shared LangGraph box then LangSmith traces. Bottom separate solid card labeled Safety probes: release gates and dashed card labeled Simulated personas: prototype, not a release gate. Small readable line Clinician sign-off pending only under the prototype card. Do not imply clinical outcomes, validated simulations, or already-live online evaluation. No numbers, logos, fake screenshots, watermark, or footer.\n\nRefinement: Replace bottom-right small line with exactly Clinician sign-off pending; preserve all else.\n",
+        "based_on": [
+          "https://www.langchain.com/blog/how-numan-built-an-eval-first-ai-health-coach-with-langgraph-and-langsmith"
+        ],
+        "reviewed": true,
+        "sha256": "18b290b75dcf338eac519860d6a52df3a24bb9f21f294696fc5adf18fa5ecc7e",
+        "optimization": {
+          "format": "webp",
+          "quality": 82,
+          "max_width": 1440,
+          "source_sha256": "2f13203d1f15e4e2446760468dd9df2b4009d29734e4a070b936a7d3ccd771db"
+        }
+      },
+      "source": "news",
+      "interest_score": 8,
+      "score_reason": "A detailed implementation exposes harness drift, category-level regressions, and explicit limits on prototype evaluation claims.",
+      "dedupe_key": "article:www.langchain.com/blog/how-numan-built-an-eval-first-ai-health-coach-with-langgraph-and-langsmith",
+      "source_evidence": {
+        "url": "https://www.langchain.com/blog/how-numan-built-an-eval-first-ai-health-coach-with-langgraph-and-langsmith",
+        "publication_date": "2026-10-19",
+        "raw_date": "2026-10-19",
+        "method": "Original article/changelog page displays October 19, 2026 beside its title/byline, not a modification timestamp. ISO date is the normalization of that visible label.",
+        "raw_label": "October 19, 2026"
+      }
+    },
+    {
+      "title": "Braintrust’s SDK expands trace capture and preserves records when customizers fail",
+      "url": "https://github.com/braintrustdata/braintrust-sdk-javascript/releases/tag/braintrust%403.38.0",
+      "publisher": "Braintrust",
+      "published": "2026-10-19",
+      "category_key": "observability",
+      "summary": "Braintrust 3.38.0 adds media and decision-call tracing, OpenTelemetry span customizers, and a fail-closed path for native span-customizer errors.",
+      "body": [
+        "Braintrust’s JavaScript SDK 3.38.0 expands the calls and payloads captured by its instrumentation while tightening several failure paths. The stable October 19 release lists image-input capture for its typesafe integration, decision-call and media tracing for the AI SDK integration, and Decisions API tracing for the OpenAI integration. It also adds OpenTelemetry span-customizer support; the companion @braintrust/otel 1.1.0 release carries that same feature and updated SDK dependency.",
+        "The more consequential reliability detail is a native-SDK fix for customizer failures. The linked pull request says exceptions or invalid hook returns stop processing and export a stripped record rather than dropping it. Identity, routing fields and existing duration timestamps survive, while content and prior hook mutations are removed and the context indicates a customizer error. Failed-record attachment uploads are suppressed.",
+        "That behavior preserves evidence that a span existed without exporting the payload a failed hook might have been intended to protect. It is not retroactive redaction: the pull request explicitly says earlier successful exports cannot be retracted, and the fix’s scope is native spans rather than a blanket change to OpenTelemetry behavior. Operators should test those boundaries with their actual customization and export paths."
+      ],
+      "format": "full",
+      "takeaway": "Test both successful customization and throwing hooks: retaining a minimal failure record is different from retaining its potentially sensitive payload.",
+      "image": "/edition-images/2026-10-20/braintrust-customizer-failure.webp",
+      "image_width": 1440,
+      "image_height": 960,
+      "image_provenance": {
+        "kind": "generated-editorial",
+        "generator": "built-in-imagegen",
+        "prompt": "Use case: infographic-diagram. Asset type: standalone landscape 3:2 PNG newspaper editorial infographic. Style warm ivory paper, crisp charcoal ink, muted teal and rust, bold serif title, large readable sans-serif labels, generous whitespace. Conceptual explanatory illustration, not a product screenshot. No invented metrics, no logos, no watermark or footer. Source https://github.com/braintrustdata/braintrust-sdk-javascript/releases/tag/braintrust%403.38.0. Source-supported native SDK behavior: customizer errors or invalid returns export stripped minimal span record preserving identity/routing/duration, removing content and hook mutations; no retroactive redaction of previously exported data. Title exact 'Keep the record, not the failed payload'. Subtitle exact 'Native SDK customizer failure path'. Flow three boxes 'Span'; 'Customizer fails'; 'Minimal record'. In minimal record two lists 'Kept: identity, routing, duration' and 'Removed: content, hook mutations'. Bottom note exact 'Earlier exports cannot be retracted'. Clear concepts, not a promise covering OpenTelemetry customizers.",
+        "based_on": [
+          "https://github.com/braintrustdata/braintrust-sdk-javascript/releases/tag/braintrust%403.38.0"
+        ],
+        "reviewed": true,
+        "sha256": "a8396b4997c23359bb78aa167ea3c473e1fe8d59b4fd9d3b53b25a01506b3623",
+        "optimization": {
+          "format": "webp",
+          "quality": 82,
+          "max_width": 1440,
+          "source_sha256": "69c28d38d9ead11de8dab6cd5e1a092e04fd3e330f55a398bef5cbb9b9024c24"
+        }
+      },
+      "source": "github",
+      "interest_score": 8,
+      "dedupe_key": "release:braintrustdata/braintrust-sdk-javascript:braintrust@3.38.0",
+      "score_reason": "Concrete instrumentation coverage and failure-path handling address trace completeness and payload exposure; primary pull-request details document important scope limits.",
+      "source_evidence": {
+        "url": "https://github.com/braintrustdata/braintrust-sdk-javascript/releases/tag/braintrust%403.38.0",
+        "publication_date": "2026-10-19",
+        "raw_date": "2026-10-19T18:44:09Z",
+        "method": "GitHub release API published_at; draft=false and prerelease=false. Release notes and linked PR #2614 checked for behavior and scope."
+      }
+    },
+    {
+      "title": "Langfuse v4.64.0 fixes project boundaries, evaluator health and trace identity",
+      "url": "https://github.com/langfuse/langfuse/releases/tag/v4.64.0",
+      "publisher": "Langfuse",
+      "published": "2026-10-19",
+      "category_key": "observability",
+      "summary": "Langfuse’s stable release addresses mismatched project-key paths, evaluator-health recency, explicit user IDs and invalid cost fields.",
+      "body": [
+        "Langfuse v4.64.0 groups several operational fixes around the trustworthiness of telemetry and the boundaries around it. The October 19 stable release refuses project API keys when the request path names a different project. It also enables project-key permissions by default and labels the administrative role as full access. These are concrete release changes rather than a new announcement of the permission model already covered in an earlier issue.",
+        "For teams using evaluations to judge production quality, the release bases evaluator health on the most recent runs. Its OpenTelemetry fixes preserve explicitly supplied user IDs during identity resolution and discard non-numeric cost details on the direct-events path. Together, those changes address different ways operational views can mislead: stale health information, altered attribution and unsuitable cost values.",
+        "The release also limits active batch exports to one per user and project, and automatically disables blob exports when the S3 bucket is in another region. The notes do not quantify affected installations or performance gains. Self-hosted operators should therefore use the listed fixes to choose targeted regression checks rather than infer a general reliability guarantee. The notes establish intended behavior, not independent measurements of production outcomes."
+      ],
+      "format": "full",
+      "takeaway": "After upgrading, verify project-key routing, explicit user attribution, evaluator-health freshness and export behavior against representative production cases.",
+      "image": "/edition-images/2026-10-20/langfuse-telemetry-integrity.webp",
+      "image_width": 1440,
+      "image_height": 960,
+      "image_provenance": {
+        "kind": "generated-editorial",
+        "generator": "built-in-imagegen",
+        "prompt": "Use case: infographic-diagram. Asset type: standalone landscape 3:2 PNG newspaper editorial infographic. Style warm ivory paper, crisp charcoal ink, muted teal and rust, bold serif title, large readable sans-serif labels, generous whitespace. Conceptual explanatory illustration, not a product screenshot. No invented metrics, no logos, no watermark or footer. Source https://github.com/langfuse/langfuse/releases/tag/v4.64.0. Source-supported changes: project API keys reject mismatched project paths, evaluator health uses most recent runs, explicit user IDs preserved, nonnumeric cost details dropped. Title exact 'Four checks for telemetry integrity'. Subtitle exact 'Langfuse v4.64.0'. Four equal illustrated cards, each independent with a simple icon: 'Project boundary' with 'Reject mismatched paths'; 'Evaluator health' with 'Use recent runs'; 'Trace identity' with 'Preserve explicit user IDs'; 'Cost fields' with 'Drop non-numeric values'. No metrics, no unsupported guarantee, no connections implying chronology.",
+        "based_on": [
+          "https://github.com/langfuse/langfuse/releases/tag/v4.64.0"
+        ],
+        "reviewed": true,
+        "sha256": "7e64a0a65da5138266996a5b2ab2a538a65bdf052197eb99f6ddfb53aad4a50b",
+        "optimization": {
+          "format": "webp",
+          "quality": 82,
+          "max_width": 1440,
+          "source_sha256": "5407d4ec72131a7c8c518167e6e68989b10074d4c40968d3fcffe9325e1a85d2"
+        }
+      },
+      "source": "github",
+      "interest_score": 8,
+      "dedupe_key": "release:langfuse/langfuse/releases/tag/v4.64.0",
+      "score_reason": "A stable release contains concrete access-boundary and telemetry-integrity fixes with direct operator relevance, separate from the experiment workflow announcement.",
+      "source_evidence": {
+        "url": "https://github.com/langfuse/langfuse/releases/tag/v4.64.0",
+        "publication_date": "2026-10-19",
+        "raw_date": "2026-10-19T17:34:15Z",
+        "method": "GitHub release API published_at; draft=false and prerelease=false; official release notes reviewed."
+      }
+    },
+    {
+      "title": "Elastic details the typed foundation for declarative OpenTelemetry .NET configuration",
+      "url": "https://www.elastic.co/observability-labs/blog/opentelemetry-dotnet-declarative-configuration",
+      "publisher": "Elastic Observability Labs",
+      "published": "2026-10-19",
+      "category_key": "observability",
+      "summary": "Early upstream work translates structured YAML through a typed model into existing SDK configuration.",
+      "body": [
+        "Elastic explains early work toward declarative configuration in the OpenTelemetry .NET SDK. A new package parses YAML into a typed model before projecting supported values into the IConfiguration interface the SDK already consumes. The intermediate model preserves distinctions between missing, null, and present values that would disappear if the parser immediately flattened everything into strings. This is a foundation for operating telemetry configuration separately from application instrumentation code.",
+        "The initial implementation is intentionally narrow: it covers file format, disabling the SDK, resource attributes, and environment-variable substitution. The broader plan still includes component creation and other configuration capabilities. Dynamic reload is explicitly outside these first steps; configuration changes apply at application launch rather than silently updating running providers. Elastic says a public alpha will follow the core phases, with design details still open to change. For teams instrumenting AI services in .NET, the relevance is a prospective standardized control surface for telemetry, not a newly available production-ready sampler-management feature."
+      ],
+      "format": "full",
+      "takeaway": "Track the upstream implementation, but do not mistake its configuration foundation for complete or reloadable SDK control.",
+      "image": "/edition-images/2026-10-20/elastic-typed-config.webp",
+      "image_width": 1440,
+      "image_height": 960,
+      "image_provenance": {
+        "kind": "generated-editorial",
+        "generator": "built-in-imagegen",
+        "prompt": "Use case: infographic-diagram. Asset type: standalone newspaper editorial infographic, landscape 3:2 PNG. Primary source: https://www.elastic.co/observability-labs/blog/opentelemetry-dotnet-declarative-configuration . Source-supported mechanism: early OpenTelemetry .NET work parses YAML into a typed model preserving missing, null, and present values, then projects supported values into IConfiguration used by the SDK. Initial implementation narrow, public alpha planned; changes apply on startup, not dynamic reload. Style: warm ivory newsprint, charcoal ink, restrained muted teal and rust, bold newspaper serif title, large readable sans-serif labels, generous whitespace. Title exact: 'Configuration without losing meaning'. Subtitle exact: 'Early OpenTelemetry .NET implementation'. Four linked cards exact labels: 'YAML file'; 'Typed model'; 'IConfiguration'; 'SDK'. Under Typed model show three equal chips: 'Missing'; 'Null'; 'Value'. Bottom two clearly separated notes: 'Startup configuration' and 'Public alpha planned'. Crisp conceptual diagram, not a product screenshot. No invented metrics, no claims of production readiness, no logos, no watermark or footer. Do not include any AI-generated label.",
+        "based_on": [
+          "https://www.elastic.co/observability-labs/blog/opentelemetry-dotnet-declarative-configuration"
+        ],
+        "reviewed": true,
+        "sha256": "59b5635674cf9277246852ae9d96f79cdf38a1380a93036b0cceb6e3aa83c295",
+        "optimization": {
+          "format": "webp",
+          "quality": 82,
+          "max_width": 1440,
+          "source_sha256": "402491773c6f3d348b6e4611ecd71b0e0d0748e4aafb8209e4c8e078b24ce89c"
         }
       },
       "source": "news",
       "interest_score": 7,
-      "dedupe_key": "article:itechguides.com/how-to-prove-your-ai-agent-works-a-practical-evals-and-safety-guide",
-      "score_reason": "Concrete trace requirements and independently checked side effects are directly useful, but this is guidance rather than new measured evidence.",
+      "score_reason": "Useful instrumentation architecture with concrete implementation boundaries, but the SDK feature is still under development.",
+      "dedupe_key": "article:www.elastic.co/observability-labs/blog/opentelemetry-dotnet-declarative-configuration",
       "source_evidence": {
-        "url": "https://www.itechguides.com/how-to-prove-your-ai-agent-works-a-practical-evals-and-safety-guide/",
-        "publication_date": "2026-10-18",
-        "raw_date": "2026-10-18T10:24:00+00:00",
-        "method": "Original publisher Article JSON-LD datePublished, confirmed against visible October 18, 2026 byline; raw HTML retained in agent-guide.html. dateModified not used."
+        "url": "https://www.elastic.co/observability-labs/blog/opentelemetry-dotnet-declarative-configuration",
+        "publication_date": "2026-10-19",
+        "raw_date": "2026-10-19",
+        "method": "Original article/changelog page displays October 19, 2026 beside its title/byline, not a modification timestamp. ISO date is the normalization of that visible label.",
+        "raw_label": "October 19, 2026"
       }
     }
   ],
@@ -67,56 +289,142 @@
       "https://www.digitalocean.com/blog",
       "https://www.splunk.com/en_us/blog/observability.html",
       "https://www.dynatrace.com/news/",
-      "https://www.itechguides.com/how-to-prove-your-ai-agent-works-a-practical-evals-and-safety-guide/"
+      "https://langfuse.com/changelog/2026-10-19-experiments",
+      "https://www.langchain.com/blog/how-numan-built-an-eval-first-ai-health-coach-with-langgraph-and-langsmith",
+      "https://www.elastic.co/observability-labs/blog/opentelemetry-dotnet-declarative-configuration",
+      "https://langfuse.com/changelog",
+      "https://www.datadoghq.com/blog/search/?blog-0=The-Monitor",
+      "https://opentelemetry.io/blog/2026/gc-candidates/",
+      "https://arize.com/blog/ai-agent-tool-selection-decision-tracing/",
+      "https://grafana.com/press/2026/10/19/survey-ai-adoption-is-outpacing-trust-as-enterprises-push-toward-autonomous-operations/",
+      "https://www.veris.ai/blog/evals-vs-benchmarks",
+      "https://securitylabs.datadoghq.com/articles/putting-models-to-the-secure-coding-test-security-rules/",
+      "https://news.ycombinator.com/item?id=50154029",
+      "https://netflixtechblog.com/ontology-driven-observability-building-an-end-to-end-knowledge-graph-at-netflix-scale-421392cf5adf",
+      "https://news.ycombinator.com/item?id=50150861",
+      "https://news.ycombinator.com/item?id=50157098",
+      "https://www.tomshardware.com/tech-industry/artificial-intelligence/ai-lab-offers-free-plumbing-and-hvac-repairs-across-three-cities-to-train-ai-robots-wearable-sensors-record-video-of-repair-work-for-robotics-training-free-services-also-include-electrical-work-air-duct-cleaning-and-carpet-cleaning",
+      "https://3anddoneapp.com/try",
+      "https://100toolkit.com/blog/deslop-model/",
+      "https://news.ycombinator.com/item?id=50151036",
+      "https://www.wsj.com/tech/ai/ai-agents-trading-stocks-while-you-sleep-charles-schwabs-ceo-is-skeptical-3ff1b5c3",
+      "https://github.com/langfuse/langfuse/releases/tag/v4.64.0",
+      "https://github.com/Arize-ai/phoenix/releases/tag/arize-phoenix-sqlean-v0.2.1",
+      "https://github.com/braintrustdata/braintrust-sdk-javascript/releases/tag/braintrust%403.38.0",
+      "https://github.com/braintrustdata/braintrust-sdk-javascript/releases/tag/%40braintrust/otel%401.1.0",
+      "https://hacker-news.firebaseio.com/v0/item/50154029.json",
+      "https://hacker-news.firebaseio.com/v0/item/50153431.json",
+      "https://hacker-news.firebaseio.com/v0/item/50150861.json",
+      "https://hacker-news.firebaseio.com/v0/item/50157098.json",
+      "https://hacker-news.firebaseio.com/v0/item/50154060.json",
+      "https://hacker-news.firebaseio.com/v0/item/50151980.json",
+      "https://hacker-news.firebaseio.com/v0/item/50151928.json",
+      "https://hacker-news.firebaseio.com/v0/item/50151036.json",
+      "https://hacker-news.firebaseio.com/v0/item/50147371.json",
+      "https://api.github.com/repos/braintrustdata/braintrust-sdk-javascript/pulls/2614",
+      "https://api.github.com/repos/braintrustdata/braintrust-sdk-javascript/pulls/2615",
+      "https://api.github.com/repos/langfuse/langfuse/releases/tags/v4.64.0",
+      "https://api.github.com/repos/Arize-ai/phoenix/releases/tags/arize-phoenix-sqlean-v0.2.1",
+      "https://api.github.com/repos/braintrustdata/braintrust-sdk-javascript/releases/tags/braintrust%403.38.0",
+      "https://api.github.com/repos/braintrustdata/braintrust-sdk-javascript/releases/tags/%40braintrust/otel%401.1.0"
     ],
-    "note": "Scoped sweep, not an exhaustive web search. Supplied discovery artifact preserved as discovery.json; discovery script was not rerun because this invocation restricts writes to the run directory. Official HN API checked all three IDs. GitHub APIs independently checked all eight watchlist repositories (701 release records), with no stable October 18 release. All six historical issues and 45 stories read before selection; full history and hashes in history-review.json. News surfaces retrieved and readable text preserved; focused exact-date searches supplemented configured sources. Guide is the publisher's own instructional synthesis, not a new NIST announcement or experimental result. Its task-contract and independent side-effect checks differ substantively from October 17's LLM-judge calibration guide.",
+    "note": "Scoped primary-source sweep, not exhaustive. Reviewed nine HN candidates and four stable watchlist releases, all eleven configured News surfaces, and all seven previous editions. Original dates independently checked; Braintrust companion OTel release consolidated, Langfuse experiment workflow and distinct operational fixes separated. Images are conceptual editorial explanations, not measured benchmark results or publisher screenshots.",
     "source_counts": {
-      "hn": 0,
-      "news": 1,
-      "github": 0
+      "hn": 1,
+      "news": 3,
+      "github": 2
     },
     "excluded": [
       {
-        "url": "https://arxiv.org/abs/2610.18861",
-        "reason": "Primary page says Submitted on 13 Oct 2026; October 18 HN submission is resurfacing. Agent architecture research also lacks a concrete observability implementation."
+        "url": "https://arize.com/blog/ai-agent-tool-selection-decision-tracing/",
+        "reason": "Original page shows only October 2026; exact original day not established. Search reports today, which is not accepted as primary evidence. Direct HTML retrieval returned 403; no bypass attempted."
       },
       {
-        "url": "https://apnews.com/article/ai-prices-dynamic-customers-technology-64c446cd117d3be664de4ab570fb9857",
-        "reason": "Retail AI pricing report outside AI observability; original page returned 403. Not needed to establish an eligible candidate and no publication-date claim made."
+        "url": "https://opentelemetry.io/blog/2026/gc-candidates/",
+        "reason": "October 19 original publication, but governance election candidates do not provide a concrete AI-system operating change."
       },
       {
-        "url": "https://local-host.ai/connectingCaptions/",
-        "reason": "On-device captioning and translation app; primary page and original HN post provide no AI observability implementation."
+        "url": "https://www.honeycomb.io/blog/everything-we-talked-about-o11yday-london-2026",
+        "reason": "October 16 and already published in October 17 issue."
       },
       {
-        "url": "https://aws.amazon.com/blogs/machine-learning/building-trust-in-ai-agents-a-production-ready-evaluation-framework-with-amazon-bedrock-agentcore/",
-        "reason": "Primary byline says 16 OCT 2026; October 18 news aggregation does not qualify."
+        "url": "https://www.braintrust.dev/blog/workflow-evals",
+        "reason": "October 15 and already published in October 16 issue."
       },
       {
-        "url": "https://heardin.ai/stories/irregular-evaluation-misconfiguration-lets-frontier-models-reach-the-real-internet",
-        "reason": "Secondary retrospective of July/August disclosures; no new October 18 original event."
+        "url": "https://www.splunk.com/en_us/blog/observability/one-collector-three-views-of-clock-synchronization-ntp-chrony-and-ptp.html",
+        "reason": "Original date October 14, outside window."
       },
       {
-        "url": "https://spanora.ai/blog/best-ai-agent-observability-tools-2026",
-        "reason": "Original publication February 20, 2026; October 18 update is not publication."
+        "url": "https://www.splunk.com/en_us/blog/observability/agentic-observability-from-day-one.html",
+        "reason": "Original date October 13, outside window."
       },
       {
-        "url": "https://www.itechguides.com/best-ai-agent-observability-tools-for-tracing-and-debugging-tasks/",
-        "reason": "Product-comparison synthesis not selected; no new original evaluation results established, and overlaps another same-day comparison."
+        "url": "https://www.digitalocean.com/blog",
+        "reason": "Latest visible article October 15; no eligible October 19 story discovered."
       },
       {
-        "url": "https://www.itechguides.com/opentelemetry-vs-langfuse-and-helicone-for-monitoring-claude-applications/",
-        "reason": "Comparison largely revisits Claude native tracing already covered October 15; no distinct new announcement."
+        "url": "https://www.dynatrace.com/news/",
+        "reason": "Latest visible articles October 15; no eligible October 19 story discovered."
+      },
+      {
+        "url": "https://tfy.app/blog/claude-observability-token-accounting-tracing",
+        "reason": "Discovery result had October 19 label, but primary page fetch failed; not vetted or included."
+      },
+      {
+        "url": "https://securitylabs.datadoghq.com/articles/putting-models-to-the-secure-coding-test-security-rules/",
+        "reason": "Original October 19 verified, but coding-security comparison is less directly aligned with AI observability than selected tracing/evaluation workflow stories."
+      },
+      {
+        "url": "https://netflixtechblog.com/ontology-driven-observability-building-an-end-to-end-knowledge-graph-at-netflix-scale-421392cf5adf",
+        "title": "Ontology-Driven Observability: Building an End-to-End Knowledge Graph at Netflix",
+        "reason": "Original Netflix page displayed “3 days ago” on October 20, not October 19. Direct HTML metadata fetch returned HTTP 403; no matching exact original date verified. HN resurfacing time cannot satisfy date gate."
+      },
+      {
+        "url": "https://news.ycombinator.com/item?id=50150861",
+        "title": "Ask HN: What are the things LLM models fail at?",
+        "reason": "General Ask HN request for examples of model failures; no primary implementation or substantiated evaluation finding to report."
+      },
+      {
+        "url": "https://news.ycombinator.com/item?id=50157098",
+        "title": "What is still hard to become good at as AI makes coding easier?",
+        "reason": "General career and software-development discussion, without a concrete AI-observability implementation or operational result."
+      },
+      {
+        "url": "https://www.tomshardware.com/tech-industry/artificial-intelligence/ai-lab-offers-free-plumbing-and-hvac-repairs-across-three-cities-to-train-ai-robots-wearable-sensors-record-video-of-repair-work-for-robotics-training-free-services-also-include-electrical-work-air-duct-cleaning-and-carpet-cleaning",
+        "title": "AI lab offers free plumbing and HVAC repairs across three cities to train robots",
+        "reason": "Robotics training-data collection and home-repair news, outside AI observability/evaluation operations; linked reporting is secondary rather than a primary technical release."
+      },
+      {
+        "url": "https://3anddoneapp.com/try",
+        "title": "Show HN: I built a task system to handle the drudgery so I could focus on tasks",
+        "reason": "First-party task-management product launch; no concrete tracing, evaluation or telemetry change relevant to operating AI systems."
+      },
+      {
+        "url": "https://100toolkit.com/blog/deslop-model/",
+        "title": "Show HN: Qwen3-4B with the AI writing tics trained out",
+        "reason": "Original page has only “October 2026” as its publication label, not an exact day. HN API item contains no original announcement text; its submission date alone cannot establish original article publication. Interesting style-distillation evaluation, but strict date gate fails."
+      },
+      {
+        "url": "https://news.ycombinator.com/item?id=50151036",
+        "title": "Ask HN: How to deal with shipping AI-written code you don't understand?",
+        "reason": "Ask HN discussion about understanding AI-written code, not a primary observability release or substantiated operational finding."
+      },
+      {
+        "url": "https://www.wsj.com/tech/ai/ai-agents-trading-stocks-while-you-sleep-charles-schwabs-ceo-is-skeptical-3ff1b5c3",
+        "title": "AI Agents Trading Stocks While You Sleep? Charles Schwab's CEO Is Skeptical",
+        "reason": "Secondary financial-industry commentary about autonomous trading, with no concrete observability implementation or release."
+      },
+      {
+        "url": "https://github.com/Arize-ai/phoenix/releases/tag/arize-phoenix-sqlean-v0.2.1",
+        "title": "arize-phoenix-sqlean: v0.2.1",
+        "reason": "Stable release date verified, but notes only bump bundled sqlean to 0.28.5. No concrete AI-observability effect documented; omit rather than pad a dependency update."
+      },
+      {
+        "url": "https://github.com/braintrustdata/braintrust-sdk-javascript/releases/tag/%40braintrust/otel%401.1.0",
+        "title": "@braintrust/otel@1.1.0",
+        "reason": "Stable release date verified; same OpenTelemetry span-customizer feature as SDK 3.38.0, so covered together in the SDK story, not duplicated."
       }
-    ],
-    "evidence_files": [
-      "fetch-log.json",
-      "discovery.json",
-      "github-checks.json",
-      "history-review.json",
-      "agent-guide.html",
-      "agent-guide-readable.txt",
-      "editorial-log.json"
     ]
   },
   "name": "Tidy Traces — AI Observability Daily",
