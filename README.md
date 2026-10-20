@@ -77,3 +77,7 @@ npm run deploy
 Canonical URLs are fixed to `https://tidytraces.com` so an old Pages `SITE_URL` cannot override them. Remove any external redirect sending `/` to `/ai-observability/`. Google Analytics is disabled unless the fork configures its own `PUBLIC_GA_ID`; the upstream measurement ID is not reused.
 
 See [the source and live-site comparison](docs/upstream-comparison.md) for the diagnosis and repair evidence.
+
+## Sponsor
+
+If this project helps you, consider [sponsoring my work on GitHub](https://github.com/sponsors/soumendrak). Your support helps fund maintenance, documentation, and continued development.
