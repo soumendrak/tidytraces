@@ -1,0 +1,113 @@
+{
+  "downloaded": "2026-10-22",
+  "fonts": [
+    {
+      "file": "lora-italic-400-700-latin-ext.woff2",
+      "family": "Lora",
+      "style": "italic",
+      "weight": "400 700",
+      "subset": "latin-ext",
+      "source": "https://fonts.gstatic.com/s/lora/v37/0QIhMX1D_JOuMw_LL_tLtfOm84TX.woff2",
+      "sha256": "9568adfab37a5b030e75c6651f833406bf541ff7621ea8c6059249b39edb258c"
+    },
+    {
+      "file": "lora-italic-400-700-latin.woff2",
+      "family": "Lora",
+      "style": "italic",
+      "weight": "400 700",
+      "subset": "latin",
+      "source": "https://fonts.gstatic.com/s/lora/v37/0QIhMX1D_JOuMw_LIftLtfOm8w.woff2",
+      "sha256": "3d536d49566e82a7905c8b0096758005f6616029ac08528d1f4789c1100dff6a"
+    },
+    {
+      "file": "lora-normal-400-700-latin-ext.woff2",
+      "family": "Lora",
+      "style": "normal",
+      "weight": "400 700",
+      "subset": "latin-ext",
+      "source": "https://fonts.gstatic.com/s/lora/v37/0QIvMX1D_JOuMwT7I_FMl_GW8g.woff2",
+      "sha256": "55606fbc76dc232c5beb8ef584d7b4f7f76e31a9f27877112e75484356462781"
+    },
+    {
+      "file": "lora-normal-400-700-latin.woff2",
+      "family": "Lora",
+      "style": "normal",
+      "weight": "400 700",
+      "subset": "latin",
+      "source": "https://fonts.gstatic.com/s/lora/v37/0QIvMX1D_JOuMwr7I_FMl_E.woff2",
+      "sha256": "6b102ab35aa1f2b315788bb4853434ed1e52137603bf7a3da71a682276748d45"
+    },
+    {
+      "file": "pt-serif-italic-400-latin-ext.woff2",
+      "family": "PT Serif",
+      "style": "italic",
+      "weight": "400",
+      "subset": "latin-ext",
+      "source": "https://fonts.gstatic.com/s/ptserif/v19/EJRTQgYoZZY2vCFuvAFT_rO1cgT9rct48Q.woff2",
+      "sha256": "6ca06514dc77d3461b1cbc85d5693fc1042cba121a574c0b8155f63f5c0e7efd"
+    },
+    {
+      "file": "pt-serif-italic-400-latin.woff2",
+      "family": "PT Serif",
+      "style": "italic",
+      "weight": "400",
+      "subset": "latin",
+      "source": "https://fonts.gstatic.com/s/ptserif/v19/EJRTQgYoZZY2vCFuvAFT_r21cgT9rcs.woff2",
+      "sha256": "219a8e6238f7f0b4bbd73b68ee78d0211d44c7808510fa5b9da6a1621bf63e6d"
+    },
+    {
+      "file": "pt-serif-italic-700-latin-ext.woff2",
+      "family": "PT Serif",
+      "style": "italic",
+      "weight": "700",
+      "subset": "latin-ext",
+      "source": "https://fonts.gstatic.com/s/ptserif/v19/EJRQQgYoZZY2vCFuvAFT9gaQZyffoOFC-I2irw.woff2",
+      "sha256": "b0b1062d323a222dc43d23539526183b2f208317f79aa905aa89f98e8113c69a"
+    },
+    {
+      "file": "pt-serif-italic-700-latin.woff2",
+      "family": "PT Serif",
+      "style": "italic",
+      "weight": "700",
+      "subset": "latin",
+      "source": "https://fonts.gstatic.com/s/ptserif/v19/EJRQQgYoZZY2vCFuvAFT9gaQZynfoOFC-I0.woff2",
+      "sha256": "c4ccc041f7601de446b71e38de328ff979696476f9e10d20e5df8d511691ceae"
+    },
+    {
+      "file": "pt-serif-normal-400-latin-ext.woff2",
+      "family": "PT Serif",
+      "style": "normal",
+      "weight": "400",
+      "subset": "latin-ext",
+      "source": "https://fonts.gstatic.com/s/ptserif/v19/EJRVQgYoZZY2vCFuvAFYzr-_dSb_nco.woff2",
+      "sha256": "3a274c5ae6fd7bcbd384a080bc8cf124c9a5ba524fc8ae77f12da84b2e455bbf"
+    },
+    {
+      "file": "pt-serif-normal-400-latin.woff2",
+      "family": "PT Serif",
+      "style": "normal",
+      "weight": "400",
+      "subset": "latin",
+      "source": "https://fonts.gstatic.com/s/ptserif/v19/EJRVQgYoZZY2vCFuvAFWzr-_dSb_.woff2",
+      "sha256": "202b8aa6108ec44ba8f3d717b0c9f7f94c7f4d76f01943104eaadaf6cf3da602"
+    },
+    {
+      "file": "pt-serif-normal-700-latin-ext.woff2",
+      "family": "PT Serif",
+      "style": "normal",
+      "weight": "700",
+      "subset": "latin-ext",
+      "source": "https://fonts.gstatic.com/s/ptserif/v19/EJRSQgYoZZY2vCFuvAnt66qcVyvVp8NAyIw.woff2",
+      "sha256": "1895f8fe0add5c53f4d9450430e4907cd2e2bf1c1f31f9974e3f51722e519389"
+    },
+    {
+      "file": "pt-serif-normal-700-latin.woff2",
+      "family": "PT Serif",
+      "style": "normal",
+      "weight": "700",
+      "subset": "latin",
+      "source": "https://fonts.gstatic.com/s/ptserif/v19/EJRSQgYoZZY2vCFuvAnt66qSVyvVp8NA.woff2",
+      "sha256": "57d3ae6c4b78cc2d5b568212e1fcd75e5a0be45e6249e55750ba77d22e22bc3b"
+    }
+  ]
+}

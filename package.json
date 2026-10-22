@@ -8,7 +8,8 @@
   },
   "scripts": {
     "dev": "astro dev",
-    "build": "node ./scripts/generate-latest.js && astro build",
+    "build": "node ./scripts/generate-latest.js && astro build && npm run generate-pdf -- --all",
+    "generate-pdf": "node ./scripts/generate-pdf.js",
     "preview": "astro preview",
     "preview:cf": "wrangler dev",
     "deploy": "node ./scripts/require-committed-site.js && npm run build && node ./scripts/require-committed-site.js && wrangler pages deploy dist --project-name the-daily-diff --branch master",
@@ -28,6 +29,8 @@
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.10",
+    "pdf-lib": "^1.17.1",
+    "puppeteer": "^25.16.0",
     "typescript": "^6.0.3",
     "wrangler": "^4.149.0"
   }

@@ -9,6 +9,8 @@ An **AI-observability-only** publication using the distraction-free newspaper re
 - Dated issue: `/ai-observability/YYYY-MM-DD/`
 - RSS history: `/rss.xml`
 - Latest Markdown and JSON: `/md` and `/json`
+- Printable A4 PDF: use **PDF** in any edition's masthead, or `/pdf/YYYY-MM-DD.pdf`
+- Latest PDF: `/pdf/latest.pdf` (also `/latest.pdf`)
 
 **All / HN / NEWS / GITHUB** are Section buttons. All combines every discovery channel; individual source buttons are mutually exclusive. All stories still belong to AI observability. The All Section opens by default, combining HN, News, and GitHub. **All / Recommended / Must-Read** are signal filters: Recommended requires a recorded score of at least 8, Must-Read at least 9. Unrated stories appear under All. Signal scores are editorial judgements with recorded reasons; they are independent of vote/star counts. Unrated publisher stories remain in All.
 
@@ -31,6 +33,23 @@ npm run check
 npm run build
 npm run preview
 ```
+
+## PDF editions
+
+`npm run build` generates PDFs for **every real AI observability edition**, including the latest aliases, in `dist/`. They deploy with the site on Cloudflare Pages; no separate storage account, upstream CDN upload, or credentials are needed. Historical pages always download their own date. PDFs use the existing warm newsprint theme, A4 pages with 18 mm margins, full story text, infographics, source links, and the masthead byline. An empty issue keeps its publication-window explanation.
+
+To regenerate files after a successful build:
+
+```sh
+npm run generate-pdf                         # latest edition and latest aliases
+npm run generate-pdf -- --day 2026-10-14    # one historical edition
+npm run generate-pdf -- --all               # every edition
+npm run generate-pdf -- --no-upload         # accepted for upstream compatibility; always local
+```
+
+PDF generation uses Puppeteer and its downloaded Chrome, installed by `npm ci`. If browser downloads were skipped, run `npx puppeteer browsers install chrome`, or set `PUPPETEER_EXECUTABLE_PATH` to an installed Chrome/Chromium executable. Linux build images must include Chrome's system dependencies (see [Puppeteer troubleshooting](https://pptr.dev/troubleshooting)). Missing editions, stale content fingerprints, failed font loads, and failed image loads stop generation instead of publishing an incomplete PDF. The fingerprint includes all curated content, so correcting a title, body, image, takeaway, or dek requires rebuilding even when the date and story count stay the same. Lora and PT Serif are served locally from `public/fonts/`, with licenses and download provenance; required faces must load within 10 seconds. Internal PDF links use `https://tidytraces.com`, including downloads rendered from localhost. Build files are generated into `dist/`, not committed or copied back into `public/`; use `npm run preview` to test production PDF downloads locally.
+
+With `just dev` or `npm run dev -- --background`, the same PDF button generates the requested edition directly from the live reader. No production build is required. Allow a few seconds for Chrome to render the download. Development PDFs are kept in memory, so downloads do not write into watched source folders or restart the server. Failed generation returns an error response while the server keeps running.
 
 ## Content updates
 

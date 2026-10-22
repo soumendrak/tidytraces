@@ -1,5 +1,3 @@
-@import url("https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&family=PT+Serif:ital,wght@0,400;0,700;1,400;1,700&display=swap");
-
 :root {
   /* Colors - Day Edition (warm newsprint) */
   --bg-page: #e7e1d1;
@@ -1644,6 +1642,7 @@ body.modal-open {
   .masthead-archive-link,
   .image-modal,
   .filter-bar,
+  .editorial-method,
   .no-stories-message,
   .pwa-install-banner {
     display: none !important;
@@ -1680,8 +1679,56 @@ body.modal-open {
     page-break-inside: avoid !important;
   }
 
+  .why-info,
   .why-tooltip {
     display: none !important;
+  }
+
+  // Empty editions must explain the publication gap in their PDF too.
+  .newspaper-sheet[data-count="0"] .no-stories-message {
+    display: block !important;
+  }
+
+  .story[data-hidden="true"] {
+    display: block !important;
+  }
+
+  .brand-logo {
+    width: 60mm !important;
+    filter: none !important;
+  }
+
+  .masthead-name {
+    font-size: 24pt;
+    line-height: 1;
+    margin: 2mm 0;
+  }
+
+  .masthead-tagline {
+    font-size: 9pt;
+    margin: 2mm 0;
+  }
+
+  .masthead .edition-dek {
+    font-size: 10pt;
+    margin: 3mm auto 2mm;
+  }
+
+  .masthead .edition-window {
+    font-size: 8pt;
+    margin: 2mm 0 3mm;
+  }
+
+  .story .story-body {
+    font-size: 9.5pt !important;
+    line-height: 1.4;
+  }
+
+  .edition-colophon {
+    margin-top: 4mm;
+    padding-top: 2mm;
+    font-size: 7pt;
+    break-inside: avoid;
   }
 }
 
