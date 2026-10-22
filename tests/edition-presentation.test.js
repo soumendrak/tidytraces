@@ -97,8 +97,7 @@ test('every built edition page has the top byline and no visible per-image AI ca
       await site.emulateMediaFeatures([{ name: 'prefers-reduced-motion', value: 'reduce' }]);
       await site.setViewport({ width: 390, height: 700 });
       await site.goto('https://tidytraces.test/', { waitUntil: 'load' });
-      const hidden = () => site.$eval('.back-to-top', (el) => el.hidden);
-      assert.equal(await hidden(), true, 'hidden at the top');
+      assert.deepEqual(await site.$eval('.back-to-top', (el) => [el.hidden, getComputedStyle(el).display]), [true, 'none'], 'hidden at the top');
       await site.evaluate(() => window.scrollTo({ top: document.body.scrollHeight, behavior: 'instant' }));
       await site.waitForFunction(() => !document.querySelector('.back-to-top').hidden);
       await site.focus('.back-to-top');

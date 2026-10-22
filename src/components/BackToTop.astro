@@ -27,16 +27,23 @@
 		width: 2.75rem;
 		height: 2.75rem;
 		padding: 0;
-		background: var(--bg-sheet);
+		background: transparent;
 		color: var(--ink);
 		border: 1px solid var(--rule);
-		box-shadow: var(--shadow-sheet);
+		opacity: 0.55;
 		cursor: pointer;
-		transition: background-color 0.15s ease, color 0.15s ease;
+		transition: background-color 0.15s ease, color 0.15s ease, opacity 0.15s ease;
 	}
 
-	.back-to-top[hidden],
+	.back-to-top[hidden] { display: none; }
+
 	:global(body:has(#pwa-install-banner:not([hidden]))) .back-to-top { display: none; }
+
+	.back-to-top:is(:hover, :focus-visible) {
+		opacity: 1;
+		background: var(--bg-sheet);
+		box-shadow: var(--shadow-sheet);
+	}
 
 	.back-to-top:hover {
 		background: var(--ink);
