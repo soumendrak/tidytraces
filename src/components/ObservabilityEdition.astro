@@ -1,6 +1,7 @@
 ---
 import type { CollectionEntry } from 'astro:content';
 import EditionPage from './EditionPage.astro';
+import { storyAnchor } from '../lib/storyAnchors.js';
 interface Props {
   edition: CollectionEntry<'observability'>['data'];
   issue: number;
@@ -10,8 +11,8 @@ interface Props {
   isHomepage?: boolean;
 }
 const { edition, ...navigation } = Astro.props;
-const stories = edition.stories.map((story, index) => ({
-  slug: `observability-${index}`,
+const stories = edition.stories.map((story) => ({
+  slug: storyAnchor(story),
   title: story.title,
   source: story.source,
   url: story.url,
