@@ -1,0 +1,122 @@
+{
+  "date": "2026-10-19",
+  "story_window": "2026-10-18",
+  "dek": "One guide asks two separate questions about an agent: did it achieve the requested outcome, and were its actions permitted? No eligible HN stories or stable watchlist releases were found for October 18.",
+  "stories": [
+    {
+      "title": "An agent-testing guide checks both task completion and permission to act",
+      "url": "https://www.itechguides.com/how-to-prove-your-ai-agent-works-a-practical-evals-and-safety-guide/",
+      "publisher": "iTechGuides",
+      "published": "2026-10-18",
+      "category_key": "evals",
+      "summary": "The guide uses a refund example to show why a successful action still needs authorization evidence and an independent outcome check.",
+      "body": [
+        "An agent can finish a task while breaking the rules that should govern it. An October 18 iTechGuides article recommends writing a task contract before interpreting success rates. That contract defines the starting state, required outcome, available tools, permission limits, prohibited side effects and acceptable escalation.",
+        "Its illustrative refund scenario separates completing a payment from the authorization and audit steps that should precede it. Check the resulting payment state independently instead of trusting the agent’s completion message. A forbidden action can invalidate a completed task; an appropriate escalation can respect policy without completing the customer’s request. These outcomes should be reported separately.",
+        "Retain tool arguments, permission decisions, returned values, retries, latency and relevant state changes with the agent, policy, fixture and evaluator versions. Break failures down by severity and workflow so an average does not hide costly exceptions. The article is instructional synthesis, not a deployment study or new standard. Recording a trace helps investigation but does not establish a correct outcome by itself."
+      ],
+      "format": "full",
+      "takeaway": "For agent-test owners: verify final state independently and report task completion separately from policy compliance.",
+      "image": "/edition-images/2026-10-19/agent-checks.webp",
+      "image_width": 1440,
+      "image_height": 960,
+      "image_provenance": {
+        "kind": "generated-editorial",
+        "generator": "built-in-imagegen",
+        "prompt": "Use case: infographic-diagram\nAsset type: standalone newspaper editorial infographic, PNG\nPrimary request: explain separate outcome and permission checks for an AI support-refund agent, based on https://www.itechguides.com/how-to-prove-your-ai-agent-works-a-practical-evals-and-safety-guide/\nSource-supported facts: the guide recommends a versioned task contract, independent checks of the resulting state, and separate scoring of authorization and tool actions. A correct final state can coexist with a forbidden action. A safe escalation may leave the task incomplete while respecting permissions.\nStyle: warm ivory newsprint, crisp charcoal ink, muted rust and teal accents, restrained flat diagram, generous whitespace, newspaper serif title and readable sans-serif labels. Landscape, roughly 3:2.\nComposition: title above a three-stage flow: Define contract, Run agent, Check evidence. Below the last stage show two equal independent check boxes, Outcome and Permissions, with simple document and key icons. At bottom show two short conceptual examples, each on its own line.\nText verbatim: 'Did the agent work safely?' ; 'Conceptual evaluation pattern'; 'Define contract'; 'Run agent'; 'Check evidence'; 'Outcome'; 'Verify final state'; 'Permissions'; 'Inspect tool actions'; 'Task completed + forbidden action = safety failure'; 'Safe escalation + incomplete task = separate scores'.\nConstraints: no numerical performance claims, no product screenshot or logos, no extra footer or watermark. Keep the two checks visibly independent; use large text readable at article width.",
+        "based_on": [
+          "https://www.itechguides.com/how-to-prove-your-ai-agent-works-a-practical-evals-and-safety-guide/"
+        ],
+        "reviewed": true,
+        "sha256": "56fd1b2376ba2b3801d4ca788a0bebe8e688c482585bd8fba5604be40806034e",
+        "optimization": {
+          "format": "webp",
+          "quality": 82,
+          "max_width": 1440,
+          "source_sha256": "1619bdddeb972d13fd7c50e5f375af7b9cd9d93ed8675c0abcb32c5cba1fff21"
+        }
+      },
+      "source": "news",
+      "interest_score": 7,
+      "dedupe_key": "article:itechguides.com/how-to-prove-your-ai-agent-works-a-practical-evals-and-safety-guide",
+      "score_reason": "Concrete trace requirements and independently checked side effects are directly useful, but this is guidance rather than new measured evidence.",
+      "source_evidence": {
+        "url": "https://www.itechguides.com/how-to-prove-your-ai-agent-works-a-practical-evals-and-safety-guide/",
+        "publication_date": "2026-10-18",
+        "raw_date": "2026-10-18T10:24:00+00:00",
+        "method": "Original publisher Article JSON-LD datePublished, confirmed against visible October 18, 2026 byline; raw HTML retained in agent-guide.html. dateModified not used."
+      }
+    }
+  ],
+  "research": {
+    "status": "complete",
+    "completed_sources": [
+      "hn",
+      "news",
+      "github"
+    ],
+    "checked_urls": [
+      "https://arize.com/blog/",
+      "https://langfuse.com/blog",
+      "https://www.langchain.com/blog",
+      "https://www.braintrust.dev/blog",
+      "https://opentelemetry.io/blog/",
+      "https://www.elastic.co/observability-labs/blog",
+      "https://www.datadoghq.com/blog/",
+      "https://www.honeycomb.io/blog/",
+      "https://www.digitalocean.com/blog",
+      "https://www.splunk.com/en_us/blog/observability.html",
+      "https://www.dynatrace.com/news/",
+      "https://www.itechguides.com/how-to-prove-your-ai-agent-works-a-practical-evals-and-safety-guide/"
+    ],
+    "note": "Scoped sweep, not an exhaustive web search. Supplied discovery artifact preserved as discovery.json; discovery script was not rerun because this invocation restricts writes to the run directory. Official HN API checked all three IDs. GitHub APIs independently checked all eight watchlist repositories (701 release records), with no stable October 18 release. All six historical issues and 45 stories read before selection; full history and hashes in history-review.json. News surfaces retrieved and readable text preserved; focused exact-date searches supplemented configured sources. Guide is the publisher's own instructional synthesis, not a new NIST announcement or experimental result. Its task-contract and independent side-effect checks differ substantively from October 17's LLM-judge calibration guide.",
+    "source_counts": {
+      "hn": 0,
+      "news": 1,
+      "github": 0
+    },
+    "excluded": [
+      {
+        "url": "https://arxiv.org/abs/2610.18861",
+        "reason": "Primary page says Submitted on 13 Oct 2026; October 18 HN submission is resurfacing. Agent architecture research also lacks a concrete observability implementation."
+      },
+      {
+        "url": "https://apnews.com/article/ai-prices-dynamic-customers-technology-64c446cd117d3be664de4ab570fb9857",
+        "reason": "Retail AI pricing report outside AI observability; original page returned 403. Not needed to establish an eligible candidate and no publication-date claim made."
+      },
+      {
+        "url": "https://local-host.ai/connectingCaptions/",
+        "reason": "On-device captioning and translation app; primary page and original HN post provide no AI observability implementation."
+      },
+      {
+        "url": "https://aws.amazon.com/blogs/machine-learning/building-trust-in-ai-agents-a-production-ready-evaluation-framework-with-amazon-bedrock-agentcore/",
+        "reason": "Primary byline says 16 OCT 2026; October 18 news aggregation does not qualify."
+      },
+      {
+        "url": "https://heardin.ai/stories/irregular-evaluation-misconfiguration-lets-frontier-models-reach-the-real-internet",
+        "reason": "Secondary retrospective of July/August disclosures; no new October 18 original event."
+      },
+      {
+        "url": "https://spanora.ai/blog/best-ai-agent-observability-tools-2026",
+        "reason": "Original publication February 20, 2026; October 18 update is not publication."
+      },
+      {
+        "url": "https://www.itechguides.com/best-ai-agent-observability-tools-for-tracing-and-debugging-tasks/",
+        "reason": "Product-comparison synthesis not selected; no new original evaluation results established, and overlaps another same-day comparison."
+      },
+      {
+        "url": "https://www.itechguides.com/opentelemetry-vs-langfuse-and-helicone-for-monitoring-claude-applications/",
+        "reason": "Comparison largely revisits Claude native tracing already covered October 15; no distinct new announcement."
+      }
+    ],
+    "evidence_files": [
+      "fetch-log.json",
+      "discovery.json",
+      "github-checks.json",
+      "history-review.json",
+      "agent-guide.html",
+      "agent-guide-readable.txt",
+      "editorial-log.json"
+    ]
+  }
+}

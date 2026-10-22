@@ -2,6 +2,8 @@
 import type { CollectionEntry } from 'astro:content';
 import EditionPage from './EditionPage.astro';
 import { storyAnchor } from '../lib/storyAnchors.js';
+import { imageCaptionFor, isGeneratedImage } from '../lib/editionCredits.js';
+import { editionFingerprint } from '../lib/editionFingerprint.js';
 interface Props {
   edition: CollectionEntry<'observability'>['data'];
   issue: number;
@@ -27,8 +29,8 @@ const stories = edition.stories.map((story) => ({
   image: story.image,
   imageWidth: story.image_width,
   imageHeight: story.image_height,
-  imageGenerated: story.image_provenance?.kind === 'generated-editorial',
-  imageCaption: story.image_provenance?.kind === 'generated-editorial' ? undefined : (story.image ? `Source image · ${story.publisher}` : undefined),
+  imageCaption: imageCaptionFor(story),
+  imageGenerated: isGeneratedImage(story),
   // Escape curated text; source claims and editorial takeaways stay distinct.
   bodyHtml: (story.body || [story.summary]).map((paragraph, index) => {
     if (index !== 0) return `<p>${escape(paragraph)}</p>`;
@@ -40,11 +42,10 @@ function escape(text: string) {
   return text.replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('"', '&quot;');
 }
 ---
-<EditionPage day={edition.date} stories={stories} dek={edition.dek} storyWindow={edition.story_window} allDays={[]} {...navigation}>
+<EditionPage day={edition.date} contentFingerprint={editionFingerprint(edition)} stories={stories} dek={edition.dek} storyWindow={edition.story_window} allDays={[]} {...navigation}>
   <details class="editorial-method">
     <summary>Editorial method and sources</summary>
-    <p>Only items published on {edition.story_window} qualify. Summaries distinguish source claims from independent editorial takeaways. If nothing qualifies, the issue stays empty.</p>
-    <p>Editorial infographics are AI-generated illustrations based on the linked sources, reviewed for this edition. They are not source-published graphics. Generation provenance is preserved in the JSON edition; source images retain their attribution.</p>
+    <p>Only items published on {edition.story_window} qualify. Summaries distinguish source claims from independent editorial takeaways. If nothing qualifies, the issue stays empty. Source images retain their attribution.</p>
     <p>Original source links and publication dates appear with every story. Source tabs classify discovery channels, while the topic remains AI observability. Recommended means a recorded signal score of at least 8; Must-Read means at least 9. Unrated stories appear only under All.</p>
   </details>
 </EditionPage>

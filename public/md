@@ -1,96 +1,108 @@
-# AI Observability Daily — 2026-10-15
+# AI Observability Daily — 2026-10-22
+
+By Soumendra Kumar Sahoo
 
 Canonical: https://tidytraces.com/
-Coverage window: 2026-10-14
+Coverage window: 2026-10-21
 
-Native Claude traces, recoverable agent context, and the practical work of keeping evaluation credentials, SDKs, and telemetry pipelines dependable.
+Today’s six stories start with how agents reuse lessons and investigate problems. Next come tools for recording application activity, delivering traces and finding browser errors. Finally, Phoenix changes how AI judges return evaluation results.
 
-## Claude Platform opens native OpenTelemetry agent tracing in public beta
+## Beacon helps coding agents reuse lessons after human review
 
-Source: Anthropic — https://claude.com/resources/articles/agent-observability-on-the-claude-platform
-Published: 2026-10-14
+Source: Asymptote Labs — https://news.ycombinator.com/item?id=50182883
+Published: 2026-10-21
+Channel: hn
+
+Beacon is an open-source project for carrying lessons between coding agents. Switching tools can mean explaining the same workflow or past mistake again. In an October 21 announcement, its creators describe recording prompts, tool calls and commands across more than twenty agent tools, then converting those records into reusable knowledge.
+
+The important step is human review. Beacon identifies recurring patterns and workflows, asks for approval, and makes reviewed lessons available to future agents. For illustration, a team could review a lesson about its repository’s test workflow before making that guidance available to another coding agent. This is an example of intended use, not a measured outcome.
+
+Technically, session records share a common format. Approved knowledge is exposed through skills containing reusable instructions, and the Model Context Protocol (MCP), which connects agents to external tools and data. The announcement does not independently establish that capture is complete or that reused lessons improve results.
+
+Why it matters: For teams switching coding agents: check the original session evidence before approving a lesson for reuse.
+
+![Beacon helps coding agents reuse lessons after human review](/edition-images/2026-10-22/beacon-reviewed-memory.webp)
+
+## How Langfuse limits Halo’s access during background investigations
+
+Source: Langfuse — https://langfuse.com/blog/2026-10-21-building-the-langfuse-assistant
+Published: 2026-10-21
 Channel: news
 
-Anthropic announced OpenTelemetry tracing for Claude Managed Agents, the Messages API, and Claude SDKs in public beta. The export covers agent turns, model calls, and tool activity, with latency, token usage, and identifying fields. Traces follow the OpenTelemetry GenAI semantic conventions and can go to tools accepting a standard OTLP endpoint. Managed Agents and Messages API users configure a destination in the Claude Console; the announcement describes automatic export for Claude SDKs. This brings platform agent execution into existing investigation and evaluation workflows.
+Langfuse helps engineers inspect AI application runs. Its Halo assistant can investigate those records and help with dashboards or evaluations. An October 21 engineering post explains how this existing assistant works, including how it keeps running after you close the browser.
 
-For operators, the useful question is whether a trace explains a real failure across application and agent boundaries. Our editorial recommendation is to exercise one model call, one tool failure, and one MCP interaction, then inspect parentage, identifiers, and arrival at the destination. Check content handling before using sensitive traffic. Treat the beta announcement as an integration capability, not measured proof of complete coverage or correct agent behavior. Customer improvement figures in the article are testimonials, not a benchmark of the export itself.
+For illustration, you could ask Halo to group errors across failed runs, close the tab, and return to saved progress. Background workers perform the investigation independently of the browser. Access still follows your project permissions, and actions that change data require approval.
 
-Why it matters: Verify trace arrival and correlation with a known failing agent run.
+The implementation separates data access from script execution. A temporary project key and role-filtered tools control access through the Model Context Protocol (MCP), an interface for agent tools. An optional isolated script environment has no network access by default and receives only authorized data. Postgres stores progress; BullMQ queues work. Failed runs are not automatically retried, so background execution alone does not guarantee recovery. This is an architecture account, not a security certification.
 
-![Claude Platform opens native OpenTelemetry agent tracing in public beta](/edition-images/2026-10-15/claude-otel.webp)
-<!-- AI-generated editorial infographic, based on the linked source. -->
+Why it matters: For engineers building investigative assistants: test project permissions, approval steps and failure recovery separately.
 
-## Deep Agents explains recoverable context management for long runs
+![How Langfuse limits Halo’s access during background investigations](/edition-images/2026-10-22/halo-architecture.webp)
 
-Source: LangChain · Jess Weng — https://www.langchain.com/blog/context-engineering-deep-agents-remember
-Published: 2026-10-14
-Channel: news
+## Braintrust adds application logs to help explain agent runs
 
-LangChain describes five context-management techniques in its Deep Agents harness: offloading large inputs, summarizing history, loading skills on demand, isolating work in subagents, and persisting memory in files. Middleware applies these mechanisms at points around model and tool calls. Large tool results become previews with file references; older conversation messages can become a summary while recent messages remain intact. The post emphasizes retaining the underlying history so an agent can recover details later. Its walkthrough explains implementation choices rather than reporting a controlled accuracy or latency experiment.
-
-This matters when an incident depends on information that disappeared from the active prompt. Our editorial recommendation is to retain links between a model call, the context transformation that preceded it, and the stored source material. Replay tasks requiring a detail from before compaction, and inspect both successful retrieval and forgotten constraints. Compare task outcomes and token use across the same workload before changing thresholds. A smaller context window is useful only when the agent can still recover the evidence needed for its next decision.
-
-Why it matters: Evaluate retrieval after compaction, alongside token savings and final task outcomes.
-
-![Deep Agents explains recoverable context management for long runs](/edition-images/2026-10-15/deep-agents-context.webp)
-<!-- AI-generated editorial infographic, based on the linked source. -->
-
-## Langfuse shares LLM credentials across projects with local overrides
-
-Source: Langfuse · Tobias Wochinger — https://langfuse.com/changelog/2026-10-14-organization-llm-connections
-Published: 2026-10-14
-Channel: news
-
-Langfuse added organization-level LLM connections that are automatically available to projects within the organization. These connections supply centrally managed credentials for the Playground, evaluations, and experiments. A project can use different credentials by creating a connection with the same name; the project connection takes precedence. Organization owners and administrators manage shared connections in the interface. Public API management with an organization-scoped key is also available on Enterprise Cloud and self-hosted Enterprise Edition. The announcement describes connection configuration, without claiming equivalent evaluator behavior across providers.
-
-The operational benefit is less repeated setup, but central configuration also creates a shared dependency for evaluation jobs. Our editorial recommendation is to test credential rotation against a small experiment, then confirm which connection each project resolves. Include a project with an intentional override so a centrally changed key does not obscure local routing. Record the model and rubric with results when comparing experiments. Shared credentials simplify administration; reproducible evaluations still require evidence of the actual model configuration used for each run.
-
-Why it matters: Test credential resolution and rotation before relying on shared evaluation connections.
-
-![Langfuse shares LLM credentials across projects with local overrides](/edition-images/2026-10-15/langfuse-shared-connections.webp)
-<!-- AI-generated editorial infographic, based on the linked source. -->
-
-## Langfuse SDK majors add compressed export and remove deprecated APIs
-
-Source: Langfuse · Hassieb Pakzad — https://langfuse.com/changelog/2026-10-14-python-sdk-v5-js-sdk-v6
-Published: 2026-10-14
-Channel: news
-
-Langfuse released Python SDK v5 and JavaScript/TypeScript SDK v6 for its v4 platform. The announcement adds direct experiment-result links, typed metadata filtering, and gzip-compressed span batches. Numbers and booleans retain their types, while nested metadata can be filtered through dotted paths. Score creation and retrieval move into the current scores namespace; deprecated score namespaces and legacy API endpoints are removed. Both majors require Langfuse Cloud or self-hosted v4.59.0 or later, plus Python 3.11 or Node.js 22 and above. Existing v3 self-hosted deployments should retain the preceding SDK majors until upgrading.
-
-For an instrumentation owner, compatibility is the immediate gate. Our editorial recommendation is to inventory removed API usage, check the deployed server version, and replay a representative trace before rollout. Include typed metadata, a score batch, and a large span export, then confirm the resulting records are queryable. Compression is a transport change, not evidence of lower end-to-end ingestion latency. Keep a rollback plan tied to compatible server and SDK versions so a migration does not quietly interrupt evaluation or trace collection.
-
-Why it matters: Gate the SDK upgrade on server compatibility and an ingestion replay.
-
-![Langfuse SDK majors add compressed export and remove deprecated APIs](/edition-images/2026-10-15/langfuse-sdk-majors.webp)
-<!-- AI-generated editorial infographic, based on the linked source. -->
-
-## Langfuse v4.59.0 addresses late traces and monitor execution failures
-
-Source: Langfuse · GitHub — https://github.com/langfuse/langfuse/releases/tag/v4.59.0
-Published: 2026-10-14
+Source: Braintrust — https://github.com/braintrustdata/braintrust-sdk-javascript/releases/tag/braintrust%403.39.0
+Published: 2026-10-21
 Channel: github
 
-Langfuse v4.59.0 includes changes at several points where telemetry can become operationally misleading. The release notes list reprocessing of late trace arrivals using sharded readiness, retrying monitor execution failures instead of disabling alerts, and bounding concurrent media uploads by decoded size. They also list mapping Claude Managed Agents tool information to output, naming spans after agents, and representing session creation as a span. These entries describe shipped changes; the release does not provide a quantified before-and-after completeness or recovery benchmark.
+Braintrust records what happens during an AI application run so engineers can investigate failures. Its JavaScript SDK, the library added to an application, now supports application logging and console capture. Version 3.39.0 adds this context alongside traces, records of individual steps such as model calls, and fixes some incorrect usage records.
 
-Our editorial recommendation is to validate the failure paths the release names. Send a delayed observation into an already active trace and check that downstream processing reflects it. Exercise a transient monitor execution failure and inspect both retry behavior and eventual alert delivery. For Claude Managed Agents, review tool output and session relationships in the received trace. Keep these checks separate from the session-reader feature covered in the previous edition and the SDK migration covered today. A release note identifies a useful regression scenario; production reliability still needs evidence from the deployed configuration.
+For illustration, an assistant might log that it used a fallback before calling a model. That application message could help explain an unexpected response alongside the recorded model call. Engineers should check what their integration actually captures; the announcement does not promise automatic coverage of every application path.
 
-Why it matters: Replay late arrivals and monitor failures when validating the server upgrade.
+Technical changes include AI SDK batch and code-mode tracing. The release fixes streamed tool calls being incorrectly combined when certain providers omit an index. It adds text and usage recording for streamed Bedrock InvokeModel calls to OpenAI models, and includes cached input reads and writes in prompt_tokens for Pi and Flue integrations. Those accounting changes can affect comparisons with older runs. The notes provide no independent benchmark for logging overhead or cost accuracy.
 
-![Langfuse v4.59.0 addresses late traces and monitor execution failures](/edition-images/2026-10-15/langfuse-release-reliability.webp)
-<!-- AI-generated editorial infographic, based on the linked source. -->
+Why it matters: For JavaScript agent teams: inspect captured logs, streamed tool calls and token totals after upgrading.
 
-## Phoenix v20.21.4 fixes label retention and table interactions
+![Braintrust adds application logs to help explain agent runs](/edition-images/2026-10-22/braintrust-application-logs.webp)
 
-Source: Arize AI / Phoenix · GitHub — https://github.com/Arize-ai/phoenix/releases/tag/arize-phoenix-v20.21.4
-Published: 2026-10-14
+## LangWatch compresses trace uploads and fixes how records are read
+
+Source: LangWatch — https://github.com/langwatch/langwatch/releases/tag/langwatch%40v3.21.0
+Published: 2026-10-21
 Channel: github
 
-Phoenix v20.21.4 lists a UI fix that keeps labels on Escape and addresses table sorting, accessibility, and accessor warnings. Both the release API timestamp and the changelog date place this patch on October 14. The note is narrow: it does not announce a new evaluator, ingestion change, or measured quality improvement.
+LangWatch collects traces, records of the steps an AI application takes, for debugging and analysis. Version 3.21.0 changes how those records travel from an application to LangWatch. Its SDKs now send compressed trace data by default, and the server can recognize compression even when a request’s format label is wrong.
 
-Our editorial recommendation is to verify label editing and sorting in the review tables your team actually uses after upgrading. Confirm that dismissing an interaction preserves the expected labels. This is a review-workflow maintenance patch; the short release note does not establish broader changes to evaluation results.
+For illustration, a team upgrading behind a proxy should send a known trace through that same route and check that it arrives with the expected usage and tool output. A successful upload alone does not prove that every field was interpreted correctly. The release includes fixes for reading Claude traces, including counting usage once and preserving large attributes and tool output.
 
-Why it matters: Verify label editing and table sorting in your review workflow.
+The transport uses gzip-compressed OTLP/protobuf, OpenTelemetry’s binary telemetry format. The server detects gzip or zstd from identifying bytes in the data. Other changes improve queue labels and age metrics, and allow retrying or discarding more than 2,000 groups of failed work at once. No measured bandwidth reduction is supplied.
 
-![Phoenix v20.21.4 fixes label retention and table interactions](/edition-images/2026-10-15/phoenix-ui-fixes.webp)
-<!-- AI-generated editorial infographic, based on the linked source. -->
+Why it matters: For LangWatch operators: verify trace contents through your proxy and check visibility into queued or failed work.
+
+![LangWatch compresses trace uploads and fixes how records are read](/edition-images/2026-10-22/langwatch-otlp-fidelity.webp)
+
+## Phoenix sends uncaught browser errors to the server log
+
+Source: Phoenix — https://github.com/Arize-ai/phoenix/releases/tag/arize-phoenix-v20.24.0
+Published: 2026-10-21
+Channel: github
+
+Phoenix is an interface for inspecting AI traces and evaluation results. If that interface breaks in a user’s browser, application traces alone may not explain the problem. Version 20.24.0 adds reporting of uncaught frontend errors to the server log, giving operators another place to investigate.
+
+For illustration, a team testing the upgrade could trigger a controlled browser error and check whether its details reach the deployed server’s logs. The release notes do not describe automatic alerts or demonstrate that every browser failure will be detected. Error reporting still needs a check in the environment users actually access.
+
+The same release excludes LiteLLM 1.107.0, raises the certifi minimum to 2026.10.18, and requires Node releases containing the October security patches. These are requirements for supporting packages and the runtime. Installing a new Phoenix version does not by itself confirm which versions remain in a lockfile, container image or running process. Check the resolved deployment as well as the package version.
+
+Why it matters: For Phoenix operators: exercise browser-error reporting and verify the dependency versions actually deployed.
+
+![Phoenix sends uncaught browser errors to the server log](/edition-images/2026-10-22/phoenix-server-errors.webp)
+
+## Phoenix changes how AI evaluators return labels and refusals
+
+Source: Phoenix — https://github.com/Arize-ai/phoenix/releases/tag/%40arizeai/phoenix-evals%402.7.0
+Published: 2026-10-21
+Channel: github
+
+Phoenix Evals helps engineers use AI models to judge outputs, for example by assigning a quality label. Version 2.7.0 adds support for decision models through the AI SDK library. It also changes how existing evaluation models receive prompts and report results, so old and new scores need careful comparison.
+
+Consider an illustrative check that labels an answer as passing or failing. If the judging model refuses to decide, the application must handle an error instead of receiving an ordinary label. Counting that refusal as a pass would misrepresent the evaluation. The release itself does not claim better judging accuracy.
+
+Under the hood, experimental_decide returns labels, with probabilities and provider confidence recorded when available. Prompts become plain text; refusals throw Experimental_DecisionRefusalError. Decision spans, records of individual decisions, capture state, question and answer. Because this interface is experimental, the release pins ai to 7.0.137 and @ai-sdk/otel to 1.0.137. OpenAI decision models require @ai-sdk/openai 4.0.89 or later.
+
+Why it matters: For evaluation owners: test prompts and refusals before comparing upgraded runs with historical scores.
+
+![Phoenix changes how AI evaluators return labels and refusals](/edition-images/2026-10-22/phoenix-decision-evals.webp)
+
+---
+
+Story infographics in this edition are AI-generated editorial illustrations based on the linked sources.

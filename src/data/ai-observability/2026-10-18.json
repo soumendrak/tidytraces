@@ -1,0 +1,459 @@
+{
+  "date": "2026-10-18",
+  "story_window": "2026-10-17",
+  "dek": "One guide explains how to check an AI judge before trusting its scores: compare with human ratings, change irrelevant input details and retain the evidence needed to explain disagreements.",
+  "stories": [
+    {
+      "title": "A practical guide checks whether AI judges change their scores for the wrong reasons",
+      "url": "https://www.itechguides.com/how-to-use-ai-generated-evaluations-without-letting-model-bias-skew-your-results/",
+      "publisher": "iTechGuides",
+      "published": "2026-10-17",
+      "category_key": "evals",
+      "summary": "The guide recommends clear scoring criteria, human calibration and paired-input tests before using model-generated scores to make decisions.",
+      "body": [
+        "An AI judge uses a language model to score another system’s outputs. An October 17 iTechGuides article recommends first defining what decision that score will support. Then write observable scoring criteria and compare the judge with independent human ratings on representative and difficult examples, including missing evidence and critical failures.",
+        "For illustration, keep an answer’s substance unchanged but alter its formatting or an irrelevant authority cue. If the score changes, examine the judge’s evidence and explanation before concluding that application quality changed. The guide also suggests testing answer order and response length. These paired comparisons help investigate sensitivity; they do not prove a judge is unbiased.",
+        "Keep judge versions, prompts, datasets, aggregation rules and escalation thresholds with the results. Review score distributions, subgroup counts, repeat-run variation and disagreements, rather than relying on a single average. This is a synthesis of evaluation practices, not a new benchmark. Its value comes from implementing the checks and examining their evidence on the actual task."
+      ],
+      "format": "full",
+      "takeaway": "For evaluation owners: check judge and input changes before interpreting a score shift as changed application quality.",
+      "image": "/edition-images/2026-10-18/judge-validation.webp",
+      "image_width": 1440,
+      "image_height": 960,
+      "image_provenance": {
+        "kind": "generated-editorial",
+        "generator": "built-in-imagegen",
+        "prompt": "Use case: infographic-diagram\nAsset type: newspaper story infographic, standalone PNG, landscape 1536 by 1024.\nPrimary request: depict a conceptual validation workflow for LLM judges, based on the October 17 iTechGuides practical guide. Source-supported guidance: define the decision and rubric; calibrate against qualified human judgments; test paired inputs with identical substance but swapped answer order or changed formatting; preserve disagreement and versions. This is a conceptual workflow, not experimental results.\nStyle: warm cream newsprint, dark ink, restrained teal and rust accents, bold newspaper serif headings, generous spacing. Four clear connected panels, simple document and magnifier icons, readable short labels at article width.\nText verbatim: title \"CHECK THE JUDGE\"; subtitle \"Conceptual validation workflow\"; panels \"DEFINE THE RUBRIC\", \"CALIBRATE WITH HUMANS\", \"TEST PAIRED INPUTS\", \"RECORD DISAGREEMENT\"; small labels under panels respectively \"Decision and criteria\", \"Independent reference ratings\", \"Same substance, changed order\", \"Keep versions and evidence\". Arrows connect left to right or in a two-by-two reading sequence.\nConstraints: only these texts, no numerical metrics, no performance claims, no logos, no footer, no watermark. Depict guidance, not a software product architecture.",
+        "based_on": [
+          "https://www.itechguides.com/how-to-use-ai-generated-evaluations-without-letting-model-bias-skew-your-results/"
+        ],
+        "reviewed": true,
+        "sha256": "3339f4fe48300a97bd625c2a2ffffe56723250c7ae68b70e0ecf15c0b733be87",
+        "optimization": {
+          "format": "webp",
+          "quality": 82,
+          "max_width": 1440,
+          "source_sha256": "809ddb1ae348b1429655b368c5e5d6cab60aecfcad305717654501f87b70fc1e"
+        },
+        "bytes": 150610,
+        "original_file": "judge-validation-original.png",
+        "review_note": "Original PNG and final WebP visually inspected. All requested headings and labels correct; conceptual workflow clearly identified, readable at article width; no metrics, footer or watermark."
+      },
+      "source": "news",
+      "interest_score": 7,
+      "dedupe_key": "article:itechguides.com/how-to-use-ai-generated-evaluations-without-letting-model-bias-skew-your-results",
+      "score_reason": "Concrete evaluation validation practices with direct operator relevance, but a general synthesis without a new implementation, dataset, or measured result.",
+      "source_evidence": {
+        "url": "https://www.itechguides.com/how-to-use-ai-generated-evaluations-without-letting-model-bias-skew-your-results/",
+        "publication_date": "2026-10-17",
+        "raw_date": "2026-10-17T16:27:21+00:00",
+        "method": "Original publisher article: article:published_time and Article JSON-LD datePublished agree; visible time element reads October 17, 2026 with datetime 2026-10-17T17:27:21+01:00. Direct HTTP source saved in extra-0.html; dateModified was not used.",
+        "evidence_file": "extra-0.html"
+      }
+    }
+  ],
+  "research": {
+    "status": "complete",
+    "completed_sources": [
+      "hn",
+      "news",
+      "github"
+    ],
+    "checked_urls": [
+      "https://arize.com/blog/",
+      "https://langfuse.com/blog",
+      "https://www.langchain.com/blog",
+      "https://www.braintrust.dev/blog",
+      "https://opentelemetry.io/blog/",
+      "https://www.elastic.co/observability-labs/blog",
+      "https://www.datadoghq.com/blog/",
+      "https://www.honeycomb.io/blog/",
+      "https://www.digitalocean.com/blog",
+      "https://www.splunk.com/en_us/blog/observability.html",
+      "https://www.dynatrace.com/news/",
+      "https://langfuse.com/changelog",
+      "https://www.itechguides.com/how-to-use-ai-generated-evaluations-without-letting-model-bias-skew-your-results/",
+      "https://www.anthropic.com/news/an-update-on-independent-evaluators"
+    ],
+    "note": "Scoped official-source sweep plus exact-date web searches. No claim of exhaustive coverage. Initial web fetch failures for X, HN API and the guide were resolved with direct HTTP, saved as evidence. Supplied discovery file reused; fresh read-only HN query/item and GitHub API checks recorded in run directory rather than overwriting source-candidates outside authorized write scope. Retained guide is the original publisher’s practical advice, a synthesis rather than new empirical research. No secondhand NIST research claims reproduced as findings.",
+    "source_counts": {
+      "hn_candidates": 10,
+      "github_repositories": 8,
+      "github_releases_checked": 701,
+      "retained": {
+        "hn": 0,
+        "news": 1,
+        "github": 0
+      }
+    },
+    "hn_checks": [
+      {
+        "query": "observability",
+        "status": "complete",
+        "hits": 0,
+        "pages": 0,
+        "url": "https://hn.algolia.com/api/v1/search_by_date?query=observability&tags=story&numericFilters=created_at_i%3E%3D1792195200%2Ccreated_at_i%3C1792281600&hitsPerPage=100&page=0"
+      },
+      {
+        "query": "LLM evaluation",
+        "status": "complete",
+        "hits": 1,
+        "pages": 1,
+        "url": "https://hn.algolia.com/api/v1/search_by_date?query=LLM+evaluation&tags=story&numericFilters=created_at_i%3E%3D1792195200%2Ccreated_at_i%3C1792281600&hitsPerPage=100&page=0"
+      },
+      {
+        "query": "AI tracing",
+        "status": "complete",
+        "hits": 8,
+        "pages": 1,
+        "url": "https://hn.algolia.com/api/v1/search_by_date?query=AI+tracing&tags=story&numericFilters=created_at_i%3E%3D1792195200%2Ccreated_at_i%3C1792281600&hitsPerPage=100&page=0"
+      },
+      {
+        "query": "agent telemetry",
+        "status": "complete",
+        "hits": 0,
+        "pages": 0,
+        "url": "https://hn.algolia.com/api/v1/search_by_date?query=agent+telemetry&tags=story&numericFilters=created_at_i%3E%3D1792195200%2Ccreated_at_i%3C1792281600&hitsPerPage=100&page=0"
+      },
+      {
+        "query": "langfuse",
+        "status": "complete",
+        "hits": 1,
+        "pages": 1,
+        "url": "https://hn.algolia.com/api/v1/search_by_date?query=langfuse&tags=story&numericFilters=created_at_i%3E%3D1792195200%2Ccreated_at_i%3C1792281600&hitsPerPage=100&page=0"
+      }
+    ],
+    "hn_items": [
+      {
+        "id": "50134215",
+        "title": "Apple releases RSI-Inference: evaluating agents for self-improving LLM inference",
+        "url": "https://twitter.com/onloglogn/status/2111170954944823685",
+        "time": "2026-10-17T19:23:11.000Z",
+        "status": "complete"
+      },
+      {
+        "id": "50136210",
+        "title": "Doctors, Lawyers and Engineers joining AI's $400-an-Hour gig economy",
+        "url": "https://www.bloomberg.com/news/articles/2026-10-16/ai-training-jobs-are-attracting-doctors-lawyers-and-engineers",
+        "time": "2026-10-17T23:33:37.000Z",
+        "status": "complete"
+      },
+      {
+        "id": "50134197",
+        "title": "Show HN: Task629 - Personal development tracking through task descriptions",
+        "url": "https://github.com/sudo-bendg/task629",
+        "time": "2026-10-17T19:22:06.000Z",
+        "status": "complete"
+      },
+      {
+        "id": "50134189",
+        "title": "I need an opinion on my app",
+        "time": "2026-10-17T19:21:08.000Z",
+        "status": "complete"
+      },
+      {
+        "id": "50132747",
+        "title": "Why the Creators of AI Do Not Understand Their Own Creations",
+        "time": "2026-10-17T16:54:50.000Z",
+        "status": "complete"
+      },
+      {
+        "id": "50132550",
+        "title": "AI lab offers free plumbing and HVAC repairs to train AI robots",
+        "url": "https://www.tomshardware.com/tech-industry/artificial-intelligence/ai-lab-offers-free-plumbing-and-hvac-repairs-across-three-cities-to-train-ai-robots-wearable-sensors-record-video-of-repair-work-for-robotics-training-free-services-also-include-electrical-work-air-duct-cleaning-and-carpet-cleaning",
+        "time": "2026-10-17T16:35:35.000Z",
+        "status": "complete"
+      },
+      {
+        "id": "50131950",
+        "title": "Show HN: I built an AI cycling coach",
+        "url": "https://cuore.fit/",
+        "time": "2026-10-17T15:27:31.000Z",
+        "status": "complete"
+      },
+      {
+        "id": "50129015",
+        "title": "Meta to scrape content from business customers for model training",
+        "url": "https://www.theregister.com/ai-and-ml/2026/10/16/meta-grants-itself-right-to-scrape-content-from-business-customers-for-model-training/5303658",
+        "time": "2026-10-17T08:14:06.000Z",
+        "status": "complete"
+      },
+      {
+        "id": "50127187",
+        "title": "Publishers' Trust in Nippan Dented by Unauthorized Book Sales for AI Training",
+        "url": "https://japannews.yomiuri.co.jp/science-nature/technology/20261014-353599/",
+        "time": "2026-10-17T02:08:03.000Z",
+        "status": "complete"
+      },
+      {
+        "id": "50132339",
+        "title": "Ttype – Minimalist terminal typing test with typewriter soundscapes",
+        "url": "https://github.com/laguser/ttype",
+        "time": "2026-10-17T16:11:47.000Z",
+        "status": "complete"
+      }
+    ],
+    "github_checks": [
+      {
+        "repository": "langfuse/langfuse",
+        "status": "complete",
+        "releases_checked": 100,
+        "candidates": [],
+        "url": "https://api.github.com/repos/langfuse/langfuse/releases?per_page=100"
+      },
+      {
+        "repository": "Arize-ai/phoenix",
+        "status": "complete",
+        "releases_checked": 100,
+        "candidates": [],
+        "url": "https://api.github.com/repos/Arize-ai/phoenix/releases?per_page=100"
+      },
+      {
+        "repository": "Arize-ai/openinference",
+        "status": "complete",
+        "releases_checked": 100,
+        "candidates": [],
+        "url": "https://api.github.com/repos/Arize-ai/openinference/releases?per_page=100"
+      },
+      {
+        "repository": "langchain-ai/langsmith-sdk",
+        "status": "complete",
+        "releases_checked": 100,
+        "candidates": [],
+        "url": "https://api.github.com/repos/langchain-ai/langsmith-sdk/releases?per_page=100"
+      },
+      {
+        "repository": "braintrustdata/braintrust-sdk",
+        "status": "complete",
+        "releases_checked": 97,
+        "candidates": [],
+        "url": "https://api.github.com/repos/braintrustdata/braintrust-sdk/releases?per_page=100"
+      },
+      {
+        "repository": "wandb/weave",
+        "status": "complete",
+        "releases_checked": 100,
+        "candidates": [],
+        "url": "https://api.github.com/repos/wandb/weave/releases?per_page=100"
+      },
+      {
+        "repository": "langwatch/langwatch",
+        "status": "complete",
+        "releases_checked": 100,
+        "candidates": [],
+        "url": "https://api.github.com/repos/langwatch/langwatch/releases?per_page=100"
+      },
+      {
+        "repository": "Helicone/helicone",
+        "status": "complete",
+        "releases_checked": 4,
+        "candidates": [],
+        "url": "https://api.github.com/repos/Helicone/helicone/releases?per_page=100"
+      }
+    ],
+    "news_checks": [
+      {
+        "name": "Arize AI",
+        "url": "https://arize.com/blog/",
+        "status": "checked",
+        "http_status": 200,
+        "evidence_file": "source-0.txt",
+        "text_file": "source-0-text.txt",
+        "result": "Official index inspected; no October 17 primary article identified. Dates and article list retained in source-0-text.txt."
+      },
+      {
+        "name": "Langfuse",
+        "url": "https://langfuse.com/blog",
+        "status": "checked",
+        "http_status": 200,
+        "evidence_file": "source-1.txt",
+        "text_file": "source-1-text.txt",
+        "result": "Blog inspected; latest listed update September 30. Changelog separately checked; newest entry October 16, already covered."
+      },
+      {
+        "name": "LangSmith",
+        "url": "https://www.langchain.com/blog",
+        "status": "checked",
+        "http_status": 200,
+        "evidence_file": "source-2.txt",
+        "text_file": "source-2-text.txt",
+        "result": "Recent stories dated October 15 and earlier; no October 17 article identified."
+      },
+      {
+        "name": "Braintrust",
+        "url": "https://www.braintrust.dev/blog",
+        "status": "checked",
+        "http_status": 200,
+        "evidence_file": "source-3.txt",
+        "text_file": "source-3-text.txt",
+        "result": "Newest post October 15; no October 17 item identified."
+      },
+      {
+        "name": "OpenTelemetry",
+        "url": "https://opentelemetry.io/blog/",
+        "status": "checked",
+        "http_status": 200,
+        "evidence_file": "source-4.txt",
+        "text_file": "source-4-text.txt",
+        "result": "Newest blog post October 15; no October 17 item identified."
+      },
+      {
+        "name": "Elastic Observability Labs",
+        "url": "https://www.elastic.co/observability-labs/blog",
+        "status": "checked",
+        "http_status": 200,
+        "evidence_file": "source-5.txt",
+        "text_file": "source-5-text.txt",
+        "result": "Newest listed Observability Labs post October 13; no October 17 item identified."
+      },
+      {
+        "name": "Datadog",
+        "url": "https://www.datadoghq.com/blog/",
+        "status": "checked",
+        "http_status": 200,
+        "evidence_file": "source-6.txt",
+        "text_file": "source-6-text.txt",
+        "result": "Official blog list inspected and exact date search supplemented; no eligible October 17 publication identified."
+      },
+      {
+        "name": "Honeycomb",
+        "url": "https://www.honeycomb.io/blog/",
+        "status": "checked",
+        "http_status": 200,
+        "evidence_file": "source-7.txt",
+        "text_file": "source-7-text.txt",
+        "result": "Newest post October 16, already covered in history; no October 17 item identified."
+      },
+      {
+        "name": "DigitalOcean",
+        "url": "https://www.digitalocean.com/blog",
+        "status": "checked",
+        "http_status": 200,
+        "evidence_file": "source-8.txt",
+        "text_file": "source-8-text.txt",
+        "result": "Latest visible posts October 15 and earlier; no October 17 item identified."
+      },
+      {
+        "name": "Splunk Observability",
+        "url": "https://www.splunk.com/en_us/blog/observability.html",
+        "status": "checked",
+        "http_status": 200,
+        "evidence_file": "source-9.txt",
+        "text_file": "source-9-text.txt",
+        "result": "Official category surface returns No results in web and direct HTTP. Targeted site/date search performed; no eligible primary item found. This is a limited discovery surface, not an inaccessible candidate article."
+      },
+      {
+        "name": "Dynatrace",
+        "url": "https://www.dynatrace.com/news/",
+        "status": "checked",
+        "http_status": 200,
+        "evidence_file": "source-10.txt",
+        "text_file": "source-10-text.txt",
+        "result": "News/blog list inspected; newest blog entries October 15. No October 17 item identified."
+      }
+    ],
+    "history_checked": [
+      {
+        "file": "2026-10-13.json",
+        "stories": 15,
+        "sha256": "5999994404b8642a8ddb43c4c21b3bb10abd3cd9a8534fa62060223add67fc31"
+      },
+      {
+        "file": "2026-10-14.json",
+        "stories": 12,
+        "sha256": "1bdcde469e6283004d984f8b15b4f9fd77b3646a51d9c10d0c156584c4fe2461"
+      },
+      {
+        "file": "2026-10-15.json",
+        "stories": 6,
+        "sha256": "a4b9839fb73d0b41a5ef943fb36b7ddd3f49529f4a46ae075959b606ee9f6ecc"
+      },
+      {
+        "file": "2026-10-16.json",
+        "stories": 6,
+        "sha256": "000d9e8600fba77ccaf9dbe01d60e002dce9165f20f09fe340a177612a3baebd"
+      },
+      {
+        "file": "2026-10-17.json",
+        "stories": 5,
+        "sha256": "40ca896564230c0088f621ba45b33bd7515d0b6cb31a5a230915f7aa8f8f93f4"
+      }
+    ],
+    "excluded": [
+      {
+        "url": "https://twitter.com/onloglogn/status/2111170954944823685",
+        "hn_id": "50134215",
+        "reason": "Original X post visible timestamp is October 16, 2026 at 7:02 PM, confirmed in source-11-text.txt; October 17 HN submission is resurfacing."
+      },
+      {
+        "url": "https://www.bloomberg.com/news/articles/2026-10-16/ai-training-jobs-are-attracting-doctors-lawyers-and-engineers",
+        "hn_id": "50136210",
+        "reason": "AI training labor market; no concrete AI observability implementation."
+      },
+      {
+        "url": "https://github.com/sudo-bendg/task629",
+        "hn_id": "50134197",
+        "reason": "Personal task tracking; outside AI observability."
+      },
+      {
+        "url": "https://news.ycombinator.com/item?id=50134189",
+        "hn_id": "50134189",
+        "reason": "Request for app opinions; no substantive AI observability publication."
+      },
+      {
+        "url": "https://news.ycombinator.com/item?id=50132747",
+        "hn_id": "50132747",
+        "reason": "General AI understanding discussion; no operational observability or evaluation method."
+      },
+      {
+        "url": "https://www.tomshardware.com/tech-industry/artificial-intelligence/ai-lab-offers-free-plumbing-and-hvac-repairs-across-three-cities-to-train-ai-robots-wearable-sensors-record-video-of-repair-work-for-robotics-training-free-services-also-include-electrical-work-air-duct-cleaning-and-carpet-cleaning",
+        "hn_id": "50132550",
+        "reason": "Robotics training data collection; outside AI observability."
+      },
+      {
+        "url": "https://cuore.fit/",
+        "hn_id": "50131950",
+        "reason": "Cycling coach application; outside AI observability."
+      },
+      {
+        "url": "https://www.theregister.com/ai-and-ml/2026/10/16/meta-grants-itself-right-to-scrape-content-from-business-customers-for-model-training/5303658",
+        "hn_id": "50129015",
+        "reason": "Training-data policy report; outside AI observability."
+      },
+      {
+        "url": "https://japannews.yomiuri.co.jp/science-nature/technology/20261014-353599/",
+        "hn_id": "50127187",
+        "reason": "Book licensing/training data news; outside AI observability."
+      },
+      {
+        "url": "https://github.com/laguser/ttype",
+        "hn_id": "50132339",
+        "reason": "Terminal typing test; outside AI observability."
+      },
+      {
+        "url": "https://www.anthropic.com/news/an-update-on-independent-evaluators",
+        "reason": "Original datePublished 2026-10-15T17:20:00.000Z, visible October 15. dateModified October 16 and October 17 secondary coverage do not qualify.",
+        "evidence_file": "extra-1.html"
+      },
+      {
+        "url": "https://www.mitaiconference.org/research-slam",
+        "reason": "October 17 is an event date, not proven original publication date. Programme listing is not a dated published evaluation result."
+      },
+      {
+        "url": "https://heardin.ai/stories/irregular-evaluation-misconfiguration-lets-frontier-models-reach-the-real-internet",
+        "reason": "Secondary retrospective of July/August disclosures; no verified October 17 primary publication."
+      }
+    ],
+    "searches": [
+      "\"2026-10-17\" \"observability\"",
+      "\"October 17, 2026\" \"evaluation\" AI",
+      "\"2026-10-17\" (site:arize.com OR site:braintrust.dev OR site:langchain.com OR site:langfuse.com)",
+      "site:langchain.com/blog \"October 17, 2026\"",
+      "site:braintrust.dev/blog \"October 17, 2026\"",
+      "site:splunk.com/en_us/blog/observability \"October 17, 2026\"",
+      "site:datadoghq.com/blog \"Oct 17, 2026\"",
+      "site:arize.com/blog \"October 17, 2026\"",
+      "site:langfuse.com \"2026-10-17\""
+    ]
+  }
+}

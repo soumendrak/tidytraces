@@ -1,10 +1,10 @@
 import { readFile, writeFile, mkdir, rm, readdir, link, copyFile } from 'node:fs/promises';
-import { execFileSync, spawn } from 'node:child_process';
+import { execFileSync, spawn, spawnSync } from 'node:child_process';
 import { randomUUID } from 'node:crypto';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { constants } from 'node:fs';
-import { editionDates, validateDailyDraft, validateStoryImages, workspaceFingerprint } from './lib/daily-newspaper.js';
+import { editionDates, validateDailyDraft, validateStoryImages, workspaceFingerprint, assertNoBurnedInAiLabel, assertPublishBaseline } from './lib/daily-newspaper.js';
 
 const repo = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const args = process.argv.slice(2);
@@ -34,6 +34,11 @@ if (args.includes('--dry-run')) {
 if (new Date(dates.windowClosesAt) > new Date()) throw new Error('The requested source day has not finished; do not publish future or incomplete-day news');
 if (mode === 'publish' && !publish.length) throw new Error('Configure the publication command before running publish mode');
 if (mode === 'publish' && execFileSync('git', ['status', '--porcelain'], { cwd: repo, encoding: 'utf8' }).trim()) throw new Error('Unattended publishing requires a clean dedicated checkout. Commit/merge the site changes first.');
+if (mode === 'publish' && assertPublishBaseline(repo, dates.date, { fastForward: !process.env.NEWSPAPER_RUNNER_REEXEC }) === 'fast-forwarded') {
+  // This process already loaded the old runner, rules and config; continue with master's.
+  const rerun = spawnSync(process.execPath, process.argv.slice(1), { cwd: process.cwd(), stdio: 'inherit', env: { ...process.env, NEWSPAPER_RUNNER_REEXEC: '1' } });
+  process.exit(rerun.status ?? 1);
+}
 
 const lock = path.join(repo, '.cache/daily-newspaper.lock');
 await mkdir(path.dirname(lock), { recursive: true });
@@ -91,7 +96,7 @@ try {
       `EDITION_DATE: ${dates.date}\nNEWS_DATE: ${dates.storyWindow}\nDRAFT_PATH: ${draft}\n` +
       `IMAGE_DIRECTORY: ${draftImages}\nIMAGE_URL_PREFIX: /edition-images/${dates.date}/\n` +
       `Use only built-in image generation. Confirm that capability is available before research. If unavailable or generation fails, stop with a failure; no image API fallback, credentials request, substitute graphics, or text-only publication.\n` +
-      `Every retained story, including briefs, needs a distinct built-in-generated infographic, optimized to a static WebP in IMAGE_DIRECTORY (maximum 300 KB, width at most 1440, shortest edge at least 512), then visually reviewed. Use node scripts/optimize-newspaper-image.js INPUT_IMAGE OUTPUT.webp. Keep original PNGs in the run evidence directory. Record built-in-imagegen provenance, prompt, based_on source URL, reviewed:true, and SHA-256 and actual image_width/image_height of the final WebP, plus optimization metadata returned by the converter. Never reuse the same image across stories.\n` +
+      `Every retained story, including briefs, needs a distinct built-in-generated infographic, optimized to a static WebP in IMAGE_DIRECTORY (maximum 300 KB, width at most 1440, shortest edge at least 512), then visually reviewed. Use node scripts/optimize-newspaper-image.js INPUT_IMAGE OUTPUT.webp. Keep original PNGs in the run evidence directory. Record built-in-imagegen provenance, prompt, based_on source URL, reviewed:true, and SHA-256 and actual image_width/image_height of the final WebP, plus optimization metadata returned by the converter. Never reuse the same image across stories. Do not render any AI-generated label, footer or watermark inside images; the site discloses generated graphics once per edition.\n` +
       `Write original story body paragraphs, normally 150–220 words (full stories at least 130). A genuinely sparse source may be a 60+ word brief with brief_reason; it still requires an infographic. Do not pad with invented facts.\n` +
       `The publication day is frozen: ONLY original publications on ${dates.storyWindow}. Never relabel an October 30 item as October 12.\n` +
       `Discovery candidates: ${path.join(repo, '.cache/source-candidates', dates.storyWindow + '.json')}. Research News primary sources separately.\n` +
@@ -103,7 +108,7 @@ try {
     status.stage = 'curating'; await saveStatus();
     await run(command, 'agent.log', prompt);
     if (await workspaceFingerprint(repo) !== fingerprint) throw new Error('The editorial agent modified files outside its designated draft/evidence area');
-    existing = validateDailyDraft(JSON.parse(await readFile(draft, 'utf8')), dates, history);
+    existing = assertNoBurnedInAiLabel(validateDailyDraft(JSON.parse(await readFile(draft, 'utf8')), dates, history));
     const images = await validateStoryImages(existing, draftImages);
     for (const asset of images) {
       const destination = path.join(repo, 'public', asset.relative);
@@ -140,6 +145,8 @@ try {
         committed = true;
       }
     }
+    // Curation can take an hour; never deploy over a master that moved meanwhile.
+    assertPublishBaseline(repo, dates.date, { fastForward: false });
     status.stage = 'publishing'; await saveStatus();
     await run(publish, 'publish.log');
     status.published = true;

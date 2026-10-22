@@ -1,267 +1,272 @@
 {
-  "date": "2026-10-15",
-  "story_window": "2026-10-14",
-  "dek": "Native Claude traces, recoverable agent context, and the practical work of keeping evaluation credentials, SDKs, and telemetry pipelines dependable.",
+  "date": "2026-10-22",
+  "story_window": "2026-10-21",
+  "dek": "Today’s six stories start with how agents reuse lessons and investigate problems. Next come tools for recording application activity, delivering traces and finding browser errors. Finally, Phoenix changes how AI judges return evaluation results.",
   "stories": [
     {
-      "title": "Claude Platform opens native OpenTelemetry agent tracing in public beta",
-      "url": "https://claude.com/resources/articles/agent-observability-on-the-claude-platform",
-      "publisher": "Anthropic",
-      "published": "2026-10-14",
-      "category_key": "observability",
-      "summary": "Managed Agents, the Messages API, and Claude SDKs can export agent telemetry to OTLP destinations.",
-      "body": [
-        "Anthropic announced OpenTelemetry tracing for Claude Managed Agents, the Messages API, and Claude SDKs in public beta. The export covers agent turns, model calls, and tool activity, with latency, token usage, and identifying fields. Traces follow the OpenTelemetry GenAI semantic conventions and can go to tools accepting a standard OTLP endpoint. Managed Agents and Messages API users configure a destination in the Claude Console; the announcement describes automatic export for Claude SDKs. This brings platform agent execution into existing investigation and evaluation workflows.",
-        "For operators, the useful question is whether a trace explains a real failure across application and agent boundaries. Our editorial recommendation is to exercise one model call, one tool failure, and one MCP interaction, then inspect parentage, identifiers, and arrival at the destination. Check content handling before using sensitive traffic. Treat the beta announcement as an integration capability, not measured proof of complete coverage or correct agent behavior. Customer improvement figures in the article are testimonials, not a benchmark of the export itself."
-      ],
-      "format": "full",
-      "takeaway": "Verify trace arrival and correlation with a known failing agent run.",
-      "image": "/edition-images/2026-10-15/claude-otel.webp",
-      "image_width": 1440,
-      "image_height": 960,
-      "image_provenance": {
-        "kind": "generated-editorial",
-        "generator": "built-in-imagegen",
-        "prompt": "Use case: infographic-diagram. Asset type: one standalone landscape newspaper infographic PNG, 1536 by 1024. Warm pale newsprint, dark charcoal technical line drawings, restrained brick-red accent, generous whitespace, bold readable serif title and clear large labels. Simple outlined boxes and arrows. No product logos, screenshots, decorative scenery, invented metrics, guarantees, or extra small text. Title exactly \"CLAUDE TRACES VIA OPENTELEMETRY\". Three left cards labelled \"MANAGED AGENTS\", \"MESSAGES API\", \"CLAUDE SDKs\" feed one center card \"OTEL TRACES\" and then a right card \"OTLP DESTINATION\". Beneath center show three labels \"MODEL CALLS\", \"TOOL USE\", \"LATENCY + TOKENS\". Bottom banner \"PUBLIC BETA\". Footer \"Conceptual export path · Anthropic\". Source facts: all three sources can export; Managed Agents and Messages API need a destination configured in Console; SDKs export automatically. Do not imply coverage of uninstrumented application events or guaranteed delivery.",
-        "based_on": [
-          "https://claude.com/resources/articles/agent-observability-on-the-claude-platform"
-        ],
-        "reviewed": true,
-        "sha256": "c340d603543e0b5e09c2841542cbc6223bff7e8f92cca405bc04a74b52c2106a",
-        "optimization": {
-          "format": "webp",
-          "quality": 82,
-          "max_width": 1440,
-          "source_sha256": "35e1a9bb3c459d6cfb20d7dcff8c7934adac38f5aa74f414a84ef5a43d0fdc67"
-        }
-      },
-      "source": "news",
-      "interest_score": 9,
-      "score_reason": "Native standards-based export directly affects agent trace coverage across existing observability stacks; still a public beta.",
-      "dedupe_key": "article:claude.com/resources/articles/agent-observability-on-the-claude-platform",
-      "source_evidence": {
-        "url": "https://claude.com/resources/articles/agent-observability-on-the-claude-platform",
-        "publication_date": "2026-10-14",
-        "raw_date": "2026-10-14",
-        "method": "Visible October 14 publication date agrees with article:published_time and JSON-LD datePublished."
-      }
-    },
-    {
-      "title": "Deep Agents explains recoverable context management for long runs",
-      "url": "https://www.langchain.com/blog/context-engineering-deep-agents-remember",
-      "publisher": "LangChain · Jess Weng",
-      "published": "2026-10-14",
+      "title": "Beacon helps coding agents reuse lessons after human review",
+      "url": "https://news.ycombinator.com/item?id=50182883",
+      "publisher": "Asymptote Labs",
+      "published": "2026-10-21",
       "category_key": "agents",
-      "summary": "Middleware moves bulky context into files, summaries, and isolated tasks while keeping evidence retrievable.",
+      "summary": "Beacon turns records of coding-agent sessions into reusable instructions, with human approval before those lessons reach another agent.",
       "body": [
-        "LangChain describes five context-management techniques in its Deep Agents harness: offloading large inputs, summarizing history, loading skills on demand, isolating work in subagents, and persisting memory in files. Middleware applies these mechanisms at points around model and tool calls. Large tool results become previews with file references; older conversation messages can become a summary while recent messages remain intact. The post emphasizes retaining the underlying history so an agent can recover details later. Its walkthrough explains implementation choices rather than reporting a controlled accuracy or latency experiment.",
-        "This matters when an incident depends on information that disappeared from the active prompt. Our editorial recommendation is to retain links between a model call, the context transformation that preceded it, and the stored source material. Replay tasks requiring a detail from before compaction, and inspect both successful retrieval and forgotten constraints. Compare task outcomes and token use across the same workload before changing thresholds. A smaller context window is useful only when the agent can still recover the evidence needed for its next decision."
+        "Beacon is an open-source project for carrying lessons between coding agents. Switching tools can mean explaining the same workflow or past mistake again. In an October 21 announcement, its creators describe recording prompts, tool calls and commands across more than twenty agent tools, then converting those records into reusable knowledge.",
+        "The important step is human review. Beacon identifies recurring patterns and workflows, asks for approval, and makes reviewed lessons available to future agents. For illustration, a team could review a lesson about its repository’s test workflow before making that guidance available to another coding agent. This is an example of intended use, not a measured outcome.",
+        "Technically, session records share a common format. Approved knowledge is exposed through skills containing reusable instructions, and the Model Context Protocol (MCP), which connects agents to external tools and data. The announcement does not independently establish that capture is complete or that reused lessons improve results."
       ],
       "format": "full",
-      "takeaway": "Evaluate retrieval after compaction, alongside token savings and final task outcomes.",
-      "image": "/edition-images/2026-10-15/deep-agents-context.webp",
+      "takeaway": "For teams switching coding agents: check the original session evidence before approving a lesson for reuse.",
+      "image": "/edition-images/2026-10-22/beacon-reviewed-memory.webp",
       "image_width": 1440,
       "image_height": 960,
       "image_provenance": {
         "kind": "generated-editorial",
         "generator": "built-in-imagegen",
-        "prompt": "Use case: infographic-diagram. Asset type: one standalone landscape newspaper infographic PNG, 1536 by 1024. Warm pale newsprint, dark charcoal technical line drawings, restrained brick-red accent, generous whitespace, bold readable serif title and clear large labels. Simple outlined boxes and arrows. No product logos, screenshots, decorative scenery, invented metrics, guarantees, or extra small text. Title exactly \"KEEP CONTEXT RECOVERABLE\". Left box \"LARGE TOOL RESULT\" branches to a small center box \"PREVIEW + FILE PATH\" and a lower folder \"STORED ORIGINAL\". Preview points to right box \"MODEL CONTEXT\". A return arrow from model context to stored original is labelled \"READ WHEN NEEDED\". Bottom separate strip \"OLDER MESSAGES → SUMMARY + RECENT MESSAGES\" with a file icon labelled \"RETAIN HISTORY\". Footer \"Conceptual context management · Deep Agents\". Facts: offloading replaces bulky input with previews and file references, summarization retains recoverable history. Do not imply perfect recall or automatic correctness.",
+        "prompt": "Use case: infographic-diagram. Standalone landscape 3:2 PNG newspaper infographic. Explain the source-supported conceptual workflow from https://news.ycombinator.com/item?id=50182883 : Beacon captures coding-agent session telemetry across harnesses, normalizes prompts/tool calls/commands, distills workflows with human approval and makes reviewed knowledge available through skills or MCP. Warm ivory paper, crisp dark charcoal ink, restrained teal and amber, generous spacing, bold serif title, minimal readable text. Title exact 'From session traces to agent memory'. Subtitle exact 'Beacon · conceptual learning loop'. Four left-to-right connected panels labeled exactly 'Capture sessions', 'Normalize telemetry', 'Human review', 'Reuse knowledge'. Under first panel small labels 'Prompts · tools · commands'; under last panel 'Skills or MCP'. Show different abstract agent windows feeding a unified event stack, a person checking a document, then a knowledge book feeding a new agent window. Human review must visually precede reuse. No invented performance metrics, no product screenshot, no unsupported technical architecture, no logos, no watermark or footer.",
         "based_on": [
-          "https://www.langchain.com/blog/context-engineering-deep-agents-remember"
+          "https://news.ycombinator.com/item?id=50182883"
         ],
         "reviewed": true,
-        "sha256": "912c38392a4b75aac5a49f112d33c05c84cccfecb2d84f2869e14f457193d720",
+        "sha256": "92a65a07d7af2cac6b3474fff40d30d690975a934e4a642b4ff8c21ec3296404",
         "optimization": {
           "format": "webp",
           "quality": 82,
           "max_width": 1440,
-          "source_sha256": "f9ea9d9bce2c0b3561eada9860d7f9dbfd1a8cc0b844766aae615b6035aaffb6"
+          "source_sha256": "0840d346331ca4b22b46f2c39a06b758353aad264e001f3644165014f27f411b"
         }
       },
-      "source": "news",
+      "source": "hn",
       "interest_score": 8,
-      "score_reason": "Concrete harness mechanisms support debugging and evaluation of context loss during long-running agent workflows.",
-      "dedupe_key": "article:www.langchain.com/blog/context-engineering-deep-agents-remember",
+      "hn_id": "50182883",
+      "comments": "https://news.ycombinator.com/item?id=50182883",
+      "dedupe_key": "hn-original:50182883",
+      "score_reason": "Concrete cross-harness telemetry and human-review workflow connects trace visibility with agent memory; operational claims remain first-party.",
       "source_evidence": {
-        "url": "https://www.langchain.com/blog/context-engineering-deep-agents-remember",
-        "publication_date": "2026-10-14",
-        "raw_date": "2026-10-14T17:00:00.000Z",
-        "method": "Primary article visible date and JSON-LD datePublished; dateModified is separately recorded and not used."
+        "url": "https://news.ycombinator.com/item?id=50182883",
+        "publication_date": "2026-10-21",
+        "raw_date": "2026-10-21T15:42:38Z",
+        "method": "Official HN item API time 1792597358; first-party post explicitly identifies co-creators and announces their open-source implementation."
       }
     },
     {
-      "title": "Langfuse shares LLM credentials across projects with local overrides",
-      "url": "https://langfuse.com/changelog/2026-10-14-organization-llm-connections",
-      "publisher": "Langfuse · Tobias Wochinger",
-      "published": "2026-10-14",
-      "category_key": "evals",
-      "summary": "Organization connections centralize Playground, evaluation, and experiment credentials; matching project connections take precedence.",
+      "title": "How Langfuse limits Halo’s access during background investigations",
+      "url": "https://langfuse.com/blog/2026-10-21-building-the-langfuse-assistant",
+      "publisher": "Langfuse",
+      "published": "2026-10-21",
+      "category_key": "agents",
+      "summary": "Langfuse explains how its existing assistant continues investigations after the browser closes while respecting project permissions and approval requirements.",
       "body": [
-        "Langfuse added organization-level LLM connections that are automatically available to projects within the organization. These connections supply centrally managed credentials for the Playground, evaluations, and experiments. A project can use different credentials by creating a connection with the same name; the project connection takes precedence. Organization owners and administrators manage shared connections in the interface. Public API management with an organization-scoped key is also available on Enterprise Cloud and self-hosted Enterprise Edition. The announcement describes connection configuration, without claiming equivalent evaluator behavior across providers.",
-        "The operational benefit is less repeated setup, but central configuration also creates a shared dependency for evaluation jobs. Our editorial recommendation is to test credential rotation against a small experiment, then confirm which connection each project resolves. Include a project with an intentional override so a centrally changed key does not obscure local routing. Record the model and rubric with results when comparing experiments. Shared credentials simplify administration; reproducible evaluations still require evidence of the actual model configuration used for each run."
+        "Langfuse helps engineers inspect AI application runs. Its Halo assistant can investigate those records and help with dashboards or evaluations. An October 21 engineering post explains how this existing assistant works, including how it keeps running after you close the browser.",
+        "For illustration, you could ask Halo to group errors across failed runs, close the tab, and return to saved progress. Background workers perform the investigation independently of the browser. Access still follows your project permissions, and actions that change data require approval.",
+        "The implementation separates data access from script execution. A temporary project key and role-filtered tools control access through the Model Context Protocol (MCP), an interface for agent tools. An optional isolated script environment has no network access by default and receives only authorized data. Postgres stores progress; BullMQ queues work. Failed runs are not automatically retried, so background execution alone does not guarantee recovery. This is an architecture account, not a security certification."
       ],
       "format": "full",
-      "takeaway": "Test credential resolution and rotation before relying on shared evaluation connections.",
-      "image": "/edition-images/2026-10-15/langfuse-shared-connections.webp",
+      "takeaway": "For engineers building investigative assistants: test project permissions, approval steps and failure recovery separately.",
+      "image": "/edition-images/2026-10-22/halo-architecture.webp",
       "image_width": 1440,
       "image_height": 960,
       "image_provenance": {
         "kind": "generated-editorial",
         "generator": "built-in-imagegen",
-        "prompt": "Use case: infographic-diagram. Asset type: one standalone landscape newspaper infographic PNG, 1536 by 1024. Warm pale newsprint, dark charcoal technical line drawings, restrained brick-red accent, generous whitespace, bold readable serif title and clear large labels. Simple outlined boxes and arrows. No product logos, screenshots, decorative scenery, invented metrics, guarantees, or extra small text. Title exactly \"SHARED EVALUATION CONNECTIONS\". Top box \"ORGANIZATION CONNECTION\" flows to two bottom boxes \"PROJECT A\" and \"PROJECT B\". Project A short label \"USE SHARED CREDENTIALS\". Project B contains a brick-red inset \"SAME-NAME LOCAL CONNECTION\" with short label \"PROJECT OVERRIDE WINS\". Bottom text \"PLAYGROUND • EVALUATIONS • EXPERIMENTS\". Footer \"Conceptual credential resolution · Langfuse\". Facts: organization connections are shared across projects, project connections with the same name override them. No secrets, credential values, or unsupported access guarantees.",
+        "prompt": "Use case: infographic-diagram. Asset type: standalone landscape newspaper infographic for a technical article. Primary request: explain the separation of agent execution, authorized data access and optional script computation in Langfuse Halo. Source-supported facts: agent loop runs in backend workers, public MCP tools have project-scoped permissions, data-changing actions require approval, optional sandbox scripts have no network by default, background worker can continue when browser closes. Style: warm ivory newspaper paper, dark ink, restrained rust and teal, large serif headline and crisp sans-serif labels, lightly textured editorial illustration. Composition: generous margins and three clearly separated connected elements. At center an outlined box labelled 'Backend agent'. On left a project data cabinet reached through a gate labelled 'Project-scoped MCP' with small label 'Changes need approval'. On right a separate outlined container labelled 'Optional script sandbox', containing file and code symbols, with label 'No network by default'. A one-way arrow from backend agent into sandbox labelled 'Authorized data'. Lower strip: browser icon with closed tab, then independent worker icon and saved-events ledger; text 'Background work continues'. Title verbatim: 'Halo: separate the boundaries'. Subtitle verbatim: 'Architecture retrospective'. Small bottom text: 'Conceptual architecture'. Keep all text legible at article width. Do not claim a new launch, security certification, performance improvement or numerical metric. No fake screenshots, brand logos, extra features, watermark or generation disclosure text.",
         "based_on": [
-          "https://langfuse.com/changelog/2026-10-14-organization-llm-connections"
+          "https://langfuse.com/blog/2026-10-21-building-the-langfuse-assistant"
         ],
         "reviewed": true,
-        "sha256": "10dac7df9d48c0efd4244918ac02861e5220115cb094834f29fbf8f1b7a17d6e",
+        "sha256": "c534109fc3681ad762cf68e8ff214784b4ec44556e49c8a7d53609c2c0760309",
         "optimization": {
           "format": "webp",
           "quality": 82,
           "max_width": 1440,
-          "source_sha256": "b93fbb9056324a1a820c1e899d3db2b15f111786e03f74239e35854cd6cdbb05"
+          "source_sha256": "ae734a5b614e7f4945cce0ad9eb1e3b49cd1928f188c2c28f54220d085e76df3"
         }
       },
       "source": "news",
       "interest_score": 8,
-      "score_reason": "Concrete evaluation infrastructure change with explicit override precedence and management boundaries.",
-      "dedupe_key": "article:langfuse.com/changelog/2026-10-14-organization-llm-connections",
+      "dedupe_key": "article:langfuse.com/blog/2026-10-21-building-the-langfuse-assistant",
+      "score_reason": "Concrete architecture for bounded access, trace-driven debugging and background agent execution.",
       "source_evidence": {
-        "url": "https://langfuse.com/changelog/2026-10-14-organization-llm-connections",
-        "publication_date": "2026-10-14",
-        "raw_date": "2026-10-14",
-        "method": "Explicit original October 14 date on the primary changelog entry."
+        "url": "https://langfuse.com/blog/2026-10-21-building-the-langfuse-assistant",
+        "publication_date": "2026-10-21",
+        "method": "Explicit original publisher label October 21, 2026 above headline, confirmed on primary page and blog index; normalized to ISO calendar date",
+        "raw_date": "2026-10-21"
       }
     },
     {
-      "title": "Langfuse SDK majors add compressed export and remove deprecated APIs",
-      "url": "https://langfuse.com/changelog/2026-10-14-python-sdk-v5-js-sdk-v6",
-      "publisher": "Langfuse · Hassieb Pakzad",
-      "published": "2026-10-14",
+      "title": "Braintrust adds application logs to help explain agent runs",
+      "url": "https://github.com/braintrustdata/braintrust-sdk-javascript/releases/tag/braintrust%403.39.0",
+      "publisher": "Braintrust",
+      "published": "2026-10-21",
       "category_key": "observability",
-      "summary": "Python v5 and JS/TS v6 introduce typed metadata filters and require current server and runtime versions.",
+      "summary": "Braintrust’s JavaScript library adds application logging and console capture, alongside fixes to streamed tool calls and token records.",
       "body": [
-        "Langfuse released Python SDK v5 and JavaScript/TypeScript SDK v6 for its v4 platform. The announcement adds direct experiment-result links, typed metadata filtering, and gzip-compressed span batches. Numbers and booleans retain their types, while nested metadata can be filtered through dotted paths. Score creation and retrieval move into the current scores namespace; deprecated score namespaces and legacy API endpoints are removed. Both majors require Langfuse Cloud or self-hosted v4.59.0 or later, plus Python 3.11 or Node.js 22 and above. Existing v3 self-hosted deployments should retain the preceding SDK majors until upgrading.",
-        "For an instrumentation owner, compatibility is the immediate gate. Our editorial recommendation is to inventory removed API usage, check the deployed server version, and replay a representative trace before rollout. Include typed metadata, a score batch, and a large span export, then confirm the resulting records are queryable. Compression is a transport change, not evidence of lower end-to-end ingestion latency. Keep a rollback plan tied to compatible server and SDK versions so a migration does not quietly interrupt evaluation or trace collection."
+        "Braintrust records what happens during an AI application run so engineers can investigate failures. Its JavaScript SDK, the library added to an application, now supports application logging and console capture. Version 3.39.0 adds this context alongside traces, records of individual steps such as model calls, and fixes some incorrect usage records.",
+        "For illustration, an assistant might log that it used a fallback before calling a model. That application message could help explain an unexpected response alongside the recorded model call. Engineers should check what their integration actually captures; the announcement does not promise automatic coverage of every application path.",
+        "Technical changes include AI SDK batch and code-mode tracing. The release fixes streamed tool calls being incorrectly combined when certain providers omit an index. It adds text and usage recording for streamed Bedrock InvokeModel calls to OpenAI models, and includes cached input reads and writes in prompt_tokens for Pi and Flue integrations. Those accounting changes can affect comparisons with older runs. The notes provide no independent benchmark for logging overhead or cost accuracy."
       ],
       "format": "full",
-      "takeaway": "Gate the SDK upgrade on server compatibility and an ingestion replay.",
-      "image": "/edition-images/2026-10-15/langfuse-sdk-majors.webp",
+      "takeaway": "For JavaScript agent teams: inspect captured logs, streamed tool calls and token totals after upgrading.",
+      "image": "/edition-images/2026-10-22/braintrust-application-logs.webp",
       "image_width": 1440,
       "image_height": 960,
       "image_provenance": {
         "kind": "generated-editorial",
         "generator": "built-in-imagegen",
-        "prompt": "Use case: infographic-diagram. Asset type: one standalone landscape newspaper infographic PNG, 1536 by 1024. Warm pale newsprint, dark charcoal technical line drawings, restrained brick-red accent, generous whitespace, bold readable serif title and clear large labels. Simple outlined boxes and arrows. No product logos, screenshots, decorative scenery, invented metrics, guarantees, or extra small text. Title exactly \"CHECK THE SDK UPGRADE PATH\". Two left boxes \"PYTHON SDK v5\" and \"JS / TS SDK v6\" point to central box \"LANGFUSE CLOUD OR SERVER v4.59.0+\". Lower row two cards \"PYTHON 3.11+\" and \"NODE.JS 22+\". Bottom checklist \"CHECK REMOVED APIs • REPLAY A TRACE\". One simple small trace bundle icon with label \"GZIP SPAN BATCHES\". Footer \"Compatibility guide · Langfuse\". Facts: new majors need Cloud or self-hosted v4.59.0+, runtime requirements as shown, deprecated API endpoints removed, span batches gzip compressed. Do not assert performance gains or a guaranteed seamless upgrade.",
+        "prompt": "Use case: infographic-diagram. Standalone landscape 3:2 newspaper PNG infographic. Warm ivory paper background, crisp dark ink, muted teal and rust accents, bold serif title, generous whitespace. Source https://github.com/braintrustdata/braintrust-sdk-javascript/releases/tag/braintrust%403.39.0 supports application logging and console capture; AI SDK batch and code-mode tracing; fixes keeping streamed tool calls separate when provider omits index, and cache-token accounting corrections. Explain conceptual observability layers, not an actual UI or proprietary architecture. Title exactly 'More context, more faithful traces'. Subtitle 'Braintrust JavaScript SDK 3.39.0'. Three large side-by-side illustrated cards labelled 'Application logs', 'Batch + code traces', 'Streamed tool calls'. First card small console lines labelled 'Console capture'. Second card simple grouped span bars labelled 'Expanded tracing'. Third card show TWO clearly separate tool cards, no connecting merge, label 'Keep calls distinct'. Bottom separated editorial checklist with title 'Operator checks' and labels 'Inspect captured content' and 'Reconcile token totals'. No invented metrics, no logos, no fake screenshots, no watermark or footer. Text large and minimal, accurate spelling.",
         "based_on": [
-          "https://langfuse.com/changelog/2026-10-14-python-sdk-v5-js-sdk-v6"
+          "https://github.com/braintrustdata/braintrust-sdk-javascript/releases/tag/braintrust%403.39.0"
         ],
         "reviewed": true,
-        "sha256": "4a470034a8246ab421d1e2b4b0140b62e90d7c1c50ad27ba33ea91a0c2f8acd2",
+        "sha256": "7214d9a682f17a40f81c2d72311de0cd8635559087256a17beb06625a4982c2c",
         "optimization": {
           "format": "webp",
           "quality": 82,
           "max_width": 1440,
-          "source_sha256": "fcba4bef4d6a406aa805abae5787ff9ca888a2af6abdeec798a26dcfd8567e19"
-        }
-      },
-      "source": "news",
-      "interest_score": 8,
-      "score_reason": "Actionable SDK compatibility and export changes with explicit breaking API removals.",
-      "dedupe_key": "article:langfuse.com/changelog/2026-10-14-python-sdk-v5-js-sdk-v6",
-      "source_evidence": {
-        "url": "https://langfuse.com/changelog/2026-10-14-python-sdk-v5-js-sdk-v6",
-        "publication_date": "2026-10-14",
-        "raw_date": "2026-10-14",
-        "method": "Explicit original October 14 publication date on the primary SDK announcement."
-      }
-    },
-    {
-      "title": "Langfuse v4.59.0 addresses late traces and monitor execution failures",
-      "url": "https://github.com/langfuse/langfuse/releases/tag/v4.59.0",
-      "publisher": "Langfuse · GitHub",
-      "published": "2026-10-14",
-      "category_key": "observability",
-      "summary": "The server release lists late-arrival reprocessing, monitor retries, and Claude Managed Agents span mapping.",
-      "body": [
-        "Langfuse v4.59.0 includes changes at several points where telemetry can become operationally misleading. The release notes list reprocessing of late trace arrivals using sharded readiness, retrying monitor execution failures instead of disabling alerts, and bounding concurrent media uploads by decoded size. They also list mapping Claude Managed Agents tool information to output, naming spans after agents, and representing session creation as a span. These entries describe shipped changes; the release does not provide a quantified before-and-after completeness or recovery benchmark.",
-        "Our editorial recommendation is to validate the failure paths the release names. Send a delayed observation into an already active trace and check that downstream processing reflects it. Exercise a transient monitor execution failure and inspect both retry behavior and eventual alert delivery. For Claude Managed Agents, review tool output and session relationships in the received trace. Keep these checks separate from the session-reader feature covered in the previous edition and the SDK migration covered today. A release note identifies a useful regression scenario; production reliability still needs evidence from the deployed configuration."
-      ],
-      "format": "full",
-      "takeaway": "Replay late arrivals and monitor failures when validating the server upgrade.",
-      "image": "/edition-images/2026-10-15/langfuse-release-reliability.webp",
-      "image_width": 1440,
-      "image_height": 960,
-      "image_provenance": {
-        "kind": "generated-editorial",
-        "generator": "built-in-imagegen",
-        "prompt": "Use case: infographic-diagram. Asset type: one standalone landscape newspaper infographic PNG, 1536 by 1024. Warm pale newsprint, dark charcoal technical line drawings, restrained brick-red accent, generous whitespace, bold readable serif title and clear large labels. Simple outlined boxes and arrows. No product logos, screenshots, decorative scenery, invented metrics, guarantees, or extra small text. Title exactly \"REPLAY THE FAILURE PATHS\". Three independent equal cards with simple icons. First heading \"LATE TRACE\" and label \"REPROCESS ARRIVALS\" with delayed span card joining a trace. Second heading \"MONITOR ERROR\" and label \"RETRY EXECUTION\" with circular retry arrow. Third heading \"AGENT TOOLS\" and label \"CHECK OUTPUT MAPPING\" with tool result connected to a span. Bottom banner \"EDITORIAL UPGRADE CHECKS\". Footer \"Release v4.59.0 · Langfuse\". Facts: release notes name late-arrival reprocessing with sharded readiness, retry monitor execution failures instead of disabling alerts, and Claude Managed Agents tool-output mapping. These cards represent conceptual regression checks, not a promise of lossless delivery or guaranteed alerts.",
-        "based_on": [
-          "https://github.com/langfuse/langfuse/releases/tag/v4.59.0"
-        ],
-        "reviewed": true,
-        "sha256": "c1144de3de7a399e06a2ba5752ca4fd2d3738105dc2cf6e2c1358b6fc32aaec6",
-        "optimization": {
-          "format": "webp",
-          "quality": 82,
-          "max_width": 1440,
-          "source_sha256": "0287ca09f37c9e758f010f8e6597104ee578162410b1437ba5c0173ea98f6331"
+          "source_sha256": "57dc6366e13c5fef8504d3a8bc31a93e61a007fe097c906ff612cb125ed97f85"
         }
       },
       "source": "github",
       "interest_score": 8,
-      "score_reason": "Multiple concrete reliability fixes affect trace processing and alert continuity, distinct from earlier session UI coverage.",
-      "dedupe_key": "release:github.com/langfuse/langfuse/releases/tag/v4.59.0",
+      "dedupe_key": "release:braintrustdata/braintrust-sdk-javascript/releases/tag/braintrust%403.39.0",
+      "score_reason": "The release combines new application-level visibility with concrete fixes to streamed tool identity and token accounting.",
       "source_evidence": {
-        "url": "https://github.com/langfuse/langfuse/releases/tag/v4.59.0",
-        "publication_date": "2026-10-14",
-        "raw_date": "2026-10-14T09:20:36Z",
-        "method": "Official GitHub release API published_at, draft=false and prerelease=false; release changelog reviewed.",
-        "api": "https://api.github.com/repos/langfuse/langfuse/releases/tags/v4.59.0"
+        "url": "https://github.com/braintrustdata/braintrust-sdk-javascript/releases/tag/braintrust%403.39.0",
+        "publication_date": "2026-10-21",
+        "raw_date": "2026-10-21T16:03:33Z",
+        "method": "GitHub REST release endpoint published_at, with draft=false and prerelease=false; original release notes inspected."
       }
     },
     {
-      "title": "Phoenix v20.21.4 fixes label retention and table interactions",
-      "url": "https://github.com/Arize-ai/phoenix/releases/tag/arize-phoenix-v20.21.4",
-      "publisher": "Arize AI / Phoenix · GitHub",
-      "published": "2026-10-14",
-      "category_key": "evals",
-      "summary": "A small Phoenix patch keeps labels on Escape and fixes table sorting and accessibility warnings.",
+      "title": "LangWatch compresses trace uploads and fixes how records are read",
+      "url": "https://github.com/langwatch/langwatch/releases/tag/langwatch%40v3.21.0",
+      "publisher": "LangWatch",
+      "published": "2026-10-21",
+      "category_key": "observability",
+      "summary": "LangWatch changes how SDKs send traces and fixes ingestion errors affecting compressed data, model usage and tool output.",
       "body": [
-        "Phoenix v20.21.4 lists a UI fix that keeps labels on Escape and addresses table sorting, accessibility, and accessor warnings. Both the release API timestamp and the changelog date place this patch on October 14. The note is narrow: it does not announce a new evaluator, ingestion change, or measured quality improvement.",
-        "Our editorial recommendation is to verify label editing and sorting in the review tables your team actually uses after upgrading. Confirm that dismissing an interaction preserves the expected labels. This is a review-workflow maintenance patch; the short release note does not establish broader changes to evaluation results."
+        "LangWatch collects traces, records of the steps an AI application takes, for debugging and analysis. Version 3.21.0 changes how those records travel from an application to LangWatch. Its SDKs now send compressed trace data by default, and the server can recognize compression even when a request’s format label is wrong.",
+        "For illustration, a team upgrading behind a proxy should send a known trace through that same route and check that it arrives with the expected usage and tool output. A successful upload alone does not prove that every field was interpreted correctly. The release includes fixes for reading Claude traces, including counting usage once and preserving large attributes and tool output.",
+        "The transport uses gzip-compressed OTLP/protobuf, OpenTelemetry’s binary telemetry format. The server detects gzip or zstd from identifying bytes in the data. Other changes improve queue labels and age metrics, and allow retrying or discarding more than 2,000 groups of failed work at once. No measured bandwidth reduction is supplied."
       ],
-      "format": "brief",
-      "brief_reason": "The primary release contains a single UI bug-fix entry; a full story would overstate the available evidence.",
-      "takeaway": "Verify label editing and table sorting in your review workflow.",
-      "image": "/edition-images/2026-10-15/phoenix-ui-fixes.webp",
+      "format": "full",
+      "takeaway": "For LangWatch operators: verify trace contents through your proxy and check visibility into queued or failed work.",
+      "image": "/edition-images/2026-10-22/langwatch-otlp-fidelity.webp",
       "image_width": 1440,
       "image_height": 960,
       "image_provenance": {
         "kind": "generated-editorial",
         "generator": "built-in-imagegen",
-        "prompt": "Use case: infographic-diagram. Asset type: one standalone landscape newspaper infographic PNG, 1536 by 1024. Warm pale newsprint, dark charcoal technical line drawings, restrained brick-red accent, generous whitespace, bold readable serif title and clear large labels. Simple outlined boxes and arrows. No product logos, screenshots, decorative scenery, invented metrics, guarantees, or extra small text. Title exactly \"KEEP REVIEW LABELS IN PLACE\". Left a simple abstract review card labelled \"REVIEW LABELS\" with two tag chips \"PASS\" and \"NEEDS REVIEW\". Center a large keyboard key labelled \"ESC\" with arrow to right card \"LABELS RETAINED\" showing the same two chips. Bottom checklist \"CHECK TABLE SORTING\" beside a sort icon. Footer \"Conceptual UI fix · Phoenix v20.21.4\". Source facts: narrow release note says keep labels on Escape and fixes table sorting, accessibility and accessor warnings. Use abstract cards, not a product screenshot. Do not claim new evaluator capability or changes to scores.",
+        "prompt": "Create a standalone PNG editorial newspaper infographic in landscape 3:2, warm ivory paper, charcoal engraving-like outlines, restrained dark teal and ochre accent. Distinct composition: three stacked horizontal lanes, each with a clear left label and a simple source-grounded icon pair. Strong serif headline exact 'Trace transport meets fidelity'. Subtitle exact 'LangWatch 3.21.0 · Release changes'. Lane one label 'SDK transport' and diagram of trace documents entering a compressed parcel marked 'Gzipped OTLP/protobuf'. Lane two label 'Ingestion' and a magnifying glass looking at parcel header, with text 'Detect compression by magic bytes'. Lane three label 'Trace meaning' and a ledger document with text 'Fix usage and tool-output reading'. Use generous white space, large perfectly readable labels. Source https://github.com/langwatch/langwatch/releases/tag/langwatch%40v3.21.0 states all SDKs default to gzipped OTLP/protobuf, ingestion detects zstd/gzip by magic bytes even incorrect Content-Encoding, and Claude SDK/API traces get usage-once, large attributes, tool-output and cache-pricing reading fixes. Do not imply measured savings, universal compatibility, guaranteed complete fidelity, or depict fabricated architecture. These are separate release changes, not pipeline stages; no arrows between lanes. No logos, no chart metrics, no extra text, no watermark.",
         "based_on": [
-          "https://github.com/Arize-ai/phoenix/releases/tag/arize-phoenix-v20.21.4"
+          "https://github.com/langwatch/langwatch/releases/tag/langwatch%40v3.21.0"
         ],
         "reviewed": true,
-        "sha256": "fe16d7aeacb80cd077c77c2e25ed4b6a5ab8464a8a1857aa4785baf852d4e87d",
+        "sha256": "6333d339470ed295ab9e38f9f6153a4dfff8d0222b97653bee7b50b50d05dda2",
         "optimization": {
           "format": "webp",
           "quality": 82,
           "max_width": 1440,
-          "source_sha256": "297a2a2d23a448327d9a4f48a9a286e284d79f5a63383bafe6ccd9d553c5da2d"
+          "source_sha256": "36d162d15b8fb4ec0950f209df1a492c84072877ee66290754b1b6dfc60cc604"
         }
       },
       "source": "github",
-      "interest_score": 6,
-      "score_reason": "Narrow maintenance release relevant to human review, without a new evaluation capability.",
-      "dedupe_key": "release:github.com/Arize-ai/phoenix/releases/tag/arize-phoenix-v20.21.4",
+      "interest_score": 8,
+      "dedupe_key": "release:langwatch/langwatch/releases/tag/langwatch%40v3.21.0",
+      "score_reason": "Concrete transport, ingestion and recovery changes affect whether agent telemetry reaches analysis faithfully; performance claims remain unmeasured here.",
       "source_evidence": {
-        "url": "https://github.com/Arize-ai/phoenix/releases/tag/arize-phoenix-v20.21.4",
-        "publication_date": "2026-10-14",
-        "raw_date": "2026-10-14T16:12:17Z",
-        "method": "Official GitHub API published_at with draft=false and prerelease=false; release body independently dates version 20.21.4 October 14.",
-        "api": "https://api.github.com/repos/Arize-ai/phoenix/releases/tags/arize-phoenix-v20.21.4"
+        "url": "https://github.com/langwatch/langwatch/releases/tag/langwatch%40v3.21.0",
+        "publication_date": "2026-10-21",
+        "raw_date": "2026-10-21T21:27:00Z",
+        "method": "GitHub REST release endpoint published_at, with draft=false and prerelease=false; original release notes inspected."
+      }
+    },
+    {
+      "title": "Phoenix sends uncaught browser errors to the server log",
+      "url": "https://github.com/Arize-ai/phoenix/releases/tag/arize-phoenix-v20.24.0",
+      "publisher": "Phoenix",
+      "published": "2026-10-21",
+      "category_key": "observability",
+      "summary": "Phoenix adds browser-error reporting to server logs and updates dependency requirements, giving operators two concrete upgrade checks.",
+      "body": [
+        "Phoenix is an interface for inspecting AI traces and evaluation results. If that interface breaks in a user’s browser, application traces alone may not explain the problem. Version 20.24.0 adds reporting of uncaught frontend errors to the server log, giving operators another place to investigate.",
+        "For illustration, a team testing the upgrade could trigger a controlled browser error and check whether its details reach the deployed server’s logs. The release notes do not describe automatic alerts or demonstrate that every browser failure will be detected. Error reporting still needs a check in the environment users actually access.",
+        "The same release excludes LiteLLM 1.107.0, raises the certifi minimum to 2026.10.18, and requires Node releases containing the October security patches. These are requirements for supporting packages and the runtime. Installing a new Phoenix version does not by itself confirm which versions remain in a lockfile, container image or running process. Check the resolved deployment as well as the package version."
+      ],
+      "format": "full",
+      "takeaway": "For Phoenix operators: exercise browser-error reporting and verify the dependency versions actually deployed.",
+      "image": "/edition-images/2026-10-22/phoenix-server-errors.webp",
+      "image_width": 1440,
+      "image_height": 960,
+      "image_provenance": {
+        "kind": "generated-editorial",
+        "generator": "built-in-imagegen",
+        "prompt": "Create a standalone PNG editorial newspaper infographic, landscape 3:2. Warm ivory newsprint, charcoal ink, restrained burnt-orange and muted teal accents, strong serif headline, simple outlined icons, generous white space and very large readable labels. Source: https://github.com/Arize-ai/phoenix/releases/tag/arize-phoenix-v20.24.0 . Source-supported fact: Phoenix 20.24.0 reports uncaught frontend errors to the server log. Show exactly three large left-to-right elements: a browser window with a small warning triangle, an arrow carrying an error document, and a stack of server logs. Title exact 'When the interface fails'. Subtitle exact 'Phoenix 20.24.0 · Conceptual reporting flow'. Element labels exact 'Uncaught browser error', 'Error report', 'Server log'. At bottom in a separate small restrained editorial check strip, label exact 'Operator check: verify deployed error reporting'. This is a conceptual mechanism diagram, not a product screenshot. Do not imply automatic alerting or incident resolution. No numbers except the version, no logos, no extra text, no watermark.",
+        "based_on": [
+          "https://github.com/Arize-ai/phoenix/releases/tag/arize-phoenix-v20.24.0"
+        ],
+        "reviewed": true,
+        "sha256": "2be78af59c2db0b948503281772dbd5161f72c5a292c5af9ccf082c25243177b",
+        "optimization": {
+          "format": "webp",
+          "quality": 82,
+          "max_width": 1440,
+          "source_sha256": "09a089cd1c19c286fd06fe58860f1879b21ef732f0a83a31390e072b4ef4591f"
+        }
+      },
+      "source": "github",
+      "interest_score": 8,
+      "dedupe_key": "release:Arize-ai/phoenix/releases/tag/arize-phoenix-v20.24.0",
+      "score_reason": "The observability service gains visibility into its own browser failures while changing security-relevant dependency constraints; exposure still requires local verification.",
+      "source_evidence": {
+        "url": "https://github.com/Arize-ai/phoenix/releases/tag/arize-phoenix-v20.24.0",
+        "publication_date": "2026-10-21",
+        "raw_date": "2026-10-21T18:32:14Z",
+        "method": "GitHub REST release endpoint published_at, with draft=false and prerelease=false; original release notes inspected."
+      }
+    },
+    {
+      "title": "Phoenix changes how AI evaluators return labels and refusals",
+      "url": "https://github.com/Arize-ai/phoenix/releases/tag/%40arizeai/phoenix-evals%402.7.0",
+      "publisher": "Phoenix",
+      "published": "2026-10-21",
+      "category_key": "evals",
+      "summary": "Phoenix’s evaluation library adds decision-model support, with changes to prompt formatting, result metadata and refusal handling.",
+      "body": [
+        "Phoenix Evals helps engineers use AI models to judge outputs, for example by assigning a quality label. Version 2.7.0 adds support for decision models through the AI SDK library. It also changes how existing evaluation models receive prompts and report results, so old and new scores need careful comparison.",
+        "Consider an illustrative check that labels an answer as passing or failing. If the judging model refuses to decide, the application must handle an error instead of receiving an ordinary label. Counting that refusal as a pass would misrepresent the evaluation. The release itself does not claim better judging accuracy.",
+        "Under the hood, experimental_decide returns labels, with probabilities and provider confidence recorded when available. Prompts become plain text; refusals throw Experimental_DecisionRefusalError. Decision spans, records of individual decisions, capture state, question and answer. Because this interface is experimental, the release pins ai to 7.0.137 and @ai-sdk/otel to 1.0.137. OpenAI decision models require @ai-sdk/openai 4.0.89 or later."
+      ],
+      "format": "full",
+      "takeaway": "For evaluation owners: test prompts and refusals before comparing upgraded runs with historical scores.",
+      "image": "/edition-images/2026-10-22/phoenix-decision-evals.webp",
+      "image_width": 1440,
+      "image_height": 960,
+      "image_provenance": {
+        "kind": "generated-editorial",
+        "generator": "built-in-imagegen",
+        "prompt": "Use case: infographic-diagram. Standalone landscape 3:2 PNG newspaper infographic, warm ivory newsprint, dark charcoal ink, restrained teal and rust accents, serif heading, large perfectly legible labels. Explain Phoenix Evals 2.7.0 decision-model classifiers from https://github.com/Arize-ai/phoenix/releases/tag/%40arizeai/phoenix-evals%402.7.0 . Source facts: rendered prompts become plain text; experimental_decide produces classification label plus metadata probabilities/confidence when available; refusals throw an error; decision spans record state/question/answer. Title verbatim 'Decision models, explicit outcomes'. Subtitle 'Phoenix Evals 2.7.0'. Center left 'Plain-text prompt' arrow to central 'Decision model'. Branch upper right to 'Label + metadata' and small 'Probabilities when reported'. Branch lower right to rust panel 'Refusal → error'. Thin line below main flow to a teal record card 'Trace: state · question · answer'. Bottom editorial check separate labeled 'Operator check: test prompts and refusals'. No invented performance metrics, no logos, no screenshot, no watermark or footer. Keep diagram simple and labels readable at article width.",
+        "based_on": [
+          "https://github.com/Arize-ai/phoenix/releases/tag/%40arizeai/phoenix-evals%402.7.0"
+        ],
+        "reviewed": true,
+        "sha256": "51e1f45c6d24d69dcfae7f08a82bb879e818b9a73820c5d153f2c00da01e2cb6",
+        "optimization": {
+          "format": "webp",
+          "quality": 82,
+          "max_width": 1440,
+          "source_sha256": "d1321d4e677ec2b8e53965b32c9488d6215435f5a06881ee86a4ead01475bb2d"
+        }
+      },
+      "source": "github",
+      "interest_score": 8,
+      "dedupe_key": "release:Arize-ai/phoenix/releases/tag/%40arizeai/phoenix-evals%402.7.0",
+      "score_reason": "Concrete evaluator migration details expose prompt, refusal and dependency changes that can invalidate otherwise comparable evaluation runs.",
+      "source_evidence": {
+        "url": "https://github.com/Arize-ai/phoenix/releases/tag/%40arizeai/phoenix-evals%402.7.0",
+        "publication_date": "2026-10-21",
+        "raw_date": "2026-10-21T16:06:50Z",
+        "method": "GitHub REST release endpoint published_at, with draft=false and prerelease=false; original release notes inspected."
       }
     }
   ],
@@ -284,190 +289,190 @@
       "https://www.digitalocean.com/blog",
       "https://www.splunk.com/en_us/blog/observability.html",
       "https://www.dynatrace.com/news/",
-      "https://langfuse.com/changelog",
-      "https://claude.com/resources/articles/agent-observability-on-the-claude-platform",
-      "https://www.langchain.com/blog/context-engineering-deep-agents-remember",
-      "https://langfuse.com/changelog/2026-10-14-organization-llm-connections",
-      "https://langfuse.com/changelog/2026-10-14-python-sdk-v5-js-sdk-v6"
+      "https://langfuse.com/blog/2026-10-21-building-the-langfuse-assistant",
+      "https://langfuse.com/blog/2026-10-22-operating-langfuse-as-an-internal-service",
+      "https://www.elastic.co/observability-labs/blog/opentelemetry-java-agent-invokedynamic-migration",
+      "https://arize.com/blog/ai-agent-tool-selection-decision-tracing/",
+      "https://arize.com/blog/ai-agent-permissions/",
+      "https://www.datadoghq.com/blog/ai/introducing-scout-sre-specialized-model-bits-ai/",
+      "https://github.com/Arize-ai/phoenix/releases/tag/%40arizeai/phoenix-evals%402.7.0",
+      "https://github.com/langwatch/langwatch/releases/tag/typescript-sdk%40v1.20.0",
+      "https://github.com/langwatch/langwatch/releases/tag/v3.21.0",
+      "https://github.com/langwatch/langwatch/releases/tag/langwatch-3.21.0",
+      "https://github.com/Arize-ai/phoenix/releases/tag/%40arizeai/phoenix-mcp%404.3.17",
+      "https://github.com/Arize-ai/phoenix/releases/tag/arize-phoenix-v20.24.0",
+      "https://github.com/Arize-ai/phoenix/releases/tag/%40arizeai/phoenix-client%407.16.2",
+      "https://github.com/Arize-ai/phoenix/releases/tag/%40arizeai/phoenix-config%400.5.1",
+      "https://github.com/langwatch/langwatch/releases/tag/langwatch%40v3.21.0",
+      "https://github.com/Arize-ai/phoenix/releases/tag/%40arizeai/phoenix-cli%401.18.9",
+      "https://github.com/braintrustdata/braintrust-sdk-javascript/releases/tag/braintrust%403.39.0",
+      "https://github.com/Arize-ai/phoenix/releases/tag/%40arizeai/phoenix-otel%402.3.0",
+      "https://github.com/langwatch/langwatch/releases/tag/mcp-server%40v2.2.0",
+      "https://github.com/langfuse/langfuse/releases/tag/v4.67.0",
+      "https://hn.algolia.com/api/v1/search_by_date",
+      "https://news.ycombinator.com/item?id=50182883"
     ],
-    "source_checks": [
-      {
-        "name": "Arize AI",
-        "url": "https://arize.com/blog/",
-        "status": 200,
-        "checked_at": "2026-10-15T19:11:17.171184+00:00",
-        "window_links": []
-      },
-      {
-        "name": "Langfuse",
-        "url": "https://langfuse.com/blog",
-        "status": 200,
-        "checked_at": "2026-10-15T19:11:16.509741+00:00",
-        "window_links": []
-      },
-      {
-        "name": "LangSmith",
-        "url": "https://www.langchain.com/blog",
-        "status": 200,
-        "checked_at": "2026-10-15T19:11:16.412973+00:00",
-        "window_links": []
-      },
-      {
-        "name": "Braintrust",
-        "url": "https://www.braintrust.dev/blog",
-        "status": 200,
-        "checked_at": "2026-10-15T19:11:17.390162+00:00",
-        "window_links": []
-      },
-      {
-        "name": "OpenTelemetry",
-        "url": "https://opentelemetry.io/blog/",
-        "status": 200,
-        "checked_at": "2026-10-15T19:11:16.601209+00:00",
-        "window_links": []
-      },
-      {
-        "name": "Elastic Observability Labs",
-        "url": "https://www.elastic.co/observability-labs/blog",
-        "status": 200,
-        "checked_at": "2026-10-15T19:11:19.428567+00:00",
-        "window_links": []
-      },
-      {
-        "name": "Datadog",
-        "url": "https://www.datadoghq.com/blog/",
-        "status": 200,
-        "checked_at": "2026-10-15T19:11:16.637070+00:00",
-        "window_links": []
-      },
-      {
-        "name": "Honeycomb",
-        "url": "https://www.honeycomb.io/blog/",
-        "status": 200,
-        "checked_at": "2026-10-15T19:11:17.738632+00:00",
-        "window_links": []
-      },
-      {
-        "name": "DigitalOcean",
-        "url": "https://www.digitalocean.com/blog",
-        "status": 200,
-        "checked_at": "2026-10-15T19:11:17.032914+00:00",
-        "window_links": []
-      },
-      {
-        "name": "Splunk Observability",
-        "url": "https://www.splunk.com/en_us/blog/observability.html",
-        "status": 200,
-        "checked_at": "2026-10-15T19:11:16.943761+00:00",
-        "window_links": []
-      },
-      {
-        "name": "Dynatrace",
-        "url": "https://www.dynatrace.com/news/",
-        "status": 200,
-        "checked_at": "2026-10-15T19:11:17.321619+00:00",
-        "window_links": []
-      }
-    ],
+    "note": "Scoped daily checks of configured HN queries, all official News surfaces and eight GitHub watchlist repositories. Original source calendar dates are 2026-10-21. All nine previous editions (56 stories) reviewed for URL and event duplication; overlapping release tags consolidated. Scoped review of all configured official News indexes plus exact-date searches; no claim of exhaustive web coverage. Optional raw HTTP metadata fetch for Arize returned403; primary article remained readable through web, but only month-level original date was available and candidates were excluded. No selected source verification failure.",
     "excluded": [
       {
-        "url": "https://news.ycombinator.com/item?id=50093003",
-        "reason": "Decision-optimization launch claims benchmark gains but provides no concrete tracing or operational evaluation mechanism in the HN announcement; excluded from this scoped edition."
+        "url": "https://arize.com/blog/ai-agent-tool-selection-decision-tracing/",
+        "reason": "Primary visible publication label is only October2026; exact original day unverified. Search suggests October20 but cannot establish original publication."
       },
       {
-        "url": "https://news.ycombinator.com/item?id=50097092",
-        "reason": "Outside the focused AI observability, operational evaluation, and telemetry beat."
+        "url": "https://arize.com/blog/ai-agent-permissions/",
+        "reason": "Already published in2026-10-16 edition; primary visible label only October2026."
       },
       {
-        "url": "https://news.ycombinator.com/item?id=50094049",
-        "reason": "Outside the focused AI observability, operational evaluation, and telemetry beat."
+        "url": "https://www.elastic.co/observability-labs/blog/opentelemetry-java-agent-invokedynamic-migration",
+        "reason": "Original date verified October21; retrospective on instrumentation migration completed July2026. Narrow generic Java instrumentation rather than direct AI observability. Editorial exclusion, not a date failure."
       },
       {
-        "url": "https://news.ycombinator.com/item?id=50093212",
-        "reason": "Agent personalization/training article; no directly relevant telemetry or operational evaluation change established."
+        "url": "https://langfuse.com/blog/2026-10-22-operating-langfuse-as-an-internal-service",
+        "reason": "Original publication October22 is outside strictOctober21 window."
       },
       {
-        "url": "https://news.ycombinator.com/item?id=50092718",
-        "reason": "Outside the focused AI observability, operational evaluation, and telemetry beat."
+        "url": "https://www.datadoghq.com/blog/ai/introducing-scout-sre-specialized-model-bits-ai/",
+        "reason": "Primary Published label Oct15,2026, outside window."
       },
       {
-        "url": "https://news.ycombinator.com/item?id=50092664",
-        "reason": "Outside the focused AI observability, operational evaluation, and telemetry beat."
+        "url": "https://techinformed.com/ai-adds-to-an-expensive-monitoring-problem-cisco-finds/",
+        "reason": "October21 secondary coverage of Cisco/Splunk report already covered2026-10-21 issue, originalOct20."
       },
       {
-        "url": "https://news.ycombinator.com/item?id=50091642",
-        "reason": "Outside the focused AI observability, operational evaluation, and telemetry beat."
+        "url": "https://www.hpcwire.com/bigdatawire/this-just-in/grafana-labs-expands-ai-observability-and-agentic-operations-in-grafana-cloud/",
+        "reason": "October21 syndication of Grafana announcement already covered2026-10-21 issue, originalOct20."
       },
       {
-        "url": "https://news.ycombinator.com/item?id=50091127",
-        "reason": "Outside the focused AI observability, operational evaluation, and telemetry beat."
+        "url": "https://www.redhat.com/en/events/webinar/operationalizing-ai-agents-security-governance-and-observability-for-production",
+        "reason": "October21 is an event date, not original publication evidence."
       },
       {
-        "url": "https://news.ycombinator.com/item?id=50090024",
-        "reason": "Outside the focused AI observability, operational evaluation, and telemetry beat."
+        "url": "https://news.ycombinator.com/item?id=50181582",
+        "reason": "Outside AI observability beat: general app, compute, coding or infrastructure topic without concrete agent/LLM telemetry or evaluation relevance."
       },
       {
-        "url": "https://news.ycombinator.com/item?id=50088096",
-        "reason": "Outside the focused AI observability, operational evaluation, and telemetry beat."
+        "url": "https://news.ycombinator.com/item?id=50186182",
+        "reason": "Outside AI observability beat: general app, compute, coding or infrastructure topic without concrete agent/LLM telemetry or evaluation relevance."
       },
       {
-        "url": "https://news.ycombinator.com/item?id=50088088",
-        "reason": "Runtime orchestration and progress reporting launch; no concrete tracing or evaluation capability established in the first-party post."
+        "url": "https://news.ycombinator.com/item?id=50185013",
+        "reason": "Outside AI observability beat: general app, compute, coding or infrastructure topic without concrete agent/LLM telemetry or evaluation relevance."
       },
       {
-        "url": "https://news.ycombinator.com/item?id=50086470",
-        "reason": "Outside the focused AI observability, operational evaluation, and telemetry beat."
+        "url": "https://news.ycombinator.com/item?id=50183626",
+        "reason": "Outside AI observability beat: general app, compute, coding or infrastructure topic without concrete agent/LLM telemetry or evaluation relevance."
       },
       {
-        "url": "https://news.ycombinator.com/item?id=50086344",
-        "reason": "Outside the focused AI observability, operational evaluation, and telemetry beat."
+        "url": "https://news.ycombinator.com/item?id=50183591",
+        "reason": "Outside AI observability beat: general app, compute, coding or infrastructure topic without concrete agent/LLM telemetry or evaluation relevance."
       },
       {
-        "url": "https://news.ycombinator.com/item?id=50086155",
-        "reason": "Outside the focused AI observability, operational evaluation, and telemetry beat."
+        "url": "https://news.ycombinator.com/item?id=50183257",
+        "reason": "Outside AI observability beat: general app, compute, coding or infrastructure topic without concrete agent/LLM telemetry or evaluation relevance."
       },
       {
-        "url": "https://news.ycombinator.com/item?id=50085627",
-        "reason": "Outside the focused AI observability, operational evaluation, and telemetry beat."
+        "url": "https://news.ycombinator.com/item?id=50178330",
+        "reason": "Outside AI observability beat: general app, compute, coding or infrastructure topic without concrete agent/LLM telemetry or evaluation relevance."
       },
       {
-        "url": "https://news.ycombinator.com/item?id=50085405",
-        "reason": "Outside the focused AI observability, operational evaluation, and telemetry beat."
+        "url": "https://news.ycombinator.com/item?id=50176363",
+        "reason": "Outside AI observability beat: general app, compute, coding or infrastructure topic without concrete agent/LLM telemetry or evaluation relevance."
       },
       {
-        "url": "https://news.ycombinator.com/item?id=50085302",
-        "reason": "Outside the focused AI observability, operational evaluation, and telemetry beat."
+        "url": "https://news.ycombinator.com/item?id=50175121",
+        "reason": "Outside AI observability beat: general app, compute, coding or infrastructure topic without concrete agent/LLM telemetry or evaluation relevance."
       },
       {
-        "url": "https://github.com/Arize-ai/phoenix/releases/tag/arize-phoenix-v20.21.3",
-        "reason": "GitHub published_at is October 14 but release body dates the documentation-only change October 13; conflicting original publication evidence."
+        "url": "https://news.ycombinator.com/item?id=50183915",
+        "reason": "Outside AI observability beat: general app, compute, coding or infrastructure topic without concrete agent/LLM telemetry or evaluation relevance."
       },
       {
-        "url": "https://arize.com/blog/eu-ai-act-compliance-ai-agents/",
-        "reason": "Primary datePublished is 2026-10-13T09:00:15-07:00, outside the frozen October 14 window."
+        "url": "https://news.ycombinator.com/item?id=50182181",
+        "reason": "Outside AI observability beat: general app, compute, coding or infrastructure topic without concrete agent/LLM telemetry or evaluation relevance."
       },
       {
-        "url": "https://www.dynatrace.com/news/blog/business-observability-a-strategic-imperative-for-financial-services/",
-        "reason": "Dated October 14 but the loan-validation business-observability example lacks a concrete AI-system operating connection."
+        "url": "https://github.com/langwatch/langwatch/releases/tag/typescript-sdk%40v1.20.0",
+        "reason": "Overlapping same-day LangWatch distribution, SDK, MCP or Helm release consolidated into the application 3.21.0 story; no independent duplicate story."
       },
       {
-        "url": "https://www.honeycomb.io/blog/honeycomb-aws-resilience-technology-competency",
-        "reason": "October 14 partnership competency announcement; no concrete new AI telemetry or evaluation mechanism."
+        "url": "https://github.com/langwatch/langwatch/releases/tag/v3.21.0",
+        "reason": "Overlapping same-day LangWatch distribution, SDK, MCP or Helm release consolidated into the application 3.21.0 story; no independent duplicate story."
       },
       {
-        "url": "https://www.braintrust.dev/blog",
-        "reason": "Latest dated entries are October 15 and October 8; neither belongs to the window."
+        "url": "https://github.com/langwatch/langwatch/releases/tag/langwatch-3.21.0",
+        "reason": "Overlapping same-day LangWatch distribution, SDK, MCP or Helm release consolidated into the application 3.21.0 story; no independent duplicate story."
       },
       {
-        "url": "https://opentelemetry.io/blog/",
-        "reason": "October 15 community interviews and October 13 hostmetrics article fall outside the window."
+        "url": "https://github.com/Arize-ai/phoenix/releases/tag/%40arizeai/phoenix-mcp%404.3.17",
+        "reason": "Dependency propagation or narrow configuration fix; insufficient distinct editorial substance for an additional story."
       },
       {
-        "url": "https://www.langchain.com/blog/october-2026-langchain-newsletter",
-        "reason": "Published October 15 and summarizes earlier announcements; outside the window."
+        "url": "https://github.com/Arize-ai/phoenix/releases/tag/%40arizeai/phoenix-client%407.16.2",
+        "reason": "Dependency propagation or narrow configuration fix; insufficient distinct editorial substance for an additional story."
+      },
+      {
+        "url": "https://github.com/Arize-ai/phoenix/releases/tag/%40arizeai/phoenix-config%400.5.1",
+        "reason": "Dependency propagation or narrow configuration fix; insufficient distinct editorial substance for an additional story."
+      },
+      {
+        "url": "https://github.com/Arize-ai/phoenix/releases/tag/%40arizeai/phoenix-cli%401.18.9",
+        "reason": "Dependency propagation or narrow configuration fix; insufficient distinct editorial substance for an additional story."
+      },
+      {
+        "url": "https://github.com/Arize-ai/phoenix/releases/tag/%40arizeai/phoenix-otel%402.3.0",
+        "reason": "Decision-model tracing included in Phoenix evaluators story, not a duplicate standalone story."
+      },
+      {
+        "url": "https://github.com/langwatch/langwatch/releases/tag/mcp-server%40v2.2.0",
+        "reason": "Overlapping same-day LangWatch distribution, SDK, MCP or Helm release consolidated into the application 3.21.0 story; no independent duplicate story."
+      },
+      {
+        "url": "https://github.com/langfuse/langfuse/releases/tag/v4.67.0",
+        "reason": "Incremental setup, organization API key filtering, UI and audit-log changes reviewed; narrower operator significance than retained releases."
       }
     ],
-    "note": "Scoped primary-publisher sweep and configured eight-repository GitHub watchlist, not exhaustive coverage. All 17 HN candidates reviewed, with official API records checked. No HN selection; three stable GitHub releases reviewed, one excluded for conflicting dates. Langfuse server release focuses on ingestion and monitor fixes, distinct from SDK and connection announcements and prior session UI coverage. Editorial operator checks are recommendations, not reported tests."
+    "github_checks": [
+      {
+        "repository": "langfuse/langfuse",
+        "releases_checked": 100,
+        "coverage": "latest 100 releases; not a global GitHub search"
+      },
+      {
+        "repository": "Arize-ai/phoenix",
+        "releases_checked": 100,
+        "coverage": "latest 100 releases; not a global GitHub search"
+      },
+      {
+        "repository": "Arize-ai/openinference",
+        "releases_checked": 100,
+        "coverage": "latest 100 releases; not a global GitHub search"
+      },
+      {
+        "repository": "langchain-ai/langsmith-sdk",
+        "releases_checked": 100,
+        "coverage": "latest 100 releases; not a global GitHub search"
+      },
+      {
+        "repository": "braintrustdata/braintrust-sdk",
+        "releases_checked": 100,
+        "coverage": "latest 100 releases; not a global GitHub search"
+      },
+      {
+        "repository": "wandb/weave",
+        "releases_checked": 100,
+        "coverage": "latest 100 releases; not a global GitHub search"
+      },
+      {
+        "repository": "langwatch/langwatch",
+        "releases_checked": 100,
+        "coverage": "latest 100 releases; not a global GitHub search"
+      },
+      {
+        "repository": "Helicone/helicone",
+        "releases_checked": 4,
+        "coverage": "latest 100 releases; not a global GitHub search"
+      }
+    ]
   },
   "name": "Tidy Traces — AI Observability Daily",
   "canonical_url": "https://tidytraces.com/"

@@ -1,0 +1,383 @@
+{
+  "date": "2026-10-21",
+  "story_window": "2026-10-20",
+  "dek": "Start with how an AI gateway handles requests and how Grafana observes agent activity. Then examine who owns monitoring and its costs. The final release story checks whether scores, retry timings and metadata retain their intended meaning.",
+  "stories": [
+    {
+      "title": "Respan’s early AI gateway lets ordered plugins inspect and route requests",
+      "url": "https://news.ycombinator.com/item?id=50167583",
+      "publisher": "Respan",
+      "published": "2026-10-20",
+      "category_key": "agents",
+      "summary": "A Launch HN describes a Rust gateway with a small core and plugin-controlled request streams; the project remains pre-alpha.",
+      "body": [
+        "An AI gateway sits between an application and model providers, handling routing and related policies. Respan’s October 20 Launch HN introduces an open-source Rust gateway with a small core and public plugin interfaces. Providers, protocols, routing, fallbacks and example privacy filters live in extensions. The project is pre-alpha, not a production-readiness guarantee.",
+        "For illustration, a team could test a streaming request through its chosen plugin order, then compare the returned usage and trace fields with the original provider response. Repeat with a different client/provider format. That checks whether translation or interception changes information an investigator depends on; it is not a performance result supplied by the announcement.",
+        "Plugins run in registration order and can inspect or wrap streams, choose providers, make calls, respond or refuse requests. Matching formats can preserve original bytes and provider-specific fields when plugins do not change the payload. Cross-format calls use shared message, tool and usage representations. Native observability and evaluations belong to the separate commercial hosted platform."
+      ],
+      "format": "full",
+      "takeaway": "For gateway evaluators: test streaming, plugin order and format translation before trusting trace and usage coverage.",
+      "image": "/edition-images/2026-10-21/respan-plugin-gateway.webp",
+      "image_width": 1440,
+      "image_height": 960,
+      "image_provenance": {
+        "kind": "generated-editorial",
+        "generator": "built-in-imagegen",
+        "prompt": "Use case: infographic-diagram. Asset type: standalone landscape 3:2 PNG newspaper story infographic. Source-supported explanation from https://news.ycombinator.com/item?id=50167583: Respan's pre-alpha Rust gateway uses a client format to create typed input/output streams; plugins run in registration order; a provider format opens the upstream connection. Same-format unchanged payloads can preserve original bytes, cross-format requests translate through shared types. Create a warm ivory newsprint background, crisp charcoal ink, restrained teal and rust accents, bold serif title and large readable labels, generous spacing. Title exact 'Inside a plugin-based gateway'. Subtitle exact 'Conceptual flow · Respan pre-alpha'. Four connected elements left to right labeled exactly 'Client format', 'Typed streams', 'Ordered plugins', 'Provider format'. Show simple connection, two-way arrows, three layered plugin cards, upstream endpoint. Bottom two clearly distinct paths labeled exactly 'Same format: preserve unchanged payload' and 'Different formats: translate shared types'. No invented metrics, no product UI screenshot, no logos, no watermark or footer. Source vs concept clear. Keep text minimal and readable.",
+        "based_on": [
+          "https://news.ycombinator.com/item?id=50167583"
+        ],
+        "reviewed": true,
+        "sha256": "8bccd7637aa0f3696d265b8525538893cfef361180ef0730f57e546667164a91",
+        "optimization": {
+          "format": "webp",
+          "quality": 82,
+          "max_width": 1440,
+          "source_sha256": "507ebcbef7bb41d590f8f2e2f45a0d74ac1776130108ee007799c1dce7b38242"
+        }
+      },
+      "source": "hn",
+      "interest_score": 8,
+      "hn_id": "50167583",
+      "comments": "https://news.ycombinator.com/item?id=50167583",
+      "dedupe_key": "hn-original:50167583",
+      "score_reason": "A detailed first-party gateway design exposes concrete instrumentation and reliability boundaries, with pre-alpha limitations stated explicitly.",
+      "source_evidence": {
+        "url": "https://news.ycombinator.com/item?id=50167583",
+        "publication_date": "2026-10-20",
+        "raw_date": "2026-10-20T15:09:29Z",
+        "method": "Official HN item API time 1792508969 converted to UTC; original Launch HN text identifies Andy from Respan and supplies the implementation announcement."
+      }
+    },
+    {
+      "title": "Grafana adds standard telemetry support for observing production agents",
+      "url": "https://grafana.com/press/2026/10/20/observabilitycon-2026-ai-updates/",
+      "publisher": "Grafana Labs",
+      "published": "2026-10-20",
+      "category_key": "observability",
+      "summary": "OpenTelemetry support and Assistant Watchers become generally available, while Managed Sandboxes and Grafana Pages remain previews.",
+      "body": [
+        "Grafana’s Agent Observability helps teams inspect agent behavior and cost. Its ObservabilityCON announcement makes OpenTelemetry support generally available, using the standard telemetry approach within the existing monitoring product. Assistant Watchers also become generally available: teams describe concerns in natural language and receive reports of changes with supporting evidence.",
+        "For illustration, a team could ask a Watcher to monitor a behavior it considers important, then inspect the evidence attached to a finding. Critical findings can start a deeper Investigation through Grafana’s workflow. Watchers complement threshold alerts; teams still need to verify instrumentation coverage and the usefulness of findings on their workloads.",
+        "Two related features remain public previews. Managed Sandboxes let Assistant inspect repository code against production telemetry, propose a fix and open a pull request for human review. Grafana Pages extend visualization beyond dashboards. These are vendor announcements, not independent tests of diagnosis accuracy or safe remediation. Observing an application’s agents and permitting an assistant to change the application remain separate decisions."
+      ],
+      "format": "full",
+      "takeaway": "For Grafana operators: validate agent visibility separately from permissions for proposed code changes.",
+      "image": "/edition-images/2026-10-21/grafana-agent-visibility.webp",
+      "image_width": 1440,
+      "image_height": 960,
+      "image_provenance": {
+        "kind": "generated-editorial",
+        "generator": "built-in-imagegen",
+        "prompt": "Use case: infographic-diagram. Asset type: newspaper story infographic, standalone landscape PNG. Primary request: explain Grafana's two complementary observability directions announced October 20, 2026. Source-supported facts: Agent Observability with OpenTelemetry support is generally available and shows agent behavior and costs. Assistant Watchers are generally available and surface telemetry pattern changes with evidence through Grafana Alerting. Managed Sandboxes are public preview and prepare fixes as pull requests for human review. Style: warm cream newsprint, dark charcoal ink, restrained teal and rust accents, crisp large serif heading and clean readable labels, generous spacing. Composition: two clearly separated horizontal rows, not one implied automatic pipeline. Top row headed OBSERVE YOUR AGENTS: simple connected icons labelled Agent activity -> OpenTelemetry -> Behavior + cost. A small badge GA on this row. Bottom row headed AGENTS HELP OPERATORS: two independent side-by-side cards, first Watchers with subtitle Evidence-backed findings and badge GA, second Managed Sandboxes with subtitle Proposed fix -> Human review and badge PUBLIC PREVIEW. Main title verbatim: Grafana: visibility and control. Footer verbatim: Conceptual overview. Render only the specified short text. Constraints: no invented metrics, no unsupported architecture, no fake screenshots, no logos, no watermarks or attribution labels. Keep labels readable at article width. All arrows only inside their specified row or card. Do not imply Watchers automatically send fixes to production.",
+        "based_on": [
+          "https://grafana.com/press/2026/10/20/observabilitycon-2026-ai-updates/"
+        ],
+        "reviewed": true,
+        "sha256": "a5e72b04172ef6925c64b38c20b2b81da79f1f18deada4d08ea36915eff7c3b0",
+        "optimization": {
+          "format": "webp",
+          "quality": 82,
+          "max_width": 1440,
+          "source_sha256": "9bce3df57527b0e49fca9b9e656f6d1cb23b6db7d3ce2e8f95febd4db90dd343"
+        }
+      },
+      "source": "news",
+      "interest_score": 8,
+      "dedupe_key": "announcement:grafana:observabilitycon-2026-ai-updates",
+      "score_reason": "Concrete GA support for instrumenting production agents alongside existing telemetry.",
+      "source_evidence": {
+        "url": "https://grafana.com/press/2026/10/20/observabilitycon-2026-ai-updates/",
+        "publication_date": "2026-10-20",
+        "raw_date": "2026-10-20",
+        "method": "Original publisher press-release heading and dateline both explicitly display October 20, 2026; not a modification or search date."
+      }
+    },
+    {
+      "title": "Cisco’s survey asks who owns agent monitoring and telemetry spending",
+      "url": "https://blogs.cisco.com/news/state-of-observability-2026-reveals-how-leaders-are-restoring-predictability-to-the-agentic-era",
+      "publisher": "Cisco",
+      "published": "2026-10-20",
+      "category_key": "observability",
+      "summary": "Self-reported findings link clearer AI-monitoring ownership with a designated leader cohort, without proving that ownership causes better outcomes.",
+      "body": [
+        "When an agent changes its execution path, teams need to know who investigates its behavior and pays for the resulting telemetry. Cisco’s State of Observability 2026 survey asks about those operational responsibilities. It draws on 2,050 ITOps and engineering professionals across ten countries and sixteen industries.",
+        "For illustration, an operational review could name an owner for unexpected agent actions and a separate owner for excessive logging. The survey can prompt those questions, but it cannot establish that buying a particular product or copying a governance practice will improve outcomes. Its findings are self-reported associations, not a controlled experiment.",
+        "Cisco reports that 83% worry about unintended agent consequences. Clear AI-monitoring ownership is reported by 91% of its designated leaders versus 59% of other respondents; leaders also report more complexity. Only 6% name AI infrastructure as their largest observability cost driver, while verbose logging leads. Sampling and routing therefore deserve review alongside AI infrastructure spending, without assuming the same cost pattern in every organization."
+      ],
+      "format": "full",
+      "takeaway": "For operations leaders: assign monitoring and budget owners, then inspect your own telemetry-cost drivers.",
+      "image": "/edition-images/2026-10-21/cisco-monitoring-ownership.webp",
+      "image_width": 1440,
+      "image_height": 960,
+      "image_provenance": {
+        "kind": "generated-editorial",
+        "generator": "built-in-imagegen",
+        "prompt": "Use case: infographic-diagram. Asset type: standalone landscape 3:2 PNG newspaper editorial infographic. Based on Cisco State of Observability 2026 at https://blogs.cisco.com/news/state-of-observability-2026-reveals-how-leaders-are-restoring-predictability-to-the-agentic-era . Source-supported survey finding: 91 percent of the designated leader cohort report clear ownership and accountability for monitoring AI, compared with 59 percent of everyone else. This is a self-reported association, not proof of causation or a before-and-after comparison. Draw an elegant extremely clear two-column comparison with identical sized group cards, each an abstract people/clipboard icon, oversized percentage and short label. Title exact 'Who owns AI monitoring?'. Small subtitle exact 'Clear ownership and accountability'. Left card exact '91%' and 'Leader cohort'. Right card exact '59%' and 'Everyone else'. Bottom note exact 'Self-reported survey association, not causation'. Warm ivory paper, crisp charcoal ink, muted teal for left and rust for right, bold serif heading, large sans-serif labels, generous whitespace, no other numbers or claims, no logos, no screenshot, no watermark. Do not draw arrow from one cohort to the other; they are separate groups.",
+        "based_on": [
+          "https://blogs.cisco.com/news/state-of-observability-2026-reveals-how-leaders-are-restoring-predictability-to-the-agentic-era"
+        ],
+        "reviewed": true,
+        "sha256": "fc380bada17cbec3393c0dfa070f0a17f72aa9c601c0044d1b4a7620a10bb86b",
+        "optimization": {
+          "format": "webp",
+          "quality": 82,
+          "max_width": 1440,
+          "source_sha256": "6146310e67955823a78d2b0e2372c48e5ec3e072b09a468cab4b213c68f50a4f"
+        }
+      },
+      "source": "news",
+      "interest_score": 7,
+      "dedupe_key": "report:cisco-splunk:state-of-observability-2026",
+      "score_reason": "Relevant large vendor survey, but reported associations do not demonstrate causal improvements.",
+      "source_evidence": {
+        "url": "https://blogs.cisco.com/news/state-of-observability-2026-reveals-how-leaders-are-restoring-predictability-to-the-agentic-era",
+        "publication_date": "2026-10-20",
+        "raw_date": "2026-10-20",
+        "method": "Original article by Kamal Hathi displays October 20, 2026 directly below its byline; full primary page reviewed in official-News research."
+      }
+    },
+    {
+      "title": "Langfuse fixes missing score views, retry wait times and metadata strings",
+      "url": "https://github.com/langfuse/langfuse/releases/tag/v4.66.0",
+      "publisher": "Langfuse",
+      "published": "2026-10-20",
+      "category_key": "observability",
+      "summary": "Two October 20 releases correct stored or displayed evidence that could mislead reviewers despite apparently successful ingestion.",
+      "body": [
+        "Langfuse stores AI traces and the scores used to review them. Its October 20 releases address three ways those records can mislead without an obvious upload failure: incomplete score views, inflated queue-wait measurements and altered metadata strings. These are corrections to operational evidence, not a new evaluation method.",
+        "For illustration, create a trace with several scores, a job that retries and metadata containing a number-like string. After upgrading, check that the trace filter returns every score, the wait metric reflects the intended attempt and the string retains the expected value. These are suggested regression cases, not published test results.",
+        "Version 4.65.0 fixes trace-filtered results in the v4 scores table and stops earlier attempts being counted as queue wait. Version 4.66.0 stores number-like metadata strings without JSON quotes on the OpenTelemetry path. The notes do not quantify impact or establish that older records are repaired. Verify historical-data behavior separately before assuming previous dashboards or stored values have changed."
+      ],
+      "format": "full",
+      "takeaway": "For Langfuse operators: check score coverage, retry timing and metadata values as separate upgrade tests.",
+      "image": "/edition-images/2026-10-21/langfuse-telemetry-fidelity.webp",
+      "image_width": 1440,
+      "image_height": 960,
+      "image_provenance": {
+        "kind": "generated-editorial",
+        "generator": "built-in-imagegen",
+        "prompt": "Use case: infographic-diagram. Asset type: standalone landscape 3:2 PNG for a newspaper story. Explain three independent telemetry fidelity fixes in Langfuse v4.65.0 and v4.66.0. Source URLs: https://github.com/langfuse/langfuse/releases/tag/v4.65.0 and https://github.com/langfuse/langfuse/releases/tag/v4.66.0 . Source-supported facts: v4.65.0 returns every score per trace in the v4 scores table when a trace filter is applied; worker queue-wait accounting no longer includes earlier attempts; v4.66.0 stores number-like OpenTelemetry metadata strings without JSON quotes. Composition: three separate horizontal rows, each with a large simple conceptual ink illustration and concise text, no arrows between rows. Warm ivory newsprint, charcoal ink, restrained muted teal and rust, bold serif title, highly readable sans-serif labels, generous whitespace. Title verbatim: 'Keep telemetry faithful'. Subtitle verbatim: 'Langfuse v4.65.0 + v4.66.0'. Row one illustration one trace linked to several score cards, heading 'Score coverage', caption 'Return every score for a filtered trace'. Row two illustration retry loop beside stopwatch, heading 'Queue wait', caption 'Exclude earlier attempts'. Row three illustration metadata tag beside open quotation-mark icon, heading 'Metadata strings', caption 'Remove JSON quotes from number-like strings'. Small note verbatim 'Conceptual view of release-note fixes'. Constraints: not a product screenshot; no invented metrics or performance claims; no historical-data-repair promise; no logos, watermark, or footer. Only render the exact requested text; preserve independent nature of the three fixes.",
+        "based_on": [
+          "https://github.com/langfuse/langfuse/releases/tag/v4.65.0",
+          "https://github.com/langfuse/langfuse/releases/tag/v4.66.0"
+        ],
+        "reviewed": true,
+        "sha256": "ecb4519832c8e3522e204263467d6abdfe02bb69e2173250479ef515e6e012f9",
+        "optimization": {
+          "format": "webp",
+          "quality": 82,
+          "max_width": 1440,
+          "source_sha256": "17d32161b35b6b14e5309fa4402441d499a846602e14c586367864dedd5eea9e"
+        }
+      },
+      "source": "github",
+      "interest_score": 8,
+      "dedupe_key": "release:langfuse/langfuse:v4.65.0-v4.66.0",
+      "score_reason": "Concrete score-completeness and telemetry-accounting fixes offer directly testable operator checks without unsupported performance claims.",
+      "source_evidence": {
+        "url": "https://github.com/langfuse/langfuse/releases/tag/v4.66.0",
+        "publication_date": "2026-10-20",
+        "raw_date": "2026-10-20T17:31:25Z",
+        "method": "Saved official GitHub releases API responses confirm v4.66.0 published_at=2026-10-20T17:31:25Z and v4.65.0 published_at=2026-10-20T13:35:55Z; both draft=false and prerelease=false. Release bodies identify fixes PRs 19065, 19039 and 19076.",
+        "related_urls": [
+          "https://github.com/langfuse/langfuse/releases/tag/v4.65.0"
+        ],
+        "api_urls": [
+          "https://api.github.com/repos/langfuse/langfuse/releases/418440910",
+          "https://api.github.com/repos/langfuse/langfuse/releases/418678518"
+        ]
+      }
+    }
+  ],
+  "research": {
+    "status": "complete",
+    "completed_sources": [
+      "hn",
+      "news",
+      "github"
+    ],
+    "checked_urls": [
+      "https://arize.com/blog/",
+      "https://langfuse.com/blog",
+      "https://www.langchain.com/blog",
+      "https://www.braintrust.dev/blog",
+      "https://opentelemetry.io/blog/",
+      "https://www.elastic.co/observability-labs/blog",
+      "https://www.datadoghq.com/blog/",
+      "https://www.honeycomb.io/blog/",
+      "https://www.digitalocean.com/blog",
+      "https://www.splunk.com/en_us/blog/observability.html",
+      "https://www.dynatrace.com/news/",
+      "https://langfuse.com/changelog",
+      "https://www.datadoghq.com/blog/search/?blog-0=The-Monitor",
+      "https://grafana.com/press/2026/10/20/observabilitycon-2026-ai-updates/",
+      "https://blogs.cisco.com/news/state-of-observability-2026-reveals-how-leaders-are-restoring-predictability-to-the-agentic-era",
+      "https://opentelemetry.io/blog/2026/kubecon-na/",
+      "https://www.elastic.co/observability-labs/blog/kibana-universal-alerting",
+      "https://arize.com/blog/ai-agent-tool-selection-decision-tracing/",
+      "https://arize.com/blog/can-decision-models-play-games-from-screenshots/",
+      "https://www.datadoghq.com/blog/ai/introducing-scout-sre-specialized-model-bits-ai/",
+      "https://hacker-news.firebaseio.com/v0/item/50167583.json",
+      "https://api.github.com/repos/langfuse/langfuse/releases/tags/v4.65.0",
+      "https://api.github.com/repos/langfuse/langfuse/releases/tags/v4.66.0"
+    ],
+    "excluded": [
+      {
+        "url": "https://arstechnica.com/tech-policy/2026/10/meta-drops-the-word-train-from-its-commercial-tos-after-ai-backlash/",
+        "reason": "Outside the AI-observability editorial beat: no substantive treatment of agent tracing, evaluation, instrumentation, or operational telemetry.",
+        "discovery_source": "hn",
+        "hn_id": "50171984"
+      },
+      {
+        "url": "https://arstechnica.com/tech-policy/2026/10/meta-ordered-to-name-execs-who-approved-torrenting-for-ai-training/",
+        "reason": "Outside the AI-observability editorial beat: no substantive treatment of agent tracing, evaluation, instrumentation, or operational telemetry.",
+        "discovery_source": "hn",
+        "hn_id": "50171077"
+      },
+      {
+        "url": "https://koody.com/business",
+        "reason": "Outside the AI-observability editorial beat: no substantive treatment of agent tracing, evaluation, instrumentation, or operational telemetry.",
+        "discovery_source": "hn",
+        "hn_id": "50168525"
+      },
+      {
+        "url": "https://worklicant.com/",
+        "reason": "Outside the AI-observability editorial beat: no substantive treatment of agent tracing, evaluation, instrumentation, or operational telemetry.",
+        "discovery_source": "hn",
+        "hn_id": "50168474"
+      },
+      {
+        "url": "https://www.mindstudio.ai/blog/ai-pricing-shock-end-of-cheap-subscriptions",
+        "reason": "Outside the AI-observability editorial beat: no substantive treatment of agent tracing, evaluation, instrumentation, or operational telemetry.",
+        "discovery_source": "hn",
+        "hn_id": "50168135"
+      },
+      {
+        "url": "https://www.gadgetreview.com/developers-are-using-ai-to-strip-ads-and-tracking-from-smart-tvs",
+        "reason": "Outside the AI-observability editorial beat: no substantive treatment of agent tracing, evaluation, instrumentation, or operational telemetry.",
+        "discovery_source": "hn",
+        "hn_id": "50167495"
+      },
+      {
+        "url": "https://news.ycombinator.com/item?id=50167159",
+        "reason": "Outside the AI-observability editorial beat: no substantive treatment of agent tracing, evaluation, instrumentation, or operational telemetry.",
+        "discovery_source": "hn",
+        "hn_id": "50167159"
+      },
+      {
+        "url": "https://patchwave.ai/",
+        "reason": "Outside the AI-observability editorial beat: no substantive treatment of agent tracing, evaluation, instrumentation, or operational telemetry.",
+        "discovery_source": "hn",
+        "hn_id": "50166699"
+      },
+      {
+        "url": "https://asktori.ai",
+        "reason": "Outside the AI-observability editorial beat: no substantive treatment of agent tracing, evaluation, instrumentation, or operational telemetry.",
+        "discovery_source": "hn",
+        "hn_id": "50166358"
+      },
+      {
+        "url": "https://apps.apple.com/de/app/daft-slop-ai-music-detector/id6811013099",
+        "reason": "Outside the AI-observability editorial beat: no substantive treatment of agent tracing, evaluation, instrumentation, or operational telemetry.",
+        "discovery_source": "hn",
+        "hn_id": "50165533"
+      },
+      {
+        "url": "https://tripps.io/",
+        "reason": "Outside the AI-observability editorial beat: no substantive treatment of agent tracing, evaluation, instrumentation, or operational telemetry.",
+        "discovery_source": "hn",
+        "hn_id": "50165493"
+      },
+      {
+        "url": "https://www.takingstock.ai/",
+        "reason": "Outside the AI-observability editorial beat: no substantive treatment of agent tracing, evaluation, instrumentation, or operational telemetry.",
+        "discovery_source": "hn",
+        "hn_id": "50164742"
+      },
+      {
+        "url": "https://www.ft.com/content/6dd31584-064c-4015-bf5d-e5747799ccd5",
+        "reason": "Outside the AI-observability editorial beat: no substantive treatment of agent tracing, evaluation, instrumentation, or operational telemetry.",
+        "discovery_source": "hn",
+        "hn_id": "50164628"
+      },
+      {
+        "url": "https://www.aboutamazon.com/news/innovation-at-amazon/torchneuron-pytorch-aws-trainium-chips-ai",
+        "reason": "Outside the AI-observability editorial beat: no substantive treatment of agent tracing, evaluation, instrumentation, or operational telemetry.",
+        "discovery_source": "hn",
+        "hn_id": "50164120"
+      },
+      {
+        "url": "https://opentelemetry.io/blog/2026/kubecon-na/",
+        "reason": "Original byline confirms October 20, 2026, but excluded editorially as narrow forthcoming conference-agenda coverage rather than a shipped capability or substantive new technical result."
+      },
+      {
+        "url": "https://www.elastic.co/observability-labs/blog/kibana-universal-alerting",
+        "reason": "Primary page confirms October 20; HTTP retrieved successfully after web-tool cache miss. Excluded editorially: host/pod alerting examples lack concrete AI-system treatment."
+      },
+      {
+        "url": "https://arize.com/blog/ai-agent-tool-selection-decision-tracing/",
+        "reason": "Primary page gives October 2026 only. Search yesterday label cannot establish original day-level publication."
+      },
+      {
+        "url": "https://arize.com/blog/can-decision-models-play-games-from-screenshots/",
+        "reason": "Primary page gives October 2026 only; original day-level date not established."
+      },
+      {
+        "url": "https://www.datadoghq.com/blog/ai/introducing-scout-sre-specialized-model-bits-ai/",
+        "reason": "Primary page explicitly Published Oct 15, 2026, outside frozen window."
+      },
+      {
+        "url": "https://events.datadoghq.com/events/datadog-live-philippines-2026/",
+        "reason": "October 20 is event date, not original publication evidence."
+      },
+      {
+        "url": "https://www.dynatrace.com/knowledge-base/unified-observability/",
+        "reason": "October 20 surfaced as last updated, not original publication."
+      }
+    ],
+    "note": "Scoped official-source sweep plus exact-date searches; no exhaustive web coverage claim. Splunk listing rendered No results, supplemented by targeted search and readable Cisco primary report announcement. Langfuse index includes Oct 22 posts and older September material; no eligible Oct 20 News item established. Braintrust and LangChain displayed Oct 15 latest items, Honeycomb Oct 16, DigitalOcean Oct 13, Dynatrace highlights Oct 15 or earlier. Existing-edition primary URL dedupe found no matches for selected stories. HN discovery covered five configured queries and 15 candidate submissions. Eight configured GitHub repositories were checked; the two stable Langfuse releases are combined as one story to avoid repetitive coverage. No claim of exhaustive coverage.",
+    "github_checks": [
+      {
+        "repository": "langfuse/langfuse",
+        "releases_checked": 100,
+        "coverage": "latest 100 releases; not a global GitHub search"
+      },
+      {
+        "repository": "Arize-ai/phoenix",
+        "releases_checked": 100,
+        "coverage": "latest 100 releases; not a global GitHub search"
+      },
+      {
+        "repository": "Arize-ai/openinference",
+        "releases_checked": 100,
+        "coverage": "latest 100 releases; not a global GitHub search"
+      },
+      {
+        "repository": "langchain-ai/langsmith-sdk",
+        "releases_checked": 100,
+        "coverage": "latest 100 releases; not a global GitHub search"
+      },
+      {
+        "repository": "braintrustdata/braintrust-sdk",
+        "releases_checked": 99,
+        "coverage": "latest 100 releases; not a global GitHub search"
+      },
+      {
+        "repository": "wandb/weave",
+        "releases_checked": 100,
+        "coverage": "latest 100 releases; not a global GitHub search"
+      },
+      {
+        "repository": "langwatch/langwatch",
+        "releases_checked": 100,
+        "coverage": "latest 100 releases; not a global GitHub search"
+      },
+      {
+        "repository": "Helicone/helicone",
+        "releases_checked": 4,
+        "coverage": "latest 100 releases; not a global GitHub search"
+      }
+    ]
+  }
+}

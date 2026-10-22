@@ -13,6 +13,42 @@ export function editionDates(now = new Date(), timeZone = 'Asia/Kolkata', explic
   return { date, storyWindow: previous.toISOString().slice(0, 10), windowClosesAt: parsed.toISOString() };
 }
 
+// A per-image label baked into pixels is a visible caption the template cannot hide.
+// Clauses that forbid such a label ("no AI-generated watermark") are compliant.
+const BURNED_IN_AI_LABEL = /(label|footer|caption|watermark|stamp|badge|corner|text).{0,40}AI[-\s]?GENERATED|AI[-\s]?GENERATED.{0,30}(label|footer|caption|watermark|stamp|badge)/i;
+const NEGATION = /\b(no|not|never|without|avoid|omit|exclude|don'?t)\b/i;
+const requestsBurnedInLabel = (prompt) => prompt.split(/[.;:,\n]/).some((clause) => BURNED_IN_AI_LABEL.test(clause) && !NEGATION.test(clause));
+
+/**
+ * Publishing deploys this checkout, so its application code must be exactly the
+ * freshly fetched origin/master; only this edition's unpushed outputs may sit on
+ * top. A clean checkout that is merely behind fast-forwards (when allowed); a
+ * diverged, stale or feature-branch checkout would otherwise redeploy an old
+ * template or rewrite earlier issues.
+ */
+export function assertPublishBaseline(repo, editionDate, { fastForward = true } = {}) {
+  const allowed = (file) => file === `src/data/ai-observability/${editionDate}.json` || file.startsWith(`public/edition-images/${editionDate}/`) || file === 'public/md' || file === 'public/json';
+  const git = (...args) => execFileSync('git', args, { cwd: repo, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] }).trim();
+  try { git('fetch', '--quiet', 'origin', 'master'); } catch { throw new Error('Publishing requires fetching origin/master to confirm the deployed application code'); }
+  const isAncestor = (a, b) => { try { git('merge-base', '--is-ancestor', a, b); return true; } catch { return false; } };
+  if (!isAncestor('origin/master', 'HEAD')) {
+    if (!fastForward || !isAncestor('HEAD', 'origin/master')) throw new Error('This checkout is behind or diverged from origin/master; rebase the edition commit onto origin/master before publishing or it redeploys stale site code');
+    git('merge', '--ff-only', '--quiet', 'origin/master');
+    return 'fast-forwarded';
+  }
+  const changed = git('diff', '--name-only', 'origin/master', 'HEAD').split('\n').filter(Boolean).filter((file) => !allowed(file));
+  if (changed.length) throw new Error(`Only this edition's outputs may differ from origin/master when publishing; merge site changes through a PR first: ${changed.join(', ')}`);
+  return 'current';
+}
+
+/** New drafts only: published issues keep their reviewed bytes on retry. */
+export function assertNoBurnedInAiLabel(issue) {
+  for (const story of issue.stories) {
+    if (requestsBurnedInLabel(story.image_provenance?.prompt || '')) throw new Error(`Do not render an AI-generated label inside the infographic; the edition discloses generated graphics once: ${story.title}`);
+  }
+  return issue;
+}
+
 export function validateDailyDraft(raw, dates, history = []) {
   const issue = observabilityIssueSchema.parse(raw);
   if (issue.date !== dates.date || issue.story_window !== dates.storyWindow) throw new Error('Draft does not match the frozen run dates');

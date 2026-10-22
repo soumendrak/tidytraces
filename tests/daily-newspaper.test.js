@@ -8,7 +8,7 @@ import { createHash } from 'node:crypto';
 import sharp from 'sharp';
 import { randomBytes } from 'node:crypto';
 import { optimizeNewspaperImage } from '../scripts/lib/newspaper-images.js';
-import { editionDates, validateDailyDraft, validateStoryImages, assertNoDuplicateStories } from '../scripts/lib/daily-newspaper.js';
+import { editionDates, validateDailyDraft, validateStoryImages, assertNoDuplicateStories, assertNoBurnedInAiLabel, assertPublishBaseline } from '../scripts/lib/daily-newspaper.js';
 
 const dates = editionDates(new Date('2026-10-13T02:30:00Z'));
 const story = {
@@ -37,6 +37,14 @@ test('daily contract blocks relabelled dates, incomplete research, thin text and
   assert.equal(validateDailyDraft({ ...issue, stories: [brief] }, dates).stories[0].format, 'brief');
   assert.throws(() => validateDailyDraft({ ...issue, stories: [{ ...brief, image: undefined }] }, dates), /Every story/);
   assert.throws(() => validateDailyDraft({ ...issue, stories: [{ ...story, image_provenance: undefined }] }, dates), /provenance/);
+  // The edition discloses generated graphics once; never burn a per-image AI label into the pixels.
+  assert.throws(() => assertNoBurnedInAiLabel({ ...issue, stories: [{ ...story, image_provenance: { ...story.image_provenance, prompt: "Trace flow. Use only specified text plus small footer 'AI-GENERATED EDITORIAL'." } }] }), /AI-generated label/);
+  assert.equal(assertNoBurnedInAiLabel(issue), issue);
+  const withPrompt = (prompt) => ({ ...issue, stories: [{ ...story, image_provenance: { ...story.image_provenance, prompt } }] });
+  assert.throws(() => assertNoBurnedInAiLabel(withPrompt('Readable labels. Use only specified text plus small footer AI-GENERATED EDITORIAL. Flat clean line illustration')), /AI-generated label/);
+  // The skill's own constraint line forbids the label; it must not block a compliant draft.
+  assert.doesNotThrow(() => assertNoBurnedInAiLabel(withPrompt('Constraints: no invented metrics, no unsupported product architecture,\nno fake screenshots, no unrelated logos, no "AI-generated" label or watermark text;\npreserve source/editorial distinction')));
+  assert.doesNotThrow(() => assertNoBurnedInAiLabel(withPrompt('Do not add an AI-generated watermark or footer label.')));
   assert.equal(validateDailyDraft({ ...issue, stories: [] }, dates).stories.length, 0);
 });
 
@@ -110,12 +118,12 @@ test('runner promotes images, rolls back build failure, and safely retries publi
     await writeFile(path.join(root, '.gitignore'), '.cache/\nnode_modules/\n');
     await writeFile(path.join(root, 'noop.js'), 'process.exit(0);');
     await writeFile(path.join(root, 'package.json'), JSON.stringify({ type: 'module', scripts: { 'fetch:sources': 'node noop.js', test: 'node noop.js', check: 'node noop.js', build: 'node build.js' } }));
-    await writeFile(path.join(root, 'build.js'), "import {writeFileSync} from 'node:fs'; if(process.env.FAIL_BUILD) process.exit(1); writeFileSync('public/md','new export'); writeFileSync('public/json','new json');");
+    await writeFile(path.join(root, 'build.js'), "import {writeFileSync} from 'node:fs'; import {execFileSync} from 'node:child_process'; if(process.env.FAIL_BUILD) process.exit(1); if(process.env.ADVANCE_ORIGIN){const o=process.env.ADVANCE_ORIGIN;execFileSync('git',['pull','-q','origin','master'],{cwd:o});writeFileSync(o+'/later.txt','later');execFileSync('git',['add','later.txt'],{cwd:o});execFileSync('git',['-c','user.name=t','-c','user.email=t@example.invalid','commit','-qm','later file'],{cwd:o});execFileSync('git',['push','-q','origin','HEAD:master'],{cwd:o});} writeFileSync('public/md','new export'); writeFileSync('public/json','new json');");
     await writeFile(path.join(root, 'agent.js'), "import {copyFileSync,mkdirSync} from 'node:fs';if(process.env.EMPTY_AGENT)process.exit(0);mkdirSync(process.argv[2]+'/images',{recursive:true});copyFileSync('fixture.json',process.argv[2]+'/draft.json');copyFileSync('fixture.webp',process.argv[2]+'/images/trace-v1.webp');");
     await writeFile(path.join(root, 'publisher.js'), "import {writeFileSync} from 'node:fs';if(process.env.FAIL_PUBLISH)process.exit(2);writeFileSync('.cache/published','yes');");
     await writeFile(path.join(root, 'automation/daily-newspaper.json'), JSON.stringify({ time_zone: 'Asia/Kolkata', mode: 'build', timeout_minutes: 1, agent: { command: [process.execPath, 'agent.js', '{run_dir}'] }, publish: { command: [process.execPath, 'publisher.js'], commit_edition: true } }));
     await writeFile(path.join(root, 'public/md'), 'old export'); await writeFile(path.join(root, 'public/json'), 'old json');
-    execFileSync('git', ['init', '-q'], { cwd: root });
+    execFileSync('git', ['init', '-q', '-b', 'master'], { cwd: root });
     const run = (env = {}, mode = 'build') => execFileSync(process.execPath, ['scripts/run-daily-newspaper.js', '--news-date', '2026-10-12', '--mode', mode], { cwd: root, env: { ...process.env, ...env }, stdio: 'pipe' });
     assert.throws(() => run({ FAIL_BUILD: '1' }));
     await assert.rejects(readFile(path.join(root, 'src/data/ai-observability/2026-10-13.json')), /ENOENT/);
@@ -138,11 +146,71 @@ test('runner promotes images, rolls back build failure, and safely retries publi
     execFileSync('git', ['config', 'user.email', 'runner@example.invalid'], { cwd: root });
     execFileSync('git', ['add', '.'], { cwd: root });
     execFileSync('git', ['commit', '-qm', 'Fixture baseline'], { cwd: root });
+    const origin = path.join(root, '.cache/origin.git');
+    execFileSync('git', ['init', '-q', '--bare', '-b', 'master', origin]);
+    execFileSync('git', ['remote', 'add', 'origin', origin], { cwd: root });
+    execFileSync('git', ['push', '-q', 'origin', 'HEAD:master'], { cwd: root });
     assert.throws(() => run({ FAIL_PUBLISH: '1' }, 'publish'));
     assert.equal(execFileSync('git', ['status', '--porcelain'], { cwd: root, encoding: 'utf8' }).trim(), '');
     assert.deepEqual(await readFile(path.join(root, 'src/data/ai-observability/2026-10-13.json')), before);
     const published = JSON.parse(run({}, 'publish').toString());
     assert.equal(published.published, true); assert.equal(published.reused_existing_issue, true);
     assert.equal(await readFile(path.join(root, '.cache/published'), 'utf8'), 'yes');
+    // A stale checkout must not redeploy old site code after master moves on (the byline/disclosure revert).
+    execFileSync('git', ['push', '-q', 'origin', 'HEAD:master'], { cwd: root }); // the routine pushes its edition commit
+    const other = path.join(root, '.cache/other');
+    execFileSync('git', ['clone', '-q', origin, other]);
+    await writeFile(path.join(other, 'noop.js'), 'process.exit(0); // newer site code');
+    execFileSync('git', ['-c', 'user.name=t', '-c', 'user.email=t@example.invalid', 'commit', '-qam', 'Newer site code'], { cwd: other });
+    execFileSync('git', ['push', '-q', 'origin', 'HEAD:master'], { cwd: other });
+    // The fast-forward re-executes the runner so master's runner, rules and config apply.
+    await writeFile(path.join(other, 'scripts/run-daily-newspaper.js'), (await readFile(path.join(other, 'scripts/run-daily-newspaper.js'), 'utf8')).replace("status.stage = 'built';", "status.stage = 'built'; status.runner = 'master';"));
+    execFileSync('git', ['-c', 'user.name=t', '-c', 'user.email=t@example.invalid', 'commit', '-qam', 'Newer runner'], { cwd: other });
+    execFileSync('git', ['push', '-q', 'origin', 'HEAD:master'], { cwd: other });
+    const reexecuted = JSON.parse(run({}, 'publish').toString());
+    assert.equal(reexecuted.published, true); assert.equal(reexecuted.runner, 'master');
+    assert.equal(execFileSync('git', ['rev-parse', 'HEAD'], { cwd: root, encoding: 'utf8' }), execFileSync('git', ['rev-parse', 'HEAD'], { cwd: other, encoding: 'utf8' }), 'a behind checkout fast-forwards before deploying');
+    assert.match(await readFile(path.join(root, 'noop.js'), 'utf8'), /newer site code/);
+    // master moving during curation/build must stop the deploy, not overwrite the newer site.
+    await rm(path.join(root, '.cache/published'));
+    assert.throws(() => run({ ADVANCE_ORIGIN: other }, 'publish'), /behind or diverged/);
+    await assert.rejects(readFile(path.join(root, '.cache/published')), /ENOENT/);
+  } finally { await rm(root, { recursive: true, force: true }); }
+});
+
+test('publish baseline allows unpushed edition commits but not stale or unmerged site code', async () => {
+  const root = await mkdtemp(path.join(tmpdir(), 'newspaper-baseline-'));
+  const origin = path.join(root, 'origin.git'), work = path.join(root, 'work');
+  const git = (...args) => execFileSync('git', ['-c', 'user.name=t', '-c', 'user.email=t@example.invalid', ...args], { cwd: work, stdio: 'pipe' });
+  try {
+    execFileSync('git', ['init', '-q', '--bare', '-b', 'master', origin]);
+    execFileSync('git', ['clone', '-q', origin, work], { stdio: 'pipe' });
+    await mkdir(path.join(work, 'src/data/ai-observability'), { recursive: true });
+    await writeFile(path.join(work, 'app.js'), 'v1');
+    git('add', '.'); git('commit', '-qm', 'base'); git('push', '-q', 'origin', 'HEAD:master');
+    assert.doesNotThrow(() => assertPublishBaseline(work, '2026-10-13'));
+    await writeFile(path.join(work, 'src/data/ai-observability/2026-10-13.json'), '{}');
+    git('add', '.'); git('commit', '-qm', 'edition');
+    assert.doesNotThrow(() => assertPublishBaseline(work, '2026-10-13'), 'a retry after the local edition commit still publishes');
+    await writeFile(path.join(work, 'app.js'), 'unmerged');
+    git('commit', '-qam', 'local site change');
+    assert.throws(() => assertPublishBaseline(work, '2026-10-13'), /Only this edition's outputs.*app\.js/);
+    git('reset', '-q', '--hard', 'HEAD~1');
+    await writeFile(path.join(work, 'src/data/ai-observability/2026-10-12.json'), '{"rewritten":true}');
+    git('add', '.'); git('commit', '-qm', 'rewrite an earlier issue');
+    assert.throws(() => assertPublishBaseline(work, '2026-10-13'), /2026-10-12\.json/, 'only the current edition may be unpushed');
+    git('reset', '-q', '--hard', 'origin/master');
+    const other = path.join(root, 'other');
+    execFileSync('git', ['clone', '-q', origin, other], { stdio: 'pipe' });
+    await writeFile(path.join(other, 'app.js'), 'v2');
+    execFileSync('git', ['-c', 'user.name=t', '-c', 'user.email=t@example.invalid', 'commit', '-qam', 'v2'], { cwd: other });
+    execFileSync('git', ['push', '-q', 'origin', 'HEAD:master'], { cwd: other, stdio: 'pipe' });
+    await mkdir(path.join(work, 'src/data/ai-observability'), { recursive: true });
+    await writeFile(path.join(work, 'src/data/ai-observability/2026-10-13.json'), '{}');
+    git('add', '.'); git('commit', '-qm', 'edition on stale base');
+    assert.throws(() => assertPublishBaseline(work, '2026-10-13'), /behind or diverged/);
+    git('reset', '-q', '--hard', 'HEAD~1');
+    assertPublishBaseline(work, '2026-10-13');
+    assert.equal(await readFile(path.join(work, 'app.js'), 'utf8'), 'v2', 'a clean, behind checkout fast-forwards');
   } finally { await rm(root, { recursive: true, force: true }); }
 });

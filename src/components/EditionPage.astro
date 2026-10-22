@@ -5,6 +5,7 @@ import Footer from './Footer.astro';
 import BrandLogo from './BrandLogo.astro';
 import { SITE_METADATA } from '../config';
 import { resolveStoryImage } from '../lib/storyFilters.js';
+import { EDITION_AUTHOR, AI_IMAGE_DISCLOSURE } from '../lib/editionCredits.js';
 
 const SOURCE_LABEL: Record<string, string> = {
 	arxiv: 'arXiv',
@@ -39,6 +40,7 @@ interface StoryProps {
 
 interface Props {
 	day: string;
+	contentFingerprint: string;
 	stories: StoryProps[];
 	issue: number;
 	totalIssues: number;
@@ -50,7 +52,7 @@ interface Props {
 	storyWindow?: string;
 }
 
-const { day, stories, issue, prevDay, nextDay, isHomepage = false, dek, storyWindow } = Astro.props;
+const { day, contentFingerprint, stories, issue, prevDay, nextDay, isHomepage = false, dek, storyWindow } = Astro.props;
 
 const editionName = 'AI Observability Daily';
 const archiveHref = '/archive/';
@@ -111,6 +113,7 @@ const issueSchema = {
 	"@id": `${new URL(issueHref, Astro.site)}#issue`,
 	"issueNumber": String(issue),
 	"datePublished": `${day}T00:00:00Z`,
+	"author": { "@type": "Person", "name": EDITION_AUTHOR.name, "url": EDITION_AUTHOR.url },
 	"name": `${SITE_METADATA.name} — ${label}`,
 	"description": pageDescription,
 	"isPartOf": {
@@ -165,7 +168,7 @@ const breadcrumbSchema = {
 
 >
 	<main class="page-container">
-		<article id="newspaper-sheet" class="newspaper-sheet" data-day={day} data-count={stories.length} data-prev={prevDay ? `/ai-observability/${prevDay}/` : undefined} data-next={nextDay ? `/ai-observability/${nextDay}/` : undefined}>
+		<article id="newspaper-sheet" class="newspaper-sheet" data-day={day} data-content-fingerprint={contentFingerprint} data-count={stories.length} data-prev={prevDay ? `/ai-observability/${prevDay}/` : undefined} data-next={nextDay ? `/ai-observability/${nextDay}/` : undefined}>
 			<header class="masthead">
 				<div class="masthead-eyebrow">
 					<span class="masthead-eyebrow-left">
@@ -194,11 +197,16 @@ const breadcrumbSchema = {
 					<div class="masthead-eyebrow-right">
 
 						<span id="masthead-story-count">{stories.length} {stories.length === 1 ? 'Story' : 'Stories'}</span>
+						<a href={`/pdf/${day}.pdf`} download={`tidy-traces-${day}.pdf`} class="masthead-pdf-btn" aria-label="Download edition as PDF" title="Download edition as PDF">
+							<svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m7 10 5 5 5-5M12 15V3"/></svg>
+							<span>PDF</span>
+						</a>
 						<ThemeToggleButton />
 					</div>
 				</div>
 				<h1 class="masthead-name"><BrandLogo /></h1>
-<p class="masthead-tagline">{editionName} · Curated by <a href={SITE_METADATA.creator.url}><strong>{SITE_METADATA.creator.name}</strong></a></p>
+<p class="masthead-tagline">{editionName} · Observability · Evals · AI agents</p>
+				<p class="edition-byline">By <a href={EDITION_AUTHOR.url} rel="author">{EDITION_AUTHOR.name}</a></p>
 				<hr class="masthead-rule-thick" />
 				{dek && <p class="edition-dek">{dek}</p>}
 				{storyWindow && <p class="edition-window">Coverage window: {storyWindow} · Original sources, independent editorial takeaways.</p>}
@@ -339,7 +347,8 @@ const breadcrumbSchema = {
 										width={story.imageWidth || 560}
 										height={story.imageHeight || 418}
 										itemprop="image"
-										data-image-provenance={story.imageGenerated ? 'AI-generated editorial illustration' : undefined}
+										data-image-provenance={story.imageGenerated ? 'generated-editorial' : undefined}
+										aria-describedby={story.imageGenerated ? 'ai-image-disclosure' : undefined}
 										onerror="this.parentElement.hidden = true"
 										onload="this.classList.remove('loading'); this.parentElement.classList.remove('is-loading');"
 									/>
@@ -357,6 +366,7 @@ const breadcrumbSchema = {
 			})()}
 
 			<slot />
+			{stories.some((story) => story.imageGenerated) && <p id="ai-image-disclosure" class="visually-hidden ai-image-disclosure">{AI_IMAGE_DISCLOSURE}</p>}
 			<Footer />
 		</article>
 	</main>
@@ -727,6 +737,53 @@ const breadcrumbSchema = {
 
 		.story.is-feature-reverse .story-body {
 			grid-column: 1;
+		}
+	}
+
+	@media print {
+		/* Fit a lead beside its infographic beneath the masthead on A4. */
+		.story.is-lead:has(.story-image-wrapper) {
+			display: grid;
+			grid-template-columns: minmax(0, 1fr) minmax(0, 1.8fr);
+			column-gap: 5mm;
+			align-items: start;
+		}
+
+		.story.is-lead::before,
+		.story.is-lead .story-byline,
+		.story.is-lead .story-headline {
+			grid-column: 1 / -1;
+		}
+
+		.story.is-lead .story-headline {
+			font-size: 16pt;
+		}
+
+		.story.is-lead .story-image-wrapper {
+			grid-column: 1;
+			margin: 0;
+		}
+
+		.story.is-lead .story-body {
+			grid-column: 2;
+		}
+
+		.story-image-wrapper {
+			align-self: start;
+		}
+
+		/* Keep later features in the newspaper columns to avoid sparse print pages. */
+		.story.is-feature {
+			display: block;
+			column-span: none;
+		}
+
+		.story.is-feature .story-headline {
+			font-size: 12pt;
+		}
+
+		.story-featured-image {
+			transition: none;
 		}
 	}
 </style>

@@ -1,0 +1,565 @@
+{
+  "date": "2026-10-16",
+  "story_window": "2026-10-15",
+  "dek": "Start with checking agent permissions at the moment a tool runs. Then connect production failures to repeatable evaluations and batch scoring. The remaining updates cover evaluation evidence, score matching and a small Phoenix interface release.",
+  "stories": [
+    {
+      "title": "Arize recommends checking permissions when an agent calls a tool",
+      "url": "https://arize.com/blog/ai-agent-permissions/",
+      "publisher": "Arize AI",
+      "published": "2026-10-15",
+      "category_key": "agents",
+      "summary": "The guide places authorization in the software controlling tool execution, with a protected record of the decision and outcome.",
+      "body": [
+        "An agent’s conversation cannot reliably establish who is allowed to do something. Arize’s Laurie Voss argues that the software controlling tool execution should check permission for the specific action and resource. Identity, ownership or delegation must come from evidence outside the conversation, even when the agent says approval was already granted.",
+        "For illustration, an agent might receive a message claiming that a user owns the requested resource. Before the tool runs, the application should check that claim against its actual authorization records. A denied request is an important test case too: operators should be able to establish both why it was refused and whether anything executed.",
+        "The article recommends instrumenting tool calls and recording the source and result of the permission check beside the action. Store that evidence somewhere the agent cannot modify. This is engineering guidance, not a new authorization service. A transcript sounding authorized is insufficient evidence that the application enforced its policy."
+      ],
+      "format": "full",
+      "takeaway": "For tool-execution owners: enforce permissions outside the conversation and preserve the decision beside the actual outcome.",
+      "image": "/edition-images/2026-10-16/permission-audit.webp",
+      "image_width": 1440,
+      "image_height": 960,
+      "image_provenance": {
+        "kind": "generated-editorial",
+        "generator": "built-in-imagegen",
+        "prompt": "Use case: infographic-diagram. Asset type: standalone newspaper editorial infographic PNG, landscape 3:2. Source: https://arize.com/blog/ai-agent-permissions/. Source-supported mechanism and exact short text: Title: PERMISSION NEEDS EVIDENCE. Three connected boxes: VERIFIED IDENTITY, TOOL CHECK, ACTION RESULT. Beneath TOOL CHECK a downward arrow to a separate record card labelled PROTECTED AUDIT RECORD. Small subtitle: Conceptual tool authorization. The source recommends authorization before tool execution and protected logging; do not imply Arize enforces permissions. Style: warm ivory newsprint, dark ink, restrained teal and brick red, generous spacing, strong serif headline and very readable labels. Use only specified text plus small footer AI-GENERATED EDITORIAL. Flat clean line illustration, no fake screenshots, logos, decorative tiny text, invented architecture or statistics. Explicitly label editorial guidance as specified.",
+        "based_on": [
+          "https://arize.com/blog/ai-agent-permissions/"
+        ],
+        "reviewed": true,
+        "sha256": "3ba41b97daa9ab6a0615edcd4e941b892d1db5b0547dddff6799ffb518a32974",
+        "optimization": {
+          "format": "webp",
+          "quality": 82,
+          "max_width": 1440,
+          "source_sha256": "c46a7bb4db5e7dd18100552118c0722f3d798f620b17886a1c6326afccaa2114"
+        }
+      },
+      "source": "news",
+      "interest_score": 8,
+      "score_reason": "Specific production guidance connects tool authorization, tamper-resistant records, and trace-level investigation.",
+      "source_evidence": {
+        "url": "https://arize.com/blog/ai-agent-permissions/",
+        "publication_date": "2026-10-15",
+        "raw_date": "2026-10-15T14:52:58+00:00",
+        "method": "Primary article article:published_time; JSON-LD datePublished is the equivalent 2026-10-15T07:52:58-07:00."
+      },
+      "dedupe_key": "article:arize.com/blog/ai-agent-permissions"
+    },
+    {
+      "title": "LangChain shows how to turn production failures into repeatable agent tests",
+      "url": "https://www.langchain.com/blog/common-questions-about-agent-evals",
+      "publisher": "LangChain",
+      "published": "2026-10-15",
+      "category_key": "evals",
+      "summary": "The guide starts with one behavior and a small dataset, then connects offline comparisons with checks on live agent runs.",
+      "body": [
+        "Agent evaluations test whether an AI system behaves as intended. LangChain’s guide recommends starting with real execution traces, choosing one behavior and building a small dataset before measuring a baseline. Ten to twenty examples are a starting point; failures found in production can expand the set over time.",
+        "For illustration, an agent may give a convincing answer while leaving the wrong file or booking state behind. A useful test checks the resulting environment and the tool sequence as well as the final reply. For multi-turn tasks, a shared thread identifier connects the conversation. Isolated benchmark environments help when tests change external state.",
+        "Offline experiments compare versions on controlled examples; online evaluators inspect live traces for missed problems. The guide distinguishes code checks, model judges, human review and pairwise comparisons. Preserve a versioned baseline and inspect disagreements against the evidence. Sampling and cheaper judges can reduce evaluation spending, but their coverage and agreement still need measurement on the application being tested."
+      ],
+      "format": "full",
+      "takeaway": "For agent teams: test actions and resulting state, then turn production failures into reproducible offline cases.",
+      "image": "/edition-images/2026-10-16/agent-eval-loop.webp",
+      "image_width": 1440,
+      "image_height": 960,
+      "image_provenance": {
+        "kind": "generated-editorial",
+        "generator": "built-in-imagegen",
+        "prompt": "Use case: infographic-diagram. Asset type: standalone newspaper editorial infographic PNG, landscape 3:2. Source: https://www.langchain.com/blog/common-questions-about-agent-evals. Source-supported mechanism and exact short text: Title: FROM TRACE TO REGRESSION TEST. Four boxes clockwise connected by arrows: PRODUCTION TRACE, FAILURE EXAMPLE, OFFLINE BASELINE, REVISED AGENT. Center small label: REVIEW THE OUTCOME. Subtitle: Conceptual evaluation loop. No quantitative accuracy claims. Style: warm ivory newsprint, dark ink, restrained teal and brick red, generous spacing, strong serif headline and very readable labels. Use only specified text plus small footer AI-GENERATED EDITORIAL. Flat clean line illustration, no fake screenshots, logos, decorative tiny text, invented architecture or statistics. Explicitly label editorial guidance as specified.",
+        "based_on": [
+          "https://www.langchain.com/blog/common-questions-about-agent-evals"
+        ],
+        "reviewed": true,
+        "sha256": "6107479b91f713036504acb1ef5545aca5cd1fe0ce3ddc0ffc24d46f735fe690",
+        "optimization": {
+          "format": "webp",
+          "quality": 82,
+          "max_width": 1440,
+          "source_sha256": "961fd2d22eb4f5b7061b3bf158d54a0e1eeea96a005fdb91f59d455355f0a04b"
+        }
+      },
+      "source": "news",
+      "interest_score": 8,
+      "score_reason": "Substantive primary-source guidance covering dataset construction, online/offline feedback, and stateful agent checks.",
+      "source_evidence": {
+        "url": "https://www.langchain.com/blog/common-questions-about-agent-evals",
+        "publication_date": "2026-10-15",
+        "raw_date": "2026-10-15T19:00:00.000Z",
+        "method": "Primary article JSON-LD datePublished, matching visible October 15, 2026 label."
+      },
+      "dedupe_key": "article:www.langchain.com/blog/common-questions-about-agent-evals"
+    },
+    {
+      "title": "Braintrust coordinates batch evaluations for test suites that can wait",
+      "url": "https://www.braintrust.dev/blog/workflow-evals",
+      "publisher": "Braintrust",
+      "published": "2026-10-15",
+      "category_key": "evals",
+      "summary": "Workflow evals match delayed task and scoring results to examples, with optional progress storage for resuming work.",
+      "body": [
+        "An evaluation suite runs tasks and scores the results. Braintrust’s workflow evals coordinate that work through provider batch APIs, which trade turnaround time for request pricing. The announcement cites OpenAI and Anthropic batch requests at half their standard rates; that is a request-price claim, not a measured saving on the entire evaluation system.",
+        "For illustration, a nightly suite could submit candidate answers first, then submit a batch judge after those answers arrive. Before depending on it, verify that each returned score matches the correct example and that work can resume after the coordinating process restarts. A delayed scoring dependency matters even if every provider request succeeds.",
+        "Developers supply submit and collect callbacks, with item IDs matching results. Support begins at JavaScript/TypeScript SDK 3.37.0 and Python 0.45.0 for the helpers. OpenAI batches can take up to twenty-four hours. Polling or webhooks continue runs, while optional Redis-backed storage lets another process resume using the same evaluation definition."
+      ],
+      "format": "full",
+      "takeaway": "For batch-evaluation owners: verify item matching and restart behavior before using delayed results as a release gate.",
+      "image": "/edition-images/2026-10-16/workflow-batch-evals.webp",
+      "image_width": 1440,
+      "image_height": 960,
+      "image_provenance": {
+        "kind": "generated-editorial",
+        "generator": "built-in-imagegen",
+        "prompt": "Use case: infographic-diagram. Asset type: standalone newspaper editorial infographic PNG, landscape 3:2. Source: https://www.braintrust.dev/blog/workflow-evals. Source-supported mechanism and exact short text: Title: BATCH EVALS CAN WAIT. Three left-to-right stages: SUBMIT BATCH, WAIT OR RESUME, COLLECT BY ITEM ID. A bracket below connects all stages labelled ONE EXPERIMENT. Bottom distinct guidance box: EDITORIAL CHECK: TEST RESTARTS. No savings chart or invented timing guarantee. Style: warm ivory newsprint, dark ink, restrained teal and brick red, generous spacing, strong serif headline and very readable labels. Use only specified text plus small footer AI-GENERATED EDITORIAL. Flat clean line illustration, no fake screenshots, logos, decorative tiny text, invented architecture or statistics. Explicitly label editorial guidance as specified.",
+        "based_on": [
+          "https://www.braintrust.dev/blog/workflow-evals"
+        ],
+        "reviewed": true,
+        "sha256": "7beb34e073a19554731ecebfac827a1161b0ebbcf86ea14d308c0f2c46fdae7e",
+        "optimization": {
+          "format": "webp",
+          "quality": 82,
+          "max_width": 1440,
+          "source_sha256": "bbc865a078da9ad136dccb95ce385bb5a8e6e27e431644389b36170a0295d694"
+        }
+      },
+      "source": "news",
+      "interest_score": 8,
+      "score_reason": "Concrete evaluation orchestration with versioned SDK support, asynchronous completion, and recovery details.",
+      "source_evidence": {
+        "url": "https://www.braintrust.dev/blog/workflow-evals",
+        "publication_date": "2026-10-15",
+        "raw_date": "2026-10-15",
+        "method": "Visible original publication label and article:published_time/datePublished both say 15 October 2026; normalized to ISO calendar date."
+      },
+      "dedupe_key": "article:www.braintrust.dev/blog/workflow-evals"
+    },
+    {
+      "title": "Langfuse adds skill-use records and clearer reasons for failed evaluations",
+      "url": "https://github.com/langfuse/langfuse/releases/tag/v4.60.0",
+      "publisher": "Langfuse · GitHub release",
+      "published": "2026-10-15",
+      "category_key": "observability",
+      "summary": "Version 4.60.0 expands skill tracing and fixes session mapping and judge-failure records, helping teams distinguish missing scores from successful checks.",
+      "body": [
+        "Langfuse records agent activity and evaluation results. Version 4.60.0 adds information about available skills, reusable instructions an agent can load, and resource loads. It also improves records around failed model-based evaluations, so a failed judgment can remain distinguishable from an evaluation that produced a favorable score.",
+        "For illustration, deliberately make a judge fail during a test run, then inspect the recorded reason and the session it belongs to. Separately, compare a skill being available with evidence that the agent actually loaded or used its resources. Availability alone would not establish use. These checks target named release changes rather than a promised accuracy improvement.",
+        "The notes include prompt-cache hit rates, Claude Managed Agents session-ID mapping and metadata-filter fixes, plus terminal judge failures attributed by reason. Test evaluator runs use the live judge call. The notes supply no measured ingestion improvement or cache saving. Organization-level model connections also appear, but their separate announcement was already covered in the preceding edition."
+      ],
+      "format": "full",
+      "takeaway": "For evaluation operators: exercise a failed judge and verify its reason, session identity and missing-score status.",
+      "image": "/edition-images/2026-10-16/langfuse-trace-context.webp",
+      "image_width": 1440,
+      "image_height": 960,
+      "image_provenance": {
+        "kind": "generated-editorial",
+        "generator": "built-in-imagegen",
+        "prompt": "Use case: infographic-diagram. Asset type: standalone newspaper editorial infographic PNG, landscape 3:2. Source: https://github.com/langfuse/langfuse/releases/tag/v4.60.0. Source-supported mechanism and exact short text: Title: CONTEXT FOR EVERY RUN. Three separate equal record cards: SKILL LOADS, SESSION ID, JUDGE FAILURE REASON. Beneath a distinct dashed box: EDITORIAL CHECK: VERIFY A KNOWN FAILURE. Footer: Langfuse v4.60.0. Cards are complementary release changes, not a data pipeline. No invented metrics. Style: warm ivory newsprint, dark ink, restrained teal and brick red, generous spacing, strong serif headline and very readable labels. Use only specified text plus small footer AI-GENERATED EDITORIAL. Flat clean line illustration, no fake screenshots, logos, decorative tiny text, invented architecture or statistics. Explicitly label editorial guidance as specified.",
+        "based_on": [
+          "https://github.com/langfuse/langfuse/releases/tag/v4.60.0"
+        ],
+        "reviewed": true,
+        "sha256": "5da27f132c5f62fbab4577d1af99c638b90524c2a294ba1ba73373333d833c93",
+        "optimization": {
+          "format": "webp",
+          "quality": 82,
+          "max_width": 1440,
+          "source_sha256": "db4daf0b4b3a143c48a239d311de73787512309b1b34147320cc8bc6c8d0fc90"
+        }
+      },
+      "source": "github",
+      "interest_score": 8,
+      "score_reason": "Direct improvements to trace context and evaluation failure interpretation, distinct from the earlier credential-sharing announcement.",
+      "source_evidence": {
+        "url": "https://github.com/langfuse/langfuse/releases/tag/v4.60.0",
+        "publication_date": "2026-10-15",
+        "raw_date": "2026-10-15T10:26:45Z",
+        "method": "Official GitHub release API published_at; draft:false and prerelease:false."
+      },
+      "dedupe_key": "release:langfuse/langfuse/releases/tag/v4.60.0"
+    },
+    {
+      "title": "LangSmith fixes score matching in randomized, concurrent comparisons",
+      "url": "https://github.com/langchain-ai/langsmith-sdk/releases/tag/v0.14.9",
+      "publisher": "LangSmith SDK · GitHub release",
+      "published": "2026-10-15",
+      "category_key": "evals",
+      "summary": "SDK 0.14.9 corrects comparative-evaluator scores and separately adds trace export to an Agent environment.",
+      "body": [
+        "LangSmith can compare outputs from different agent or prompt versions. Its Python SDK 0.14.9 fixes comparative scores when concurrent runs are randomized. Correctly attaching a preference to its candidate matters when the comparison helps decide which version ships. The notes do not quantify affected results or describe the full failure scope.",
+        "For illustration, replay a small comparison where the preferred output is already known, with randomized concurrent execution enabled. Check that each score belongs to the intended candidate. Review earlier comparisons that used the same pattern before relying on their rankings. This tests score correctness, rather than merely confirming that the evaluation job finished.",
+        "The release separately adds OTLP trace export to an Agent environment; OTLP is OpenTelemetry’s transmission protocol. It also makes AgentAddress a TypedDict for serialization and removes an extra 100-millisecond sandbox wait for TCP closure. That timing fix does not mean evaluations run 100 milliseconds faster. Test trace arrival separately from comparative score matching."
+      ],
+      "format": "full",
+      "takeaway": "For comparative-evaluation owners: recheck candidate-to-score matching under the randomized concurrency pattern your suite uses.",
+      "image": "/edition-images/2026-10-16/langsmith-comparative-scores.webp",
+      "image_width": 1440,
+      "image_height": 960,
+      "image_provenance": {
+        "kind": "generated-editorial",
+        "generator": "built-in-imagegen",
+        "prompt": "Use case: infographic-diagram. Asset type: standalone newspaper editorial infographic PNG, landscape 3:2. Source: https://github.com/langchain-ai/langsmith-sdk/releases/tag/v0.14.9. Source-supported mechanism and exact short text: Title: KEEP COMPARATIVE SCORES ALIGNED. Two cards labelled CANDIDATE A and CANDIDATE B, each with a separate simple path through one shared central box RANDOMIZED RUNS to matching output cards SCORE A and SCORE B. Preserve A-to-A and B-to-B relationships with clear distinguishable teal and red paths. No invented numeric scores. Bottom: EDITORIAL CHECK: REPLAY KNOWN PREFERENCES. Footer: LangSmith SDK v0.14.9. Style: warm ivory newsprint, dark ink, restrained teal and brick red, generous spacing, strong serif headline and very readable labels. Use only specified text plus small footer AI-GENERATED EDITORIAL. Flat clean line illustration, no fake screenshots, logos, decorative tiny text, invented architecture or statistics. Explicitly label editorial guidance as specified.",
+        "based_on": [
+          "https://github.com/langchain-ai/langsmith-sdk/releases/tag/v0.14.9"
+        ],
+        "reviewed": true,
+        "sha256": "86676a46e95f54d7b1e59507fbdcd1b95a82c016c124e303f595bf2a4962401e",
+        "optimization": {
+          "format": "webp",
+          "quality": 82,
+          "max_width": 1440,
+          "source_sha256": "13f8bc5f7cbdc0ae11dc5008addcd1b691c919ceb2d4d2c8a013184161b3676e"
+        }
+      },
+      "source": "github",
+      "interest_score": 8,
+      "score_reason": "A narrowly described but consequential evaluation-correctness fix, accompanied by a concrete OTLP export feature.",
+      "source_evidence": {
+        "url": "https://github.com/langchain-ai/langsmith-sdk/releases/tag/v0.14.9",
+        "publication_date": "2026-10-15",
+        "raw_date": "2026-10-15T13:34:27Z",
+        "method": "Official GitHub release API published_at; draft:false and prerelease:false."
+      },
+      "dedupe_key": "release:langchain-ai/langsmith-sdk/releases/tag/v0.14.9"
+    },
+    {
+      "title": "Phoenix adds playground model options and fixes a sign-in return path",
+      "url": "https://github.com/Arize-ai/phoenix/releases/tag/arize-phoenix-v20.22.0",
+      "publisher": "Arize Phoenix · GitHub release",
+      "published": "2026-10-15",
+      "category_key": "evals",
+      "summary": "Version 20.22.0 adds two model choices, a cookie-preservation fix after sign-in and tracing documentation.",
+      "body": [
+        "Phoenix’s Playground lets engineers try model calls. Version 20.22.0 adds Meta muse-wonder-1.0 and gemini-4-argon, and separately fixes preservation of SameSite=Strict cookies on a server-owned return URL after identity-provider sign-in.",
+        "For illustration, check that the intended model is selectable, then exercise the sign-in round trip as a separate test. The terse notes offer no model-quality comparison or measured authentication outcome. New Claude Managed Agents and Harbor documentation also does not establish that an application is emitting complete traces."
+      ],
+      "format": "brief",
+      "brief_reason": "The release supplies one short playground entry, one OAuth2 fix, and documentation links, without detailed implementation or evaluation results.",
+      "takeaway": "For Phoenix operators: test model selection and the sign-in return path independently.",
+      "image": "/edition-images/2026-10-16/phoenix-playground-update.webp",
+      "image_width": 1440,
+      "image_height": 960,
+      "image_provenance": {
+        "kind": "generated-editorial",
+        "generator": "built-in-imagegen",
+        "prompt": "Use case: infographic-diagram. Asset type: standalone newspaper editorial infographic PNG, landscape 3:2. Source: https://github.com/Arize-ai/phoenix/releases/tag/arize-phoenix-v20.22.0. Source-supported mechanism and exact short text: Title: PHOENIX UPDATE CHECKLIST. Two separate large panels: PLAYGROUND MODELS and SIGN-IN RETURN. First panel shows two simple model cards without names. Second shows identity-provider icon and return arrow to an application. Bottom separate dashed box: EDITORIAL CHECK: TEST BOTH PATHS. Footer: Phoenix v20.22.0. No suggestion these panels form a dependency or new trace architecture. Style: warm ivory newsprint, dark ink, restrained teal and brick red, generous spacing, strong serif headline and very readable labels. Use only specified text plus small footer AI-GENERATED EDITORIAL. Flat clean line illustration, no fake screenshots, logos, decorative tiny text, invented architecture or statistics. Explicitly label editorial guidance as specified.",
+        "based_on": [
+          "https://github.com/Arize-ai/phoenix/releases/tag/arize-phoenix-v20.22.0"
+        ],
+        "reviewed": true,
+        "sha256": "4d51f02bcfff6a000177269fdeb6aa627ab43a546dd5520793cd4e6d56436612",
+        "optimization": {
+          "format": "webp",
+          "quality": 82,
+          "max_width": 1440,
+          "source_sha256": "6ccb8e18c050423e1cd40d376c5bc86efe0212d1fd79a11db753840d4a3fba89"
+        }
+      },
+      "source": "github",
+      "interest_score": 7,
+      "score_reason": "Relevant incremental evaluation-tool support and authentication maintenance, with sparse source detail.",
+      "source_evidence": {
+        "url": "https://github.com/Arize-ai/phoenix/releases/tag/arize-phoenix-v20.22.0",
+        "publication_date": "2026-10-15",
+        "raw_date": "2026-10-15T07:02:33Z",
+        "method": "Official GitHub release API published_at; draft:false and prerelease:false; release heading also October 15."
+      },
+      "dedupe_key": "release:Arize-ai/phoenix/releases/tag/arize-phoenix-v20.22.0"
+    }
+  ],
+  "edition": "AI Observability Daily",
+  "research": {
+    "status": "complete",
+    "completed_sources": [
+      "hn",
+      "news",
+      "github"
+    ],
+    "checked_urls": [
+      "https://arize.com/blog/",
+      "https://langfuse.com/blog",
+      "https://www.langchain.com/blog",
+      "https://www.braintrust.dev/blog",
+      "https://opentelemetry.io/blog/",
+      "https://www.elastic.co/observability-labs/blog",
+      "https://www.datadoghq.com/blog/",
+      "https://www.honeycomb.io/blog/",
+      "https://www.digitalocean.com/blog",
+      "https://www.splunk.com/en_us/blog/observability.html",
+      "https://www.dynatrace.com/news/",
+      "https://langfuse.com/changelog",
+      "https://arize.com/blog/ai-agent-permissions/",
+      "https://www.langchain.com/blog/common-questions-about-agent-evals",
+      "https://www.braintrust.dev/blog/workflow-evals",
+      "https://www.truefoundry.io/blog/ai-agent-observability",
+      "https://www.datadoghq.com/blog/ai/introducing-scout-sre-specialized-model-bits-ai/"
+    ],
+    "excluded": [
+      {
+        "url": "https://claude.com/resources/articles/agent-observability-on-the-claude-platform",
+        "title": "Agent Observability on the Claude Platform",
+        "reason": "Original primary article visible date is October 14, 2026, and identical announcement already appears in 2026-10-15.json. HN submission on October 15 does not reset publication date."
+      },
+      {
+        "url": "https://github.com/longsurf-ai/endo",
+        "title": "Show HN: Endo – A Higher-Order Harness",
+        "reason": "First-party Show HN post and official timestamp checked. Describes agent composition, provider switching and workflow protocol; no concrete tracing, evaluation or runtime telemetry implementation. Outside scoped beat."
+      },
+      {
+        "url": "https://gitlab.com/patchwork1-ai/turbolisp",
+        "title": "Show HN: Turbo Lisp – A Common Lisp IDE for macOS and the Terminal",
+        "reason": "Common Lisp IDE announcement; outside AI-observability beat."
+      },
+      {
+        "url": "https://github.com/readysettech/rdst",
+        "title": "Show HN: RDST – A local agent that watches Postgres/MySQL for query regressions",
+        "reason": "First-party announcement describes database query-regression monitoring with model-assisted advice, rather than telemetry/evaluation of the AI agent itself. Outside scoped AI-observability beat."
+      },
+      {
+        "url": "https://microsoft.ai/news/frontier-pre-training-at-microsoft-ai/",
+        "title": "Frontier Pre-Training at Microsoft AI",
+        "reason": "Frontier model pre-training announcement; outside AI-observability beat."
+      },
+      {
+        "url": "https://www.truefoundry.io/blog/ai-agent-observability",
+        "reason": "Conflicting primary original dates: visible Published October 15, 2026 versus JSON-LD datePublished Sep 22, 2026. Excluded rather than selecting the convenient date.",
+        "evidence_file": "article-4.html"
+      },
+      {
+        "url": "https://www.datadoghq.com/blog/ai/introducing-scout-sre-specialized-model-bits-ai/",
+        "reason": "Index reviewed and Scout primary article followed; October 15 publication confirmed. Specialized AI SRE investigation model concerns AI for infrastructure operations, without a new implementation for observing/evaluating AI applications; excluded from this AI-observability-only edition.",
+        "evidence_file": "article-3.html"
+      },
+      {
+        "url": "https://www.langchain.com/blog/october-2026-langchain-newsletter",
+        "reason": "Dated newsletter recaps previous product events, including AI Search already covered in history; no separate repeated announcement retained."
+      },
+      {
+        "url": "https://www.oreilly.com/radar/podcast/generative-ai-in-the-real-world-observability-for-ai-with-charity-majors/",
+        "reason": "Focused search surfaced an October 15 podcast; not retained because concrete implementation-focused primary guides and releases were prioritized. No claim of full transcript verification."
+      }
+    ],
+    "note": "Scoped sweep of configured News surfaces and focused web searches; no claim of exhaustive coverage. Built-in image generation confirmed before research. Supplied discovery file and successful outer source-fetch.log reused to respect explicit output boundary instead of rerunning fetch:sources, which would overwrite a file outside it. All five HN posts and all three stable release candidates rechecked through official APIs. All four existing issue files read, including the later October 17 edition, for canonical URL/event/headline overlap. Prior organization-level Langfuse connection story omitted from release focus to avoid repeating its event.",
+    "source_counts": {
+      "hn": {
+        "candidates": 5,
+        "retained": 0,
+        "excluded": 5
+      },
+      "news": {
+        "configured_surfaces": 11,
+        "retained": 3
+      },
+      "github": {
+        "repositories_checked": 8,
+        "candidate_releases": 3,
+        "retained": 3
+      }
+    },
+    "news_checks": [
+      {
+        "name": "Arize AI",
+        "url": "https://arize.com/blog/",
+        "status": "checked",
+        "http_status": 200,
+        "evidence_file": "source-0.txt",
+        "result": "Index reviewed; original AI agent permissions article retained. Older previously covered prompt experiment excluded."
+      },
+      {
+        "name": "Langfuse",
+        "url": "https://langfuse.com/blog",
+        "status": "checked",
+        "http_status": 200,
+        "evidence_file": "source-1.txt",
+        "result": "Blog index reviewed: newest post September 30. Changelog separately reviewed: October 14 and October 16 entries outside frozen date; no October 15 entry."
+      },
+      {
+        "name": "LangSmith",
+        "url": "https://www.langchain.com/blog",
+        "status": "checked",
+        "http_status": 200,
+        "evidence_file": "source-2.txt",
+        "result": "Dated index reviewed; common agent eval questions guide retained. October newsletter recaps earlier announcements including AI Search already covered in history; excluded as roundup/repeated events."
+      },
+      {
+        "name": "Braintrust",
+        "url": "https://www.braintrust.dev/blog",
+        "status": "checked",
+        "http_status": 200,
+        "evidence_file": "source-3.txt",
+        "result": "Dated index reviewed; October 15 workflow evals article retained; October 8 and earlier articles outside window."
+      },
+      {
+        "name": "OpenTelemetry",
+        "url": "https://opentelemetry.io/blog/",
+        "status": "checked",
+        "http_status": 200,
+        "evidence_file": "source-4.txt",
+        "result": "Dated index reviewed: October 15 Humans of OpenTelemetry community interviews excluded for lack of concrete AI-operational implementation; hostmetrics October 13 already covered."
+      },
+      {
+        "name": "Elastic Observability Labs",
+        "url": "https://www.elastic.co/observability-labs/blog",
+        "status": "checked",
+        "http_status": 200,
+        "evidence_file": "source-5.txt",
+        "result": "Index reviewed: recent audit retention and node-pressure articles are historical duplicates; remaining listed infrastructure articles do not establish a new October 15 AI-observability event. No CMS modification field used as original date."
+      },
+      {
+        "name": "Datadog",
+        "url": "https://www.datadoghq.com/blog/",
+        "status": "checked",
+        "http_status": 200,
+        "evidence_file": "source-6.txt",
+        "result": "Index reviewed and Scout primary article followed; October 15 publication confirmed. Specialized AI SRE investigation model concerns AI for infrastructure operations, without a new implementation for observing/evaluating AI applications; excluded from this AI-observability-only edition."
+      },
+      {
+        "name": "Honeycomb",
+        "url": "https://www.honeycomb.io/blog/",
+        "status": "checked",
+        "http_status": 200,
+        "evidence_file": "source-7.txt",
+        "result": "Dated index reviewed; October 16 conference recap is outside window and already in existing October 17 issue. October 14 AWS competency and earlier articles excluded."
+      },
+      {
+        "name": "DigitalOcean",
+        "url": "https://www.digitalocean.com/blog",
+        "status": "checked",
+        "http_status": 200,
+        "evidence_file": "source-8.txt",
+        "result": "Dated index reviewed: October 15 MicroVM architecture article concerns agent compute and suspension; no concrete new AI trace/evaluation implementation established. October 12 agent-data story already covered."
+      },
+      {
+        "name": "Splunk Observability",
+        "url": "https://www.splunk.com/en_us/blog/observability.html",
+        "status": "checked",
+        "http_status": 200,
+        "evidence_file": "source-9.txt",
+        "result": "HTTP surface returns No results; supplemented with focused site/date search. Found October 15 collector fleet configuration release and Japanese host/NGINX/MySQL guide, excluded as generic infrastructure telemetry without concrete AI-operational relevance. Limited blog surface does not establish exhaustive absence."
+      },
+      {
+        "name": "Dynatrace",
+        "url": "https://www.dynatrace.com/news/",
+        "status": "checked",
+        "http_status": 200,
+        "evidence_file": "source-10.txt",
+        "result": "Dated index reviewed: October 15 Devin Oncall integration and monthly release radar concern infrastructure incident response/roundup. No distinct in-window implementation for observing AI agent behavior established; excluded from scoped beat."
+      }
+    ],
+    "hn_checks": [
+      {
+        "hn_id": "50099105",
+        "api": "https://hacker-news.firebaseio.com/v0/item/50099105.json",
+        "http_status": 200,
+        "evidence_file": "source-11.txt"
+      },
+      {
+        "hn_id": "50110614",
+        "api": "https://hacker-news.firebaseio.com/v0/item/50110614.json",
+        "http_status": 200,
+        "evidence_file": "source-12.txt"
+      },
+      {
+        "hn_id": "50110159",
+        "api": "https://hacker-news.firebaseio.com/v0/item/50110159.json",
+        "http_status": 200,
+        "evidence_file": "source-13.txt"
+      },
+      {
+        "hn_id": "50107729",
+        "api": "https://hacker-news.firebaseio.com/v0/item/50107729.json",
+        "http_status": 200,
+        "evidence_file": "source-14.txt"
+      },
+      {
+        "hn_id": "50105791",
+        "api": "https://hacker-news.firebaseio.com/v0/item/50105791.json",
+        "http_status": 200,
+        "evidence_file": "source-15.txt"
+      }
+    ],
+    "github_checks": [
+      {
+        "repository": "langfuse/langfuse",
+        "releases_checked": 100,
+        "coverage": "latest 100 releases; not a global GitHub search",
+        "evidence": "Supplied discovery file and source-fetch.log from successful outer discovery run; three matching candidates independently rechecked against official release API."
+      },
+      {
+        "repository": "Arize-ai/phoenix",
+        "releases_checked": 100,
+        "coverage": "latest 100 releases; not a global GitHub search",
+        "evidence": "Supplied discovery file and source-fetch.log from successful outer discovery run; three matching candidates independently rechecked against official release API."
+      },
+      {
+        "repository": "Arize-ai/openinference",
+        "releases_checked": 100,
+        "coverage": "latest 100 releases; not a global GitHub search",
+        "evidence": "Supplied discovery file and source-fetch.log from successful outer discovery run; three matching candidates independently rechecked against official release API."
+      },
+      {
+        "repository": "langchain-ai/langsmith-sdk",
+        "releases_checked": 100,
+        "coverage": "latest 100 releases; not a global GitHub search",
+        "evidence": "Supplied discovery file and source-fetch.log from successful outer discovery run; three matching candidates independently rechecked against official release API."
+      },
+      {
+        "repository": "braintrustdata/braintrust-sdk",
+        "releases_checked": 97,
+        "coverage": "latest 100 releases; not a global GitHub search",
+        "evidence": "Supplied discovery file and source-fetch.log from successful outer discovery run; three matching candidates independently rechecked against official release API."
+      },
+      {
+        "repository": "wandb/weave",
+        "releases_checked": 100,
+        "coverage": "latest 100 releases; not a global GitHub search",
+        "evidence": "Supplied discovery file and source-fetch.log from successful outer discovery run; three matching candidates independently rechecked against official release API."
+      },
+      {
+        "repository": "langwatch/langwatch",
+        "releases_checked": 100,
+        "coverage": "latest 100 releases; not a global GitHub search",
+        "evidence": "Supplied discovery file and source-fetch.log from successful outer discovery run; three matching candidates independently rechecked against official release API."
+      },
+      {
+        "repository": "Helicone/helicone",
+        "releases_checked": 4,
+        "coverage": "latest 100 releases; not a global GitHub search",
+        "evidence": "Supplied discovery file and source-fetch.log from successful outer discovery run; three matching candidates independently rechecked against official release API."
+      }
+    ],
+    "history_checked": [
+      {
+        "file": "2026-10-13.json",
+        "stories": 15,
+        "sha256": "5999994404b8642a8ddb43c4c21b3bb10abd3cd9a8534fa62060223add67fc31"
+      },
+      {
+        "file": "2026-10-14.json",
+        "stories": 12,
+        "sha256": "1bdcde469e6283004d984f8b15b4f9fd77b3646a51d9c10d0c156584c4fe2461"
+      },
+      {
+        "file": "2026-10-15.json",
+        "stories": 6,
+        "sha256": "a4b9839fb73d0b41a5ef943fb36b7ddd3f49529f4a46ae075959b606ee9f6ecc"
+      },
+      {
+        "file": "2026-10-17.json",
+        "stories": 5,
+        "sha256": "40ca896564230c0088f621ba45b33bd7515d0b6cb31a5a230915f7aa8f8f93f4"
+      }
+    ],
+    "searches": [
+      "\"October 15, 2026\" \"observability\"",
+      "\"2026-10-15\" \"evaluation\" LLM",
+      "site:braintrust.dev/blog \"October 15\" \"2026\"",
+      "site:langchain.com/blog \"October 15\" \"2026\"",
+      "site:langchain.com/blog \"October 15, 2026\"",
+      "site:braintrust.dev/blog \"Oct 15, 2026\"",
+      "site:opentelemetry.io/blog/2026 \"October 15\"",
+      "site:splunk.com/en_us/blog/observability \"October 15, 2026\""
+    ]
+  }
+}
