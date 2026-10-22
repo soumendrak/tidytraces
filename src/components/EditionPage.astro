@@ -177,6 +177,10 @@ const breadcrumbSchema = {
 							<span>Archive</span>
 						</a>
 						<span class="masthead-eyebrow-sep">&middot;</span>
+						<a class="masthead-eyebrow-link masthead-search-link" href="/search/" aria-label="Search all editions" aria-keyshortcuts="Control+k Meta+k" title="Search all editions (Ctrl+K / Cmd+K)">
+							<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="10.5" cy="10.5" r="7.5" /><path d="m16 16 5 5" /></svg>
+						</a>
+						<span class="masthead-eyebrow-sep">&middot;</span>
 						<a class="masthead-eyebrow-link" href="/" rel="noopener noreferrer">tidytraces.com</a>
 					</span>
 					<div class="masthead-eyebrow-center-group">
@@ -279,6 +283,7 @@ const breadcrumbSchema = {
 
 						return (
 						<article
+							id={story.slug}
 							class={classes}
 							data-section={story.section}
 							data-source={story.source}
@@ -306,6 +311,8 @@ const breadcrumbSchema = {
 								{story.published && <><time datetime={story.published}>{story.published}</time><span class="story-source-sep">&middot;</span></>}
 								{bylineFor(story) && <>{bylineFor(story)}<span class="story-source-sep">&middot;</span></>}
 								<a class="story-source-link" href={story.url} target="_blank" rel="noopener noreferrer">{sourceLabelFor(story)} &rsaquo;</a>
+								<span class="story-source-sep">&middot;</span>
+								<a class="story-source-link" href={`${issueHref}#${story.slug}`} aria-label={`Permanent link to ${story.title}`}>Permalink</a>
 								{story.comments && (
 									<>
 										<span class="story-source-sep">&middot;</span>

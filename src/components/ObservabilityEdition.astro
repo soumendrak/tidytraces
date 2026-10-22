@@ -1,6 +1,7 @@
 ---
 import type { CollectionEntry } from 'astro:content';
 import EditionPage from './EditionPage.astro';
+import { storyAnchor } from '../lib/storyAnchors.js';
 import { imageCaptionFor, isGeneratedImage } from '../lib/editionCredits.js';
 import { editionFingerprint } from '../lib/editionFingerprint.js';
 interface Props {
@@ -12,8 +13,8 @@ interface Props {
   isHomepage?: boolean;
 }
 const { edition, ...navigation } = Astro.props;
-const stories = edition.stories.map((story, index) => ({
-  slug: `observability-${index}`,
+const stories = edition.stories.map((story) => ({
+  slug: storyAnchor(story),
   title: story.title,
   source: story.source,
   url: story.url,
@@ -31,7 +32,11 @@ const stories = edition.stories.map((story, index) => ({
   imageCaption: imageCaptionFor(story),
   imageGenerated: isGeneratedImage(story),
   // Escape curated text; source claims and editorial takeaways stay distinct.
-  bodyHtml: (story.body || [story.summary]).map((paragraph) => `<p>${escape(paragraph)}</p>`).join('') + `<p><strong>Why it matters</strong> ${escape(story.takeaway)}</p>`,
+  bodyHtml: (story.body || [story.summary]).map((paragraph, index) => {
+    if (index !== 0) return `<p>${escape(paragraph)}</p>`;
+    const [initial = '', ...rest] = Array.from(paragraph);
+    return `<p><span class="drop-cap">${escape(initial)}</span>${escape(rest.join(''))}</p>`;
+  }).join('') + `<p><strong>Why it matters</strong> ${escape(story.takeaway)}</p>`,
 }));
 function escape(text: string) {
   return text.replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('"', '&quot;');

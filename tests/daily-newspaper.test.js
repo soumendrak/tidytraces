@@ -123,7 +123,7 @@ test('runner promotes images, rolls back build failure, and safely retries publi
     await writeFile(path.join(root, 'publisher.js'), "import {writeFileSync} from 'node:fs';if(process.env.FAIL_PUBLISH)process.exit(2);writeFileSync('.cache/published','yes');");
     await writeFile(path.join(root, 'automation/daily-newspaper.json'), JSON.stringify({ time_zone: 'Asia/Kolkata', mode: 'build', timeout_minutes: 1, agent: { command: [process.execPath, 'agent.js', '{run_dir}'] }, publish: { command: [process.execPath, 'publisher.js'], commit_edition: true } }));
     await writeFile(path.join(root, 'public/md'), 'old export'); await writeFile(path.join(root, 'public/json'), 'old json');
-    execFileSync('git', ['init', '-q'], { cwd: root });
+    execFileSync('git', ['init', '-q', '-b', 'master'], { cwd: root });
     const run = (env = {}, mode = 'build') => execFileSync(process.execPath, ['scripts/run-daily-newspaper.js', '--news-date', '2026-10-12', '--mode', mode], { cwd: root, env: { ...process.env, ...env }, stdio: 'pipe' });
     assert.throws(() => run({ FAIL_BUILD: '1' }));
     await assert.rejects(readFile(path.join(root, 'src/data/ai-observability/2026-10-13.json')), /ENOENT/);
@@ -147,7 +147,7 @@ test('runner promotes images, rolls back build failure, and safely retries publi
     execFileSync('git', ['add', '.'], { cwd: root });
     execFileSync('git', ['commit', '-qm', 'Fixture baseline'], { cwd: root });
     const origin = path.join(root, '.cache/origin.git');
-    execFileSync('git', ['init', '-q', '--bare', origin]);
+    execFileSync('git', ['init', '-q', '--bare', '-b', 'master', origin]);
     execFileSync('git', ['remote', 'add', 'origin', origin], { cwd: root });
     execFileSync('git', ['push', '-q', 'origin', 'HEAD:master'], { cwd: root });
     assert.throws(() => run({ FAIL_PUBLISH: '1' }, 'publish'));
@@ -183,7 +183,7 @@ test('publish baseline allows unpushed edition commits but not stale or unmerged
   const origin = path.join(root, 'origin.git'), work = path.join(root, 'work');
   const git = (...args) => execFileSync('git', ['-c', 'user.name=t', '-c', 'user.email=t@example.invalid', ...args], { cwd: work, stdio: 'pipe' });
   try {
-    execFileSync('git', ['init', '-q', '--bare', origin]);
+    execFileSync('git', ['init', '-q', '--bare', '-b', 'master', origin]);
     execFileSync('git', ['clone', '-q', origin, work], { stdio: 'pipe' });
     await mkdir(path.join(work, 'src/data/ai-observability'), { recursive: true });
     await writeFile(path.join(work, 'app.js'), 'v1');

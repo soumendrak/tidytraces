@@ -7,6 +7,8 @@ An **AI-observability-only** publication using the distraction-free newspaper re
 - Latest issue: `/`
 - Publication calendar and streaks: `/archive/`
 - Dated issue: `/ai-observability/YYYY-MM-DD/`
+- Search every edition: `/search/` (share a query with `/search/?q=opentelemetry`)
+- Open search from any page with **Ctrl+K** or **Cmd+K**; on the search page, the shortcut focuses and selects the query.
 - RSS history: `/rss.xml`
 - Latest Markdown and JSON: `/md` and `/json`
 - Printable A4 PDF: use **PDF** in any edition's masthead, or `/pdf/YYYY-MM-DD.pdf`
@@ -15,6 +17,10 @@ An **AI-observability-only** publication using the distraction-free newspaper re
 **All / HN / NEWS / GITHUB** are Section buttons. All combines every discovery channel; individual source buttons are mutually exclusive. All stories still belong to AI observability. The All Section opens by default, combining HN, News, and GitHub. **All / Recommended / Must-Read** are signal filters: Recommended requires a recorded score of at least 8, Must-Read at least 9. Unrated stories appear under All. Signal scores are editorial judgements with recorded reasons; they are independent of vote/star counts. Unrated publisher stories remain in All.
 
 The calendar shows publication streaks, not personal reading activity. Only real, sourced AI issues appear; missing editions are not fabricated. Previous issues stay available when new editions are added. The old `/ai-observability/` landing URL redirects to `/`.
+
+Search uses MiniSearch in the browser, with title weighting, prefix matching, and typo tolerance. Source, signal, and edition filters are included in the shareable URL. Each build generates `/search-index.json` from every issue, indexing headlines, publishers, summaries, full body text, and takeaways. The index and search code load only on the search page. JavaScript is required for search; the archive remains available without it.
+
+Results link to literal matching passages with native scroll-to-text highlighting in supporting browsers. Each link also contains a stable `story-…` anchor derived from the original source URL, so it survives headline edits and reordering. Stories have a Permalink link to that anchor; changing the source URL changes the anchor. When a match occurs only in an unprinted summary, the result uses the story anchor alone.
 
 ## Development
 
