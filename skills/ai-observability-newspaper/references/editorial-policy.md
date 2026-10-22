@@ -20,6 +20,53 @@ The automatic validator checks canonical URLs (ignoring tracking parameters and 
 
 Regression case: a Google SRE book story dated October 30 is excluded from an October 12 window, even if a search index, modification field, or another metadata field says October 12. Conflicting primary publication evidence means exclude, not choose the convenient date. Preserve that exclusion in the research record.
 
+## Readability and context switching
+
+Write for an intermediate engineer who understands software development but may be new to a particular AI observability tool or concept. Make each story understandable on its own. Preserve technical accuracy and useful depth while reducing prerequisite knowledge and the effort of switching topics.
+
+Use this consistent structure within the existing fields; do not add schema fields, UI components, or mandatory rendered headings:
+
+1. **Practical headline (`title`):** State the specific change or problem addressed in plain language. Name the product when useful for identification. Avoid vague promises, unexplained acronyms, and claims of benefits the source does not establish.
+2. **Quick orientation (`summary`):** Use one or two short sentences to explain what changed and why it matters. Make this independently useful; do not rely on readers seeing it before the body.
+3. **Context (`body`, opening):** Explain in one sentence what the tool or concept does and the practical problem involved. Reintroduce necessary context in every story, including briefs. Define unfamiliar terms on first mention; for example, explain a span as a record of one operation within a trace.
+4. **What changed (`body`):** Explain the actual announcement using short sentences and concrete verbs. Introduce the mechanism after the problem is clear. Attribute vendor claims and preserve the source's limitations.
+5. **Concrete example (`body`):** Show one situation where the change applies, such as distinguishing an empty document search from a failed API call in an assistant. Mark a hypothetical example as illustrative; never present it as a measured result, real incident, or supported product capability without evidence.
+6. **Technical depth (`body`, final paragraph when needed):** Put relevant version numbers, configuration, compatibility constraints, implementation details, and evidence limits after the accessible explanation. Keep these within the existing paragraphs and word budget. Do not invent details to fill this section or introduce expandable controls.
+7. **Who should care (`takeaway`):** Identify the affected engineer or workflow and give a justified action, check, or implication. Keep this editorial judgement distinct from source facts. If no action is warranted, say what to watch or when the change becomes relevant; do not manufacture urgency.
+
+Keep full stories normally 150–220 body words, with the existing 130-word minimum. Apply the same logical sequence compactly to valid 60+ word briefs; retain their source-specific `brief_reason`. Do not shorten stories below the existing gates or pad thin announcements. Make the opening understandable before introducing specialist detail; make the technical depth useful to readers who continue.
+
+Reduce topic changes across an edition: order related stories together in the `stories` array where the existing reader permits, and use `dek` to introduce the edition's main themes in plain language. Use brief topic signposts in story openings when helpful. Preserve independent comprehension, source classifications, source-tab order, signal filters, and existing category values; do not imply a causal connection between unrelated announcements or add new section objects.
+
+### Illustrative writing pattern
+
+Use this as a pattern, not a publishable story or evidence of an actual feature:
+
+> **See which step caused an AI assistant to fail**
+>
+> An AI assistant may search documents, call an API, and then write an answer. When the answer is wrong, engineers need to see which step failed.
+>
+> [Explain the verified change and its mechanism in plain language.]
+>
+> For illustration, [show one source-consistent debugging situation; distinguish expected use from demonstrated results].
+>
+> [Add source-supported implementation details and limitations.]
+>
+> **Who should care:** [Name the affected workflow and a justified next step.]
+
+### Required editorial review
+
+Before publication, read every story independently and in a different order. Revise until all checks pass:
+
+- Can an intermediate engineer identify what the tool does, what changed, and why it matters from the opening, without reading another story or following a link?
+- Does the headline state a concrete, supported change, and are necessary specialist terms explained within this story?
+- Does one concrete example make the mechanism easier to understand, with hypothetical details clearly distinguished from source evidence?
+- Does the technical detail follow the explanation, and does the takeaway identify who is affected and a justified action or implication?
+- Does the story make sense without its infographic, and does that infographic explain one source-supported idea rather than introduce another learning task?
+- Do the edition introduction and story ordering help readers move between themes while keeping every story self-contained?
+
+Treat these as manual quality gates. Automated word-count, evidence, and asset validation remains required and does not replace this review.
+
 ## Story fields
 
 ```json
