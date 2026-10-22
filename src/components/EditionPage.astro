@@ -24,6 +24,7 @@ interface StoryProps {
 	imageWidth?: number;
 	imageHeight?: number;
 	imageCaption?: string;
+	imageGenerated?: boolean;
 	interest_score?: number;
 	comments?: string;
 	hn_id?: string;
@@ -193,7 +194,7 @@ const breadcrumbSchema = {
 					</div>
 				</div>
 				<h1 class="masthead-name"><BrandLogo /></h1>
-<p class="masthead-tagline">{editionName} · Observability · Evals · AI agents</p>
+<p class="masthead-tagline">{editionName} · Curated by <a href={SITE_METADATA.creator.url}><strong>{SITE_METADATA.creator.name}</strong></a></p>
 				<hr class="masthead-rule-thick" />
 				{dek && <p class="edition-dek">{dek}</p>}
 				{storyWindow && <p class="edition-window">Coverage window: {storyWindow} · Original sources, independent editorial takeaways.</p>}
@@ -331,6 +332,7 @@ const breadcrumbSchema = {
 										width={story.imageWidth || 560}
 										height={story.imageHeight || 418}
 										itemprop="image"
+										data-image-provenance={story.imageGenerated ? 'AI-generated editorial illustration' : undefined}
 										onerror="this.parentElement.hidden = true"
 										onload="this.classList.remove('loading'); this.parentElement.classList.remove('is-loading');"
 									/>

@@ -18,7 +18,7 @@ For operators, the useful question is whether a trace explains a real failure ac
 Why it matters: Verify trace arrival and correlation with a known failing agent run.
 
 ![Claude Platform opens native OpenTelemetry agent tracing in public beta](/edition-images/2026-10-15/claude-otel.webp)
-AI-generated editorial infographic, based on the linked source.
+<!-- AI-generated editorial infographic, based on the linked source. -->
 
 ## Deep Agents explains recoverable context management for long runs
 
@@ -33,7 +33,7 @@ This matters when an incident depends on information that disappeared from the a
 Why it matters: Evaluate retrieval after compaction, alongside token savings and final task outcomes.
 
 ![Deep Agents explains recoverable context management for long runs](/edition-images/2026-10-15/deep-agents-context.webp)
-AI-generated editorial infographic, based on the linked source.
+<!-- AI-generated editorial infographic, based on the linked source. -->
 
 ## Langfuse shares LLM credentials across projects with local overrides
 
@@ -48,7 +48,7 @@ The operational benefit is less repeated setup, but central configuration also c
 Why it matters: Test credential resolution and rotation before relying on shared evaluation connections.
 
 ![Langfuse shares LLM credentials across projects with local overrides](/edition-images/2026-10-15/langfuse-shared-connections.webp)
-AI-generated editorial infographic, based on the linked source.
+<!-- AI-generated editorial infographic, based on the linked source. -->
 
 ## Langfuse SDK majors add compressed export and remove deprecated APIs
 
@@ -63,7 +63,7 @@ For an instrumentation owner, compatibility is the immediate gate. Our editorial
 Why it matters: Gate the SDK upgrade on server compatibility and an ingestion replay.
 
 ![Langfuse SDK majors add compressed export and remove deprecated APIs](/edition-images/2026-10-15/langfuse-sdk-majors.webp)
-AI-generated editorial infographic, based on the linked source.
+<!-- AI-generated editorial infographic, based on the linked source. -->
 
 ## Langfuse v4.59.0 addresses late traces and monitor execution failures
 
@@ -78,7 +78,7 @@ Our editorial recommendation is to validate the failure paths the release names.
 Why it matters: Replay late arrivals and monitor failures when validating the server upgrade.
 
 ![Langfuse v4.59.0 addresses late traces and monitor execution failures](/edition-images/2026-10-15/langfuse-release-reliability.webp)
-AI-generated editorial infographic, based on the linked source.
+<!-- AI-generated editorial infographic, based on the linked source. -->
 
 ## Phoenix v20.21.4 fixes label retention and table interactions
 
@@ -93,4 +93,4 @@ Our editorial recommendation is to verify label editing and sorting in the revie
 Why it matters: Verify label editing and table sorting in your review workflow.
 
 ![Phoenix v20.21.4 fixes label retention and table interactions](/edition-images/2026-10-15/phoenix-ui-fixes.webp)
-AI-generated editorial infographic, based on the linked source.
+<!-- AI-generated editorial infographic, based on the linked source. -->

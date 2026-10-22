@@ -26,9 +26,14 @@ const stories = edition.stories.map((story, index) => ({
   image: story.image,
   imageWidth: story.image_width,
   imageHeight: story.image_height,
-  imageCaption: story.image_provenance?.kind === 'generated-editorial' ? 'AI-generated editorial infographic · based on the linked source' : (story.image ? `Source image · ${story.publisher}` : undefined),
+  imageGenerated: story.image_provenance?.kind === 'generated-editorial',
+  imageCaption: story.image_provenance?.kind === 'generated-editorial' ? undefined : (story.image ? `Source image · ${story.publisher}` : undefined),
   // Escape curated text; source claims and editorial takeaways stay distinct.
-  bodyHtml: (story.body || [story.summary]).map((paragraph) => `<p>${escape(paragraph)}</p>`).join('') + `<p><strong>Why it matters</strong> ${escape(story.takeaway)}</p>`,
+  bodyHtml: (story.body || [story.summary]).map((paragraph, index) => {
+    if (index !== 0) return `<p>${escape(paragraph)}</p>`;
+    const [initial = '', ...rest] = Array.from(paragraph);
+    return `<p><span class="drop-cap">${escape(initial)}</span>${escape(rest.join(''))}</p>`;
+  }).join('') + `<p><strong>Why it matters</strong> ${escape(story.takeaway)}</p>`,
 }));
 function escape(text: string) {
   return text.replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('"', '&quot;');
@@ -37,7 +42,8 @@ function escape(text: string) {
 <EditionPage day={edition.date} stories={stories} dek={edition.dek} storyWindow={edition.story_window} allDays={[]} {...navigation}>
   <details class="editorial-method">
     <summary>Editorial method and sources</summary>
-    <p>Only items published on {edition.story_window} qualify. Summaries distinguish source claims from independent editorial takeaways. If nothing qualifies, the issue stays empty. Generated infographics are labelled as editorial illustrations; source images retain their attribution.</p>
+    <p>Only items published on {edition.story_window} qualify. Summaries distinguish source claims from independent editorial takeaways. If nothing qualifies, the issue stays empty.</p>
+    <p>Editorial infographics are AI-generated illustrations based on the linked sources, reviewed for this edition. They are not source-published graphics. Generation provenance is preserved in the JSON edition; source images retain their attribution.</p>
     <p>Original source links and publication dates appear with every story. Source tabs classify discovery channels, while the topic remains AI observability. Recommended means a recorded signal score of at least 8; Must-Read means at least 9. Unrated stories appear only under All.</p>
   </details>
 </EditionPage>

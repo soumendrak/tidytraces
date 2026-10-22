@@ -37,6 +37,11 @@ const baseSchemaGraph: Record<string, unknown>[] = [{
   name: SITE_METADATA.name,
   alternateName: 'AI Observability Daily',
   description: SITE_METADATA.description,
+  creator: {
+    '@type': 'Person',
+    name: SITE_METADATA.creator.name,
+    url: SITE_METADATA.creator.url,
+  },
 }];
 
 if (jsonLd) {
@@ -96,6 +101,8 @@ const schemaMarkup = {
 		<link rel="canonical" href={canonicalURL} />
 
 		<!-- Author, SEO & AI Engine (GEO) Directives -->
+		<meta name="author" content={SITE_METADATA.creator.name} />
+		<link rel="author" href={SITE_METADATA.creator.url} />
 		<meta name="publisher" content={siteName} />
 		<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
 

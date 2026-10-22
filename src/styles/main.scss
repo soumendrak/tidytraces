@@ -1235,15 +1235,19 @@ img { max-width: 100%; display: block; }
   cursor: zoom-in;
 }
 
-.story-body > p:first-child:not(:has(> img))::first-letter,
-.story-body > p:has(> img):first-child + p::first-letter {
+.story-body .drop-cap {
   font-family: var(--font-display);
   font-weight: 800;
   text-transform: uppercase;
+  // A regular span avoids engine-specific ::first-letter font-box metrics.
+  // Match Lora's cap height to one PT Serif cap plus one 1.5em body line.
+  // Keep the float just under two lines to avoid a rounding-induced third
+  // indented line in Firefox. The text itself remains selectable.
   float: left;
-  font-size: 2.6em;
-  line-height: 0.82;
-  padding: 0.03em 0.08em 0 0;
+  font-size: 3.06em;
+  line-height: 0.95;
+  margin-block-start: 0.02em;
+  margin-inline-end: 0.15em;
   color: var(--accent-ink);
 }
 
