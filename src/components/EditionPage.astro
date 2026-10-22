@@ -192,6 +192,10 @@ const breadcrumbSchema = {
 					<div class="masthead-eyebrow-right">
 
 						<span id="masthead-story-count">{stories.length} {stories.length === 1 ? 'Story' : 'Stories'}</span>
+						<a href={`/pdf/${day}.pdf`} download={`tidy-traces-${day}.pdf`} class="masthead-pdf-btn" aria-label="Download edition as PDF" title="Download edition as PDF">
+							<svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m7 10 5 5 5-5M12 15V3"/></svg>
+							<span>PDF</span>
+						</a>
 						<ThemeToggleButton />
 					</div>
 				</div>
@@ -725,6 +729,53 @@ const breadcrumbSchema = {
 
 		.story.is-feature-reverse .story-body {
 			grid-column: 1;
+		}
+	}
+
+	@media print {
+		/* Fit a lead beside its infographic beneath the masthead on A4. */
+		.story.is-lead:has(.story-image-wrapper) {
+			display: grid;
+			grid-template-columns: minmax(0, 1fr) minmax(0, 1.8fr);
+			column-gap: 5mm;
+			align-items: start;
+		}
+
+		.story.is-lead::before,
+		.story.is-lead .story-byline,
+		.story.is-lead .story-headline {
+			grid-column: 1 / -1;
+		}
+
+		.story.is-lead .story-headline {
+			font-size: 16pt;
+		}
+
+		.story.is-lead .story-image-wrapper {
+			grid-column: 1;
+			margin: 0;
+		}
+
+		.story.is-lead .story-body {
+			grid-column: 2;
+		}
+
+		.story-image-wrapper {
+			align-self: start;
+		}
+
+		/* Keep later features in the newspaper columns to avoid sparse print pages. */
+		.story.is-feature {
+			display: block;
+			column-span: none;
+		}
+
+		.story.is-feature .story-headline {
+			font-size: 12pt;
+		}
+
+		.story-featured-image {
+			transition: none;
 		}
 	}
 </style>
