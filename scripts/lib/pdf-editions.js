@@ -1,10 +1,12 @@
 import { createServer } from 'node:http';
-import { readFile, readdir, mkdir, writeFile, access } from 'node:fs/promises';
+import { readFile, readdir, mkdir, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { observabilityIssueSchema } from '../../src/lib/observabilitySchema.js';
+import { editionFingerprint } from '../../src/lib/editionFingerprint.js';
 
 const repository = fileURLToPath(new URL('../../', import.meta.url));
+const canonicalOrigin = 'https://tidytraces.com';
 const mimeTypes = {
   '.html': 'text/html; charset=utf-8', '.css': 'text/css', '.js': 'application/javascript',
   '.json': 'application/json', '.png': 'image/png', '.jpg': 'image/jpeg',
@@ -78,10 +80,14 @@ export async function generatePdfs({ root = repository, outDir = path.join(root,
   const selected = all ? editions : editions.filter((edition) => edition.date === (day || latest));
   if (!selected.length) throw new Error(`No AI observability issue exists for ${day}.`);
   for (const edition of selected) {
+    let html;
     try {
-      await access(path.join(outDir, 'ai-observability', edition.date, 'index.html'));
+      html = await readFile(path.join(outDir, 'ai-observability', edition.date, 'index.html'), 'utf8');
     } catch {
       throw new Error(`Missing built edition ${edition.date}. Run npm run build first.`);
+    }
+    if (!html.includes(`data-content-fingerprint="${editionFingerprint(edition)}"`)) {
+      throw new Error(`Built edition ${edition.date} is stale. Rebuild the site.`);
     }
   }
 
@@ -132,12 +138,21 @@ async function createPdfPage(browser) {
 async function renderEditionPdf(page, edition, url) {
   const response = await page.goto(url, { waitUntil: 'load', timeout: 45000 });
   if (!response?.ok()) throw new Error(`Could not load built edition ${edition.date}.`);
-  await page.evaluate(async ({ date, count }) => {
+  await page.evaluate(async ({ date, count, fingerprint, canonicalOrigin }) => {
     const sheet = document.querySelector('#newspaper-sheet');
-    if (sheet?.getAttribute('data-day') !== date || document.querySelectorAll('.story').length !== count) {
-      throw new Error(`Built edition ${date} is stale. Rebuild the site.`);
+    if (sheet?.getAttribute('data-day') !== date || document.querySelectorAll('.story').length !== count || sheet?.getAttribute('data-content-fingerprint') !== fingerprint) {
+      throw new Error(`Edition ${date} is stale. Reload the reader or rebuild the site.`);
     }
-    await document.fonts.ready;
+    // Only anchors are publicized; CSS, fonts and images still load from our local server.
+    for (const anchor of document.querySelectorAll('a[href]')) {
+      const target = new URL(anchor.getAttribute('href'), location.href);
+      if (target.origin === location.origin) {
+        anchor.href = new URL(target.pathname + target.search + target.hash, canonicalOrigin).href;
+      }
+    }
+  }, { date: edition.date, count: edition.stories.length, fingerprint: editionFingerprint(edition), canonicalOrigin });
+  await validatePdfFonts(page);
+  await page.evaluate(async () => {
     const images = [...document.images].filter((image) => image.getAttribute('src'));
     let timer;
     try {
@@ -157,8 +172,35 @@ async function renderEditionPdf(page, edition, url) {
         }),
       ]);
     } finally { clearTimeout(timer); }
-  }, { date: edition.date, count: edition.stories.length });
-  return page.pdf({ preferCSSPageSize: true, printBackground: true, displayHeaderFooter: false, timeout: 60000 });
+  });
+  return page.pdf({ preferCSSPageSize: true, printBackground: true, displayHeaderFooter: false, waitForFonts: false, timeout: 60000 });
+}
+
+/** Loading failure also resolves fonts.ready, so require actual loaded faces with a deadline. */
+export async function validatePdfFonts(page, timeoutMs = 10000) {
+  await page.evaluate(async (timeoutMs) => {
+    const required = [
+      ...['normal', 'italic'].flatMap((style) => [400, 500, 600, 700].map((weight) => `${style} ${weight} 12px "Lora"`)),
+      ...['normal', 'italic'].flatMap((style) => [400, 700].map((weight) => `${style} ${weight} 12px "PT Serif"`)),
+    ];
+    const sample = document.body.textContent || 'Tidy Traces';
+    let timer;
+    try {
+      await Promise.race([
+        Promise.all(required.map(async (font) => {
+          let faces;
+          try { faces = await document.fonts.load(font, sample); }
+          catch { throw new Error(`Unable to load required PDF font: ${font}`); }
+          if (!faces.length || faces.some((face) => face.status !== 'loaded') || !document.fonts.check(font, sample)) {
+            throw new Error(`Required PDF font is not loaded: ${font}`);
+          }
+        })),
+        new Promise((_, reject) => {
+          timer = setTimeout(() => reject(new Error(`PDF fonts did not finish loading within ${timeoutMs} ms.`)), timeoutMs);
+        }),
+      ]);
+    } finally { clearTimeout(timer); }
+  }, timeoutMs);
 }
 
 /** Generate from the running dev reader without writing into watched source folders. */

@@ -2,6 +2,7 @@
 import type { CollectionEntry } from 'astro:content';
 import EditionPage from './EditionPage.astro';
 import { imageCaptionFor, isGeneratedImage } from '../lib/editionCredits.js';
+import { editionFingerprint } from '../lib/editionFingerprint.js';
 interface Props {
   edition: CollectionEntry<'observability'>['data'];
   issue: number;
@@ -36,7 +37,7 @@ function escape(text: string) {
   return text.replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('"', '&quot;');
 }
 ---
-<EditionPage day={edition.date} stories={stories} dek={edition.dek} storyWindow={edition.story_window} allDays={[]} {...navigation}>
+<EditionPage day={edition.date} contentFingerprint={editionFingerprint(edition)} stories={stories} dek={edition.dek} storyWindow={edition.story_window} allDays={[]} {...navigation}>
   <details class="editorial-method">
     <summary>Editorial method and sources</summary>
     <p>Only items published on {edition.story_window} qualify. Summaries distinguish source claims from independent editorial takeaways. If nothing qualifies, the issue stays empty. Source images retain their attribution.</p>

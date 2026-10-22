@@ -1,5 +1,6 @@
 import { fileURLToPath } from 'node:url';
 import { readPdfEditions, generateDevPdf } from './pdf-editions.js';
+import { editionFingerprint } from '../../src/lib/editionFingerprint.js';
 
 /** Only installed in Astro's development server; production serves static build PDFs. */
 export default function devPdf() {
@@ -36,10 +37,11 @@ export default function devPdf() {
             const host = req.socket.localAddress.includes(':') ? `[${req.socket.localAddress}]` : req.socket.localAddress;
             const origin = `${server.config.server.https ? 'https' : 'http'}://${host}:${req.socket.localPort}`;
             // Share simultaneous clicks, but render again after edits instead of serving stale PDFs.
-            let job = pending.get(edition.date);
+            const key = editionFingerprint(edition);
+            let job = pending.get(key);
             if (!job) {
-              job = generateDevPdf(edition, origin).finally(() => { pending.delete(edition.date); });
-              pending.set(edition.date, job);
+              job = generateDevPdf(edition, origin).finally(() => { pending.delete(key); });
+              pending.set(key, job);
             }
             const buffer = await job;
             res.writeHead(200, { ...headers, 'Content-Length': buffer.length });

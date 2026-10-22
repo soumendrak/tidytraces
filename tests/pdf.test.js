@@ -4,9 +4,12 @@ import { mkdtemp, mkdir, writeFile, rm, readFile, cp, symlink, readdir } from 'n
 import { fileURLToPath } from 'node:url';
 import { spawn } from 'node:child_process';
 import { once } from 'node:events';
+import { PDFDocument, PDFDict, PDFName } from 'pdf-lib';
 import path from 'node:path';
 import { tmpdir } from 'node:os';
-import { parsePdfArgs, generatePdfs, startPdfServer } from '../scripts/lib/pdf-editions.js';
+import { parsePdfArgs, generatePdfs, startPdfServer, validatePdfFonts } from '../scripts/lib/pdf-editions.js';
+import { editionFingerprint } from '../src/lib/editionFingerprint.js';
+import { observabilityIssueSchema } from '../src/lib/observabilitySchema.js';
 
 test('PDF options reject conflicting dates, missing values, and uploads to the upstream CDN', () => {
   assert.deepEqual(parsePdfArgs([]), {});
@@ -23,15 +26,30 @@ test('PDF generation supports an empty issue and refuses a missing or stale buil
   const built = path.join(root, 'dist/ai-observability/2026-10-14');
   try {
     await mkdir(source, { recursive: true });
-    await writeFile(path.join(source, '2026-10-14.json'), JSON.stringify({ date: '2026-10-14', story_window: '2026-10-13', dek: 'No qualifying stories.', stories: [] }));
+    const edition = observabilityIssueSchema.parse({ date: '2026-10-14', story_window: '2026-10-13', dek: 'No qualifying stories.', stories: [] });
+    await writeFile(path.join(source, '2026-10-14.json'), JSON.stringify(edition));
     await assert.rejects(generatePdfs({ root }), /Run npm run build first/);
     await mkdir(built, { recursive: true });
     await writeFile(path.join(built, 'index.html'), '<article id="newspaper-sheet" data-day="2026-10-13"></article>');
     await assert.rejects(generatePdfs({ root }), /is stale/);
-    await writeFile(path.join(built, 'index.html'), '<article id="newspaper-sheet" data-day="2026-10-14" data-count="0"><p>No qualifying stories in this publication window.</p></article>');
+    await cp(new URL('../public/fonts/', import.meta.url), path.join(root, 'dist/fonts'), { recursive: true });
+    await writeFile(path.join(built, 'index.html'), `<link rel="stylesheet" href="/fonts/newspaper.css"><article id="newspaper-sheet" data-day="2026-10-14" data-count="0" data-content-fingerprint="${editionFingerprint(edition)}"><p style="font-family:'PT Serif'">No qualifying stories in this publication window.</p><a href="/archive/?month=10#calendar">Archive</a><a href="../2026-10-13/">Previous</a><a href="https://example.com/article">Source</a></article>`);
     const results = await generatePdfs({ root, all: true });
     assert.equal(results.length, 1);
     assert.equal((await readFile(path.join(root, 'dist/pdf/2026-10-14.pdf'))).subarray(0, 5).toString(), '%PDF-');
+    const pdf = await PDFDocument.load(await readFile(path.join(root, 'dist/pdf/2026-10-14.pdf')));
+    const links = pdf.getPages().flatMap((page) => (page.node.Annots()?.asArray() || []).map((reference) => {
+      const annotation = pdf.context.lookup(reference, PDFDict);
+      return annotation.lookup(PDFName.of('A'), PDFDict).lookup(PDFName.of('URI')).decodeText();
+    }));
+    assert.ok(links.includes('https://tidytraces.com/archive/?month=10#calendar'));
+    assert.ok(links.includes('https://tidytraces.com/ai-observability/2026-10-13/'));
+    assert.ok(links.includes('https://example.com/article'));
+    assert.ok(links.every((url) => !/localhost|127\.0\.0\.1|\[::1\]/.test(url)));
+
+    // Editing text with the same date and story count must reject the old HTML.
+    await writeFile(path.join(source, '2026-10-14.json'), JSON.stringify({ ...edition, dek: 'Corrected editorial description.' }));
+    await assert.rejects(generatePdfs({ root }), /is stale/);
     const server = await startPdfServer(path.join(root, 'dist'));
     try {
       const response = await fetch(`${server.origin}/pdf/latest.pdf`);
@@ -40,6 +58,50 @@ test('PDF generation supports an empty issue and refuses a missing or stale buil
       assert.equal((await fetch(`${server.origin}/%2e%2e%2fpackage.json`)).status, 404);
     } finally { await server.close(); }
   } finally { await rm(root, { recursive: true, force: true }); }
+});
+
+test('fingerprints catch editorial corrections without depending on JSON key order', () => {
+  const edition = { date: '2026-10-14', dek: 'Daily', stories: [{ title: 'Title', body: ['Body'], takeaway: 'Takeaway', image: '/one.webp' }] };
+  const expected = editionFingerprint(edition);
+  assert.equal(editionFingerprint({ stories: edition.stories, dek: edition.dek, date: edition.date }), expected);
+  for (const key of ['title', 'body', 'takeaway', 'image']) {
+    const corrected = structuredClone(edition);
+    corrected.stories[0][key] = key === 'body' ? ['Corrected body'] : 'Corrected content';
+    assert.notEqual(editionFingerprint(corrected), expected, key);
+  }
+});
+
+test('local fonts load with Google blocked; fallback faces and stalled requests fail', async () => {
+  const { default: puppeteer } = await import('puppeteer');
+  const root = await mkdtemp(path.join(tmpdir(), 'tidytraces-fonts-'));
+  await cp(new URL('../public/fonts/', import.meta.url), path.join(root, 'fonts'), { recursive: true });
+  await writeFile(path.join(root, 'index.html'), '<link rel="stylesheet" href="/fonts/newspaper.css"><p style="font-family:Lora">Local newspaper fonts</p>');
+  const server = await startPdfServer(root);
+  const browser = await puppeteer.launch({ headless: true, args: ['--no-sandbox', '--disable-setuid-sandbox'] });
+  try {
+    const page = await browser.newPage();
+    await page.setContent('<p>No registered newspaper faces.</p>');
+    await assert.rejects(validatePdfFonts(page), /Required PDF font is not loaded/);
+    await page.setRequestInterception(true);
+    const requested = [];
+    page.on('request', (request) => {
+      requested.push(request.url());
+      if (request.url().includes('fonts.invalid')) return; // Deliberately stall the final check.
+      if (/fonts\.googleapis\.com|fonts\.gstatic\.com/.test(request.url())) void request.abort();
+      else void request.continue();
+    });
+    await page.goto(server.origin, { waitUntil: 'load' });
+    await validatePdfFonts(page);
+    assert.ok(requested.some((url) => url.endsWith('.woff2')));
+    assert.ok(requested.every((url) => new URL(url).origin === server.origin), 'printing needs no font CDN');
+    const faces = ['Lora', 'PT Serif'].flatMap((family) => ['normal', 'italic'].map((style) => `@font-face{font-family:"${family}";font-style:${style};font-weight:400 700;src:url("https://fonts.invalid/stalled.woff2")}`)).join('');
+    await page.setContent(`<style>${faces}</style><p>Stalled font</p>`, { waitUntil: 'domcontentloaded' });
+    await assert.rejects(validatePdfFonts(page, 100), /fonts did not finish loading within 100 ms/);
+  } finally {
+    await browser.close();
+    await server.close();
+    await rm(root, { recursive: true, force: true });
+  }
 });
 
 test('live dev downloads work without dist, survive errors, and reflect content edits', { timeout: 240000 }, async () => {

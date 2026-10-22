@@ -40,6 +40,7 @@ interface StoryProps {
 
 interface Props {
 	day: string;
+	contentFingerprint: string;
 	stories: StoryProps[];
 	issue: number;
 	totalIssues: number;
@@ -51,7 +52,7 @@ interface Props {
 	storyWindow?: string;
 }
 
-const { day, stories, issue, prevDay, nextDay, isHomepage = false, dek, storyWindow } = Astro.props;
+const { day, contentFingerprint, stories, issue, prevDay, nextDay, isHomepage = false, dek, storyWindow } = Astro.props;
 
 const editionName = 'AI Observability Daily';
 const archiveHref = '/archive/';
@@ -167,7 +168,7 @@ const breadcrumbSchema = {
 
 >
 	<main class="page-container">
-		<article id="newspaper-sheet" class="newspaper-sheet" data-day={day} data-count={stories.length} data-prev={prevDay ? `/ai-observability/${prevDay}/` : undefined} data-next={nextDay ? `/ai-observability/${nextDay}/` : undefined}>
+		<article id="newspaper-sheet" class="newspaper-sheet" data-day={day} data-content-fingerprint={contentFingerprint} data-count={stories.length} data-prev={prevDay ? `/ai-observability/${prevDay}/` : undefined} data-next={nextDay ? `/ai-observability/${nextDay}/` : undefined}>
 			<header class="masthead">
 				<div class="masthead-eyebrow">
 					<span class="masthead-eyebrow-left">
