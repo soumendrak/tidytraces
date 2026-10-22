@@ -22,6 +22,7 @@ interface StoryProps {
 	why_read?: string;
 	authors: string[];
 	image?: string;
+	imageAnimation?: { src: string; width: number; height: number; alt: string };
 	imageWidth?: number;
 	imageHeight?: number;
 	imageCaption?: string;
@@ -336,22 +337,26 @@ const breadcrumbSchema = {
 								<a href={story.url} target="_blank" rel="noopener noreferrer" itemprop="url">{story.title}</a>
 							</h2>
 							{img && (
-								<div class="story-image-wrapper is-loading">
+								<div class:list={['story-image-wrapper', { 'is-loading': !story.imageAnimation }]} data-story-animation={story.imageAnimation ? '' : undefined}>
+									<picture>
+										{story.imageAnimation && <source media="screen and (prefers-reduced-motion: no-preference)" srcset={img} data-animated-src={story.imageAnimation.src} />}
 									<img
 										src={img}
-										alt={story.title}
-										class="story-featured-image loading"
+										alt={story.imageAnimation?.alt || story.title}
+										class:list={['story-featured-image', { loading: !story.imageAnimation }]}
 										loading={isLead ? "eager" : "lazy"}
 										fetchpriority={isLead ? "high" : "auto"}
 										decoding="async"
-										width={story.imageWidth || 560}
-										height={story.imageHeight || 418}
+										width={story.imageAnimation?.width || story.imageWidth || 560}
+										height={story.imageAnimation?.height || story.imageHeight || 418}
 										itemprop="image"
 										data-image-provenance={story.imageGenerated ? 'generated-editorial' : undefined}
 										aria-describedby={story.imageGenerated ? 'ai-image-disclosure' : undefined}
-										onerror="this.parentElement.hidden = true"
-										onload="this.classList.remove('loading'); this.parentElement.classList.remove('is-loading');"
+										onerror="const source = this.parentElement.querySelector('source'); if (source && source.srcset !== this.src) { source.srcset = this.src; } else { this.closest('.story-image-wrapper').hidden = true; }"
+										onload="this.classList.remove('loading'); this.closest('.story-image-wrapper').classList.remove('is-loading');"
 									/>
+									</picture>
+									{story.imageAnimation && <button type="button" class="animation-toggle" hidden aria-pressed="false">Pause animation</button>}
 									{story.imageCaption && <p class="image-caption">{story.imageCaption}</p>}
 									</div>
 							)}
@@ -386,6 +391,27 @@ const breadcrumbSchema = {
 	const imageModal = document.getElementById('image-modal') as HTMLElement;
 	const imageModalImg = document.getElementById('image-modal-img') as HTMLImageElement;
 	const imageModalClose = document.getElementById('image-modal-close') as HTMLButtonElement;
+	const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+	document.querySelectorAll<HTMLElement>('[data-story-animation]').forEach((wrapper) => {
+		const source = wrapper.querySelector('source')!;
+		const img = wrapper.querySelector('img')!;
+		const button = wrapper.querySelector('button')!;
+		let paused = false;
+		let failed = false;
+		const update = () => {
+			const stop = paused || reducedMotion.matches || failed;
+			source.srcset = stop ? img.src : source.dataset.animatedSrc!;
+			button.hidden = false;
+			button.disabled = reducedMotion.matches || failed;
+			button.textContent = failed ? 'Static image' : reducedMotion.matches ? 'Reduced motion: static image' : paused ? 'Play animation' : 'Pause animation';
+			button.setAttribute('aria-pressed', String(stop));
+			if (imageModal.classList.contains('is-open') && imageModalImg.alt === img.alt) imageModalImg.src = stop ? img.src : source.dataset.animatedSrc!;
+		};
+		button.addEventListener('click', () => { paused = !paused; update(); });
+		img.addEventListener('error', () => { failed = true; update(); });
+		reducedMotion.addEventListener('change', update);
+		update();
+	});
 
 	function openImageModal(src: string, alt: string) {
 		imageModalImg.src = src;
@@ -610,6 +636,19 @@ const breadcrumbSchema = {
 		filter: contrast(1.12) brightness(1.04) saturate(0.95);
 		transition: filter 0.4s ease, opacity 0.4s ease;
 	}
+	.animation-toggle {
+		margin-top: .4rem;
+		padding: .4rem .65rem;
+		font: inherit;
+		font-size: .8rem;
+		color: var(--ink-soft);
+		background: transparent;
+		border: 1px solid var(--rule-soft);
+		border-radius: 3px;
+		cursor: pointer;
+	}
+	.animation-toggle:focus-visible { outline: 2px solid var(--accent-ink); outline-offset: 2px; }
+	@media print { .animation-toggle { display: none; } }
 
 	.story-featured-image.loading {
 		filter: blur(15px) contrast(1.12) brightness(1.04) saturate(0.95) !important;
