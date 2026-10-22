@@ -1,22 +1,22 @@
 {
   "date": "2026-10-19",
   "story_window": "2026-10-18",
-  "dek": "One practical guide examines how to verify agent outcomes, tool permissions, and side effects independently. No eligible HN stories or stable watchlist releases were found for October 18.",
+  "dek": "One guide asks two separate questions about an agent: did it achieve the requested outcome, and were its actions permitted? No eligible HN stories or stable watchlist releases were found for October 18.",
   "stories": [
     {
-      "title": "An agent evaluation guide separates successful outcomes from permitted actions",
+      "title": "An agent-testing guide checks both task completion and permission to act",
       "url": "https://www.itechguides.com/how-to-prove-your-ai-agent-works-a-practical-evals-and-safety-guide/",
       "publisher": "iTechGuides",
       "published": "2026-10-18",
       "category_key": "evals",
-      "summary": "The guide proposes explicit task boundaries, independent state assertions, and separate scoring for outcomes, permissions, and robustness. Its refund-agent example illustrates why completion alone cannot establish safe behavior.",
+      "summary": "The guide uses a refund example to show why a successful action still needs authorization evidence and an independent outcome check.",
       "body": [
-        "An October 18 iTechGuides guide proposes evaluating an agent against a versioned task contract before interpreting its success rate. The contract specifies the starting state, required outcome, available tools, permission limits, prohibited side effects, and acceptable escalation. Its worked refund example distinguishes a completed payment from the authorization and audit steps that should precede it. The article recommends inspecting the resulting payment state independently rather than trusting an agent’s completion message.",
-        "The practical instrumentation requirement is to preserve tool arguments, authorization decisions, returned values, retries, latency, and relevant state changes alongside agent, policy, fixture, and evaluator versions. Outcome checks and permission checks remain separate: a forbidden action can invalidate an otherwise successful run, while a safe escalation can respect policy without completing the customer’s request. The guide also recommends segmenting failures by severity and workflow so averages do not conceal costly exceptions.",
-        "This is instructional synthesis with an illustrative scenario, not a measured deployment study or a new standard. Its operational value depends on implementing reliable fixtures, independent assertions, and appropriately protected traces; recording a trace alone does not prove that the final outcome was correct."
+        "An agent can finish a task while breaking the rules that should govern it. An October 18 iTechGuides article recommends writing a task contract before interpreting success rates. That contract defines the starting state, required outcome, available tools, permission limits, prohibited side effects and acceptable escalation.",
+        "Its illustrative refund scenario separates completing a payment from the authorization and audit steps that should precede it. Check the resulting payment state independently instead of trusting the agent’s completion message. A forbidden action can invalidate a completed task; an appropriate escalation can respect policy without completing the customer’s request. These outcomes should be reported separately.",
+        "Retain tool arguments, permission decisions, returned values, retries, latency and relevant state changes with the agent, policy, fixture and evaluator versions. Break failures down by severity and workflow so an average does not hide costly exceptions. The article is instructional synthesis, not a deployment study or new standard. Recording a trace helps investigation but does not establish a correct outcome by itself."
       ],
       "format": "full",
-      "takeaway": "Pair each consequential tool action with an authorization record and an independent state check; report task completion and policy compliance as separate results.",
+      "takeaway": "For agent-test owners: verify final state independently and report task completion separately from policy compliance.",
       "image": "/edition-images/2026-10-19/agent-checks.webp",
       "image_width": 1440,
       "image_height": 960,
