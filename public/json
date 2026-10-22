@@ -1,22 +1,22 @@
 {
   "date": "2026-10-22",
   "story_window": "2026-10-21",
-  "dek": "Six developments examine agent memory, bounded investigative assistants, evaluation behavior and the fidelity of telemetry from browser errors to compressed traces.",
+  "dek": "Today’s six stories start with how agents reuse lessons and investigate problems. Next come tools for recording application activity, delivering traces and finding browser errors. Finally, Phoenix changes how AI judges return evaluation results.",
   "stories": [
     {
-      "title": "Beacon turns cross-harness session telemetry into reviewed agent memory",
+      "title": "Beacon helps coding agents reuse lessons after human review",
       "url": "https://news.ycombinator.com/item?id=50182883",
       "publisher": "Asymptote Labs",
       "published": "2026-10-21",
       "category_key": "agents",
-      "summary": "A first-party announcement describes normalized coding-agent session capture, human-reviewed learning and reuse through skills or MCP.",
+      "summary": "Beacon turns records of coding-agent sessions into reusable instructions, with human approval before those lessons reach another agent.",
       "body": [
-        "Beacon’s creators introduced their open-source cross-harness memory project in an October 21 HN post. Their stated problem was repeatedly explaining workflows and past mistakes whenever they switched coding agents. The announcement describes integrations with more than twenty harnesses, capturing prompts, tool calls and command executions in a common representation rather than leaving each agent’s history isolated.",
-        "The proposed learning loop distills that session telemetry into patterns and repeatable workflows, adds a human-approval step, and makes reviewed knowledge available to subsequent agents through skills or MCP. This connects observability with memory: the captured record becomes evidence for deciding what a future agent should reuse, not merely a log to inspect after an error.",
-        "For operators, normalization and review are separate controls. A shared format helps compare sessions, but does not prove that a learned instruction is correct, safe or transferable to another repository. The announcement is a first-party description, not an independent evaluation of capture completeness or improved task outcomes. Teams considering the approach should examine which events are retained and what reviewers can inspect before a pattern becomes reusable knowledge."
+        "Beacon is an open-source project for carrying lessons between coding agents. Switching tools can mean explaining the same workflow or past mistake again. In an October 21 announcement, its creators describe recording prompts, tool calls and commands across more than twenty agent tools, then converting those records into reusable knowledge.",
+        "The important step is human review. Beacon identifies recurring patterns and workflows, asks for approval, and makes reviewed lessons available to future agents. For illustration, a team could review a lesson about its repository’s test workflow before making that guidance available to another coding agent. This is an example of intended use, not a measured outcome.",
+        "Technically, session records share a common format. Approved knowledge is exposed through skills containing reusable instructions, and the Model Context Protocol (MCP), which connects agents to external tools and data. The announcement does not independently establish that capture is complete or that reused lessons improve results."
       ],
       "format": "full",
-      "takeaway": "Treat learned agent memory as a reviewed derivative of telemetry, not as an automatically trustworthy replacement for the original session evidence.",
+      "takeaway": "For teams switching coding agents: check the original session evidence before approving a lesson for reuse.",
       "image": "/edition-images/2026-10-22/beacon-reviewed-memory.webp",
       "image_width": 1440,
       "image_height": 960,
@@ -50,19 +50,19 @@
       }
     },
     {
-      "title": "Langfuse explains the boundaries behind Halo’s background investigations",
+      "title": "How Langfuse limits Halo’s access during background investigations",
       "url": "https://langfuse.com/blog/2026-10-21-building-the-langfuse-assistant",
       "publisher": "Langfuse",
       "published": "2026-10-21",
       "category_key": "agents",
-      "summary": "An architecture retrospective separates project-authorized data access, sandboxed analysis and background execution in Langfuse’s existing assistant.",
+      "summary": "Langfuse explains how its existing assistant continues investigations after the browser closes while respecting project permissions and approval requirements.",
       "body": [
-        "Langfuse published an engineering account of Halo, its existing in-app assistant, rather than announcing a new launch. The design reuses the public MCP server and shared instructions so improvements also reach external agents. Each run receives a temporary project-scoped key; available tools are filtered by the signed-in user’s role, and changes require approval.",
-        "The agent loop stays in backend workers. An optional sandbox handles files and scripts without network access by default, receiving data only after authorized MCP calls. Large tool results can be saved to files instead of filling the model’s context. That separates data access from computation while allowing code to summarize many observations.",
-        "Postgres stores runs and events, while BullMQ delivers work independently of the browser. Failed runs are not automatically retried, a limitation the authors explicitly contrast with durable workflow engines. Langfuse also reports using its own traces to identify broken prompt caching and improve tool errors. The account offers implementation detail, not a quantified reliability or security guarantee."
+        "Langfuse helps engineers inspect AI application runs. Its Halo assistant can investigate those records and help with dashboards or evaluations. An October 21 engineering post explains how this existing assistant works, including how it keeps running after you close the browser.",
+        "For illustration, you could ask Halo to group errors across failed runs, close the tab, and return to saved progress. Background workers perform the investigation independently of the browser. Access still follows your project permissions, and actions that change data require approval.",
+        "The implementation separates data access from script execution. A temporary project key and role-filtered tools control access through the Model Context Protocol (MCP), an interface for agent tools. An optional isolated script environment has no network access by default and receives only authorized data. Postgres stores progress; BullMQ queues work. Failed runs are not automatically retried, so background execution alone does not guarantee recovery. This is an architecture account, not a security certification."
       ],
       "format": "full",
-      "takeaway": "Review access boundaries and failure recovery separately when adding investigative agents to observability products.",
+      "takeaway": "For engineers building investigative assistants: test project permissions, approval steps and failure recovery separately.",
       "image": "/edition-images/2026-10-22/halo-architecture.webp",
       "image_width": 1440,
       "image_height": 960,
@@ -94,63 +94,19 @@
       }
     },
     {
-      "title": "Phoenix evaluators adopt decision models with explicit refusal behavior",
-      "url": "https://github.com/Arize-ai/phoenix/releases/tag/%40arizeai/phoenix-evals%402.7.0",
-      "publisher": "Phoenix",
-      "published": "2026-10-21",
-      "category_key": "evals",
-      "summary": "Phoenix Evals 2.7.0 changes classifier execution, metadata and prompt transport around the experimental AI SDK decision API.",
-      "body": [
-        "Phoenix Evals 2.7.0 lets classification evaluators, including its built-in evaluators, run on AI SDK decision models. The October 21 release says labels now come from experimental_decide, with label probabilities and provider confidence, when available, recorded in metadata. Decision spans capture the decision state, question and answer. The companion Phoenix OTEL 2.3.0 release upgrades its OpenInference Vercel tracing dependency for decision-model support.",
-        "This is also a behavioral migration for existing evaluation models such as TypeSafe’s Jev. They use the same decision API, and message prompts are joined into plain text rather than serialized as JSON state. Refusals throw the SDK’s Experimental_DecisionRefusalError instead of becoming an ordinary classification result. Those distinctions matter when downstream code aggregates labels or treats missing results as successes.",
-        "The release pins ai to 7.0.137 and @ai-sdk/otel to 1.0.137 because the experimental interface has changed in patch versions. It specifies @ai-sdk/openai 4.0.89 or later for OpenAI decision models. These are compatibility notes, not evidence that classifier accuracy or probability calibration has improved."
-      ],
-      "format": "full",
-      "takeaway": "Regression-test prompt rendering, refusal handling and recorded metadata before comparing new classifier runs with historical scores.",
-      "image": "/edition-images/2026-10-22/phoenix-decision-evals.webp",
-      "image_width": 1440,
-      "image_height": 960,
-      "image_provenance": {
-        "kind": "generated-editorial",
-        "generator": "built-in-imagegen",
-        "prompt": "Use case: infographic-diagram. Standalone landscape 3:2 PNG newspaper infographic, warm ivory newsprint, dark charcoal ink, restrained teal and rust accents, serif heading, large perfectly legible labels. Explain Phoenix Evals 2.7.0 decision-model classifiers from https://github.com/Arize-ai/phoenix/releases/tag/%40arizeai/phoenix-evals%402.7.0 . Source facts: rendered prompts become plain text; experimental_decide produces classification label plus metadata probabilities/confidence when available; refusals throw an error; decision spans record state/question/answer. Title verbatim 'Decision models, explicit outcomes'. Subtitle 'Phoenix Evals 2.7.0'. Center left 'Plain-text prompt' arrow to central 'Decision model'. Branch upper right to 'Label + metadata' and small 'Probabilities when reported'. Branch lower right to rust panel 'Refusal → error'. Thin line below main flow to a teal record card 'Trace: state · question · answer'. Bottom editorial check separate labeled 'Operator check: test prompts and refusals'. No invented performance metrics, no logos, no screenshot, no watermark or footer. Keep diagram simple and labels readable at article width.",
-        "based_on": [
-          "https://github.com/Arize-ai/phoenix/releases/tag/%40arizeai/phoenix-evals%402.7.0"
-        ],
-        "reviewed": true,
-        "sha256": "51e1f45c6d24d69dcfae7f08a82bb879e818b9a73820c5d153f2c00da01e2cb6",
-        "optimization": {
-          "format": "webp",
-          "quality": 82,
-          "max_width": 1440,
-          "source_sha256": "d1321d4e677ec2b8e53965b32c9488d6215435f5a06881ee86a4ead01475bb2d"
-        }
-      },
-      "source": "github",
-      "interest_score": 8,
-      "dedupe_key": "release:Arize-ai/phoenix/releases/tag/%40arizeai/phoenix-evals%402.7.0",
-      "score_reason": "Concrete evaluator migration details expose prompt, refusal and dependency changes that can invalidate otherwise comparable evaluation runs.",
-      "source_evidence": {
-        "url": "https://github.com/Arize-ai/phoenix/releases/tag/%40arizeai/phoenix-evals%402.7.0",
-        "publication_date": "2026-10-21",
-        "raw_date": "2026-10-21T16:06:50Z",
-        "method": "GitHub REST release endpoint published_at, with draft=false and prerelease=false; original release notes inspected."
-      }
-    },
-    {
-      "title": "Braintrust adds application logs alongside broader agent tracing",
+      "title": "Braintrust adds application logs to help explain agent runs",
       "url": "https://github.com/braintrustdata/braintrust-sdk-javascript/releases/tag/braintrust%403.39.0",
       "publisher": "Braintrust",
       "published": "2026-10-21",
       "category_key": "observability",
-      "summary": "Braintrust 3.39.0 introduces application logging and console capture, expands AI SDK tracing and repairs streamed usage records.",
+      "summary": "Braintrust’s JavaScript library adds application logging and console capture, alongside fixes to streamed tool calls and token records.",
       "body": [
-        "Braintrust’s JavaScript SDK 3.39.0 expands what can be recorded around an agent execution. The October 21 release adds application logging and console capture alongside new AI SDK batch tracing and code-mode tracing. It also adds LiveKit cascade-mode instrumentation and extends Cloudflare Think support across versions 0.13 through 0.20. These are distinct integration changes, rather than a claim that every application path is automatically observable.",
-        "The patch notes also address fidelity within existing integrations. Streamed Bedrock InvokeModel calls to OpenAI models now log text and usage. Pi coding-agent and Flue integrations include cache reads and writes in prompt_tokens. For OpenAI, OpenRouter and Hugging Face, streamed tool calls stay separate when a provider omits the index field. Incorrectly joining calls or omitting usage can make a trace look coherent while misrepresenting what actually happened.",
-        "For operators, application logs can provide context that is absent from model spans, but capture coverage and the content retained still need inspection in a real deployment. The release notes do not supply an independent overhead benchmark or certify cost-accounting accuracy. Teams comparing token totals across versions should account for the changed cache-token handling."
+        "Braintrust records what happens during an AI application run so engineers can investigate failures. Its JavaScript SDK, the library added to an application, now supports application logging and console capture. Version 3.39.0 adds this context alongside traces, records of individual steps such as model calls, and fixes some incorrect usage records.",
+        "For illustration, an assistant might log that it used a fallback before calling a model. That application message could help explain an unexpected response alongside the recorded model call. Engineers should check what their integration actually captures; the announcement does not promise automatic coverage of every application path.",
+        "Technical changes include AI SDK batch and code-mode tracing. The release fixes streamed tool calls being incorrectly combined when certain providers omit an index. It adds text and usage recording for streamed Bedrock InvokeModel calls to OpenAI models, and includes cached input reads and writes in prompt_tokens for Pi and Flue integrations. Those accounting changes can affect comparisons with older runs. The notes provide no independent benchmark for logging overhead or cost accuracy."
       ],
       "format": "full",
-      "takeaway": "Test representative batch, code, voice and streamed-tool paths, and reconcile token totals before using upgraded traces for cost comparisons.",
+      "takeaway": "For JavaScript agent teams: inspect captured logs, streamed tool calls and token totals after upgrading.",
       "image": "/edition-images/2026-10-22/braintrust-application-logs.webp",
       "image_width": 1440,
       "image_height": 960,
@@ -182,19 +138,19 @@
       }
     },
     {
-      "title": "LangWatch changes trace transport and repairs ingestion fidelity",
+      "title": "LangWatch compresses trace uploads and fixes how records are read",
       "url": "https://github.com/langwatch/langwatch/releases/tag/langwatch%40v3.21.0",
       "publisher": "LangWatch",
       "published": "2026-10-21",
       "category_key": "observability",
-      "summary": "LangWatch 3.21.0 defaults SDK traces to gzipped OTLP/protobuf and fixes several ingestion and operational visibility paths.",
+      "summary": "LangWatch changes how SDKs send traces and fixes ingestion errors affecting compressed data, model usage and tool output.",
       "body": [
-        "LangWatch 3.21.0 makes gzipped OTLP/protobuf the default trace transport across its SDKs. The October 21 application release also adds decoding based on compression magic bytes, including zstd or gzip bodies with an incorrect Content-Encoding header. These changes concern the format and acceptance of telemetry at the ingestion boundary; the notes do not establish a measured bandwidth reduction or guarantee that every intermediary supports the new defaults.",
-        "Several fixes address what survives ingestion and appears in analysis. OTLP/JSON spans can omit default-valued link or event fields. Claude SDK and API OpenTelemetry traces receive fixes covering usage counted once, large attributes, tool output and cache pricing. Platform metrics are routed through the OpenTelemetry facade so the OTLP push includes them. Bounded error-cause summaries aim to keep request errors from being dropped by Loki.",
-        "The release also exposes queue labels and age gauges and supports redriving or discarding more than 2,000 dead-letter groups at once. Together these changes make transport correctness and recovery visibility worth testing together. SDK, application, MCP and Helm tags overlap this release; they should not be counted as separate independent improvements."
+        "LangWatch collects traces, records of the steps an AI application takes, for debugging and analysis. Version 3.21.0 changes how those records travel from an application to LangWatch. Its SDKs now send compressed trace data by default, and the server can recognize compression even when a request’s format label is wrong.",
+        "For illustration, a team upgrading behind a proxy should send a known trace through that same route and check that it arrives with the expected usage and tool output. A successful upload alone does not prove that every field was interpreted correctly. The release includes fixes for reading Claude traces, including counting usage once and preserving large attributes and tool output.",
+        "The transport uses gzip-compressed OTLP/protobuf, OpenTelemetry’s binary telemetry format. The server detects gzip or zstd from identifying bytes in the data. Other changes improve queue labels and age metrics, and allow retrying or discarding more than 2,000 groups of failed work at once. No measured bandwidth reduction is supplied."
       ],
       "format": "full",
-      "takeaway": "Verify compressed ingestion and retained usage fields through the actual proxy path, then confirm queue and dead-letter recovery signals reach monitoring.",
+      "takeaway": "For LangWatch operators: verify trace contents through your proxy and check visibility into queued or failed work.",
       "image": "/edition-images/2026-10-22/langwatch-otlp-fidelity.webp",
       "image_width": 1440,
       "image_height": 960,
@@ -226,19 +182,19 @@
       }
     },
     {
-      "title": "Phoenix adds frontend-error reporting and tightens runtime dependencies",
+      "title": "Phoenix sends uncaught browser errors to the server log",
       "url": "https://github.com/Arize-ai/phoenix/releases/tag/arize-phoenix-v20.24.0",
       "publisher": "Phoenix",
       "published": "2026-10-21",
       "category_key": "observability",
-      "summary": "Phoenix 20.24.0 reports uncaught browser errors to server logs and updates dependency constraints.",
+      "summary": "Phoenix adds browser-error reporting to server logs and updates dependency requirements, giving operators two concrete upgrade checks.",
       "body": [
-        "Phoenix 20.24.0 adds reporting of uncaught frontend errors to the server log. For teams operating an evaluation and tracing interface, a failure in the browser is a different failure surface from an application span or a server exception. Bringing that error into server-side logs gives operators another place to look when users encounter a broken screen, although the release does not describe alerting behavior or report end-to-end detection tests.",
-        "The same release tightens several dependency constraints. Its notes exclude LiteLLM 1.107.0, raise the certifi minimum to 2026.10.18 and require patched Node releases. These are specific package and runtime requirements, not a deployment-wide assurance. Checking the full release notes alongside resolved versions is more useful than assuming that a package upgrade also replaced every runtime or transitive dependency.",
-        "Operators should therefore distinguish updating the Phoenix package from verifying the resolved software actually running in their environment. A lockfile, container image and runtime can each preserve older components. That verification is an operational follow-up, not a guarantee supplied by the version number or by the new frontend logging feature."
+        "Phoenix is an interface for inspecting AI traces and evaluation results. If that interface breaks in a user’s browser, application traces alone may not explain the problem. Version 20.24.0 adds reporting of uncaught frontend errors to the server log, giving operators another place to investigate.",
+        "For illustration, a team testing the upgrade could trigger a controlled browser error and check whether its details reach the deployed server’s logs. The release notes do not describe automatic alerts or demonstrate that every browser failure will be detected. Error reporting still needs a check in the environment users actually access.",
+        "The same release excludes LiteLLM 1.107.0, raises the certifi minimum to 2026.10.18, and requires Node releases containing the October security patches. These are requirements for supporting packages and the runtime. Installing a new Phoenix version does not by itself confirm which versions remain in a lockfile, container image or running process. Check the resolved deployment as well as the package version."
       ],
       "format": "full",
-      "takeaway": "Check resolved dependencies and exercise browser-error reporting in the deployed environment rather than treating an upgrade label as sufficient verification.",
+      "takeaway": "For Phoenix operators: exercise browser-error reporting and verify the dependency versions actually deployed.",
       "image": "/edition-images/2026-10-22/phoenix-server-errors.webp",
       "image_width": 1440,
       "image_height": 960,
@@ -266,6 +222,50 @@
         "url": "https://github.com/Arize-ai/phoenix/releases/tag/arize-phoenix-v20.24.0",
         "publication_date": "2026-10-21",
         "raw_date": "2026-10-21T18:32:14Z",
+        "method": "GitHub REST release endpoint published_at, with draft=false and prerelease=false; original release notes inspected."
+      }
+    },
+    {
+      "title": "Phoenix changes how AI evaluators return labels and refusals",
+      "url": "https://github.com/Arize-ai/phoenix/releases/tag/%40arizeai/phoenix-evals%402.7.0",
+      "publisher": "Phoenix",
+      "published": "2026-10-21",
+      "category_key": "evals",
+      "summary": "Phoenix’s evaluation library adds decision-model support, with changes to prompt formatting, result metadata and refusal handling.",
+      "body": [
+        "Phoenix Evals helps engineers use AI models to judge outputs, for example by assigning a quality label. Version 2.7.0 adds support for decision models through the AI SDK library. It also changes how existing evaluation models receive prompts and report results, so old and new scores need careful comparison.",
+        "Consider an illustrative check that labels an answer as passing or failing. If the judging model refuses to decide, the application must handle an error instead of receiving an ordinary label. Counting that refusal as a pass would misrepresent the evaluation. The release itself does not claim better judging accuracy.",
+        "Under the hood, experimental_decide returns labels, with probabilities and provider confidence recorded when available. Prompts become plain text; refusals throw Experimental_DecisionRefusalError. Decision spans, records of individual decisions, capture state, question and answer. Because this interface is experimental, the release pins ai to 7.0.137 and @ai-sdk/otel to 1.0.137. OpenAI decision models require @ai-sdk/openai 4.0.89 or later."
+      ],
+      "format": "full",
+      "takeaway": "For evaluation owners: test prompts and refusals before comparing upgraded runs with historical scores.",
+      "image": "/edition-images/2026-10-22/phoenix-decision-evals.webp",
+      "image_width": 1440,
+      "image_height": 960,
+      "image_provenance": {
+        "kind": "generated-editorial",
+        "generator": "built-in-imagegen",
+        "prompt": "Use case: infographic-diagram. Standalone landscape 3:2 PNG newspaper infographic, warm ivory newsprint, dark charcoal ink, restrained teal and rust accents, serif heading, large perfectly legible labels. Explain Phoenix Evals 2.7.0 decision-model classifiers from https://github.com/Arize-ai/phoenix/releases/tag/%40arizeai/phoenix-evals%402.7.0 . Source facts: rendered prompts become plain text; experimental_decide produces classification label plus metadata probabilities/confidence when available; refusals throw an error; decision spans record state/question/answer. Title verbatim 'Decision models, explicit outcomes'. Subtitle 'Phoenix Evals 2.7.0'. Center left 'Plain-text prompt' arrow to central 'Decision model'. Branch upper right to 'Label + metadata' and small 'Probabilities when reported'. Branch lower right to rust panel 'Refusal → error'. Thin line below main flow to a teal record card 'Trace: state · question · answer'. Bottom editorial check separate labeled 'Operator check: test prompts and refusals'. No invented performance metrics, no logos, no screenshot, no watermark or footer. Keep diagram simple and labels readable at article width.",
+        "based_on": [
+          "https://github.com/Arize-ai/phoenix/releases/tag/%40arizeai/phoenix-evals%402.7.0"
+        ],
+        "reviewed": true,
+        "sha256": "51e1f45c6d24d69dcfae7f08a82bb879e818b9a73820c5d153f2c00da01e2cb6",
+        "optimization": {
+          "format": "webp",
+          "quality": 82,
+          "max_width": 1440,
+          "source_sha256": "d1321d4e677ec2b8e53965b32c9488d6215435f5a06881ee86a4ead01475bb2d"
+        }
+      },
+      "source": "github",
+      "interest_score": 8,
+      "dedupe_key": "release:Arize-ai/phoenix/releases/tag/%40arizeai/phoenix-evals%402.7.0",
+      "score_reason": "Concrete evaluator migration details expose prompt, refusal and dependency changes that can invalidate otherwise comparable evaluation runs.",
+      "source_evidence": {
+        "url": "https://github.com/Arize-ai/phoenix/releases/tag/%40arizeai/phoenix-evals%402.7.0",
+        "publication_date": "2026-10-21",
+        "raw_date": "2026-10-21T16:06:50Z",
         "method": "GitHub REST release endpoint published_at, with draft=false and prerelease=false; original release notes inspected."
       }
     }
