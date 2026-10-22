@@ -1,22 +1,22 @@
 {
   "date": "2026-10-18",
   "story_window": "2026-10-17",
-  "dek": "One practical evaluation guide: calibrate LLM judges, test irrelevant input changes, and preserve the evidence behind scores.",
+  "dek": "One guide explains how to check an AI judge before trusting its scores: compare with human ratings, change irrelevant input details and retain the evidence needed to explain disagreements.",
   "stories": [
     {
-      "title": "A practical guide puts LLM judges through calibration and paired-input checks",
+      "title": "A practical guide checks whether AI judges change their scores for the wrong reasons",
       "url": "https://www.itechguides.com/how-to-use-ai-generated-evaluations-without-letting-model-bias-skew-your-results/",
       "publisher": "iTechGuides",
       "published": "2026-10-17",
       "category_key": "evals",
-      "summary": "The guide recommends task-specific rubrics, independent human calibration, controlled input perturbations, and versioned evidence for LLM-as-a-judge workflows. It offers practical guidance rather than new experimental results.",
+      "summary": "The guide recommends clear scoring criteria, human calibration and paired-input tests before using model-generated scores to make decisions.",
       "body": [
-        "An October 17 iTechGuides guide lays out a practical validation workflow for teams using language models to score AI outputs. Its central recommendation is to specify the decision a score will support before choosing a judge. The guide then calls for observable rubric criteria, examples of missing evidence and critical failures, and calibration against independent human ratings on representative and difficult cases.",
-        "For robustness checks, it recommends paired inputs that preserve substance while changing features that should be irrelevant: answer order, identity or authority cues, formatting, and response length. Reviewers should compare the supporting evidence and explanations as well as the scores. It also advises retaining distributions, subgroup denominators, repeat-run variation, and disagreements rather than relying on an overall average.",
-        "The operational record matters alongside the rating: judge versions, prompts, datasets, aggregation rules, and escalation thresholds should travel with evaluation results. The article is a synthesis of evaluation practices, not a new benchmark or evidence that any particular judge is unbiased. Its proposed checks give operators a concrete way to investigate score changes before treating them as changes in application quality."
+        "An AI judge uses a language model to score another system’s outputs. An October 17 iTechGuides article recommends first defining what decision that score will support. Then write observable scoring criteria and compare the judge with independent human ratings on representative and difficult examples, including missing evidence and critical failures.",
+        "For illustration, keep an answer’s substance unchanged but alter its formatting or an irrelevant authority cue. If the score changes, examine the judge’s evidence and explanation before concluding that application quality changed. The guide also suggests testing answer order and response length. These paired comparisons help investigate sensitivity; they do not prove a judge is unbiased.",
+        "Keep judge versions, prompts, datasets, aggregation rules and escalation thresholds with the results. Review score distributions, subgroup counts, repeat-run variation and disagreements, rather than relying on a single average. This is a synthesis of evaluation practices, not a new benchmark. Its value comes from implementing the checks and examining their evidence on the actual task."
       ],
       "format": "full",
-      "takeaway": "Treat a score shift as a measurement question: check judge, rubric, input-order sensitivity, and sample changes before concluding that application quality changed.",
+      "takeaway": "For evaluation owners: check judge and input changes before interpreting a score shift as changed application quality.",
       "image": "/edition-images/2026-10-18/judge-validation.webp",
       "image_width": 1440,
       "image_height": 960,

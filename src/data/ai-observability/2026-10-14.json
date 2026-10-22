@@ -1,21 +1,22 @@
 {
   "date": "2026-10-14",
   "story_window": "2026-10-13",
-  "dek": "Conversation-level debugging, evaluator measurement, privacy-aware audit trails, and reliable trace delivery: a verified sweep of October 13 publications.",
+  "dek": "Begin with finding agent failures and following a conversation across traces. Then examine agent controls and privacy, followed by evaluator choices. The final stories cover dependable trace delivery, metric migrations and retrieving audit evidence.",
   "stories": [
     {
-      "title": "LangSmith adds behavior-based search over agent trajectories",
+      "title": "LangSmith lets teams search agent runs for behavior, beyond exact words",
       "url": "https://www.langchain.com/blog/agent-traces-ai-search-langsmith",
       "publisher": "LangChain / LangSmith",
       "published": "2026-10-13",
       "category_key": "agents",
-      "summary": "AI Search uses a decision model to find behaviors across normalized agent sessions, alongside structured trace filters.",
+      "summary": "AI Search uses a model to look for described behavior in agent sessions, with structured filters narrowing the search first.",
       "body": [
-        "LangSmith introduced AI Search for questions that cannot be reduced to a tag or an exact phrase. A decision model examines session trajectories against a natural-language description, such as an agent claiming completion without doing the work. SmithDB first narrows candidates with structured filters and normalizes repeated messages and tool activity into a common trajectory representation. The announcement describes a fixed context budget and acknowledges that evidence needed for some questions can be omitted. The feature is presented as a public beta, rather than a guarantee that every matching failure will be found.",
-        "For an operations team, this creates a useful way to discover examples for evaluation datasets and human review. Our editorial recommendation is to test searches against known positive and negative sessions, including failures visible only in tool results. Inspect missed matches as well as returned matches, and retain access to the complete trace when investigating a result. A fluent search explanation should not substitute for evidence that the requested action actually occurred."
+        "LangSmith records the steps an agent takes during a task. Its new AI Search beta lets a reviewer describe behavior to look for, including problems that an exact text search might miss. Structured filters narrow the candidate sessions before a decision model examines their sequence of messages and tool activity.",
+        "For example, the announcement describes looking for an agent that claims completion without doing the work. A useful test would include known cases where the claim was false and cases where the work really happened. Review both returned results and missed failures; a convincing explanation is not proof that the search found every relevant session.",
+        "SmithDB puts repeated messages and tool activity into a common session representation. The model has a fixed context budget, so evidence needed for some questions may be omitted. Keep the complete trace available when investigating a result. This beta offers a way to discover review examples, without guaranteeing that every matching failure will be found."
       ],
       "format": "full",
-      "takeaway": "Validate search recall against known failures before relying on it for incident discovery.",
+      "takeaway": "For incident and evaluation teams: test search results against known successes and failures before relying on coverage.",
       "image": "/edition-images/2026-10-14/langsmith-ai-search.webp",
       "image_provenance": {
         "kind": "generated-editorial",
@@ -47,18 +48,63 @@
       "image_height": 750
     },
     {
-      "title": "Assury proposes one audit and control layer across agent platforms",
+      "title": "Langfuse puts messages and tool activity into one conversation view",
+      "url": "https://langfuse.com/changelog/2026-10-13-redesigned-session-view",
+      "publisher": "Langfuse",
+      "published": "2026-10-13",
+      "category_key": "agents",
+      "summary": "A redesigned session reader connects messages across traces, with navigation to tool activity and filters for available or called tools.",
+      "body": [
+        "Langfuse collects traces of AI application activity. Its redesigned session reader joins user and assistant messages from multiple traces into a continuous conversation. A sidebar connects the conversation to individual execution records and tool usage, helping reviewers follow what happened across several turns.",
+        "For illustration, an assistant’s answer might look reasonable until an earlier tool failure is considered. A team could test a conversation containing that failure and check that the viewer links it to the response that followed. It should also test two conversations running in parallel, so an identifier mistake does not merge unrelated activity.",
+        "The announcement recommends using a shared sessionId for observations from the same interaction. New table filters distinguish tools that were available from tools actually called, and allow filtering by tool-call count. These are investigation features, not a guarantee of complete instrumentation. The reader can organize recorded evidence, but it cannot reconstruct events an application never sent."
+      ],
+      "format": "full",
+      "takeaway": "For multi-turn agent teams: verify session identifiers and tool coverage before trusting the combined conversation.",
+      "image": "/edition-images/2026-10-14/langfuse-session-view.webp",
+      "image_provenance": {
+        "kind": "generated-editorial",
+        "generator": "built-in-imagegen",
+        "prompt": "Create a standalone landscape PNG infographic for an AI observability newspaper, minimum 1024 pixels wide. Warm pale newsprint background, charcoal hand-drawn technical line art, restrained brick-red accent, bold readable serif headings, generous whitespace. Simple boxes, arrows and small illustrative icons; no fake screenshots, product logos, benchmark numbers or decorative clutter. Render only the specified short labels, no extra paragraphs. Title exactly \"FOLLOW THE WHOLE CONVERSATION\". Left: three stacked cards \"TRACE 1\", \"TRACE 2\", \"TRACE 3\", joined by a bracket labelled \"SHARED SESSION ID\". Right: one continuous tall conversation card showing alternating user and agent message icons. A narrow sidebar alongside it has three labels \"MESSAGES\", \"TRACES\", \"TOOL CALLS\". One brick-red highlighted tool-call row links back to the corresponding trace. Bottom short label \"REVIEW RESPONSES IN CONTEXT\". Footer exactly \"Conceptual session view · Langfuse\". This depicts the new reader joining messages across traces and navigating tool usage. Do not imply that unrecorded events are reconstructed or that session IDs are automatically correct.",
+        "based_on": [
+          "https://langfuse.com/changelog/2026-10-13-redesigned-session-view"
+        ],
+        "reviewed": true,
+        "sha256": "5a14a411d6c87e12896fe893cb3cdead4ac6ba72861f3e81b2101689ead958fa",
+        "optimization": {
+          "format": "webp",
+          "quality": 82,
+          "max_width": 1440,
+          "source_sha256": "4a4f309d4847c9840d783fed061db93c403a7d6d55251e8e7d96b5001bf6b1fc"
+        }
+      },
+      "source": "news",
+      "interest_score": 8,
+      "score_reason": "Directly relevant session-level debugging with concrete navigation and filtering changes.",
+      "dedupe_key": "article:langfuse.com/changelog/2026-10-13-redesigned-session-view",
+      "source_evidence": {
+        "url": "https://langfuse.com/changelog/2026-10-13-redesigned-session-view",
+        "publication_date": "2026-10-13",
+        "raw_date": "2026-10-13",
+        "method": "Explicit original publication date on the primary article"
+      },
+      "image_width": 1440,
+      "image_height": 960
+    },
+    {
+      "title": "Assury proposes a shared inventory and stop controls for agents",
       "url": "https://news.ycombinator.com/item?id=50072334",
       "publisher": "Hacker News · David Girvi / Assury",
       "published": "2026-10-13",
       "category_key": "agents",
-      "summary": "A first-party launch describes agent discovery, ownership tags, searchable audit records, and tag-based kill/resume controls.",
+      "summary": "A founder announcement describes discovering agents across platforms, tagging their owners and keeping searchable audit records with scoped stop/resume actions.",
       "body": [
-        "Assury co-founder David Girvi announced cross-platform agent lifecycle management in a first-party Hacker News post. The founder describes automatic discovery and tagging across environments including AWS, Databricks, Snowflake, and Salesforce, with agent ownership visible in one place. The proposed control surface combines searchable audit records with kill and resume actions scoped by tags. The post also describes handling dynamically created agent swarms. These are vendor statements: this edition has not verified discovery completeness, record integrity, or the effectiveness of the incident controls.",
-        "The operational question is whether an inventory remains accurate when agents appear, change identity, or disappear during an investigation. Our editorial recommendation is to compare discovered agents with a small known inventory, exercise a tag-scoped stop in a test environment, and confirm that the resulting record identifies the caller, target, decision, and outcome. Keep execution telemetry distinct from inventory metadata. A centralized list of agents is useful, but it does not by itself establish why a particular tool action succeeded or failed."
+        "Assury is a proposed management layer for agents running across different platforms. In a first-party Hacker News announcement, its co-founder describes discovering agents, tagging their owners and making audit records searchable in one place. The post names environments including AWS, Databricks, Snowflake and Salesforce, and also discusses dynamically created groups of agents.",
+        "For illustration, an operations team might want to stop only the agents tagged to a problematic workflow. Before depending on that control, it should compare the discovered inventory with a known test set, try a tag-scoped stop and verify which agents actually stopped. A central list and a successful-looking control response would not establish the outcome by themselves.",
+        "The announcement describes kill and resume actions scoped by tags. Discovery completeness, audit-record integrity and control effectiveness remain vendor claims that this edition has not independently tested. Inventory metadata identifies agents and ownership; execution traces are still needed to explain individual tool actions and failures."
       ],
       "format": "full",
-      "takeaway": "Test inventory coverage and control outcomes before treating a central agent list as reliable evidence.",
+      "takeaway": "For cross-platform agent operators: test inventory coverage and actual stop/resume outcomes against a known set.",
       "image": "/edition-images/2026-10-14/assury-agent-lifecycle.webp",
       "image_provenance": {
         "kind": "generated-editorial",
@@ -93,18 +139,19 @@
       "image_height": 960
     },
     {
-      "title": "Consus separates sensitive inference payloads from billing and audit metadata",
+      "title": "Consus proposes keeping request audit records without retaining prompts",
       "url": "https://news.ycombinator.com/item?id=50073471",
       "publisher": "Hacker News · Eric / Consus",
       "published": "2026-10-13",
       "category_key": "observability",
-      "summary": "A first-party gateway launch describes policy-bound inference routing with transient payloads and retained request metadata.",
+      "summary": "The gateway’s founder describes checking access before inference, keeping request metadata and holding sensitive prompts and answers only during processing.",
       "body": [
-        "Consus founder Eric introduced an OpenAI-compatible gateway for organizations handling sensitive data. The announcement says keys and policy are checked before inference, model names require a compliance suffix, and ordinary commercial model endpoints are not used. It also describes per-user model restrictions and spend controls. Most relevant to observability, the founder says prompts and completions remain only in memory for the request while billing and audit metadata are retained. The claimed compliance posture and retention behavior have not been independently assessed by this publication.",
-        "That separation changes what an incident investigator can recover. Our editorial recommendation is to define the metadata required to connect caller identity, policy decision, selected model, timing, and outcome without storing sensitive content. Test failure paths and logging middleware for accidental payload capture, and distinguish evidence of an authorized request from evidence of a correct answer. Teams may need privacy-preserving application feedback or separately governed evaluation fixtures to investigate quality failures. A gateway audit trail and a full conversational replay answer different operational questions."
+        "Consus is a gateway, an intermediate service between an application and a model. Its founder describes routing sensitive inference requests under access policies while retaining billing and audit metadata. According to the announcement, prompts and completions stay in memory only for the request, rather than becoming retained conversation records.",
+        "For illustration, an investigator could need to establish who requested a model call and whether it was allowed, without recovering the sensitive prompt. That requires defining the metadata needed for the investigation. It also limits later quality debugging: a record of an authorized request cannot by itself explain whether the answer was correct.",
+        "The OpenAI-compatible interface checks keys and policies before inference, supports per-user model restrictions and spend controls, and requires model names with a compliance suffix. The founder says ordinary commercial model endpoints are not used. Those compliance and retention claims have not been independently assessed here. Teams should test failure paths and logging middleware for accidental payload retention."
       ],
       "format": "full",
-      "takeaway": "Specify the evidence needed for debugging before choosing a payload-retention policy.",
+      "takeaway": "For sensitive-data teams: specify the audit evidence needed, then test that logs do not retain unintended payloads.",
       "image": "/edition-images/2026-10-14/consus-private-audit.webp",
       "image_provenance": {
         "kind": "generated-editorial",
@@ -139,61 +186,19 @@
       "image_height": 960
     },
     {
-      "title": "Langfuse joins traces into a continuous conversation for debugging",
-      "url": "https://langfuse.com/changelog/2026-10-13-redesigned-session-view",
-      "publisher": "Langfuse",
-      "published": "2026-10-13",
-      "category_key": "agents",
-      "summary": "A redesigned session view connects messages, traces, and tool usage in one conversation, with new tool-usage filters.",
-      "body": [
-        "Langfuse announced a redesigned session reader that combines user and assistant messages across traces into one continuous conversation. A sidebar connects messages, individual traces, and tool usage, allowing a reviewer to move from a problematic exchange to the corresponding execution record. The sessions table also gains filters distinguishing available tools from called tools, plus a tool-call count filter. The announcement recommends a shared sessionId for observations belonging to the same interaction. It describes a viewing and investigation feature, rather than a new guarantee of complete instrumentation.",
-        "For multi-turn agents, the useful improvement is continuity: an apparently reasonable response can be wrong in light of an earlier request or a tool result. Our editorial recommendation is to verify that separate model calls, application turns, and retries retain the intended session identity. Test a conversation containing a failed tool call and confirm that the viewer links it to the response that followed. Also check parallel sessions for accidental merging. A clearer reader can expose missing context, but it cannot reconstruct events that the application never recorded."
-      ],
-      "format": "full",
-      "takeaway": "Verify session identity and tool coverage so the improved conversation reader has trustworthy inputs.",
-      "image": "/edition-images/2026-10-14/langfuse-session-view.webp",
-      "image_provenance": {
-        "kind": "generated-editorial",
-        "generator": "built-in-imagegen",
-        "prompt": "Create a standalone landscape PNG infographic for an AI observability newspaper, minimum 1024 pixels wide. Warm pale newsprint background, charcoal hand-drawn technical line art, restrained brick-red accent, bold readable serif headings, generous whitespace. Simple boxes, arrows and small illustrative icons; no fake screenshots, product logos, benchmark numbers or decorative clutter. Render only the specified short labels, no extra paragraphs. Title exactly \"FOLLOW THE WHOLE CONVERSATION\". Left: three stacked cards \"TRACE 1\", \"TRACE 2\", \"TRACE 3\", joined by a bracket labelled \"SHARED SESSION ID\". Right: one continuous tall conversation card showing alternating user and agent message icons. A narrow sidebar alongside it has three labels \"MESSAGES\", \"TRACES\", \"TOOL CALLS\". One brick-red highlighted tool-call row links back to the corresponding trace. Bottom short label \"REVIEW RESPONSES IN CONTEXT\". Footer exactly \"Conceptual session view · Langfuse\". This depicts the new reader joining messages across traces and navigating tool usage. Do not imply that unrecorded events are reconstructed or that session IDs are automatically correct.",
-        "based_on": [
-          "https://langfuse.com/changelog/2026-10-13-redesigned-session-view"
-        ],
-        "reviewed": true,
-        "sha256": "5a14a411d6c87e12896fe893cb3cdead4ac6ba72861f3e81b2101689ead958fa",
-        "optimization": {
-          "format": "webp",
-          "quality": 82,
-          "max_width": 1440,
-          "source_sha256": "4a4f309d4847c9840d783fed061db93c403a7d6d55251e8e7d96b5001bf6b1fc"
-        }
-      },
-      "source": "news",
-      "interest_score": 8,
-      "score_reason": "Directly relevant session-level debugging with concrete navigation and filtering changes.",
-      "dedupe_key": "article:langfuse.com/changelog/2026-10-13-redesigned-session-view",
-      "source_evidence": {
-        "url": "https://langfuse.com/changelog/2026-10-13-redesigned-session-view",
-        "publication_date": "2026-10-13",
-        "raw_date": "2026-10-13",
-        "method": "Explicit original publication date on the primary article"
-      },
-      "image_width": 1440,
-      "image_height": 960
-    },
-    {
-      "title": "Langfuse opens its System One evaluator adapter to custom model endpoints",
+      "title": "Langfuse lets teams connect more models to its System One evaluator adapter",
       "url": "https://langfuse.com/changelog/2026-10-13-system-one-compatible-decision-models",
       "publisher": "Langfuse",
       "published": "2026-10-13",
       "category_key": "evals",
-      "summary": "The TypeSafe System One adapter now accepts a custom upstream URL for decision-model evaluators.",
+      "summary": "A custom endpoint setting expands evaluator choices while keeping the existing Choice, Score and Yes/no question types.",
       "body": [
-        "Langfuse expanded its TypeSafe System One connection to models serving the same API, instead of limiting the adapter to Jev. Users select a custom upstream and supply a base URL and model name; Choice, Score, and Yes/no questions continue to use the existing question types. The announcement names SubQ Snap and a self-hosted Strands Decider as supported examples. Suggested uses include routing traces by failure category, flagging sensitive outputs, and scoring answer completeness. The post does not establish that different evaluator models produce equivalent judgments.",
-        "A compatible interface makes evaluator substitution easier, but score meaning still depends on the model, rubric, and input distribution. Our editorial recommendation is to replay a versioned set of representative examples before switching an upstream, compare disagreements with human labels, and record the evaluator identity alongside each result. Include cases with incomplete context and ambiguous evidence. Track evaluator cost and latency separately from the application being evaluated. Otherwise a cheaper or locally hosted judge can change the interpretation of a production quality trend without an obvious schema change."
+        "Langfuse can use models to judge AI outputs. Its TypeSafe System One adapter now accepts a custom upstream endpoint, rather than limiting the connection to Jev. Teams supply a base URL and model name while continuing to use the existing Choice, Score and Yes/no question types.",
+        "For illustration, a team could try a locally hosted judge for an answer-completeness check. It should replay the same labeled examples through both judges and inspect disagreements before comparing their scores as one quality trend. A compatible interface does not establish that the models interpret the rubric in the same way.",
+        "The announcement names SubQ Snap and a self-hosted Strands Decider as supported examples. Suggested uses include failure-category routing and flagging sensitive outputs. Record the evaluator identity, rubric and input set with each result, and measure evaluator cost and latency separately. Changing a judge changes the measurement process; the announcement does not show equivalent judgments across the supported endpoints."
       ],
       "format": "full",
-      "takeaway": "Treat a change of evaluator model as a measurement change and calibrate it against labeled examples.",
+      "takeaway": "For evaluation owners: compare a replacement judge with human labels before interpreting its scores alongside older results.",
       "image": "/edition-images/2026-10-14/langfuse-system-one.webp",
       "image_provenance": {
         "kind": "generated-editorial",
@@ -225,18 +230,19 @@
       "image_height": 960
     },
     {
-      "title": "Arize separates prompt tone from brevity in a six-model evaluation",
+      "title": "Arize’s prompt experiment separates rude wording from requests for shorter answers",
       "url": "https://arize.com/blog/does-being-rude-to-ai-work/",
       "publisher": "Arize AI · Jim Bennett",
       "published": "2026-10-13",
       "category_key": "evals",
-      "summary": "A practitioner experiment shows why tone, answer-length instructions, and hidden reasoning costs need separate measurement.",
+      "summary": "A six-model experiment shows why tone, brevity instructions and hidden reasoning costs need to be measured separately.",
       "body": [
-        "Jim Bennett reports a six-model experiment investigating whether hostile prompts improve answers or reduce token use. The initial comparison mixed tone with instructions asking for shorter responses. Removing those brevity instructions changed the apparent savings, while isolated tone did not show a consistent accuracy advantage. The article records correctness, output tokens, hidden thinking tokens, and latency, and warns that shorter visible answers can coincide with more hidden reasoning. These are the author’s experimental findings on the chosen tasks, not a universal result for every deployed model or workflow.",
-        "For an evaluation program, the broader lesson is experimental control. Our editorial recommendation is to vary one prompt factor at a time, preserve the task and scoring procedure, and report the full cost of a successful outcome rather than visible output length alone. Include representative user frustration in test data without assuming abusive wording is a useful optimization. Inspect model-specific regressions and interaction effects, then repeat the comparison on actual product tasks. A dramatic token chart can be explained by a changed instruction rather than the behavioral hypothesis it appears to support."
+        "Changing a prompt can change several things at once. In an Arize article, Jim Bennett describes a six-model experiment asking whether hostile wording improves answers or reduces token use. The initial comparison also requested shorter answers, making it hard to separate the effect of tone from the effect of brevity instructions.",
+        "When the brevity instruction was removed, the apparent savings changed. Isolated tone did not show a consistent accuracy advantage in the tested tasks. The experiment also tracked hidden thinking tokens, because a shorter visible answer can still involve more model work. These findings apply to the experiment described, not every model or application.",
+        "For illustration, a team comparing a polite prompt with an abrupt one should keep the task, answer-length instruction and scoring procedure fixed. Record correctness, output tokens, hidden reasoning where available and latency. Repeating that comparison on representative product tasks is more informative than treating a dramatic token chart as proof that rude wording is an optimization."
       ],
       "format": "full",
-      "takeaway": "Separate tone from instructions and measure hidden reasoning before attributing a cost improvement to a prompt change.",
+      "takeaway": "For prompt evaluators: change one factor at a time and count hidden reasoning before claiming savings.",
       "image": "/edition-images/2026-10-14/arize-tone-evaluation.webp",
       "image_provenance": {
         "kind": "generated-editorial",
@@ -268,107 +274,19 @@
       "image_height": 960
     },
     {
-      "title": "Langfuse v4.58.0 adds bounded media uploads and per-project trace idle settings",
-      "url": "https://github.com/langfuse/langfuse/releases/tag/v4.58.0",
-      "publisher": "Langfuse · GitHub release",
-      "published": "2026-10-13",
-      "category_key": "observability",
-      "summary": "The release changes media extraction and upload handling, adds trace idle settings, and fixes media-request timeouts.",
-      "body": [
-        "Langfuse v4.58.0 includes media extraction before TypeScript parsing, an upload pool with concurrency and byte limits, and per-project trace idle-time settings. Its notes also list S3 media-request timeouts and several extraction-related performance changes. Separately, Topics can use a project’s own LLM connections. These are specific release-note entries, not evidence of a measured throughput improvement or a guarantee that every multimodal payload will ingest correctly. The release is distinct from the v4.57.0 issue covered in the previous edition.",
-        "For operators, bounded work matters when media-bearing traces arrive in bursts or object storage becomes slow. Our editorial recommendation is to run a canary containing the media types and payload sizes the application actually sends, verify that referenced media is retrievable, and observe failures as well as successful writes. Exercise a storage timeout and a concurrency burst before increasing traffic. Check how idle-time settings affect downstream consumers that expect a trace to be ready for evaluation. Keep arrival, durable persistence, and evaluation readiness as separate signals rather than inferring all three from a single successful request."
-      ],
-      "format": "full",
-      "takeaway": "Test multimodal ingestion under bursts and storage failures, including the point when traces become ready for evaluation.",
-      "image": "/edition-images/2026-10-14/langfuse-media-ingestion.webp",
-      "image_provenance": {
-        "kind": "generated-editorial",
-        "generator": "built-in-imagegen",
-        "prompt": "Create a standalone landscape PNG infographic for an AI observability newspaper, minimum 1024 pixels wide. Warm pale newsprint background, charcoal hand-drawn technical line art, restrained brick-red accent, bold readable serif headings, generous whitespace. Simple boxes, arrows and small icons. No fake screenshots, product logos, fabricated metrics, performance charts or decorative clutter. Render only the specified short labels, no additional explanation paragraphs. Title \"BOUND MEDIA WORK AT INGEST\". Left box \"RAW TRACE + MEDIA\" leads to \"EXTRACT MEDIA\". Then split into two visibly separate lanes. Upper lane \"PARSE TRACE\". Lower lane \"BOUNDED UPLOAD POOL\", with small labels \"CONCURRENCY LIMIT\" and \"BYTE LIMIT\", leads to \"OBJECT STORAGE\". On the storage arrow add a small red clock labelled \"TIMEOUT\". A separate bottom settings card reads \"PROJECT TRACE IDLE SETTING\". Include the editorial check \"VERIFY TRACE READINESS\". Footer \"Release concepts · Langfuse v4.58.0\". Source facts: extraction before TypeScript parsing, bounded media-upload pool, storage-request timeout fix, per-project trace idle-time setting. Do not imply specific completion ordering between the separate lanes, a performance gain, or guaranteed persistence.\nFinal edit instruction: Edit this existing newspaper infographic. Preserve its main headline, all technical boxes, arrows, labels, settings card and Langfuse version footer exactly. Remove these unrequested texts completely: top-left \"THE OBSERVABILITY TIMES\", top-right \"FOR A MORE VISIBLE AI TOMORROW\", and the tagline \"TRACES · MEDIA · A CLEARER TOMORROW\". Remove the top-right landscape/sun and both bottom decorative foliage drawings. Fill those removed areas with the same clean warm paper texture. Do not add another masthead, slogan or decoration. Keep the technical content and the large title \"BOUND MEDIA WORK AT INGEST\" unchanged.",
-        "based_on": [
-          "https://github.com/langfuse/langfuse/releases/tag/v4.58.0"
-        ],
-        "reviewed": true,
-        "sha256": "ef2114c2cbc4cb4207ad9d5a5b1461a87815a85fc9f1f0d179a5c61441b2c3b3",
-        "optimization": {
-          "format": "webp",
-          "quality": 82,
-          "max_width": 1440,
-          "source_sha256": "c462c263a7b9e022b4d03c278ec4ff2b83da2df4365fb21760904b692274175d"
-        }
-      },
-      "source": "github",
-      "interest_score": 8,
-      "score_reason": "A verified release with concrete ingestion and readiness changes central to reliable AI telemetry.",
-      "dedupe_key": "release:langfuse/langfuse/releases/tag/v4.58.0",
-      "source_evidence": {
-        "url": "https://github.com/langfuse/langfuse/releases/tag/v4.58.0",
-        "publication_date": "2026-10-13",
-        "raw_date": "2026-10-13T07:05:09Z",
-        "method": "Official GitHub stable release published_at; created date also October 13",
-        "api": "https://api.github.com/repos/langfuse/langfuse/releases/tags/v4.58.0"
-      },
-      "image_width": 1440,
-      "image_height": 960
-    },
-    {
-      "title": "LangSmith SDK v0.14.8 fixes session patching and a trace-upload fallback",
-      "url": "https://github.com/langchain-ai/langsmith-sdk/releases/tag/v0.14.8",
-      "publisher": "LangSmith · GitHub release",
-      "published": "2026-10-13",
-      "category_key": "observability",
-      "summary": "Python fixes send session_id during RunTree.patch and make the multipart-to-batch 404 fallback reachable.",
-      "body": [
-        "LangSmith SDK v0.14.8 lists two Python changes directly affecting trace handling: sending session_id with RunTree.patch and making the fallback from a multipart upload endpoint returning 404 to the batch endpoint reachable. The release also contains sandbox-related changes and maintenance work. The notes identify the corrected paths but do not quantify how many users were affected, a loss-rate reduction, or a performance improvement. This edition focuses on the tracing changes rather than presenting the entire SDK release as an observability feature launch.",
-        "Our editorial recommendation is to validate both context continuity and delivery when updating a tracing SDK. Create a multi-turn canary that patches a run after its initial creation, then confirm that the resulting record belongs to the intended session. Where the deployment supports the documented fallback scenario, test an unavailable multipart endpoint and verify that the batch path preserves the expected records. Compare persisted data with the originating application events, including error cases. An SDK call completing without an exception is useful evidence, but it is not sufficient evidence that the backend stored the complete conversation correctly."
-      ],
-      "format": "full",
-      "takeaway": "Verify persisted session associations and upload fallback behavior with an end-to-end canary.",
-      "image": "/edition-images/2026-10-14/langsmith-sdk-context.webp",
-      "image_provenance": {
-        "kind": "generated-editorial",
-        "generator": "built-in-imagegen",
-        "prompt": "Create a standalone landscape PNG infographic for an AI observability newspaper, minimum 1024 pixels wide. Warm pale newsprint background, charcoal hand-drawn technical line art, restrained brick-red accent, bold readable serif headings, generous whitespace. Simple boxes, arrows and small icons. No fake screenshots, product logos, fabricated metrics, performance charts or decorative clutter. Render only the specified short labels, no additional explanation paragraphs. Title \"PRESERVE CONTEXT, VERIFY DELIVERY\". Two horizontal lanes. Top lane: \"RUN PATCH\" -> a small envelope \"SESSION ID\" -> a linked conversation card \"SESSION ASSOCIATION\". Bottom lane: \"TRACE UPLOAD\" -> a red endpoint card \"MULTIPART 404\" -> a second endpoint card \"BATCH FALLBACK\". Bottom editorial checklist note \"VERIFY PERSISTED TRACES\". Footer \"Tracing fixes · LangSmith SDK v0.14.8\". These are two specific Python fixes from the release notes, not a generalized guarantee of successful uploads or a claimed performance increase. Avoid ambiguous extra arrows or invented model/provider components.\nFinal edit instruction: Edit this existing newspaper infographic. Preserve the main headline, two technical lanes, arrows, labels, illustrations and footer. Change the laptop's invented code text \"run_patch()\" to the exact actual SDK method \"RunTree.patch()\". Remove the tiny top-left text \"AI OBSERVABILITY TIMES\" and top-right slogan \"BETTER TRACES BRIGHTER AI\", leaving clean paper. Remove the bottom mountains and city scenery, replacing them with clean paper while retaining the \"VERIFY PERSISTED TRACES\" note and the LangSmith SDK version footer. Do not add any replacement masthead, slogan or decoration. All other technical content stays unchanged.",
-        "based_on": [
-          "https://github.com/langchain-ai/langsmith-sdk/releases/tag/v0.14.8"
-        ],
-        "reviewed": true,
-        "sha256": "8241bc102bec153874e3aac90de74d0c1f43cd60ed79766eed8110e5df16e86a",
-        "optimization": {
-          "format": "webp",
-          "quality": 82,
-          "max_width": 1440,
-          "source_sha256": "cd4d8e9d376db92e2926853bdceaeca820ab372932c0abdf3ea1cc4d4ad675bd"
-        }
-      },
-      "source": "github",
-      "interest_score": 8,
-      "score_reason": "Verified fixes affecting trace delivery and context continuity; no unsupported impact estimate.",
-      "dedupe_key": "release:langchain-ai/langsmith-sdk/releases/tag/v0.14.8",
-      "source_evidence": {
-        "url": "https://github.com/langchain-ai/langsmith-sdk/releases/tag/v0.14.8",
-        "publication_date": "2026-10-13",
-        "raw_date": "2026-10-13T00:42:09Z",
-        "method": "Official GitHub stable release published_at; release created October 13",
-        "api": "https://api.github.com/repos/langchain-ai/langsmith-sdk/releases/tags/v0.14.8"
-      },
-      "image_width": 1440,
-      "image_height": 960
-    },
-    {
-      "title": "Phoenix v20.21.2 normalizes experiment latency and retrieval counts",
+      "title": "Phoenix makes experiment latency and retrieval counts use consistent number types",
       "url": "https://github.com/Arize-ai/phoenix/releases/tag/arize-phoenix-v20.21.2",
       "publisher": "Arize Phoenix · GitHub release",
       "published": "2026-10-13",
       "category_key": "evals",
-      "summary": "A patch normalizes repeated-run latency on PostgreSQL and retrieval summary counts returned through GraphQL.",
+      "summary": "Version 20.21.2 corrects numeric representation in PostgreSQL experiment results and GraphQL retrieval summaries.",
       "body": [
-        "Phoenix v20.21.2 lists two type-normalization fixes: coercing average repeated-run latency to float on PostgreSQL, and normalizing retrieval summary counts to integers in GraphQL. The notes do not claim a new evaluator or a speed increase.",
-        "Our editorial recommendation is to check the shape of saved experiment results after upgrading. Use a repeated-run fixture with fractional latency and a retrieval case with known counts, then compare stored values with the API response. Numeric representation is part of measurement reliability: downstream dashboards and comparisons need a stable interpretation even when the underlying experiment did not change."
+        "Phoenix helps teams compare AI experiments. Version 20.21.2 fixes how two result values are represented: average repeated-run latency becomes a float on PostgreSQL, and retrieval-summary counts become integers in GraphQL. The patch does not claim faster execution or a new evaluator.",
+        "For illustration, use an experiment with fractional latency and a retrieval case with known counts. Compare saved values with the API response after upgrading. Consistent number types help downstream charts interpret results; they do not establish that the underlying experiment’s quality improved."
       ],
       "format": "brief",
       "brief_reason": "The primary patch notes contain two narrow type fixes; no broader feature or benchmark is claimed.",
-      "takeaway": "Check numeric types at the storage and API boundaries of an evaluation result.",
+      "takeaway": "For experiment-data owners: check numeric values and types in both stored results and API responses.",
       "image": "/edition-images/2026-10-14/phoenix-metric-types.webp",
       "image_provenance": {
         "kind": "generated-editorial",
@@ -401,18 +319,109 @@
       "image_height": 960
     },
     {
-      "title": "OpenTelemetry gives process metrics an explicit migration path",
+      "title": "Langfuse limits media-upload work and adds project-level trace idle settings",
+      "url": "https://github.com/langfuse/langfuse/releases/tag/v4.58.0",
+      "publisher": "Langfuse · GitHub release",
+      "published": "2026-10-13",
+      "category_key": "observability",
+      "summary": "Version 4.58.0 bounds concurrent media uploads, adjusts extraction and adds idle-time settings that operators should test with real payloads.",
+      "body": [
+        "Langfuse receives traces that can refer to images or other media. Version 4.58.0 changes how that media is extracted and uploaded, including a pool that limits concurrent work and bytes. It also adds per-project trace idle-time settings, relevant to when downstream processing treats a trace as ready.",
+        "For illustration, a team could send a burst of media-bearing traces while making object storage respond slowly. The check should establish that records arrive, their referenced media can be retrieved and failures remain visible. A successful incoming request alone would not answer all three questions. This is a suggested regression scenario, not a published performance result.",
+        "Technical changes include media extraction before TypeScript parsing and S3 media-request timeouts. Topics can also use a project’s own model connections. The notes do not quantify throughput improvement or guarantee support for every payload. Operators should check how the idle settings affect evaluation readiness and distinguish arrival, persistence and readiness in their own pipeline."
+      ],
+      "format": "full",
+      "takeaway": "For multimodal application teams: test media bursts, storage timeouts and when a trace becomes ready for evaluation.",
+      "image": "/edition-images/2026-10-14/langfuse-media-ingestion.webp",
+      "image_provenance": {
+        "kind": "generated-editorial",
+        "generator": "built-in-imagegen",
+        "prompt": "Create a standalone landscape PNG infographic for an AI observability newspaper, minimum 1024 pixels wide. Warm pale newsprint background, charcoal hand-drawn technical line art, restrained brick-red accent, bold readable serif headings, generous whitespace. Simple boxes, arrows and small icons. No fake screenshots, product logos, fabricated metrics, performance charts or decorative clutter. Render only the specified short labels, no additional explanation paragraphs. Title \"BOUND MEDIA WORK AT INGEST\". Left box \"RAW TRACE + MEDIA\" leads to \"EXTRACT MEDIA\". Then split into two visibly separate lanes. Upper lane \"PARSE TRACE\". Lower lane \"BOUNDED UPLOAD POOL\", with small labels \"CONCURRENCY LIMIT\" and \"BYTE LIMIT\", leads to \"OBJECT STORAGE\". On the storage arrow add a small red clock labelled \"TIMEOUT\". A separate bottom settings card reads \"PROJECT TRACE IDLE SETTING\". Include the editorial check \"VERIFY TRACE READINESS\". Footer \"Release concepts · Langfuse v4.58.0\". Source facts: extraction before TypeScript parsing, bounded media-upload pool, storage-request timeout fix, per-project trace idle-time setting. Do not imply specific completion ordering between the separate lanes, a performance gain, or guaranteed persistence.\nFinal edit instruction: Edit this existing newspaper infographic. Preserve its main headline, all technical boxes, arrows, labels, settings card and Langfuse version footer exactly. Remove these unrequested texts completely: top-left \"THE OBSERVABILITY TIMES\", top-right \"FOR A MORE VISIBLE AI TOMORROW\", and the tagline \"TRACES · MEDIA · A CLEARER TOMORROW\". Remove the top-right landscape/sun and both bottom decorative foliage drawings. Fill those removed areas with the same clean warm paper texture. Do not add another masthead, slogan or decoration. Keep the technical content and the large title \"BOUND MEDIA WORK AT INGEST\" unchanged.",
+        "based_on": [
+          "https://github.com/langfuse/langfuse/releases/tag/v4.58.0"
+        ],
+        "reviewed": true,
+        "sha256": "ef2114c2cbc4cb4207ad9d5a5b1461a87815a85fc9f1f0d179a5c61441b2c3b3",
+        "optimization": {
+          "format": "webp",
+          "quality": 82,
+          "max_width": 1440,
+          "source_sha256": "c462c263a7b9e022b4d03c278ec4ff2b83da2df4365fb21760904b692274175d"
+        }
+      },
+      "source": "github",
+      "interest_score": 8,
+      "score_reason": "A verified release with concrete ingestion and readiness changes central to reliable AI telemetry.",
+      "dedupe_key": "release:langfuse/langfuse/releases/tag/v4.58.0",
+      "source_evidence": {
+        "url": "https://github.com/langfuse/langfuse/releases/tag/v4.58.0",
+        "publication_date": "2026-10-13",
+        "raw_date": "2026-10-13T07:05:09Z",
+        "method": "Official GitHub stable release published_at; created date also October 13",
+        "api": "https://api.github.com/repos/langfuse/langfuse/releases/tags/v4.58.0"
+      },
+      "image_width": 1440,
+      "image_height": 960
+    },
+    {
+      "title": "LangSmith fixes session updates and a backup route for trace uploads",
+      "url": "https://github.com/langchain-ai/langsmith-sdk/releases/tag/v0.14.8",
+      "publisher": "LangSmith · GitHub release",
+      "published": "2026-10-13",
+      "category_key": "observability",
+      "summary": "SDK 0.14.8 sends session identifiers during Python run updates and repairs a fallback from multipart uploads to batch uploads.",
+      "body": [
+        "LangSmith’s SDK is the library that sends application activity to its tracing service. Version 0.14.8 fixes two Python paths: updating a run with its session identity, and falling back to batch upload when a multipart upload endpoint returns 404. These changes concern where a record belongs and whether it reaches its destination.",
+        "For illustration, create a multi-turn test conversation, update a run after creation and check that the stored record still belongs to the intended session. Where the deployment supports the documented fallback scenario, make the multipart endpoint unavailable and verify that the batch route delivers the expected records. Check the persisted result, rather than only the absence of an SDK exception.",
+        "The session fix sends session_id with RunTree.patch; the upload fix makes the 404 fallback reachable. Other release entries cover sandbox work and maintenance. The notes provide no affected-user count, loss-rate reduction or performance result, so validation should focus on these specific corrected paths."
+      ],
+      "format": "full",
+      "takeaway": "For Python instrumentation owners: verify stored session associations and upload fallback with a known conversation.",
+      "image": "/edition-images/2026-10-14/langsmith-sdk-context.webp",
+      "image_provenance": {
+        "kind": "generated-editorial",
+        "generator": "built-in-imagegen",
+        "prompt": "Create a standalone landscape PNG infographic for an AI observability newspaper, minimum 1024 pixels wide. Warm pale newsprint background, charcoal hand-drawn technical line art, restrained brick-red accent, bold readable serif headings, generous whitespace. Simple boxes, arrows and small icons. No fake screenshots, product logos, fabricated metrics, performance charts or decorative clutter. Render only the specified short labels, no additional explanation paragraphs. Title \"PRESERVE CONTEXT, VERIFY DELIVERY\". Two horizontal lanes. Top lane: \"RUN PATCH\" -> a small envelope \"SESSION ID\" -> a linked conversation card \"SESSION ASSOCIATION\". Bottom lane: \"TRACE UPLOAD\" -> a red endpoint card \"MULTIPART 404\" -> a second endpoint card \"BATCH FALLBACK\". Bottom editorial checklist note \"VERIFY PERSISTED TRACES\". Footer \"Tracing fixes · LangSmith SDK v0.14.8\". These are two specific Python fixes from the release notes, not a generalized guarantee of successful uploads or a claimed performance increase. Avoid ambiguous extra arrows or invented model/provider components.\nFinal edit instruction: Edit this existing newspaper infographic. Preserve the main headline, two technical lanes, arrows, labels, illustrations and footer. Change the laptop's invented code text \"run_patch()\" to the exact actual SDK method \"RunTree.patch()\". Remove the tiny top-left text \"AI OBSERVABILITY TIMES\" and top-right slogan \"BETTER TRACES BRIGHTER AI\", leaving clean paper. Remove the bottom mountains and city scenery, replacing them with clean paper while retaining the \"VERIFY PERSISTED TRACES\" note and the LangSmith SDK version footer. Do not add any replacement masthead, slogan or decoration. All other technical content stays unchanged.",
+        "based_on": [
+          "https://github.com/langchain-ai/langsmith-sdk/releases/tag/v0.14.8"
+        ],
+        "reviewed": true,
+        "sha256": "8241bc102bec153874e3aac90de74d0c1f43cd60ed79766eed8110e5df16e86a",
+        "optimization": {
+          "format": "webp",
+          "quality": 82,
+          "max_width": 1440,
+          "source_sha256": "cd4d8e9d376db92e2926853bdceaeca820ab372932c0abdf3ea1cc4d4ad675bd"
+        }
+      },
+      "source": "github",
+      "interest_score": 8,
+      "score_reason": "Verified fixes affecting trace delivery and context continuity; no unsupported impact estimate.",
+      "dedupe_key": "release:langchain-ai/langsmith-sdk/releases/tag/v0.14.8",
+      "source_evidence": {
+        "url": "https://github.com/langchain-ai/langsmith-sdk/releases/tag/v0.14.8",
+        "publication_date": "2026-10-13",
+        "raw_date": "2026-10-13T00:42:09Z",
+        "method": "Official GitHub stable release published_at; release created October 13",
+        "api": "https://api.github.com/repos/langchain-ai/langsmith-sdk/releases/tags/v0.14.8"
+      },
+      "image_width": 1440,
+      "image_height": 960
+    },
+    {
+      "title": "OpenTelemetry lets teams trial new process-metric definitions before switching",
       "url": "https://opentelemetry.io/blog/2026/hostmetrics-process-scraper-rc/",
       "publisher": "OpenTelemetry · Dónal O’Sullivan",
       "published": "2026-10-13",
       "category_key": "observability",
-      "summary": "Versioned definitions and feature gates let the hostmetrics process scraper trial release-candidate semantic conventions.",
+      "summary": "Versioned definitions and feature gates give the hostmetrics process scraper a controlled path toward new metric conventions.",
       "body": [
-        "OpenTelemetry describes versioned metric definitions for the hostmetrics process scraper in Collector Contrib v0.160.0. The mechanism keeps legacy and release-candidate definitions in the metadata schema, with feature gates controlling migration. Version suffixes are internal definition keys and are removed before emission. Some process metrics change names, units, or attributes; where definitions share an emitted name, migration must avoid publishing incompatible duplicates. The article invites users to test the release-candidate output and report broken dashboards before a later stability transition.",
-        "For AI workloads, process metrics remain useful context around model-serving workers, application runtimes, and telemetry collectors, even though this announcement is not an AI-specific instrument. Our editorial recommendation is to replay representative queries and alerts against the candidate schema, especially filters depending on renamed attributes. Compare sample records rather than checking only that a metrics endpoint responds. Keep a documented rollback path during the trial and annotate schema changes on operational dashboards. Otherwise an instrumentation upgrade can look like a workload improvement when a query has simply stopped selecting the intended series."
+        "OpenTelemetry collects operational data such as CPU and memory measurements. Its hostmetrics process scraper reports information about running processes. An article describes how Collector Contrib 0.160.0 keeps old and release-candidate metric definitions available, letting teams test the newer conventions before a later stability transition.",
+        "For illustration, a model-serving team could replay its alerts against the candidate output. If an attribute or unit changes, a previously useful query might stop selecting the intended data and make a dashboard look healthier. Inspect sample records and alert results, not just whether the exporter responds. Keep a documented rollback path during the trial.",
+        "Feature gates control migration between definitions. Version suffixes are internal keys and are removed before metrics are emitted; some metric names, units or attributes change. Where definitions share an emitted name, incompatible duplicates must be avoided. This is not an AI-specific feature, but the same process metrics help explain serving workers and collectors around AI applications."
       ],
       "format": "full",
-      "takeaway": "Validate query and alert semantics during schema migration, not just successful metric export.",
+      "takeaway": "For telemetry owners: test existing queries and alerts against the candidate metric schema before migrating.",
       "image": "/edition-images/2026-10-14/otel-process-migration.webp",
       "image_provenance": {
         "kind": "generated-editorial",
@@ -444,18 +453,63 @@
       "image_height": 720
     },
     {
-      "title": "Elastic demonstrates how to verify retention and query old audit evidence",
+      "title": "Dynatrace compares Collector packages by what they include and who maintains them",
+      "url": "https://www.dynatrace.com/news/blog/opentelemetry-collector-distributions-compared-core-contrib-ocb-and-vendor-builds-which-one-should-you-use/",
+      "publisher": "Dynatrace · Amrith Raj",
+      "published": "2026-10-13",
+      "category_key": "observability",
+      "source": "news",
+      "summary": "The guide contrasts Core, Contrib, custom and vendor OpenTelemetry Collectors, with different component and maintenance responsibilities.",
+      "body": [
+        "The OpenTelemetry Collector receives, processes and forwards operational data. Different packages include different components. Dynatrace’s guide compares the lean Core distribution, broader Contrib distribution, custom builds and vendor packages. The practical choice includes who owns upgrades, testing and support, as well as which data paths the binary can run.",
+        "For illustration, an AI team could list the receivers, processing steps and export destinations its model and tool traces require. In staging, it should check that useful attributes survive, sensitive fields are removed as intended and delivery continues after an upgrade. Compare those needs with the exact release’s component list rather than selecting by distribution name alone.",
+        "Custom builds use the OpenTelemetry Collector Builder, or OCB, to select and pin modules. Contrib maturity can vary by telemetry signal, while vendor support depends on the offering. The article’s examples are illustrative, so component names and versions need verification. A package choice does not by itself prove complete traces or privacy protection."
+      ],
+      "format": "full",
+      "takeaway": "For platform teams: choose a Collector against a tested pipeline and an explicit maintenance owner.",
+      "image": "/edition-images/2026-10-14/dynatrace-collector-builds.webp",
+      "image_width": 1440,
+      "image_height": 960,
+      "image_provenance": {
+        "kind": "generated-editorial",
+        "generator": "built-in-imagegen",
+        "prompt": "Create one landscape editorial infographic PNG for a calm technical newspaper. Warm pale newsprint background, charcoal ink line art, restrained brick-red accents, bold readable serif headings, generous whitespace. Use simple outlined cards, arrows and small technical icons. No product logos, screenshots, invented metrics or decorative scenery. Render only the short text specified here.\nTitle exactly: \"CHOOSE YOUR COLLECTOR BUILD\".\nAt the top, a small box labelled \"REQUIRED SIGNALS + COMPONENTS\" branches evenly into FOUR equally sized option cards. Do not rank the four options.\nCard 1 heading \"CORE\"; labels \"MINIMAL COMPONENTS\" and \"SIMPLE OTLP PIPELINES\"; icon of a small toolbox.\nCard 2 heading \"CONTRIB\"; labels \"BROAD COMPONENT LIBRARY\" and \"CHECK MATURITY PER SIGNAL\"; icon of a larger toolbox.\nCard 3 heading \"OCB\"; labels \"SELECT + PIN COMPONENTS\" and \"OWN YOUR BUILD\"; icon of selected building blocks.\nCard 4 heading \"VENDOR\"; labels \"CURATED COMPONENTS\" and \"VERIFY SUPPORT TERMS\"; icon of a packaged toolbox with a checklist.\nBottom shared checklist exactly: \"CHECK THE MANIFEST • PIN VERSIONS • STAGE UPGRADES\".\nFooter exactly: \"Conceptual selection guide · based on Dynatrace\".\nFacts to preserve: the primary article compares Core, Contrib, custom builds using OpenTelemetry Collector Builder, and vendor distributions. Component availability, per-signal maturity and build/support ownership determine the choice. Vendor support and testing depend on the actual offering. Do not imply that every vendor build is stable, every Contrib component is production ready, or that any choice has guaranteed speed, compliance or lower cost. This is general telemetry guidance, not a newly announced AI feature. Keep every heading and label legible and contained in its card.",
+        "based_on": [
+          "https://www.dynatrace.com/news/blog/opentelemetry-collector-distributions-compared-core-contrib-ocb-and-vendor-builds-which-one-should-you-use/"
+        ],
+        "reviewed": true,
+        "sha256": "f4dbdd95e450d4f5e8a1febe4cbffc776724a97cebc7156b338c57206379462d",
+        "optimization": {
+          "format": "webp",
+          "quality": 82,
+          "max_width": 1440,
+          "source_sha256": "83a914c3704d0c0af68cd81592a7cdccde085195d0723ee5636e9be3b90b1ce7"
+        }
+      },
+      "interest_score": 8,
+      "score_reason": "Actionable component-maturity and ownership checks for the transport layer beneath AI traces; general telemetry guidance, not a new AI-specific feature.",
+      "dedupe_key": "article:www.dynatrace.com/news/blog/opentelemetry-collector-distributions-compared-core-contrib-ocb-and-vendor-builds-which-one-should-you-use",
+      "source_evidence": {
+        "url": "https://www.dynatrace.com/news/blog/opentelemetry-collector-distributions-compared-core-contrib-ocb-and-vendor-builds-which-one-should-you-use/",
+        "publication_date": "2026-10-13",
+        "raw_date": "2026-10-13T20:41:38+00:00",
+        "method": "Original primary article time element and JSON-LD datePublished agree on October 13; dateModified is October 14 and is not used as publication evidence."
+      }
+    },
+    {
+      "title": "Elastic shows how to check whether older audit evidence can still be queried",
       "url": "https://www.elastic.co/observability-labs/blog/audit-logging-retention-elasticsearch",
       "publisher": "Elastic Observability Labs · Jeffrey Rengifo",
       "published": "2026-10-13",
       "category_key": "observability",
-      "summary": "A lab follows audit events through EDOT, checks the applied retention policy, and queries a mounted searchable snapshot.",
+      "summary": "A lab follows audit events into Elasticsearch, checks retention settings and repeats an investigation query against an archived snapshot.",
       "body": [
-        "Elastic’s audit-logging walkthrough follows a small fixture through the EDOT Collector into a dedicated Elasticsearch data stream. It reconstructs an actor timeline with ES|QL, reads back the applied retention configuration, and repeats the query against a mounted searchable snapshot. The article distinguishes audit evidence from ordinary application logs and warns that configuration read-back does not prove a year of availability. Its lab does not establish cold-tier cost or latency benchmarks, and a read-only index is not protection against every privileged administrator.",
-        "For teams operating agents that can change external systems, our editorial recommendation is to connect the agent’s execution trace with a separate record of who authorized an action, what target changed, and what outcome the provider returned. Rehearse retrieval of older evidence and check source coverage rather than treating a retention setting as proof of completeness. Separate investigation access from retention administration, and avoid retaining sensitive conversational content by default when action metadata is sufficient. The useful standard is evidence that can still answer an incident question months later, within the organization’s actual data policy."
+        "Audit records explain who acted on a system and what happened. Elastic’s walkthrough follows sample events through its OpenTelemetry Collector distribution into Elasticsearch, then reconstructs an actor’s timeline. It checks the applied retention configuration and repeats the query against a mounted searchable snapshot, a way to query archived data.",
+        "For illustration, a team investigating an agent’s action months later could need the authorization, target and outcome as well as the conversational trace. Rehearsing that lookup with known evidence would test something a retention setting cannot: whether the records needed for the question are actually available and usable.",
+        "The lab uses a dedicated data stream and ES|QL queries. It does not prove a year of availability, measure cold-storage cost or latency, or establish protection from every privileged administrator. Teams should check source coverage, separate investigation access from retention administration and retain sensitive conversation content only when their evidence needs and data policy justify it."
       ],
       "format": "full",
-      "takeaway": "Rehearse evidence retrieval and check source coverage; retention configuration alone does not prove an auditable history.",
+      "takeaway": "For audit owners: rehearse retrieving old evidence and verify coverage, alongside checking retention configuration.",
       "image": "/edition-images/2026-10-14/elastic-audit-retention.webp",
       "image_provenance": {
         "kind": "generated-editorial",
@@ -485,49 +539,6 @@
       },
       "image_width": 1440,
       "image_height": 960
-    },
-    {
-      "title": "Dynatrace compares Collector builds by component coverage and operational ownership",
-      "url": "https://www.dynatrace.com/news/blog/opentelemetry-collector-distributions-compared-core-contrib-ocb-and-vendor-builds-which-one-should-you-use/",
-      "publisher": "Dynatrace · Amrith Raj",
-      "published": "2026-10-13",
-      "category_key": "observability",
-      "source": "news",
-      "summary": "Core, Contrib, custom OCB builds, and vendor packages trade component coverage against build and support ownership.",
-      "body": [
-        "Dynatrace's Amrith Raj compares four OpenTelemetry Collector choices: lean Core, broad Contrib, custom distributions assembled with the Collector Builder (OCB), and vendor packages. The key distinction is which components a binary includes and who owns its build, upgrades, and support. Contrib components have maturity labels that can vary by telemetry signal. A custom OCB build selects and pins modules; vendor packages curate their own set, with support and testing dependent on the offering. The examples are illustrative, so component names and versions need verification before deployment.",
-        "Our editorial connection is the transport layer beneath AI tracing. Before choosing a package, write down the receivers, processors, exporters, and signals your agent workloads require. In a staging environment, test whether model and tool-call attributes survive the pipeline, whether sensitive fields are removed as intended, and whether telemetry still arrives after an upgrade. Compare those requirements with the chosen release's actual component manifest. A distribution label alone does not establish trace completeness or privacy protection; those outcomes need evidence from the running pipeline."
-      ],
-      "format": "full",
-      "takeaway": "Choose against a tested AI telemetry pipeline and an explicit ownership model.",
-      "image": "/edition-images/2026-10-14/dynatrace-collector-builds.webp",
-      "image_width": 1440,
-      "image_height": 960,
-      "image_provenance": {
-        "kind": "generated-editorial",
-        "generator": "built-in-imagegen",
-        "prompt": "Create one landscape editorial infographic PNG for a calm technical newspaper. Warm pale newsprint background, charcoal ink line art, restrained brick-red accents, bold readable serif headings, generous whitespace. Use simple outlined cards, arrows and small technical icons. No product logos, screenshots, invented metrics or decorative scenery. Render only the short text specified here.\nTitle exactly: \"CHOOSE YOUR COLLECTOR BUILD\".\nAt the top, a small box labelled \"REQUIRED SIGNALS + COMPONENTS\" branches evenly into FOUR equally sized option cards. Do not rank the four options.\nCard 1 heading \"CORE\"; labels \"MINIMAL COMPONENTS\" and \"SIMPLE OTLP PIPELINES\"; icon of a small toolbox.\nCard 2 heading \"CONTRIB\"; labels \"BROAD COMPONENT LIBRARY\" and \"CHECK MATURITY PER SIGNAL\"; icon of a larger toolbox.\nCard 3 heading \"OCB\"; labels \"SELECT + PIN COMPONENTS\" and \"OWN YOUR BUILD\"; icon of selected building blocks.\nCard 4 heading \"VENDOR\"; labels \"CURATED COMPONENTS\" and \"VERIFY SUPPORT TERMS\"; icon of a packaged toolbox with a checklist.\nBottom shared checklist exactly: \"CHECK THE MANIFEST • PIN VERSIONS • STAGE UPGRADES\".\nFooter exactly: \"Conceptual selection guide · based on Dynatrace\".\nFacts to preserve: the primary article compares Core, Contrib, custom builds using OpenTelemetry Collector Builder, and vendor distributions. Component availability, per-signal maturity and build/support ownership determine the choice. Vendor support and testing depend on the actual offering. Do not imply that every vendor build is stable, every Contrib component is production ready, or that any choice has guaranteed speed, compliance or lower cost. This is general telemetry guidance, not a newly announced AI feature. Keep every heading and label legible and contained in its card.",
-        "based_on": [
-          "https://www.dynatrace.com/news/blog/opentelemetry-collector-distributions-compared-core-contrib-ocb-and-vendor-builds-which-one-should-you-use/"
-        ],
-        "reviewed": true,
-        "sha256": "f4dbdd95e450d4f5e8a1febe4cbffc776724a97cebc7156b338c57206379462d",
-        "optimization": {
-          "format": "webp",
-          "quality": 82,
-          "max_width": 1440,
-          "source_sha256": "83a914c3704d0c0af68cd81592a7cdccde085195d0723ee5636e9be3b90b1ce7"
-        }
-      },
-      "interest_score": 8,
-      "score_reason": "Actionable component-maturity and ownership checks for the transport layer beneath AI traces; general telemetry guidance, not a new AI-specific feature.",
-      "dedupe_key": "article:www.dynatrace.com/news/blog/opentelemetry-collector-distributions-compared-core-contrib-ocb-and-vendor-builds-which-one-should-you-use",
-      "source_evidence": {
-        "url": "https://www.dynatrace.com/news/blog/opentelemetry-collector-distributions-compared-core-contrib-ocb-and-vendor-builds-which-one-should-you-use/",
-        "publication_date": "2026-10-13",
-        "raw_date": "2026-10-13T20:41:38+00:00",
-        "method": "Original primary article time element and JSON-LD datePublished agree on October 13; dateModified is October 14 and is not used as publication evidence."
-      }
     }
   ],
   "research": {
