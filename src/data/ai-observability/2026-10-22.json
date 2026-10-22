@@ -47,6 +47,41 @@
           "max_width": 1440,
           "source_sha256": "0840d346331ca4b22b46f2c39a06b758353aad264e001f3644165014f27f411b"
         }
+      },
+      "image_animation": {
+        "src": "/edition-images/2026-10-22/beacon-reviewed-memory.gif",
+        "width": 1000,
+        "height": 800,
+        "sha256": "4eaee8731a4798bcd70bb4f807d5c6fac15f074e5869ef8b8eeff4040e63f790",
+        "size_bytes": 287162,
+        "frames": 23,
+        "duration_ms": 12600,
+        "loop": 0,
+        "source_art_sha256": "71bc76e00d5a86f846a0220a25d104e9cb5f67d6acc7407d665bc057f8f9643c",
+        "alt": "Animated Beacon · conceptual learning loop: Record prompts, tools and commands. Keep the evidence behind a lesson. Session records use a common format. Recurring workflows become candidates. A human checks the proposed lesson. Approval comes before reuse. Reviewed instructions reach another agent. Available through skills or MCP. Reuse is intended; improvement is not measured.",
+        "optimization": {
+          "format": "gif",
+          "colours": 80,
+          "dither": 0,
+          "effort": 10,
+          "inter_frame_max_error": 0
+        },
+        "stages": [
+          "Capture",
+          "Normalize",
+          "Review",
+          "Reuse"
+        ],
+        "provenance": {
+          "kind": "generated-editorial",
+          "generator": "built-in-imagegen",
+          "prompt": "Use case: infographic-diagram. Asset: source-grounded newspaper illustration artwork for a deterministic animated explainer. Redraw the referenced image as a CLEAN PANORAMIC ICON STRIP, landscape 3:1, exactly four equally sized square cells arranged horizontally, edges aligned, solid uniform warm paper #faf6e9 background. Subject: Beacon: sessions → common records → human approval → reusable lessons. Artwork: four independent detailed vignettes in one horizontal row: agent terminal with prompt/tool/command cards, normalized event stack, human reviewer checking a lesson at a desk, knowledge book feeding another agent. Human review precedes reuse. No implication of guaranteed improvement.. Keep all four illustrations inside their own cell with generous margins, no overlap. Refined editorial ink illustration, charcoal outlines, flat restrained teal and rust, ivory paper, no texture/no grain to allow GIF compression. Art fills central 70% of each square cell. NO text, NO letters, NO numbers, NO arrows, NO headings, NO watermark. Labels, arrows and animated mechanism details will be typeset separately for legibility. Preserve source scope of reference; avoid fake product screenshots.",
+          "based_on": [
+            "https://news.ycombinator.com/item?id=50182883"
+          ],
+          "reviewed": true,
+          "post_processing": "scripts/animate-edition-2026-10-22.mjs: typeset labels, state transitions, moving records and explicit outcome branches; sharp GIF encoding."
+        }
       }
     },
     {
@@ -90,6 +125,41 @@
           "quality": 82,
           "max_width": 1440,
           "source_sha256": "ae734a5b614e7f4945cce0ad9eb1e3b49cd1928f188c2c28f54220d085e76df3"
+        }
+      },
+      "image_animation": {
+        "src": "/edition-images/2026-10-22/halo-architecture.gif",
+        "width": 1000,
+        "height": 800,
+        "sha256": "40348140a501aaa9d90f3f85559adaa3e6a50c5fe4ef24fc429537675b0b26df",
+        "size_bytes": 285123,
+        "frames": 22,
+        "duration_ms": 12600,
+        "loop": 0,
+        "source_art_sha256": "ef26d0f3eedaf97693f37e456d9c73d07fd6de086961e5bc58b3cff4eddcf355",
+        "alt": "Animated Langfuse Halo · architecture retrospective: The browser can close after a run starts. Work does not depend on an open tab. A backend worker continues the agent loop. Progress and results are saved. Tools follow project and role permissions. Changing data still needs approval. Optional scripts receive authorized data. The sandbox has no network by default. Separate boundaries; no security guarantee.",
+        "optimization": {
+          "format": "gif",
+          "colours": 80,
+          "dither": 0,
+          "effort": 10,
+          "inter_frame_max_error": 0
+        },
+        "stages": [
+          "Close tab",
+          "Continue",
+          "Access",
+          "Sandbox"
+        ],
+        "provenance": {
+          "kind": "generated-editorial",
+          "generator": "built-in-imagegen",
+          "prompt": "Use case: infographic-diagram. Asset: source-grounded newspaper illustration artwork for a deterministic animated explainer. Redraw the referenced image as a CLEAN PANORAMIC ICON STRIP, landscape 3:1, exactly four equally sized square cells arranged horizontally, edges aligned, solid uniform warm paper #faf6e9 background. Subject: Halo: background workers and distinct permission boundaries. Artwork: four independent detailed vignettes in one horizontal row: closing browser window, backend agent with work queue and saved progress ledger, locked project-data cabinet with permission gate, isolated script container receiving a document with crossed-out network symbol. No security guarantee.. Keep all four illustrations inside their own cell with generous margins, no overlap. Refined editorial ink illustration, charcoal outlines, flat restrained teal and rust, ivory paper, no texture/no grain to allow GIF compression. Art fills central 70% of each square cell. NO text, NO letters, NO numbers, NO arrows, NO headings, NO watermark. Labels, arrows and animated mechanism details will be typeset separately for legibility. Preserve source scope of reference; avoid fake product screenshots.",
+          "based_on": [
+            "https://langfuse.com/blog/2026-10-21-building-the-langfuse-assistant"
+          ],
+          "reviewed": true,
+          "post_processing": "scripts/animate-edition-2026-10-22.mjs: typeset labels, state transitions, moving records and explicit outcome branches; sharp GIF encoding."
         }
       }
     },
@@ -135,6 +205,41 @@
           "max_width": 1440,
           "source_sha256": "57dc6366e13c5fef8504d3a8bc31a93e61a007fe097c906ff612cb125ed97f85"
         }
+      },
+      "image_animation": {
+        "src": "/edition-images/2026-10-22/braintrust-application-logs.gif",
+        "width": 1000,
+        "height": 800,
+        "sha256": "3b2bb299e70b2ace261f574ac764472dc213bb39d63395b62fb9cea9d0ccde10",
+        "size_bytes": 267597,
+        "frames": 18,
+        "duration_ms": 12600,
+        "loop": 0,
+        "source_art_sha256": "7049b1f77d5b918d5624b34e89b0809804c4dbd78de9509aa5ffbd9d5f825c0e",
+        "alt": "Animated Braintrust JavaScript SDK 3.39.0: Application logging captures console context. Example: a fallback before a model call. Batch and code-mode tracing add coverage. Inspect logs alongside the run steps. Streamed tool calls stay separate. The fix handles a missing provider index. Pi and Flue count cache reads and writes. They are included in prompt_tokens. Illustrative records; verify your integration.",
+        "optimization": {
+          "format": "gif",
+          "colours": 80,
+          "dither": 0,
+          "effort": 10,
+          "inter_frame_max_error": 0
+        },
+        "stages": [
+          "Logs",
+          "Traces",
+          "Tool calls",
+          "Usage"
+        ],
+        "provenance": {
+          "kind": "generated-editorial",
+          "generator": "built-in-imagegen",
+          "prompt": "Use case: infographic-diagram. Asset: source-grounded newspaper illustration artwork for a deterministic animated explainer. Redraw the referenced image as a CLEAN PANORAMIC ICON STRIP, landscape 3:1, exactly four equally sized square cells arranged horizontally, edges aligned, solid uniform warm paper #faf6e9 background. Subject: Braintrust 3.39.0: application context alongside traces. Artwork: four independent detailed vignettes in one horizontal row: application console log cards, nested trace span timeline, two separate streamed tool-call cards, operator checking a token ledger. Do not merge the two tool calls. No metrics.. Keep all four illustrations inside their own cell with generous margins, no overlap. Refined editorial ink illustration, charcoal outlines, flat restrained teal and rust, ivory paper, no texture/no grain to allow GIF compression. Art fills central 70% of each square cell. NO text, NO letters, NO numbers, NO arrows, NO headings, NO watermark. Labels, arrows and animated mechanism details will be typeset separately for legibility. Preserve source scope of reference; avoid fake product screenshots.",
+          "based_on": [
+            "https://github.com/braintrustdata/braintrust-sdk-javascript/releases/tag/braintrust%403.39.0"
+          ],
+          "reviewed": true,
+          "post_processing": "scripts/animate-edition-2026-10-22.mjs: typeset labels, state transitions, moving records and explicit outcome branches; sharp GIF encoding."
+        }
       }
     },
     {
@@ -178,6 +283,41 @@
           "quality": 82,
           "max_width": 1440,
           "source_sha256": "36d162d15b8fb4ec0950f209df1a492c84072877ee66290754b1b6dfc60cc604"
+        }
+      },
+      "image_animation": {
+        "src": "/edition-images/2026-10-22/langwatch-otlp-fidelity.gif",
+        "width": 1000,
+        "height": 800,
+        "sha256": "c445eaff0d0bffb934f6ba4bc16af8e947c52b791ecaa94bd27bef21c7fadc73",
+        "size_bytes": 267500,
+        "frames": 24,
+        "duration_ms": 12600,
+        "loop": 0,
+        "source_art_sha256": "001df958e015b3df38c4aaaee80f3fb7c081e0efcdab426185bd76607cb3e16a",
+        "alt": "Animated LangWatch 3.21.0 · conceptual operator check: SDKs default to gzip-compressed traces. The payload uses OTLP/protobuf. The server inspects identifying bytes. gzip or zstd can override a wrong label. Reading fixes preserve tool output. Claude usage is counted once. Send a known trace through your route. Check the received fields, not just upload. Related release changes; no measured savings.",
+        "optimization": {
+          "format": "gif",
+          "colours": 80,
+          "dither": 0,
+          "effort": 10,
+          "inter_frame_max_error": 0
+        },
+        "stages": [
+          "Compress",
+          "Identify",
+          "Read",
+          "Verify"
+        ],
+        "provenance": {
+          "kind": "generated-editorial",
+          "generator": "built-in-imagegen",
+          "prompt": "Use case: infographic-diagram. Asset: source-grounded newspaper illustration artwork for a deterministic animated explainer. Redraw the referenced image as a CLEAN PANORAMIC ICON STRIP, landscape 3:1, exactly four equally sized square cells arranged horizontally, edges aligned, solid uniform warm paper #faf6e9 background. Subject: LangWatch 3.21.0: compressed delivery and correct record reading. Artwork: four independent detailed vignettes in one horizontal row: telemetry document stack, gzip-compressed parcel, magnifier inspecting the parcel identifying bytes, trace ledger with usage and tool-output fields. No bandwidth comparison or guarantee.. Keep all four illustrations inside their own cell with generous margins, no overlap. Refined editorial ink illustration, charcoal outlines, flat restrained teal and rust, ivory paper, no texture/no grain to allow GIF compression. Art fills central 70% of each square cell. NO text, NO letters, NO numbers, NO arrows, NO headings, NO watermark. Labels, arrows and animated mechanism details will be typeset separately for legibility. Preserve source scope of reference; avoid fake product screenshots.",
+          "based_on": [
+            "https://github.com/langwatch/langwatch/releases/tag/langwatch%40v3.21.0"
+          ],
+          "reviewed": true,
+          "post_processing": "scripts/animate-edition-2026-10-22.mjs: typeset labels, state transitions, moving records and explicit outcome branches; sharp GIF encoding."
         }
       }
     },
@@ -223,6 +363,41 @@
           "max_width": 1440,
           "source_sha256": "09a089cd1c19c286fd06fe58860f1879b21ef732f0a83a31390e072b4ef4591f"
         }
+      },
+      "image_animation": {
+        "src": "/edition-images/2026-10-22/phoenix-server-errors.gif",
+        "width": 1000,
+        "height": 800,
+        "sha256": "bc2ac07fb6958e0f63e7eb1dd848761d9c8ca0f0caec538335b701879b269c86",
+        "size_bytes": 267662,
+        "frames": 17,
+        "duration_ms": 12600,
+        "loop": 0,
+        "source_art_sha256": "abd4c25e73535c42faef277f08b31bb7c3b93e953783637b0b4e8bfae168f018",
+        "alt": "Animated Phoenix 20.24.0 · conceptual reporting flow: AI traces describe application activity. A browser failure needs other evidence. An uncaught frontend error occurs. This example is an interface failure. Phoenix reports the uncaught error. The report travels to the server log. Operators can inspect the server log. Verify reporting in the deployed setup. Logging does not imply alerts or resolution.",
+        "optimization": {
+          "format": "gif",
+          "colours": 80,
+          "dither": 0,
+          "effort": 10,
+          "inter_frame_max_error": 0
+        },
+        "stages": [
+          "Interface",
+          "Error",
+          "Report",
+          "Server log"
+        ],
+        "provenance": {
+          "kind": "generated-editorial",
+          "generator": "built-in-imagegen",
+          "prompt": "Use case: infographic-diagram. Asset: source-grounded newspaper illustration artwork for a deterministic animated explainer. Redraw the referenced image as a CLEAN PANORAMIC ICON STRIP, landscape 3:1, exactly four equally sized square cells arranged horizontally, edges aligned, solid uniform warm paper #faf6e9 background. Subject: Phoenix 20.24.0: uncaught browser error reaches server log. Artwork: four independent detailed vignettes in one horizontal row: browser interface, browser with warning triangle, error report document in transit, server log ledger with warning line. No automatic alerts or resolution.. Keep all four illustrations inside their own cell with generous margins, no overlap. Refined editorial ink illustration, charcoal outlines, flat restrained teal and rust, ivory paper, no texture/no grain to allow GIF compression. Art fills central 70% of each square cell. NO text, NO letters, NO numbers, NO arrows, NO headings, NO watermark. Labels, arrows and animated mechanism details will be typeset separately for legibility. Preserve source scope of reference; avoid fake product screenshots.",
+          "based_on": [
+            "https://github.com/Arize-ai/phoenix/releases/tag/arize-phoenix-v20.24.0"
+          ],
+          "reviewed": true,
+          "post_processing": "scripts/animate-edition-2026-10-22.mjs: typeset labels, state transitions, moving records and explicit outcome branches; sharp GIF encoding."
+        }
       }
     },
     {
@@ -266,6 +441,41 @@
           "quality": 82,
           "max_width": 1440,
           "source_sha256": "d1321d4e677ec2b8e53965b32c9488d6215435f5a06881ee86a4ead01475bb2d"
+        }
+      },
+      "image_animation": {
+        "src": "/edition-images/2026-10-22/phoenix-decision-evals.gif",
+        "width": 1000,
+        "height": 800,
+        "sha256": "9e1ff0b678074c28dd35a290f17abe90c54b2e293ba12cb1a48d77b11171d562",
+        "size_bytes": 288287,
+        "frames": 28,
+        "duration_ms": 12600,
+        "loop": 0,
+        "source_art_sha256": "53df30185f8d7fa72a45b1f3c1903d42dfc0eb65bb466eeda46466ef12258ad9",
+        "alt": "Animated Phoenix Evals 2.7.0 · conceptual decision flow: Rendered prompts become plain text. The model receives the evaluation input. experimental_decide runs the classifier. Decision spans record question and answer. A decision returns a classification label. Probabilities or confidence, when reported. A refusal throws a decision-refusal error. Handle it separately from a normal label. Alternative outcomes; no accuracy claim.",
+        "optimization": {
+          "format": "gif",
+          "colours": 80,
+          "dither": 0,
+          "effort": 10,
+          "inter_frame_max_error": 0
+        },
+        "stages": [
+          "Prompt",
+          "Decide",
+          "Label",
+          "Refusal"
+        ],
+        "provenance": {
+          "kind": "generated-editorial",
+          "generator": "built-in-imagegen",
+          "prompt": "Use case: infographic-diagram. Asset: source-grounded newspaper illustration artwork for a deterministic animated explainer. Redraw the referenced image as a CLEAN PANORAMIC ICON STRIP, landscape 3:1, exactly four equally sized square cells arranged horizontally, edges aligned, solid uniform warm paper #faf6e9 background. Subject: Phoenix Evals 2.7.0: decision output versus refusal. Artwork: four independent detailed vignettes in one horizontal row: prompt document, decision model gear, classification label card with small optional metadata bars, separate refusal warning and error card. No accuracy improvement claim.. Keep all four illustrations inside their own cell with generous margins, no overlap. Refined editorial ink illustration, charcoal outlines, flat restrained teal and rust, ivory paper, no texture/no grain to allow GIF compression. Art fills central 70% of each square cell. NO text, NO letters, NO numbers, NO arrows, NO headings, NO watermark. Labels, arrows and animated mechanism details will be typeset separately for legibility. Preserve source scope of reference; avoid fake product screenshots.",
+          "based_on": [
+            "https://github.com/Arize-ai/phoenix/releases/tag/%40arizeai/phoenix-evals%402.7.0"
+          ],
+          "reviewed": true,
+          "post_processing": "scripts/animate-edition-2026-10-22.mjs: typeset labels, state transitions, moving records and explicit outcome branches; sharp GIF encoding."
         }
       }
     }

@@ -9,7 +9,8 @@ import { execFileSync, spawnSync } from 'node:child_process';
 import { auditEditionHtml } from '../scripts/lib/edition-html-audit.js';
 import { EDITION_AUTHOR, AI_IMAGE_DISCLOSURE, imageCaptionFor } from '../src/lib/editionCredits.js';
 import { latestIssueFeeds } from '../src/lib/latestIssueFeeds.js';
-import { generatePdfs } from '../scripts/lib/pdf-editions.js';
+import { generatePdfs, startPdfServer } from '../scripts/lib/pdf-editions.js';
+import { verifyEditionAnimation } from '../scripts/lib/verify-edition-animation.js';
 
 // Regression guard: the byline and the hidden, edition-level AI disclosure were twice
 // deployed from an uncommitted tree and then silently reverted by the next clean daily
@@ -76,6 +77,9 @@ test('every built edition page has the top byline and no visible per-image AI ca
     const { default: puppeteer } = await import('puppeteer');
     const browser = await puppeteer.launch({ headless: true, args: ['--no-sandbox', '--disable-setuid-sandbox'] });
     try {
+      const animationServer = await startPdfServer(outDir);
+      try { await verifyEditionAnimation(browser, animationServer.origin); }
+      finally { await animationServer.close(); }
       const printPage = await browser.newPage();
       await printPage.setContent(`<style>${css.join('\n')}</style><details class="editorial-method" open><summary>Editorial method and sources</summary><p>Website only.</p></details>`);
       assert.notEqual(await printPage.$eval('.editorial-method', (el) => getComputedStyle(el).display), 'none', 'method stays visible on the website');
@@ -139,7 +143,7 @@ test('every built edition page has the top byline and no visible per-image AI ca
       await assert.rejects(generatePdfs({ outDir }), /PDF font/);
       assert.deepEqual(await readFile(path.join(outDir, 'pdf/latest.pdf')), latestPdf, 'missing fonts never publish a fallback-font PDF');
     } finally { await writeFile(missingFont, fontBytes); }
-    await writeFile(latestPage, html.replace(/src="\/edition-images\/[^"]+"/, 'src="/missing-pdf-image.webp"'));
+    await writeFile(latestPage, html.replace(/<img\b([^>]*?)src="\/edition-images\/[^"]+"/, '<img$1src="/missing-pdf-image.webp"'));
     await assert.rejects(generatePdfs({ outDir }), /Unable to load PDF image/);
     assert.deepEqual(await readFile(path.join(outDir, 'pdf/latest.pdf')), latestPdf, 'failed generation leaves latest intact');
   } finally {

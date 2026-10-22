@@ -18,6 +18,13 @@ export const observabilityIssueSchema = z.looseObject({
       image: z.string().optional(),
       image_width: z.number().int().positive().optional(),
       image_height: z.number().int().positive().optional(),
+      image_animation: z.looseObject({
+        src: z.string().startsWith('/edition-images/').endsWith('.gif'),
+        width: z.number().int().positive(),
+        height: z.number().int().positive(),
+        alt: z.string().min(1),
+        sha256: z.string().regex(/^[a-f0-9]{64}$/),
+      }).optional(),
       image_provenance: z.looseObject({
         kind: z.literal('generated-editorial'),
         generator: z.string().min(1),
