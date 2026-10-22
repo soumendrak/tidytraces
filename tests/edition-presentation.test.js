@@ -74,6 +74,7 @@ test('every built edition page has the top byline and no visible per-image AI ca
     }
     const css = await Promise.all((await readdir(path.join(outDir, '_astro'))).filter((name) => name.endsWith('.css')).map((name) => readFile(path.join(outDir, '_astro', name), 'utf8')));
     assert.match(css.join('\n'), /\.visually-hidden\{[^}]*clip:/, 'the disclosure class is visually hidden, not display:none');
+    assert.match(css.join('\n'), /\}\.back-to-top\[[^\]]+\]\[hidden\]\{display:none\}/, 'the hidden rule stands alone so browsers without :has() still apply it');
 
     const latest = days.toSorted().at(-1);
     const { default: puppeteer } = await import('puppeteer');

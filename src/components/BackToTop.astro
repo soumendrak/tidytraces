@@ -37,7 +37,9 @@
 
 	.back-to-top[hidden] { display: none; }
 
-	:global(body:has(#pwa-install-banner:not([hidden]))) .back-to-top { display: none; }
+	@supports selector(:has(*)) {
+		:global(body:has(#pwa-install-banner:not([hidden]))) .back-to-top { display: none; }
+	}
 
 	.back-to-top:is(:hover, :focus-visible) {
 		opacity: 1;
