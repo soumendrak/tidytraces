@@ -1,5 +1,6 @@
 ---
 import '../styles/main.scss';
+import BackToTop from '../components/BackToTop.astro';
 import PWAInstallBanner from '../components/PWAInstallBanner.astro';
 import { SITE_METADATA } from '../config';
 import pwaPromptScript from '../scripts/pwa-prompt.js?raw';
@@ -186,6 +187,7 @@ const schemaMarkup = {
 	</head>
 	<body>
 		<slot />
+		<BackToTop />
 		<PWAInstallBanner />
 		<script src="../scripts/search-shortcut.ts"></script>
 	</body>

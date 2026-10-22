@@ -69,6 +69,9 @@ test('every built edition page has the top byline and no visible per-image AI ca
       const day = file === 'index.html' ? days.toSorted().at(-1) : file.split('/')[1];
       assert.match(html, new RegExp(`href="/pdf/${day}\\.pdf" download="tidy-traces-${day}\\.pdf"`), 'the download belongs to the displayed issue');
     }
+    for (const file of ['index.html', 'archive/index.html', `ai-observability/${days[0]}/index.html`]) {
+      assert.match(await readFile(path.join(outDir, file), 'utf8'), /<button type="button" class="back-to-top"[^>]* aria-label="Back to top" hidden/, `${file} has a hidden back-to-top button`);
+    }
     const css = await Promise.all((await readdir(path.join(outDir, '_astro'))).filter((name) => name.endsWith('.css')).map((name) => readFile(path.join(outDir, '_astro', name), 'utf8')));
     assert.match(css.join('\n'), /\.visually-hidden\{[^}]*clip:/, 'the disclosure class is visually hidden, not display:none');
 
@@ -81,6 +84,30 @@ test('every built edition page has the top byline and no visible per-image AI ca
       assert.notEqual(await printPage.$eval('.editorial-method', (el) => getComputedStyle(el).display), 'none', 'method stays visible on the website');
       await printPage.emulateMediaType('print');
       assert.equal(await printPage.$eval('.editorial-method', (el) => getComputedStyle(el).display), 'none', 'method is excluded from PDFs');
+
+      const site = await browser.newPage();
+      await site.setRequestInterception(true);
+      site.on('request', async (request) => {
+        const { pathname } = new URL(request.url());
+        const body = await readFile(path.join(outDir, pathname.endsWith('/') ? `${pathname}index.html` : pathname)).catch(() => null);
+        const contentType = { '.js': 'text/javascript', '.css': 'text/css' }[path.extname(pathname)] || 'text/html';
+        if (body) request.respond({ body, contentType });
+        else request.abort();
+      });
+      await site.emulateMediaFeatures([{ name: 'prefers-reduced-motion', value: 'reduce' }]);
+      await site.setViewport({ width: 390, height: 700 });
+      await site.goto('https://tidytraces.test/', { waitUntil: 'load' });
+      const hidden = () => site.$eval('.back-to-top', (el) => el.hidden);
+      assert.equal(await hidden(), true, 'hidden at the top');
+      await site.evaluate(() => window.scrollTo({ top: document.body.scrollHeight, behavior: 'instant' }));
+      await site.waitForFunction(() => !document.querySelector('.back-to-top').hidden);
+      await site.focus('.back-to-top');
+      await site.keyboard.press('Enter');
+      assert.deepEqual(await site.evaluate(() => [window.scrollY, document.activeElement.tagName]), [0, 'MAIN'], 'reduced motion jumps to the top and focus moves to main');
+      await site.waitForFunction(() => document.querySelector('.back-to-top').hidden);
+      await site.emulateMediaType('print');
+      await site.evaluate(() => { document.querySelector('.back-to-top').hidden = false; });
+      assert.equal(await site.$eval('.back-to-top', (el) => getComputedStyle(el).display), 'none', 'hidden in print');
     } finally { await browser.close(); }
     await generatePdfs({ outDir });
     const latestPdf = await readFile(path.join(outDir, 'pdf', `${latest}.pdf`));

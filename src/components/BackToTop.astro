@@ -1,0 +1,74 @@
+---
+---
+
+<div class="back-to-top-sentinel" aria-hidden="true"></div>
+<button type="button" class="back-to-top" aria-label="Back to top" hidden>
+	<svg aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m18 15-6-6-6 6"/></svg>
+</button>
+
+<style>
+	.back-to-top-sentinel {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 1px;
+		height: 100vh;
+		pointer-events: none;
+	}
+
+	.back-to-top {
+		position: fixed;
+		right: max(1rem, env(safe-area-inset-right));
+		bottom: max(1rem, env(safe-area-inset-bottom));
+		z-index: 50;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 2.75rem;
+		height: 2.75rem;
+		padding: 0;
+		background: var(--bg-sheet);
+		color: var(--ink);
+		border: 1px solid var(--rule);
+		box-shadow: var(--shadow-sheet);
+		cursor: pointer;
+		transition: background-color 0.15s ease, color 0.15s ease;
+	}
+
+	.back-to-top[hidden],
+	:global(body:has(#pwa-install-banner:not([hidden]))) .back-to-top { display: none; }
+
+	.back-to-top:hover {
+		background: var(--ink);
+		color: var(--ink-invert);
+	}
+
+	.back-to-top:focus-visible {
+		outline: 2px solid var(--accent-ink);
+		outline-offset: 3px;
+	}
+
+	:global(main:focus) { outline: none; }
+
+	@media print {
+		.back-to-top { display: none; }
+	}
+</style>
+
+<script>
+	const button = document.querySelector<HTMLButtonElement>('.back-to-top')!;
+	const sentinel = document.querySelector('.back-to-top-sentinel')!;
+	const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+	new IntersectionObserver(([entry]) => {
+		button.hidden = entry.isIntersecting;
+	}).observe(sentinel);
+
+	button.addEventListener('click', () => {
+		window.scrollTo({ top: 0, behavior: reducedMotion.matches ? 'instant' : 'smooth' });
+		const main = document.querySelector('main');
+		if (!main) return;
+		main.tabIndex = -1;
+		main.focus({ preventScroll: true });
+	});
+</script>
