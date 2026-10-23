@@ -1,107 +1,107 @@
-# AI Observability Daily — 2026-10-22
+# AI Observability Daily — 2026-10-23
 
 By Soumendra Kumar Sahoo
 
 Canonical: https://tidytraces.com/
-Coverage window: 2026-10-21
+Coverage window: 2026-10-22
 
-Today’s six stories start with how agents reuse lessons and investigate problems. Next come tools for recording application activity, delivering traces and finding browser errors. Finally, Phoenix changes how AI judges return evaluation results.
+Start with tests that check what agents actually did, then follow evaluation scores back to their origins. The second half looks at coding-agent activity and the telemetry changes that can make data disappear during upgrades.
 
-## Beacon helps coding agents reuse lessons after human review
+## CATT checks what a service did, not just what an agent says
 
-Source: Asymptote Labs — https://news.ycombinator.com/item?id=50182883
-Published: 2026-10-21
+Source: Coverage Cat — https://news.ycombinator.com/item?id=50201860
+Published: 2026-10-22
 Channel: hn
 
-Beacon is an open-source project for carrying lessons between coding agents. Switching tools can mean explaining the same workflow or past mistake again. In an October 21 announcement, its creators describe recording prompts, tool calls and commands across more than twenty agent tools, then converting those records into reusable knowledge.
+CATT, the Consumer Agent Testing Tool, helps developers test services used by AI assistants. An assistant can claim success even when its tool calls did not produce the requested result. In an October 22 Show HN announcement, its creators describe a test host that approximates assistants such as Muse and Instinct without claiming to reproduce their private implementations.
 
-The important step is human review. Beacon identifies recurring patterns and workflows, asks for approval, and makes reviewed lessons available to future agents. For illustration, a team could review a lesson about its repository’s test workflow before making that guidance available to another coding agent. This is an example of intended use, not a measured outcome.
+Developers specify initial conditions, simulated approvals and the service state that counts as success. The tool records calls and responses so teams can compare what happened with what the agent reported. For illustration, a connector test could check whether a requested record actually exists after an assistant says it created one. That is a hypothetical test, not a reported production incident.
 
-Technically, session records share a common format. Approved knowledge is exposed through skills containing reusable instructions, and the Model Context Protocol (MCP), which connects agents to external tools and data. The announcement does not independently establish that capture is complete or that reused lessons improve results.
+Runs can be local or part of continuous integration, with or without a language model. Assistant-specific assumptions are labelled documented, unofficial, assumed or unknown. Passing these surrogate tests is therefore evidence about the configured scenario, not certification of compatibility with a hosted assistant.
 
-Why it matters: For teams switching coding agents: check the original session evidence before approving a lesson for reuse.
+Why it matters: Connector developers should assert service outcomes and review simulator assumptions before trusting a passing test.
 
-![Beacon helps coding agents reuse lessons after human review](/edition-images/2026-10-22/beacon-reviewed-memory.webp)
+![CATT checks what a service did, not just what an agent says](/edition-images/2026-10-23/catt-outcome-check.webp)
 
-## How Langfuse limits Halo’s access during background investigations
+## Arize connects human review verdicts to agent prompt tests
 
-Source: Langfuse — https://langfuse.com/blog/2026-10-21-building-the-langfuse-assistant
-Published: 2026-10-21
+Source: Arize AI — https://arize.com/blog/how-to-build-a-software-factory-that-tests-its-own-prompts/
+Published: 2026-10-22
 Channel: news
 
-Langfuse helps engineers inspect AI application runs. Its Halo assistant can investigate those records and help with dashboards or evaluations. An October 21 engineering post explains how this existing assistant works, including how it keeps running after you close the browser.
+Arize AX records how AI agents run and helps teams test changes to them. In a new walkthrough, Jim Bennett connects decisions from a coding pipeline to the exact agent runs and prompts that produced its work. Each issue has one trace, with smaller operation records called spans for individual stages. Prompt versions and pull-request identifiers keep later review outcomes connected to their origins.
 
-For illustration, you could ask Halo to group errors across failed runs, close the tab, and return to saved progress. Background workers perform the investigation independently of the browser. Access still follows your project permissions, and actions that change data require approval.
+The pipeline collects the human review gate’s first verdict, test outcomes and subsequent reversions. It distinguishes missed problems from false alarms rather than hiding both inside one agreement score. For example, the author describes reviewers approving code that fetched additional review data but never used it in the displayed result.
 
-The implementation separates data access from script execution. A temporary project key and role-filtered tools control access through the Model Context Protocol (MCP), an interface for agent tools. An optional isolated script environment has no network access by default and receives only authorized data. Postgres stores progress; BullMQ queues work. Failed runs are not automatically retried, so background execution alone does not guarantee recovery. This is an architecture account, not a security certification.
+Candidate reviewer prompts are tested in read-only checkouts pinned to reviewed commits. Promotion requires fewer misses without more false alarms. The reported improvement used the same cases for development and testing; it is not evidence of better performance on unseen code. Human verdicts also need auditing.
 
-Why it matters: For engineers building investigative assistants: test project permissions, approval steps and failure recovery separately.
+Why it matters: Agent-review owners should preserve verdicts and test proposed prompt changes against pinned examples.
 
-![How Langfuse limits Halo’s access during background investigations](/edition-images/2026-10-22/halo-architecture.webp)
+![Arize connects human review verdicts to agent prompt tests](/edition-images/2026-10-23/arize-review-loop.webp)
 
-## Braintrust adds application logs to help explain agent runs
+## Langfuse exports the origins of evaluation scores
 
-Source: Braintrust — https://github.com/braintrustdata/braintrust-sdk-javascript/releases/tag/braintrust%403.39.0
-Published: 2026-10-21
+Source: Langfuse — https://github.com/langfuse/langfuse/releases/tag/v4.68.0
+Published: 2026-10-22
 Channel: github
 
-Braintrust records what happens during an AI application run so engineers can investigate failures. Its JavaScript SDK, the library added to an application, now supports application logging and console capture. Version 3.39.0 adds this context alongside traces, records of individual steps such as model calls, and fixes some incorrect usage records.
+Langfuse records AI application runs and the evaluation scores attached to them. Exporting a score without its origins can make later analysis difficult: a warehouse may show a low rating without enough information to identify the evaluator or review process behind it. Version 4.68.0 adds optional field groups for score metadata and provenance, meaning information about where a score came from.
 
-For illustration, an assistant might log that it used a fallback before calling a model. That application message could help explain an unexpected response alongside the recorded model call. Engineers should check what their integration actually captures; the announcement does not promise automatic coverage of every application path.
+For illustration, an evaluation owner could export scores together with evaluator and execution-trace identifiers, then investigate why one batch received different ratings. The new provenance group includes references to the author, configuration, review queue, evaluator, evaluation rule and execution trace. The metadata group is separate. These are exported references, not a claim that the export independently explains or validates a score.
 
-Technical changes include AI SDK batch and code-mode tracing. The release fixes streamed tool calls being incorrectly combined when certain providers omit an index. It adds text and usage recording for streamed Bedrock InvokeModel calls to OpenAI models, and includes cached input reads and writes in prompt_tokens for Pi and Flue integrations. Those accounting changes can affect comparisons with older runs. The notes provide no independent benchmark for logging overhead or cost accuracy.
+Both groups are opt-in, so existing export selections do not silently gain columns or larger files. They apply to standard and Parquet exports. The linked implementation also warns about version skew: older workers or web interfaces may not understand saved selections containing these groups. Coordinate component upgrades before enabling them.
 
-Why it matters: For JavaScript agent teams: inspect captured logs, streamed tool calls and token totals after upgrading.
+Why it matters: Evaluation and data-platform owners should enable provenance deliberately and verify that downstream joins and deployed workers understand the new fields.
 
-![Braintrust adds application logs to help explain agent runs](/edition-images/2026-10-22/braintrust-application-logs.webp)
+![Langfuse exports the origins of evaluation scores](/edition-images/2026-10-23/langfuse-score-provenance.webp)
 
-## LangWatch compresses trace uploads and fixes how records are read
+## XTrace separates coding-agent activity from estimated time and spend
 
-Source: LangWatch — https://github.com/langwatch/langwatch/releases/tag/langwatch%40v3.21.0
-Published: 2026-10-21
+Source: XTrace — https://news.ycombinator.com/item?id=50197281
+Published: 2026-10-22
+Channel: hn
+
+XTrace is an open-source macOS app for understanding how coding agents use time and resources. Its October 22 Show HN introduction points to a dashboard built from Claude Code, Codex and Cursor histories already on the machine. The submitter’s follow-up identifies the team’s work on time comparisons, usage forecasts and customizable scoring skills.
+
+The repository distinguishes agent activity from estimated human time, and estimates spending using published API prices rather than subscription bills. It also exposes session timelines and account-usage pacing. For illustration, a developer could compare similar coding sessions before and after changing a workflow, then inspect which sessions consumed more activity or estimated spend. That comparison alone would not show that more useful work was delivered.
+
+The project explicitly cautions against treating extra agent hours as proof of productivity. Missing measurements appear as a dash rather than zero. Its usage forecast uses linear extrapolation, so changing workloads can change the result. These are first-party descriptions, not independently validated savings or productivity measurements.
+
+Why it matters: Coding-agent users should compare similar tasks and review output quality alongside XTrace’s estimates.
+
+![XTrace separates coding-agent activity from estimated time and spend](/edition-images/2026-10-23/xtrace-measurements.webp)
+
+## OpenTelemetry security patches may change telemetry behavior
+
+Source: OpenTelemetry — https://opentelemetry.io/blog/2026/security-versioning-policy/
+Published: 2026-10-22
+Channel: news
+
+OpenTelemetry supplies the libraries that many AI applications use to record requests, model calls and tool activity. Its updated versioning policy allows narrowly scoped security fixes in stable software development kits and contributed components to change behavior in minor or patch releases. Compatibility of public programming interfaces remains protected, but operational behavior is not necessarily identical.
+
+This matters when a telemetry upgrade still compiles but records different data. For illustration, a hypothetical security limit might shorten an oversized prompt attribute to prevent memory exhaustion. An engineer could then see less detail during debugging even though application code required no changes. The announcement establishes a policy; it does not announce that particular limit.
+
+Release notes must explain the security risk, changed settings, rejected inputs, telemetry loss and migration options. The article recommends checking startup, configuration acceptance, important attributes, telemetry volume, dashboards and alerts in a representative environment. Any temporary override should be assessed for its security implications rather than treated as a routine compatibility switch.
+
+Why it matters: AI telemetry owners should review security release notes and test data completeness before upgrading.
+
+![OpenTelemetry security patches may change telemetry behavior](/edition-images/2026-10-23/otel-security-policy.webp)
+
+## Weave updates token and finish-reason names in AI traces
+
+Source: Weights & Biases — https://github.com/wandb/weave/releases/tag/v0.53.13
+Published: 2026-10-22
 Channel: github
 
-LangWatch collects traces, records of the steps an AI application takes, for debugging and analysis. Version 3.21.0 changes how those records travel from an application to LangWatch. Its SDKs now send compressed trace data by default, and the server can recognize compression even when a request’s format label is wrong.
+Weave captures AI application activity so engineers can inspect model calls and evaluate results. Its 0.53.13 release updates the names used for several OpenTelemetry generative-AI attributes, the named fields attached to a model-call record. A field-name change can affect dashboards and stored data even when the model call itself still succeeds.
 
-For illustration, a team upgrading behind a proxy should send a known trace through that same route and check that it arrives with the expected usage and tool output. A successful upload alone does not prove that every field was interpreted correctly. The release includes fixes for reading Claude traces, including counting usage once and preserving large attributes and tool output.
+For illustration, a team tracking prompt-cache writes could see an apparently missing count if its query expects the older field name. Python and Node emitters now use gen_ai.usage.cache_write.input_tokens for cache-write tokens and gen_ai.usage.reasoning.output_tokens for reasoning output tokens. The implementation also moves finish reasons out of individual output messages; Google ADK and Pi coding-agent records emit the span-level gen_ai.response.finish_reasons field instead.
 
-The transport uses gzip-compressed OTLP/protobuf, OpenTelemetry’s binary telemetry format. The server detects gzip or zstd from identifying bytes in the data. Other changes improve queue labels and age metrics, and allow retrying or discarding more than 2,000 groups of failed work at once. No measured bandwidth reduction is supplied.
+The linked change explicitly requires corresponding server support first. Only the new names are emitted, and an older server can drop the cache-write count and per-message finish reasons. This is a compatibility migration, not evidence of lower token usage or better model quality. Check the server version and representative traces before changing production emitters.
 
-Why it matters: For LangWatch operators: verify trace contents through your proxy and check visibility into queued or failed work.
+Why it matters: Telemetry owners using Weave should coordinate server and emitter upgrades, then check token queries and finish-reason fields.
 
-![LangWatch compresses trace uploads and fixes how records are read](/edition-images/2026-10-22/langwatch-otlp-fidelity.webp)
-
-## Phoenix sends uncaught browser errors to the server log
-
-Source: Phoenix — https://github.com/Arize-ai/phoenix/releases/tag/arize-phoenix-v20.24.0
-Published: 2026-10-21
-Channel: github
-
-Phoenix is an interface for inspecting AI traces and evaluation results. If that interface breaks in a user’s browser, application traces alone may not explain the problem. Version 20.24.0 adds reporting of uncaught frontend errors to the server log, giving operators another place to investigate.
-
-For illustration, a team testing the upgrade could trigger a controlled browser error and check whether its details reach the deployed server’s logs. The release notes do not describe automatic alerts or demonstrate that every browser failure will be detected. Error reporting still needs a check in the environment users actually access.
-
-The same release excludes LiteLLM 1.107.0, raises the certifi minimum to 2026.10.18, and requires Node releases containing the October security patches. These are requirements for supporting packages and the runtime. Installing a new Phoenix version does not by itself confirm which versions remain in a lockfile, container image or running process. Check the resolved deployment as well as the package version.
-
-Why it matters: For Phoenix operators: exercise browser-error reporting and verify the dependency versions actually deployed.
-
-![Phoenix sends uncaught browser errors to the server log](/edition-images/2026-10-22/phoenix-server-errors.webp)
-
-## Phoenix changes how AI evaluators return labels and refusals
-
-Source: Phoenix — https://github.com/Arize-ai/phoenix/releases/tag/%40arizeai/phoenix-evals%402.7.0
-Published: 2026-10-21
-Channel: github
-
-Phoenix Evals helps engineers use AI models to judge outputs, for example by assigning a quality label. Version 2.7.0 adds support for decision models through the AI SDK library. It also changes how existing evaluation models receive prompts and report results, so old and new scores need careful comparison.
-
-Consider an illustrative check that labels an answer as passing or failing. If the judging model refuses to decide, the application must handle an error instead of receiving an ordinary label. Counting that refusal as a pass would misrepresent the evaluation. The release itself does not claim better judging accuracy.
-
-Under the hood, experimental_decide returns labels, with probabilities and provider confidence recorded when available. Prompts become plain text; refusals throw Experimental_DecisionRefusalError. Decision spans, records of individual decisions, capture state, question and answer. Because this interface is experimental, the release pins ai to 7.0.137 and @ai-sdk/otel to 1.0.137. OpenAI decision models require @ai-sdk/openai 4.0.89 or later.
-
-Why it matters: For evaluation owners: test prompts and refusals before comparing upgraded runs with historical scores.
-
-![Phoenix changes how AI evaluators return labels and refusals](/edition-images/2026-10-22/phoenix-decision-evals.webp)
+![Weave updates token and finish-reason names in AI traces](/edition-images/2026-10-23/weave-attribute-migration.webp)
 
 ---
 
