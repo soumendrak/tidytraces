@@ -1,107 +1,43 @@
-# AI Observability Daily — 2026-10-24
+# AI Observability Daily — 2026-10-25
 
 By Soumendra Kumar Sahoo
 
 Canonical: https://tidytraces.com/
-Coverage window: 2026-10-23
+Coverage window: 2026-10-24
 
-Check what your AI traces reveal, conceal and leave unfinished. Today’s edition follows privacy and stream-recording fixes, then self-hosted deployment controls, a Weave upgrade check and ways to measure prompt-cache savings.
+Two evaluation updates: Langfuse links batch results to the run that produced them, while Phoenix fixes how prompt formats and client settings are applied. All three discovery channels were checked; this edition retains two GitHub releases.
 
-## OpenInference fixes ignored environment settings for hiding trace content
+## Langfuse groups batch-evaluation traces and scores by run
 
-Source: Arize AI / OpenInference — https://github.com/Arize-ai/openinference/releases/tag/%40arizeai/openinference-core%402.8.1
-Published: 2026-10-23
+Source: Langfuse — https://github.com/langfuse/langfuse/releases/tag/v4.70.0
+Published: 2026-10-24
 Channel: github
 
-OpenInference adds AI-specific records to application traces, including model inputs and outputs. Its JavaScript core package has fixed a configuration path that could leave content-masking settings inactive. In version 2.8.1, the configuration generator reads OPENINFERENCE_* environment variables when instrumentation is created without an explicit traceConfig object. Previously, that path returned hard-coded defaults. The release specifically identifies OPENINFERENCE_HIDE_INPUTS=true and other masking variables as having no effect in that situation.
+Langfuse records AI application activity and scores it with evaluators, which are saved checks of output quality or behavior. When engineers run those checks over many existing records, they need to distinguish that batch’s results from other evaluations. Version 4.70.0 adds batch_action_id metadata to each execution trace and score produced by a batch run. A trace records the work performed during an execution; the shared identifier lets operators find one batch’s outputs together.
 
-For illustration, a service owner might set the input-hiding variable in a deployment manifest and assume prompts will be withheld. If the instrumentor relies on the affected default configuration path, that expectation would not match the recorded trace. This is a telemetry privacy correction, rather than a change to the model request itself.
+For illustration, a team could rerun a revised answer-quality check over yesterday’s assistant responses. Grouping the resulting scores and evaluation traces by batch would help reviewers inspect that particular rerun. The identifier establishes which run produced a record; it does not establish that the evaluator’s judgement is correct.
 
-Engineers maintaining JavaScript instrumentation should check the installed core version and inspect a fresh trace after upgrading. The release does not establish which deployments retained sensitive content, and it does not promise to remove previously stored records. Explicit configuration and environment-driven configuration should each be tested against the application’s actual construction path.
+The release also adds runBatchEvaluation through Model Context Protocol, an interface that lets agents call tools. The linked implementation limits tool availability to deployments with the preview opt-in enabled, requires evaluation permissions, and applies the plan’s data-access window. Langfuse’s in-app agent asks for approval before this tool runs. These are implementation conditions, rather than a claim that every deployment exposes the feature.
 
-Why it matters: Teams relying on environment variables to hide prompts should verify a fresh trace and review whether earlier records need attention under their retention policy.
+Why it matters: For Langfuse evaluation owners: verify a small batch’s traces and scores share its identifier, and check preview availability, permissions and the accessible date range before automating reruns.
 
-![OpenInference fixes ignored environment settings for hiding trace content](/edition-images/2026-10-24/openinference-masking.webp)
+![Langfuse groups batch-evaluation traces and scores by run](/edition-images/2026-10-25/langfuse-batch-outputs.webp)
 
-## OpenInference changes Anthropic stream records and preserves parallel tool replies
+## Phoenix fixes template-format and client-setting overrides in evaluations
 
-Source: Arize AI / OpenInference — https://github.com/Arize-ai/openinference/releases/tag/%40arizeai/openinference-instrumentation-anthropic%401.0.0
-Published: 2026-10-23
+Source: Arize AI · Phoenix — https://github.com/Arize-ai/phoenix/releases/tag/arize-phoenix-evals-v3.9.4
+Published: 2026-10-24
 Channel: github
 
-OpenInference’s JavaScript Anthropic integration records model requests and tool activity for debugging AI applications. Version 1.0.0 supports the current stable and beta Messages API with Anthropic SDK 0.133, and changes the shape of some recorded data. A streamed response is now stored as a reconstructed JSON message rather than concatenated plain text. When a system prompt is present, it becomes input message zero; the remaining conversation starts at index one.
+Phoenix Evals is a library for checking AI outputs, including checks that ask a language model to judge an answer. Its 3.9.4 release fixes two cases where evaluation configuration did not behave as documented: changing the format of a copied prompt template, and giving a model client a setting that also appears in shared configuration.
 
-The release also fixes a loss of evidence when an input message contains several tool results. Previously, only the last result survived in the trace. Each result is now recorded as its own tool message. For illustration, an assistant receiving inventory and shipping replies together should leave both replies available for investigation, rather than an apparently incomplete exchange.
+A prompt template contains text with placeholders that are filled before the model sees it. Previously, copying a template with a different format changed its format attribute but retained the original parsing and rendering state. The fix rebuilds the template from its raw text when an override is supplied. For illustration, the regression test copies an f-string template containing {name} into Mustache format. That single-brace text should remain literal under the new format, rather than substitute a name.
 
-Streams are observed through the caller’s iterator, and the notes describe separate completion, early-exit and error outcomes. The system prompt also moves out of invocation parameters, where hideInputs did not conceal it. Teams consuming trace exports should check JSON parsing, message indexes and masking behavior before adopting this major instrumentation version.
+The second fix merges shared and client-specific arguments before constructing synchronous or asynchronous clients. A shared timeout of 30 seconds and a synchronous override of 60 previously caused a duplicate-key error; the specific value now wins. The release’s linked changes include regression tests for both behaviors. These fixes concern evaluation setup and prompt rendering; they provide no evidence of improved judge accuracy.
 
-Why it matters: Anthropic trace consumers should update assumptions about output formats and message positions, then check multi-tool and masked-input examples.
+Why it matters: For Phoenix Evals users who copy templates or customize client options: check rendered prompts and effective timeout values when upgrading, then rerun the affected evaluations.
 
-![OpenInference changes Anthropic stream records and preserves parallel tool replies](/edition-images/2026-10-24/anthropic-trace-format.webp)
-
-## OpenInference closes LiteLLM traces when streams stop early or fail
-
-Source: Arize AI / OpenInference — https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-litellm-v0.1.51
-Published: 2026-10-23
-Channel: github
-
-LiteLLM lets applications call different model providers through a common interface; OpenInference records those calls for investigation. Its Python LiteLLM instrumentation version 0.1.51 fixes several cases where a span, the record of one operation inside a trace, could remain open or lose useful evidence. The release covers failed calls, unread streams and responses that end without completing normally. It also records partial output when a stream closes early.
-
-For illustration, a user could stop an assistant after the first few words. The relevant debugging record should still show what arrived before cancellation. The linked fix explains that output attributes were previously written only after the stream loop completed, leaving early-closed streams without those attributes. Another fix marks mid-stream failures with ERROR status, making them visible to views and alerts that filter by status.
-
-The notes also address forwarding a wrapper’s close call to the underlying stream and keeping the span current while streaming calls run. Maintainer tests support these specific paths; they are not a guarantee for every provider or application lifecycle. Operators should exercise cancellation, unread responses and interrupted connections in their own integration.
-
-Why it matters: Teams serving streamed responses through LiteLLM should check that cancellation and provider failures produce closed, correctly classified records.
-
-![OpenInference closes LiteLLM traces when streams stop early or fail](/edition-images/2026-10-24/litellm-stream-lifecycle.webp)
-
-## Langfuse documents enforced FIPS mode for self-hosted Enterprise deployments
-
-Source: Langfuse — https://langfuse.com/changelog/2026-10-23-fips-mode
-Published: 2026-10-23
-Channel: news
-
-Langfuse stores traces and evaluation records from AI applications, so its deployment becomes part of a team’s data-protection boundary. An October 23 changelog explains FIPS mode for Self-Hosted Enterprise installations: cryptographic operations use validated modules in approved mode, and startup fails when required conditions are missing. This concerns validated cryptographic components; the announcement explicitly says Langfuse itself is not FIPS validated.
-
-Administrators enable the mode with LANGFUSE_REQUIRE_FIPS=true on both web and worker containers. Hosts must also run in FIPS mode. The documented startup checks reject a missing Enterprise license, an unsuitable host or a storage option requiring MD5. For illustration, a government deployment can give an assessor the module certificate numbers and enforcement mechanism rather than treating a container image alone as proof of compliance.
-
-The feature is available from version 4.57.0, rather than being a newly required server upgrade. Hardened images omit package managers, curl and Python; the article recommends wget for health checks and multi-stage builds for extensions. Existing password users must reset passwords after FIPS mode is enabled, and transactional email needs configuring first. These operational prerequisites deserve testing before a rollout.
-
-Why it matters: Teams with validated-cryptography requirements should test host mode, storage compatibility, health checks and password recovery before enabling enforcement.
-
-![Langfuse documents enforced FIPS mode for self-hosted Enterprise deployments](/edition-images/2026-10-24/langfuse-fips.webp)
-
-## Weave removes old imports that can stop saved operations loading
-
-Source: Weights & Biases / Weave — https://github.com/wandb/weave/releases/tag/v0.54.0
-Published: 2026-10-23
-Channel: github
-
-Weave records AI application operations so teams can inspect and evaluate their behavior. Its Python release 0.54.0 removes the weave.shared and weave.trace_server alias modules. Code importing either path now raises ModuleNotFoundError. The preceding 0.53.13 release issued FutureWarning messages for those imports, so this update turns an earlier warning into an enforced compatibility change.
-
-The release identifies a second consequence beyond application startup: a saved operation whose code imports from weave.shared loads as None in this version. For illustration, an evaluation workflow that retrieves a previously saved operation could lose the callable it expects, even if its current application entry point no longer imports the old module. Checking only whether the main service starts would miss that case.
-
-The notes separately deprecate weave.trace_server_bindings.stainless_remote_http_trace_server and direct users to import RemoteHTTPTraceServer from weave.trace_server_bindings.remote_http_trace_server. They do not provide a blanket replacement for every removed alias. Before upgrading, teams should inventory old imports and test loading representative saved operations, using the release’s linked change for the migration details relevant to their code.
-
-Why it matters: Weave maintainers should check application imports and stored operation code before upgrading, and adopt the documented RemoteHTTPTraceServer import where applicable.
-
-![Weave removes old imports that can stop saved operations loading](/edition-images/2026-10-24/weave-import-migration.webp)
-
-## DigitalOcean adds a dashboard for prompt-cache hit rates and savings
-
-Source: DigitalOcean — https://www.digitalocean.com/blog/now-available-prompt-caching
-Published: 2026-10-23
-Channel: news
-
-DigitalOcean’s Serverless Inference runs model requests without requiring customers to operate the serving infrastructure. Its prompt-caching announcement adds a dashboard for checking whether repeated context is actually being reused. Caching avoids processing an unchanged prompt prefix again, but that benefit depends on a request reaching a replica that holds the cached context. The company describes routing requests toward replicas with the largest matching prefix before balancing load within that group.
-
-The new control-panel dashboard shows hit rate over time, a breakdown by model and estimated dollars saved. Responses report cached and uncached token counts, including on the Responses API. For illustration, a team running a support agent can compare these counts with its repeated system instructions before assuming that a longer conversation receives a discount. A low hit rate gives engineers a concrete signal to investigate.
-
-DigitalOcean advertises discounts of up to 90 percent and time-to-first-token reductions of up to 80 percent, with results varying by model and prompt. Its reported hit rates come from internal testing. An optional prompt_cache_key separates cache groups within an account; it does not pin requests to one replica. These qualifications make workload-specific measurement more useful than treating headline savings as guaranteed.
-
-Why it matters: Teams using DigitalOcean inference should compare the dashboard with response token counts and measured latency for their own workload before budgeting savings.
-
-![DigitalOcean adds a dashboard for prompt-cache hit rates and savings](/edition-images/2026-10-24/digitalocean-cache-measurement.webp)
+![Phoenix fixes template-format and client-setting overrides in evaluations](/edition-images/2026-10-25/phoenix-client-overrides.webp)
 
 ---
 
