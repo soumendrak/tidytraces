@@ -1,103 +1,94 @@
 {
-  "date": "2026-10-25",
-  "story_window": "2026-10-24",
-  "dek": "Two evaluation updates: Langfuse links batch results to the run that produced them, while Phoenix fixes how prompt formats and client settings are applied. All three discovery channels were checked; this edition retains two GitHub releases.",
+  "date": "2026-10-26",
+  "story_window": "2026-10-25",
+  "dek": "Today’s two updates concern repeatable AI evaluations: an original test shows why scorer changes can move results, while Phoenix refreshes its MiniMax model presets. No HN candidate met this edition’s scope and original-publication requirements.",
   "stories": [
     {
-      "title": "Langfuse groups batch-evaluation traces and scores by run",
-      "url": "https://github.com/langfuse/langfuse/releases/tag/v4.70.0",
-      "publisher": "Langfuse",
-      "published": "2026-10-24",
+      "title": "Two evaluation libraries disagree on identical structured answers",
+      "url": "https://www.testmuai.com/blog/langsmith-vs-braintrust/",
+      "publisher": "TestMu AI",
+      "published": "2026-10-25",
       "category_key": "evals",
-      "summary": "Langfuse 4.70.0 adds a shared batch identifier to evaluation outputs and a preview-gated tool for agents to start batch evaluations.",
+      "summary": "An original scorer comparison finds that changing libraries can change evaluation results without changing an agent’s answers.",
       "body": [
-        "Langfuse records AI application activity and scores it with evaluators, which are saved checks of output quality or behavior. When engineers run those checks over many existing records, they need to distinguish that batch’s results from other evaluations. Version 4.70.0 adds batch_action_id metadata to each execution trace and score produced by a batch run. A trace records the work performed during an execution; the shared identifier lets operators find one batch’s outputs together.",
-        "For illustration, a team could rerun a revised answer-quality check over yesterday’s assistant responses. Grouping the resulting scores and evaluation traces by batch would help reviewers inspect that particular rerun. The identifier establishes which run produced a record; it does not establish that the evaluator’s judgement is correct.",
-        "The release also adds runBatchEvaluation through Model Context Protocol, an interface that lets agents call tools. The linked implementation limits tool availability to deployments with the preview opt-in enabled, requires evaluation permissions, and applies the plan’s data-access window. Langfuse’s in-app agent asks for approval before this tool runs. These are implementation conditions, rather than a claim that every deployment exposes the feature."
+        "Evaluation scorers turn an AI system’s answers into results that engineers compare across releases. TestMu AI’s October 25 comparison of LangSmith and Braintrust includes an original test of their associated open-source scoring libraries. It reports different exact-match outcomes on seven of twenty identical input pairs. The test ran October 19; October 25 is the article’s publication date.",
+        "For example, two JSON objects containing the same keys and values in different orders failed autoevals’ exact-match check but passed openevals’. A team migrating its evaluation code could therefore see a score change even when its agent produced the same answer. That operational implication is editorial guidance, not a measured deployment outcome.",
+        "The published run used autoevals 0.4.0 and openevals 0.2.0 without model judges. This small, vendor-published comparison does not establish either platform’s overall quality, and this edition has not independently rerun it."
       ],
       "format": "full",
-      "takeaway": "For Langfuse evaluation owners: verify a small batch’s traces and scores share its identifier, and check preview availability, permissions and the accessible date range before automating reruns.",
-      "image": "/edition-images/2026-10-25/langfuse-batch-outputs.webp",
+      "takeaway": "For evaluation owners: test scorer migrations against fixed examples before interpreting score changes as model improvements.",
+      "image": "/edition-images/2026-10-26/scorer-comparison.webp",
       "image_width": 1440,
       "image_height": 960,
       "image_provenance": {
         "kind": "generated-editorial",
         "generator": "built-in-imagegen",
-        "prompt": "Use case: infographic-diagram\nAsset type: standalone newspaper editorial infographic, landscape PNG.\nPrimary request: Explain one supported mechanism in Langfuse 4.70.0: a batch evaluation adds the same batch_action_id metadata to its execution traces and scores so outputs can be found together.\nSource: https://github.com/langfuse/langfuse/releases/tag/v4.70.0 and linked PR 19314.\nComposition: warm cream newsprint, dark navy ink, restrained teal and rust, strong serif newspaper headline, generous whitespace, large readable labels. One batch-run card at left branches through clear arrows to two cards on right: execution traces and scores. Both right-hand cards show the exact same identifier label. Along the bottom a small conceptual operator check separated by a thin rule. Flat editorial diagram with subtle paper texture, no screenshot, no logos, no performance numbers.\nText (verbatim only): Title 'Find the outputs of one evaluation batch'; left card 'Batch evaluation'; upper right card 'Execution traces'; lower right card 'Scores'; identifier on each right card 'batch_action_id'; bottom text 'Operator check: verify both carry the batch identifier'.\nConstraints: illustrate grouping only, no claim of evaluator accuracy, no invented architecture, no watermark, no footer badge, no AI-generated label.",
+        "prompt": "Use case: infographic-diagram\nAsset type: standalone newspaper editorial infographic PNG, landscape 1536 by 1024.\nPrimary request: explain that the same structured answer can receive different exact-match scores from two libraries. Source: https://www.testmuai.com/blog/langsmith-vs-braintrust/ . Source-supported example from its published test: two JSON objects with identical keys and values in different key order receive 0 from autoevals 0.4.0 ExactMatch and True from openevals 0.2.0 exact_match. Show one pair of cards feeding two scorer result boxes. Render code exactly and legibly. Title and labels verbatim: \"Same answer, different score\", \"Same values, different key order\", 'Output: {\"b\": 2, \"a\": 1}', 'Reference: {\"a\": 1, \"b\": 2}', \"autoevals 0.4.0\", \"ExactMatch: 0\", \"openevals 0.2.0\", \"exact_match: True\", \"TestMu reported test • October 19, 2026\". Warm cream paper, dark ink, restrained rust and teal accents, strong serif title and readable labels, generous spacing. This is a diagram of a reported test, no fake product screenshot, no logos, no invented metrics. No watermark, no AI-generated label, no decorative footer.",
         "based_on": [
-          "https://github.com/langfuse/langfuse/releases/tag/v4.70.0"
+          "https://www.testmuai.com/blog/langsmith-vs-braintrust/"
         ],
         "reviewed": true,
-        "sha256": "e0989ff7acb0d8ee17f0ff2575fd25c5f8c2a9d3665b8219464256779d3a6046",
+        "sha256": "17242a933f9f0c190d4691910b80331aca16395bf11a48d6256f952c9df77c31",
         "optimization": {
           "format": "webp",
           "quality": 82,
           "max_width": 1440,
-          "source_sha256": "b9c90ef6f48458ef0d444b3368d2c3bc671479eaf4318a1961e8f2b71713bcec"
+          "source_sha256": "2b063ec3bf8a23d967b2c436fd75785336427bbe268d540399b09bab4484b51e"
         }
       },
-      "source": "github",
+      "source": "news",
       "interest_score": 8,
-      "dedupe_key": "release:langfuse/langfuse:v4.70.0",
-      "score_reason": "Concrete evaluation-output provenance and a permission-controlled automation interface, verified in stable release notes and the linked implementation.",
+      "dedupe_key": "article:testmuai.com/blog/langsmith-vs-braintrust",
+      "score_reason": "An original, versioned scorer experiment gives a concrete migration risk; limited sample and vendor authorship remain explicit.",
       "source_evidence": {
-        "url": "https://github.com/langfuse/langfuse/releases/tag/v4.70.0",
-        "publication_date": "2026-10-24",
-        "raw_date": "2026-10-24T12:54:58Z",
-        "method": "Official GitHub release API published_at; draft=false and prerelease=false. Release notes and linked PR 19314 body and diff reviewed for batch metadata and tool restrictions.",
-        "api": "https://api.github.com/repos/langfuse/langfuse/releases/tags/v4.70.0",
-        "supporting_urls": [
-          "https://github.com/langfuse/langfuse/pull/19314"
-        ]
+        "url": "https://www.testmuai.com/blog/langsmith-vs-braintrust/",
+        "publication_date": "2026-10-25",
+        "raw_date": "2026-10-25",
+        "method": "Original publisher page visible Published on: October 25, 2026; distinct from experiment timestamp October 19. Web reader lines 150–152 and 245–304."
       }
     },
     {
-      "title": "Phoenix fixes template-format and client-setting overrides in evaluations",
-      "url": "https://github.com/Arize-ai/phoenix/releases/tag/arize-phoenix-evals-v3.9.4",
-      "publisher": "Arize AI · Phoenix",
-      "published": "2026-10-24",
+      "title": "Phoenix refreshes MiniMax model choices while preserving custom IDs",
+      "url": "https://github.com/Arize-ai/phoenix/releases/tag/arize-phoenix-v20.26.1",
+      "publisher": "Arize AI / Phoenix",
+      "published": "2026-10-25",
       "category_key": "evals",
-      "summary": "Phoenix Evals 3.9.4 makes copied prompt templates use the requested format and lets client-specific settings override shared settings as documented.",
+      "summary": "Phoenix 20.26.1 updates MiniMax playground presets and retains a fallback for saved or custom model identifiers.",
       "body": [
-        "Phoenix Evals is a library for checking AI outputs, including checks that ask a language model to judge an answer. Its 3.9.4 release fixes two cases where evaluation configuration did not behave as documented: changing the format of a copied prompt template, and giving a model client a setting that also appears in shared configuration.",
-        "A prompt template contains text with placeholders that are filled before the model sees it. Previously, copying a template with a different format changed its format attribute but retained the original parsing and rendering state. The fix rebuilds the template from its raw text when an override is supplied. For illustration, the regression test copies an f-string template containing {name} into Mustache format. That single-brace text should remain literal under the new format, rather than substitute a name.",
-        "The second fix merges shared and client-specific arguments before constructing synchronous or asynchronous clients. A shared timeout of 30 seconds and a synchronous override of 60 previously caused a duplicate-key error; the specific value now wins. The release’s linked changes include regression tests for both behaviors. These fixes concern evaluation setup and prompt rendering; they provide no evidence of improved judge accuracy."
+        "Phoenix is an open-source platform for examining AI traces and running evaluations; its playground lets engineers try model calls. The October 25 stable release updates the MiniMax text-model catalog. The linked change places MiniMax-M3.1-Flash first and MiniMax-M3 second, replacing an older suggested preset.",
+        "The change preserves the provider-default fallback so saved and custom model identifiers still resolve. For illustration, an engineer comparing a saved configuration with a newly selected preset should record the actual model identifier used for each run. A refreshed menu alone does not establish that two runs used equivalent settings, or that one model performs better.",
+        "The release’s linked pull request describes tests covering catalog order, model inference, custom identifiers and both regional endpoints. These are maintainer-reported checks, not tests rerun by this edition. The release also adds Microsoft Agent Framework tracing documentation; that is documentation for an existing integration, not evidence that tracing support first became available on October 25."
       ],
       "format": "full",
-      "takeaway": "For Phoenix Evals users who copy templates or customize client options: check rendered prompts and effective timeout values when upgrading, then rerun the affected evaluations.",
-      "image": "/edition-images/2026-10-25/phoenix-client-overrides.webp",
+      "takeaway": "For Phoenix playground users: check the selected MiniMax model identifier before comparing new runs with saved results.",
+      "image": "/edition-images/2026-10-26/phoenix-minimax.webp",
       "image_width": 1440,
       "image_height": 960,
       "image_provenance": {
         "kind": "generated-editorial",
         "generator": "built-in-imagegen",
-        "prompt": "Use case: infographic-diagram\nAsset type: standalone newspaper editorial infographic, landscape PNG.\nPrimary request: Explain the Phoenix Evals 3.9.4 fix for client-specific configuration overrides. Shared settings are merged with settings for each client before constructing that client. When the same key appears in both, the client-specific value wins.\nSource-supported example from https://github.com/Arize-ai/phoenix/pull/17043 linked from stable release https://github.com/Arize-ai/phoenix/releases/tag/arize-phoenix-evals-v3.9.4 : shared timeout 30 seconds, synchronous override 60 seconds, asynchronous override 120 seconds; effective timeouts 60 and 120 seconds respectively.\nStyle: warm cream newspaper paper, dark navy linework, restrained teal accents, serif headline and large clean readable labels, generous whitespace, simple two-lane diagram.\nComposition: one shared settings card top center; two parallel vertical lanes below for synchronous and asynchronous overrides, arrows go from shared settings and lane-specific setting into that lane's effective-client card. Clearly represent precedence, not summing. No latency or speed improvement claim.\nText verbatim: 'Client settings take precedence'; 'Shared timeout: 30 s'; 'Synchronous override: 60 s'; 'Asynchronous override: 120 s'; 'Synchronous client: 60 s'; 'Asynchronous client: 120 s'; 'Phoenix Evals 3.9.4'.\nConstraints: no extra statistics, no fake screenshot, no logos, no watermark, no AI-generated label.",
+        "prompt": "Use case: infographic-diagram\nAsset type: standalone newspaper editorial infographic PNG, landscape 1536 by 1024.\nPrimary request: explain the MiniMax text-model preset update in Phoenix 20.26.1. Source-supported facts from https://github.com/Arize-ai/phoenix/releases/tag/arize-phoenix-v20.26.1 and linked PR 17237: shared catalog lists MiniMax-M3.1-Flash first and MiniMax-M3 second; provider-default fallback is retained for saved and custom model IDs. Title verbatim \"Phoenix refreshes MiniMax presets\". Two clean side-by-side panels: one headed \"Preset catalog\" containing a vertical ordered list \"1  MiniMax-M3.1-Flash\" and \"2  MiniMax-M3\"; another headed \"Fallback preserved\" containing two simple document icons labelled \"Saved model IDs\" and \"Custom model IDs\" pointing to \"Provider default\". No arrow between the two independent panels. Small subtitle \"Phoenix 20.26.1\". Warm cream newsprint, dark ink, strong serif title, restrained teal and rust accents, flat diagram with generous spacing and extremely readable labels. Do not imply automatic model migration or performance improvements. No fake screenshot, no logos, no invented measurements. No watermark, no AI-generated label, no footer.",
         "based_on": [
-          "https://github.com/Arize-ai/phoenix/releases/tag/arize-phoenix-evals-v3.9.4"
+          "https://github.com/Arize-ai/phoenix/releases/tag/arize-phoenix-v20.26.1"
         ],
         "reviewed": true,
-        "sha256": "4a9c50944db0bbc74bf416ddefb54c480014d46e8c397c2bf89980cc2d9de35c",
+        "sha256": "42b0a7d5a3ece354a73efa7407f2ecddc66d987390dadcfe1da1897aa47244a5",
         "optimization": {
           "format": "webp",
           "quality": 82,
           "max_width": 1440,
-          "source_sha256": "450fd6a4ac7333921b6428912bc2ad36768d7f4089bb75c579a065e05cb99e77"
+          "source_sha256": "0221770589ffcbc2166e73892e40dd071e3f8c5305faf3946f62416aeffcdb72"
         }
       },
       "source": "github",
-      "interest_score": 7,
-      "dedupe_key": "release:Arize-ai/phoenix:arize-phoenix-evals-v3.9.4",
-      "score_reason": "Narrow but concrete correctness fixes to evaluation configuration, supported by linked implementation changes and regression tests.",
+      "interest_score": 6,
+      "dedupe_key": "release:arize-ai/phoenix:arize-phoenix-v20.26.1",
+      "score_reason": "Verified stable patch with a narrow evaluation-workflow improvement; no measured reliability or performance claim.",
       "source_evidence": {
-        "url": "https://github.com/Arize-ai/phoenix/releases/tag/arize-phoenix-evals-v3.9.4",
-        "publication_date": "2026-10-24",
-        "raw_date": "2026-10-24T14:23:10Z",
-        "method": "Official GitHub release API published_at; draft=false and prerelease=false. Linked PRs 17071 and 17043 and their regression-test diffs reviewed.",
-        "api": "https://api.github.com/repos/Arize-ai/phoenix/releases/tags/arize-phoenix-evals-v3.9.4",
-        "supporting_urls": [
-          "https://github.com/Arize-ai/phoenix/pull/17071",
-          "https://github.com/Arize-ai/phoenix/pull/17043"
-        ]
+        "url": "https://github.com/Arize-ai/phoenix/releases/tag/arize-phoenix-v20.26.1",
+        "publication_date": "2026-10-25",
+        "raw_date": "2026-10-25T18:28:18Z",
+        "method": "Official GitHub release API published_at; draft=false and prerelease=false. Release notes and linked PRs 17237 and 17209 reviewed."
       }
     }
   ],
@@ -120,91 +111,82 @@
       "https://www.digitalocean.com/blog",
       "https://www.splunk.com/en_us/blog/observability.html",
       "https://www.dynatrace.com/news/",
-      "https://langfuse.com/changelog",
       "https://www.datadoghq.com/blog/index.xml",
-      "https://blogs.nvidia.com/blog/minerva-platform-infrastructure/",
-      "https://safeguard.sh/resources/blog/ai-agent-evaluation-explained-task-suites-trajectory-grading-llm-judges-and-safety-tests",
-      "https://productionlearningreview.com/posts/running-production-traces-as-a-regression-suite-for-prompt-and-tool-changes",
-      "https://codex.danielvaughan.com/2026/09/02/parsing-the-stream-live-trace-model-long-horizon-agents-codex-cli/",
-      "https://evalevalai.com/events/2026-embedded-evaluators-microconference/",
-      "https://modelometer.com/"
+      "https://www.testmuai.com/blog/langsmith-vs-braintrust/"
     ],
     "excluded": [
       {
-        "url": "https://news.ycombinator.com/item?id=50219762",
-        "title": "Show HN: Benchmarks of continual learning model trained for a month on a laptop",
-        "reason": "First-party continual-learning training benchmark; reviewed original HN text, but primarily model-training research rather than application or agent observability."
+        "url": "https://github.com/premtonx/statetrack",
+        "hn_id": "50236197",
+        "reason": "Generic infrastructure change tracking; no concrete new AI operating or evaluation change, and original October 25 publication not established."
       },
       {
-        "url": "https://huggingface.co/JakCwi/eugen-sparse",
-        "title": "Show HN: Sparse kernel delivering 36% higher training throughput",
-        "reason": "Training-kernel throughput experiment, outside AI-observability beat."
+        "url": "https://www.redwoodresearch.org/blog/simulated-control-evaluations",
+        "hn_id": "50232753",
+        "reason": "Original Redwood article visibly dated October 24, 2026. October 25 HN resurfacing is not publication evidence."
       },
       {
-        "url": "https://kat-assessment.com/",
-        "title": "Show HN: A client-side adaptive cognitive test measuring micro-hesitations",
-        "reason": "Human cognitive assessment and anti-cheating prototype, outside AI-system observability."
+        "url": "https://mta.rip/?station=127&route=1&view=trackmap",
+        "hn_id": "50235759",
+        "reason": "Subway visualization, outside AI observability beat."
       },
       {
-        "url": "https://techcrunch.com/2026/10/23/openai-says-it-will-no-longer-train-its-ai-models-on-the-live-internet-citing-significant-risks/",
-        "title": "OpenAI says it will no longer train its AI models on the live internet",
-        "reason": "October 23 article, outside frozen publication day; general model-training policy."
+        "url": "https://news.ycombinator.com/item?id=50234108",
+        "hn_id": "50234108",
+        "reason": "General agent adoption discussion with unverified statistics; no original concrete observability implementation or evaluation evidence."
       },
       {
-        "url": "https://news.ycombinator.com/item?id=50223726",
-        "title": "What if you could have AI applied to your brain?",
-        "reason": "Speculative brain-interface discussion, outside beat."
+        "url": "https://www.dailycal.org/news/campus/academics/ai-use-leads-uc-berkeley-math-professor-to-see-no-point-in-grading-homework/article_bdf1eae2-c08b-491f-b9f1-81a7cea177de.html",
+        "hn_id": "50233304",
+        "reason": "Education and homework grading, outside operating-AI observability beat."
       },
       {
-        "url": "https://github.com/eliasaronson/lobole",
-        "title": "Show HN: Loböle, open-source parametric CAD that AI agents can drive",
-        "reason": "Agent-driven CAD application without concrete observability change."
+        "url": "https://www.billboard.com/pro/elvis-presley-estate-sues-suno-anthropic/",
+        "hn_id": "50233231",
+        "reason": "Training-data copyright lawsuit, outside beat; same event as other Elvis lawsuit candidate."
       },
       {
-        "url": "https://www.takingstock.ai/#energy",
-        "title": "Data centres could use 15-20% of current US demand by 2030",
-        "reason": "Data-center energy forecast, no concrete AI-observability mechanism."
+        "url": "https://github.com/stubbi/openxet",
+        "hn_id": "50229716",
+        "reason": "Data-storage protocol implementation, no concrete AI observability change."
       },
       {
-        "url": "https://mantid.dev",
-        "title": "Show HN: Mantid, a Mac app that lets non-ML people train their own AI models",
-        "reason": "Model-training application, no concrete AI-observability change."
+        "url": "https://www.hollywoodreporter.com/music/music-industry-news/anthropic-elvis-presley-lawsuit-ai-1236739617/",
+        "hn_id": "50229645",
+        "reason": "Training-data copyright lawsuit, outside beat and cross-post of same event."
       },
       {
-        "url": "https://www.theregister.com/ai-and-ml/2026/10/23/openai-disables-internet-access-during-model-training-while-anthropic-issues-another-mea-culpa/5305238",
-        "title": "OpenAI disables internet access during model training",
-        "reason": "October 23 article, outside frozen publication day; same model-training policy event as TechCrunch cross-post."
+        "url": "https://github.com/Tomotsugu-dev/Hindsight",
+        "hn_id": "50229028",
+        "reason": "Personal computer activity tracking and summaries, not AI-system telemetry or evaluation."
       },
       {
-        "url": "https://blogs.nvidia.com/blog/minerva-platform-infrastructure/",
-        "reason": "Original visible date October 22, 2026; secondary October 24 digest does not change original publication date."
-      },
-      {
-        "url": "https://safeguard.sh/resources/blog/ai-agent-evaluation-explained-task-suites-trajectory-grading-llm-judges-and-safety-tests",
-        "reason": "Original article:published_time and datePublished 2026-10-24T17:05:14.593Z verified via HTTP after web-tool failure. Eligible general guide, editorially omitted: substantially revisits outcome, trajectory and permission evaluation themes already covered October 19; selected concrete release changes instead. Not rejected for a date failure."
-      },
-      {
-        "url": "https://productionlearningreview.com/posts/running-production-traces-as-a-regression-suite-for-prompt-and-tool-changes",
-        "reason": "Primary page read via HTTP after web-tool failure; editorially omitted as a synthesis revisiting production-failure regression workflows already covered October 16, 20 and 23. No new original implementation selected; benchmark claims not independently verified."
+        "url": "https://github.com/zephium-browser/Zephium",
+        "hn_id": "50227943",
+        "reason": "Browser/workspace launch, no concrete tracing or evaluation change."
       },
       {
         "url": "https://codex.danielvaughan.com/2026/09/02/parsing-the-stream-live-trace-model-long-horizon-agents-codex-cli/",
-        "reason": "Search result says updated October 24, but original September publication; modification date is not publication evidence."
+        "reason": "Original September article; October 25 update is not original publication."
       },
       {
-        "url": "https://evalevalai.com/events/2026-embedded-evaluators-microconference/",
-        "reason": "October 24 is event date, not verified original publication date."
+        "url": "https://www.minnews.co.kr/atl/view.asp?a_id=31555",
+        "reason": "Secondary October 25 report refers to earlier Grafana announcement; historical Grafana event already covered October 21."
       },
       {
-        "url": "https://modelometer.com/",
-        "reason": "Rolling dated measurement record; search publication label does not establish an original October 24 announcement."
+        "url": "https://www.deterministicai.org/incidents/",
+        "reason": "Rolling incident register version date does not establish original October 25 publication of underlying incidents."
+      },
+      {
+        "url": "https://docs.rs/crate/helios-observability/0.2.6",
+        "reason": "Generic Rust observability crate listing; no source-established AI-specific operational change selected."
       }
     ],
-    "note": "Scoped review, not an exhaustive web sweep. All 12 existing editions (74 stories) parsed and reviewed for primary URL and original-event duplication; no selected release or substantive cross-post duplicate. Original October 24 publications only. Web-tool failures on GitHub API and two supplemental guides recovered using direct HTTP; no required source check remains failed.",
+    "note": "Scoped sweep, not exhaustive. All 13 historical issues (76 stories) parsed and original events compared; selected items have no URL/event/cross-post duplicate. Supplied discovery artifact reused to respect run-only writes; all 10 HN items rechecked against official API and all 8 GitHub watchlist release APIs independently rechecked. HTTP failures on Arize/DigitalOcean/TestMu recovered with successful web reader; GitHub web-tool failure recovered by official API HTTP. No required check remains failed.",
     "source_checks": {
       "hn": {
         "status": "complete",
-        "candidates": 9,
+        "candidates": 10,
         "retained": 0,
         "queries": [
           "observability",
@@ -213,81 +195,91 @@
           "agent telemetry",
           "langfuse"
         ],
-        "method": "Discovery plus official HN API items source-15.txt through source-23.txt; exclusions recorded."
-      },
-      "github": {
-        "status": "complete",
-        "candidates": 2,
-        "retained": 2,
-        "watchlist_checks": [
-          {
-            "repository": "langfuse/langfuse",
-            "releases_checked": 100,
-            "coverage": "latest 100 releases; not a global GitHub search"
-          },
-          {
-            "repository": "Arize-ai/phoenix",
-            "releases_checked": 100,
-            "coverage": "latest 100 releases; not a global GitHub search"
-          },
-          {
-            "repository": "Arize-ai/openinference",
-            "releases_checked": 100,
-            "coverage": "latest 100 releases; not a global GitHub search"
-          },
-          {
-            "repository": "langchain-ai/langsmith-sdk",
-            "releases_checked": 100,
-            "coverage": "latest 100 releases; not a global GitHub search"
-          },
-          {
-            "repository": "braintrustdata/braintrust-sdk",
-            "releases_checked": 100,
-            "coverage": "latest 100 releases; not a global GitHub search"
-          },
-          {
-            "repository": "wandb/weave",
-            "releases_checked": 100,
-            "coverage": "latest 100 releases; not a global GitHub search"
-          },
-          {
-            "repository": "langwatch/langwatch",
-            "releases_checked": 100,
-            "coverage": "latest 100 releases; not a global GitHub search"
-          },
-          {
-            "repository": "Helicone/helicone",
-            "releases_checked": 4,
-            "coverage": "latest 100 releases; not a global GitHub search"
-          }
-        ],
-        "method": "Stable release published_at verified using official API; notes and linked PR bodies and diffs read."
+        "method": "Supplied discovery and official HN API items source-14.txt through source-23.txt; individual exclusions recorded."
       },
       "news": {
         "status": "complete",
         "configured_surfaces": 11,
-        "retained": 0,
+        "retained": 1,
         "notes": [
-          "Arize: listed research newest October 20; prominent software-factory article already covered October 23. No October 24 candidate identified.",
-          "Langfuse: latest blog entries October 22; changelog latest October 23 FIPS entry already covered. Stable October 24 release treated as GitHub.",
-          "LangSmith: latest recent story October 23 retrieval guide, outside window.",
-          "Braintrust: latest listed news October 15, outside window.",
-          "OpenTelemetry: newest listed post October 23 ecosystem feedback, outside window.",
-          "Elastic Observability Labs: newest listed post October 22, outside window.",
-          "Datadog: official index and RSS checked; newest RSS publication October 22, outside window.",
-          "Honeycomb: newest listed post October 20, outside window.",
-          "DigitalOcean: newest product update October 23 prompt caching, already covered October 24; outside window.",
-          "Splunk: configured listing explicitly returns No results. Supplemental exact-date primary-domain search found no eligible October 24 item. No claim of exhaustive coverage.",
-          "Dynatrace: latest blog listing October 23 process vulnerability risk exposure, outside window."
+          "Arize official index read with web tool after HTTP 403; latest dated research October 20; featured software factory already covered October 23.",
+          "Langfuse blog newest October 22; no October 25 item found.",
+          "LangChain latest visible article October 24; outside window.",
+          "Braintrust newest listed October 15; outside window.",
+          "OpenTelemetry newest October 23 ecosystem post; outside window.",
+          "Elastic newest October 22; outside window.",
+          "Datadog official index and RSS checked; newest RSS October 22.",
+          "Honeycomb newest October 20; outside window.",
+          "DigitalOcean read using web tool after HTTP 403; newest October 23 prompt caching already covered.",
+          "Splunk index explicitly No results; supplemental exact-date official-domain search found no candidate.",
+          "Dynatrace latest October 23; outside window.",
+          "Supplemental TestMu original scorer test retained; published October 25, not the October 19 experiment date."
         ],
         "searches": [
-          "\"2026-10-24\" \"observability\"",
-          "\"October 24, 2026\" \"evaluation\" AI",
-          "site:langfuse.com/changelog \"2026-10-24\"",
-          "site:blogs.nvidia.com Minerva October 2026 observability",
-          "site:splunk.com/en_us/blog \"October 24, 2026\"",
-          "\"October 24, 2026\" \"LLM\" tracing evaluation"
+          "\"2026-10-25\" \"observability\"",
+          "\"October 25, 2026\" \"evaluation\" AI",
+          "\"October 25, 2026\" \"LLM\" tracing evaluation",
+          "site:splunk.com/en_us/blog \"October 25, 2026\"",
+          "\"2026-10-25\" \"agent\" \"monitoring\""
         ]
+      },
+      "github": {
+        "status": "complete",
+        "candidates": 1,
+        "retained": 1,
+        "checks": [
+          {
+            "repository": "langfuse/langfuse",
+            "status": "complete",
+            "checked": 100,
+            "in_window": []
+          },
+          {
+            "repository": "Arize-ai/phoenix",
+            "status": "complete",
+            "checked": 100,
+            "in_window": [
+              "https://github.com/Arize-ai/phoenix/releases/tag/arize-phoenix-v20.26.1"
+            ]
+          },
+          {
+            "repository": "Arize-ai/openinference",
+            "status": "complete",
+            "checked": 100,
+            "in_window": []
+          },
+          {
+            "repository": "langchain-ai/langsmith-sdk",
+            "status": "complete",
+            "checked": 100,
+            "in_window": []
+          },
+          {
+            "repository": "braintrustdata/braintrust-sdk",
+            "status": "complete",
+            "checked": 100,
+            "in_window": []
+          },
+          {
+            "repository": "wandb/weave",
+            "status": "complete",
+            "checked": 100,
+            "in_window": []
+          },
+          {
+            "repository": "langwatch/langwatch",
+            "status": "complete",
+            "checked": 100,
+            "in_window": []
+          },
+          {
+            "repository": "Helicone/helicone",
+            "status": "complete",
+            "checked": 4,
+            "in_window": []
+          }
+        ],
+        "method": "Official API stable published_at verified; notes and linked PR bodies reviewed."
       }
     }
   },

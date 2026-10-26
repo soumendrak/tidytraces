@@ -1,43 +1,43 @@
-# AI Observability Daily — 2026-10-25
+# AI Observability Daily — 2026-10-26
 
 By Soumendra Kumar Sahoo
 
 Canonical: https://tidytraces.com/
-Coverage window: 2026-10-24
+Coverage window: 2026-10-25
 
-Two evaluation updates: Langfuse links batch results to the run that produced them, while Phoenix fixes how prompt formats and client settings are applied. All three discovery channels were checked; this edition retains two GitHub releases.
+Today’s two updates concern repeatable AI evaluations: an original test shows why scorer changes can move results, while Phoenix refreshes its MiniMax model presets. No HN candidate met this edition’s scope and original-publication requirements.
 
-## Langfuse groups batch-evaluation traces and scores by run
+## Two evaluation libraries disagree on identical structured answers
 
-Source: Langfuse — https://github.com/langfuse/langfuse/releases/tag/v4.70.0
-Published: 2026-10-24
+Source: TestMu AI — https://www.testmuai.com/blog/langsmith-vs-braintrust/
+Published: 2026-10-25
+Channel: news
+
+Evaluation scorers turn an AI system’s answers into results that engineers compare across releases. TestMu AI’s October 25 comparison of LangSmith and Braintrust includes an original test of their associated open-source scoring libraries. It reports different exact-match outcomes on seven of twenty identical input pairs. The test ran October 19; October 25 is the article’s publication date.
+
+For example, two JSON objects containing the same keys and values in different orders failed autoevals’ exact-match check but passed openevals’. A team migrating its evaluation code could therefore see a score change even when its agent produced the same answer. That operational implication is editorial guidance, not a measured deployment outcome.
+
+The published run used autoevals 0.4.0 and openevals 0.2.0 without model judges. This small, vendor-published comparison does not establish either platform’s overall quality, and this edition has not independently rerun it.
+
+Why it matters: For evaluation owners: test scorer migrations against fixed examples before interpreting score changes as model improvements.
+
+![Two evaluation libraries disagree on identical structured answers](/edition-images/2026-10-26/scorer-comparison.webp)
+
+## Phoenix refreshes MiniMax model choices while preserving custom IDs
+
+Source: Arize AI / Phoenix — https://github.com/Arize-ai/phoenix/releases/tag/arize-phoenix-v20.26.1
+Published: 2026-10-25
 Channel: github
 
-Langfuse records AI application activity and scores it with evaluators, which are saved checks of output quality or behavior. When engineers run those checks over many existing records, they need to distinguish that batch’s results from other evaluations. Version 4.70.0 adds batch_action_id metadata to each execution trace and score produced by a batch run. A trace records the work performed during an execution; the shared identifier lets operators find one batch’s outputs together.
+Phoenix is an open-source platform for examining AI traces and running evaluations; its playground lets engineers try model calls. The October 25 stable release updates the MiniMax text-model catalog. The linked change places MiniMax-M3.1-Flash first and MiniMax-M3 second, replacing an older suggested preset.
 
-For illustration, a team could rerun a revised answer-quality check over yesterday’s assistant responses. Grouping the resulting scores and evaluation traces by batch would help reviewers inspect that particular rerun. The identifier establishes which run produced a record; it does not establish that the evaluator’s judgement is correct.
+The change preserves the provider-default fallback so saved and custom model identifiers still resolve. For illustration, an engineer comparing a saved configuration with a newly selected preset should record the actual model identifier used for each run. A refreshed menu alone does not establish that two runs used equivalent settings, or that one model performs better.
 
-The release also adds runBatchEvaluation through Model Context Protocol, an interface that lets agents call tools. The linked implementation limits tool availability to deployments with the preview opt-in enabled, requires evaluation permissions, and applies the plan’s data-access window. Langfuse’s in-app agent asks for approval before this tool runs. These are implementation conditions, rather than a claim that every deployment exposes the feature.
+The release’s linked pull request describes tests covering catalog order, model inference, custom identifiers and both regional endpoints. These are maintainer-reported checks, not tests rerun by this edition. The release also adds Microsoft Agent Framework tracing documentation; that is documentation for an existing integration, not evidence that tracing support first became available on October 25.
 
-Why it matters: For Langfuse evaluation owners: verify a small batch’s traces and scores share its identifier, and check preview availability, permissions and the accessible date range before automating reruns.
+Why it matters: For Phoenix playground users: check the selected MiniMax model identifier before comparing new runs with saved results.
 
-![Langfuse groups batch-evaluation traces and scores by run](/edition-images/2026-10-25/langfuse-batch-outputs.webp)
-
-## Phoenix fixes template-format and client-setting overrides in evaluations
-
-Source: Arize AI · Phoenix — https://github.com/Arize-ai/phoenix/releases/tag/arize-phoenix-evals-v3.9.4
-Published: 2026-10-24
-Channel: github
-
-Phoenix Evals is a library for checking AI outputs, including checks that ask a language model to judge an answer. Its 3.9.4 release fixes two cases where evaluation configuration did not behave as documented: changing the format of a copied prompt template, and giving a model client a setting that also appears in shared configuration.
-
-A prompt template contains text with placeholders that are filled before the model sees it. Previously, copying a template with a different format changed its format attribute but retained the original parsing and rendering state. The fix rebuilds the template from its raw text when an override is supplied. For illustration, the regression test copies an f-string template containing {name} into Mustache format. That single-brace text should remain literal under the new format, rather than substitute a name.
-
-The second fix merges shared and client-specific arguments before constructing synchronous or asynchronous clients. A shared timeout of 30 seconds and a synchronous override of 60 previously caused a duplicate-key error; the specific value now wins. The release’s linked changes include regression tests for both behaviors. These fixes concern evaluation setup and prompt rendering; they provide no evidence of improved judge accuracy.
-
-Why it matters: For Phoenix Evals users who copy templates or customize client options: check rendered prompts and effective timeout values when upgrading, then rerun the affected evaluations.
-
-![Phoenix fixes template-format and client-setting overrides in evaluations](/edition-images/2026-10-25/phoenix-client-overrides.webp)
+![Phoenix refreshes MiniMax model choices while preserving custom IDs](/edition-images/2026-10-26/phoenix-minimax.webp)
 
 ---
 

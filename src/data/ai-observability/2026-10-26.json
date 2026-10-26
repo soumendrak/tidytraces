@@ -1,0 +1,286 @@
+{
+  "date": "2026-10-26",
+  "story_window": "2026-10-25",
+  "dek": "Today’s two updates concern repeatable AI evaluations: an original test shows why scorer changes can move results, while Phoenix refreshes its MiniMax model presets. No HN candidate met this edition’s scope and original-publication requirements.",
+  "stories": [
+    {
+      "title": "Two evaluation libraries disagree on identical structured answers",
+      "url": "https://www.testmuai.com/blog/langsmith-vs-braintrust/",
+      "publisher": "TestMu AI",
+      "published": "2026-10-25",
+      "category_key": "evals",
+      "summary": "An original scorer comparison finds that changing libraries can change evaluation results without changing an agent’s answers.",
+      "body": [
+        "Evaluation scorers turn an AI system’s answers into results that engineers compare across releases. TestMu AI’s October 25 comparison of LangSmith and Braintrust includes an original test of their associated open-source scoring libraries. It reports different exact-match outcomes on seven of twenty identical input pairs. The test ran October 19; October 25 is the article’s publication date.",
+        "For example, two JSON objects containing the same keys and values in different orders failed autoevals’ exact-match check but passed openevals’. A team migrating its evaluation code could therefore see a score change even when its agent produced the same answer. That operational implication is editorial guidance, not a measured deployment outcome.",
+        "The published run used autoevals 0.4.0 and openevals 0.2.0 without model judges. This small, vendor-published comparison does not establish either platform’s overall quality, and this edition has not independently rerun it."
+      ],
+      "format": "full",
+      "takeaway": "For evaluation owners: test scorer migrations against fixed examples before interpreting score changes as model improvements.",
+      "image": "/edition-images/2026-10-26/scorer-comparison.webp",
+      "image_width": 1440,
+      "image_height": 960,
+      "image_provenance": {
+        "kind": "generated-editorial",
+        "generator": "built-in-imagegen",
+        "prompt": "Use case: infographic-diagram\nAsset type: standalone newspaper editorial infographic PNG, landscape 1536 by 1024.\nPrimary request: explain that the same structured answer can receive different exact-match scores from two libraries. Source: https://www.testmuai.com/blog/langsmith-vs-braintrust/ . Source-supported example from its published test: two JSON objects with identical keys and values in different key order receive 0 from autoevals 0.4.0 ExactMatch and True from openevals 0.2.0 exact_match. Show one pair of cards feeding two scorer result boxes. Render code exactly and legibly. Title and labels verbatim: \"Same answer, different score\", \"Same values, different key order\", 'Output: {\"b\": 2, \"a\": 1}', 'Reference: {\"a\": 1, \"b\": 2}', \"autoevals 0.4.0\", \"ExactMatch: 0\", \"openevals 0.2.0\", \"exact_match: True\", \"TestMu reported test • October 19, 2026\". Warm cream paper, dark ink, restrained rust and teal accents, strong serif title and readable labels, generous spacing. This is a diagram of a reported test, no fake product screenshot, no logos, no invented metrics. No watermark, no AI-generated label, no decorative footer.",
+        "based_on": [
+          "https://www.testmuai.com/blog/langsmith-vs-braintrust/"
+        ],
+        "reviewed": true,
+        "sha256": "17242a933f9f0c190d4691910b80331aca16395bf11a48d6256f952c9df77c31",
+        "optimization": {
+          "format": "webp",
+          "quality": 82,
+          "max_width": 1440,
+          "source_sha256": "2b063ec3bf8a23d967b2c436fd75785336427bbe268d540399b09bab4484b51e"
+        }
+      },
+      "source": "news",
+      "interest_score": 8,
+      "dedupe_key": "article:testmuai.com/blog/langsmith-vs-braintrust",
+      "score_reason": "An original, versioned scorer experiment gives a concrete migration risk; limited sample and vendor authorship remain explicit.",
+      "source_evidence": {
+        "url": "https://www.testmuai.com/blog/langsmith-vs-braintrust/",
+        "publication_date": "2026-10-25",
+        "raw_date": "2026-10-25",
+        "method": "Original publisher page visible Published on: October 25, 2026; distinct from experiment timestamp October 19. Web reader lines 150–152 and 245–304."
+      }
+    },
+    {
+      "title": "Phoenix refreshes MiniMax model choices while preserving custom IDs",
+      "url": "https://github.com/Arize-ai/phoenix/releases/tag/arize-phoenix-v20.26.1",
+      "publisher": "Arize AI / Phoenix",
+      "published": "2026-10-25",
+      "category_key": "evals",
+      "summary": "Phoenix 20.26.1 updates MiniMax playground presets and retains a fallback for saved or custom model identifiers.",
+      "body": [
+        "Phoenix is an open-source platform for examining AI traces and running evaluations; its playground lets engineers try model calls. The October 25 stable release updates the MiniMax text-model catalog. The linked change places MiniMax-M3.1-Flash first and MiniMax-M3 second, replacing an older suggested preset.",
+        "The change preserves the provider-default fallback so saved and custom model identifiers still resolve. For illustration, an engineer comparing a saved configuration with a newly selected preset should record the actual model identifier used for each run. A refreshed menu alone does not establish that two runs used equivalent settings, or that one model performs better.",
+        "The release’s linked pull request describes tests covering catalog order, model inference, custom identifiers and both regional endpoints. These are maintainer-reported checks, not tests rerun by this edition. The release also adds Microsoft Agent Framework tracing documentation; that is documentation for an existing integration, not evidence that tracing support first became available on October 25."
+      ],
+      "format": "full",
+      "takeaway": "For Phoenix playground users: check the selected MiniMax model identifier before comparing new runs with saved results.",
+      "image": "/edition-images/2026-10-26/phoenix-minimax.webp",
+      "image_width": 1440,
+      "image_height": 960,
+      "image_provenance": {
+        "kind": "generated-editorial",
+        "generator": "built-in-imagegen",
+        "prompt": "Use case: infographic-diagram\nAsset type: standalone newspaper editorial infographic PNG, landscape 1536 by 1024.\nPrimary request: explain the MiniMax text-model preset update in Phoenix 20.26.1. Source-supported facts from https://github.com/Arize-ai/phoenix/releases/tag/arize-phoenix-v20.26.1 and linked PR 17237: shared catalog lists MiniMax-M3.1-Flash first and MiniMax-M3 second; provider-default fallback is retained for saved and custom model IDs. Title verbatim \"Phoenix refreshes MiniMax presets\". Two clean side-by-side panels: one headed \"Preset catalog\" containing a vertical ordered list \"1  MiniMax-M3.1-Flash\" and \"2  MiniMax-M3\"; another headed \"Fallback preserved\" containing two simple document icons labelled \"Saved model IDs\" and \"Custom model IDs\" pointing to \"Provider default\". No arrow between the two independent panels. Small subtitle \"Phoenix 20.26.1\". Warm cream newsprint, dark ink, strong serif title, restrained teal and rust accents, flat diagram with generous spacing and extremely readable labels. Do not imply automatic model migration or performance improvements. No fake screenshot, no logos, no invented measurements. No watermark, no AI-generated label, no footer.",
+        "based_on": [
+          "https://github.com/Arize-ai/phoenix/releases/tag/arize-phoenix-v20.26.1"
+        ],
+        "reviewed": true,
+        "sha256": "42b0a7d5a3ece354a73efa7407f2ecddc66d987390dadcfe1da1897aa47244a5",
+        "optimization": {
+          "format": "webp",
+          "quality": 82,
+          "max_width": 1440,
+          "source_sha256": "0221770589ffcbc2166e73892e40dd071e3f8c5305faf3946f62416aeffcdb72"
+        }
+      },
+      "source": "github",
+      "interest_score": 6,
+      "dedupe_key": "release:arize-ai/phoenix:arize-phoenix-v20.26.1",
+      "score_reason": "Verified stable patch with a narrow evaluation-workflow improvement; no measured reliability or performance claim.",
+      "source_evidence": {
+        "url": "https://github.com/Arize-ai/phoenix/releases/tag/arize-phoenix-v20.26.1",
+        "publication_date": "2026-10-25",
+        "raw_date": "2026-10-25T18:28:18Z",
+        "method": "Official GitHub release API published_at; draft=false and prerelease=false. Release notes and linked PRs 17237 and 17209 reviewed."
+      }
+    }
+  ],
+  "research": {
+    "status": "complete",
+    "completed_sources": [
+      "hn",
+      "news",
+      "github"
+    ],
+    "checked_urls": [
+      "https://arize.com/blog/",
+      "https://langfuse.com/blog",
+      "https://www.langchain.com/blog",
+      "https://www.braintrust.dev/blog",
+      "https://opentelemetry.io/blog/",
+      "https://www.elastic.co/observability-labs/blog",
+      "https://www.datadoghq.com/blog/",
+      "https://www.honeycomb.io/blog/",
+      "https://www.digitalocean.com/blog",
+      "https://www.splunk.com/en_us/blog/observability.html",
+      "https://www.dynatrace.com/news/",
+      "https://www.datadoghq.com/blog/index.xml",
+      "https://www.testmuai.com/blog/langsmith-vs-braintrust/"
+    ],
+    "excluded": [
+      {
+        "url": "https://github.com/premtonx/statetrack",
+        "hn_id": "50236197",
+        "reason": "Generic infrastructure change tracking; no concrete new AI operating or evaluation change, and original October 25 publication not established."
+      },
+      {
+        "url": "https://www.redwoodresearch.org/blog/simulated-control-evaluations",
+        "hn_id": "50232753",
+        "reason": "Original Redwood article visibly dated October 24, 2026. October 25 HN resurfacing is not publication evidence."
+      },
+      {
+        "url": "https://mta.rip/?station=127&route=1&view=trackmap",
+        "hn_id": "50235759",
+        "reason": "Subway visualization, outside AI observability beat."
+      },
+      {
+        "url": "https://news.ycombinator.com/item?id=50234108",
+        "hn_id": "50234108",
+        "reason": "General agent adoption discussion with unverified statistics; no original concrete observability implementation or evaluation evidence."
+      },
+      {
+        "url": "https://www.dailycal.org/news/campus/academics/ai-use-leads-uc-berkeley-math-professor-to-see-no-point-in-grading-homework/article_bdf1eae2-c08b-491f-b9f1-81a7cea177de.html",
+        "hn_id": "50233304",
+        "reason": "Education and homework grading, outside operating-AI observability beat."
+      },
+      {
+        "url": "https://www.billboard.com/pro/elvis-presley-estate-sues-suno-anthropic/",
+        "hn_id": "50233231",
+        "reason": "Training-data copyright lawsuit, outside beat; same event as other Elvis lawsuit candidate."
+      },
+      {
+        "url": "https://github.com/stubbi/openxet",
+        "hn_id": "50229716",
+        "reason": "Data-storage protocol implementation, no concrete AI observability change."
+      },
+      {
+        "url": "https://www.hollywoodreporter.com/music/music-industry-news/anthropic-elvis-presley-lawsuit-ai-1236739617/",
+        "hn_id": "50229645",
+        "reason": "Training-data copyright lawsuit, outside beat and cross-post of same event."
+      },
+      {
+        "url": "https://github.com/Tomotsugu-dev/Hindsight",
+        "hn_id": "50229028",
+        "reason": "Personal computer activity tracking and summaries, not AI-system telemetry or evaluation."
+      },
+      {
+        "url": "https://github.com/zephium-browser/Zephium",
+        "hn_id": "50227943",
+        "reason": "Browser/workspace launch, no concrete tracing or evaluation change."
+      },
+      {
+        "url": "https://codex.danielvaughan.com/2026/09/02/parsing-the-stream-live-trace-model-long-horizon-agents-codex-cli/",
+        "reason": "Original September article; October 25 update is not original publication."
+      },
+      {
+        "url": "https://www.minnews.co.kr/atl/view.asp?a_id=31555",
+        "reason": "Secondary October 25 report refers to earlier Grafana announcement; historical Grafana event already covered October 21."
+      },
+      {
+        "url": "https://www.deterministicai.org/incidents/",
+        "reason": "Rolling incident register version date does not establish original October 25 publication of underlying incidents."
+      },
+      {
+        "url": "https://docs.rs/crate/helios-observability/0.2.6",
+        "reason": "Generic Rust observability crate listing; no source-established AI-specific operational change selected."
+      }
+    ],
+    "note": "Scoped sweep, not exhaustive. All 13 historical issues (76 stories) parsed and original events compared; selected items have no URL/event/cross-post duplicate. Supplied discovery artifact reused to respect run-only writes; all 10 HN items rechecked against official API and all 8 GitHub watchlist release APIs independently rechecked. HTTP failures on Arize/DigitalOcean/TestMu recovered with successful web reader; GitHub web-tool failure recovered by official API HTTP. No required check remains failed.",
+    "source_checks": {
+      "hn": {
+        "status": "complete",
+        "candidates": 10,
+        "retained": 0,
+        "queries": [
+          "observability",
+          "LLM evaluation",
+          "AI tracing",
+          "agent telemetry",
+          "langfuse"
+        ],
+        "method": "Supplied discovery and official HN API items source-14.txt through source-23.txt; individual exclusions recorded."
+      },
+      "news": {
+        "status": "complete",
+        "configured_surfaces": 11,
+        "retained": 1,
+        "notes": [
+          "Arize official index read with web tool after HTTP 403; latest dated research October 20; featured software factory already covered October 23.",
+          "Langfuse blog newest October 22; no October 25 item found.",
+          "LangChain latest visible article October 24; outside window.",
+          "Braintrust newest listed October 15; outside window.",
+          "OpenTelemetry newest October 23 ecosystem post; outside window.",
+          "Elastic newest October 22; outside window.",
+          "Datadog official index and RSS checked; newest RSS October 22.",
+          "Honeycomb newest October 20; outside window.",
+          "DigitalOcean read using web tool after HTTP 403; newest October 23 prompt caching already covered.",
+          "Splunk index explicitly No results; supplemental exact-date official-domain search found no candidate.",
+          "Dynatrace latest October 23; outside window.",
+          "Supplemental TestMu original scorer test retained; published October 25, not the October 19 experiment date."
+        ],
+        "searches": [
+          "\"2026-10-25\" \"observability\"",
+          "\"October 25, 2026\" \"evaluation\" AI",
+          "\"October 25, 2026\" \"LLM\" tracing evaluation",
+          "site:splunk.com/en_us/blog \"October 25, 2026\"",
+          "\"2026-10-25\" \"agent\" \"monitoring\""
+        ]
+      },
+      "github": {
+        "status": "complete",
+        "candidates": 1,
+        "retained": 1,
+        "checks": [
+          {
+            "repository": "langfuse/langfuse",
+            "status": "complete",
+            "checked": 100,
+            "in_window": []
+          },
+          {
+            "repository": "Arize-ai/phoenix",
+            "status": "complete",
+            "checked": 100,
+            "in_window": [
+              "https://github.com/Arize-ai/phoenix/releases/tag/arize-phoenix-v20.26.1"
+            ]
+          },
+          {
+            "repository": "Arize-ai/openinference",
+            "status": "complete",
+            "checked": 100,
+            "in_window": []
+          },
+          {
+            "repository": "langchain-ai/langsmith-sdk",
+            "status": "complete",
+            "checked": 100,
+            "in_window": []
+          },
+          {
+            "repository": "braintrustdata/braintrust-sdk",
+            "status": "complete",
+            "checked": 100,
+            "in_window": []
+          },
+          {
+            "repository": "wandb/weave",
+            "status": "complete",
+            "checked": 100,
+            "in_window": []
+          },
+          {
+            "repository": "langwatch/langwatch",
+            "status": "complete",
+            "checked": 100,
+            "in_window": []
+          },
+          {
+            "repository": "Helicone/helicone",
+            "status": "complete",
+            "checked": 4,
+            "in_window": []
+          }
+        ],
+        "method": "Official API stable published_at verified; notes and linked PR bodies reviewed."
+      }
+    }
+  }
+}
