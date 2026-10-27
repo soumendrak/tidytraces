@@ -1,43 +1,91 @@
-# AI Observability Daily — 2026-10-26
+# AI Observability Daily — 2026-10-27
 
 By Soumendra Kumar Sahoo
 
 Canonical: https://tidytraces.com/
-Coverage window: 2026-10-25
+Coverage window: 2026-10-26
 
-Today’s two updates concern repeatable AI evaluations: an original test shows why scorer changes can move results, while Phoenix refreshes its MiniMax model presets. No HN candidate met this edition’s scope and original-publication requirements.
+Keep the records that explain an agent’s actions, then check them against what was allowed. Today’s stories cover readable session history, tool-level evaluation, evidence coverage in AI log analysis, and two fixes for trustworthy trace delivery.
 
-## Two evaluation libraries disagree on identical structured answers
+## Mainplane keeps agent session state in readable files on a separate server
 
-Source: TestMu AI — https://www.testmuai.com/blog/langsmith-vs-braintrust/
-Published: 2026-10-25
+Source: Hacker News · Alexander9 — https://news.ycombinator.com/item?id=50246690
+Published: 2026-10-26
+Channel: hn
+
+Mainplane is an agent harness: software that coordinates model calls, tools and session state. In its first-party Show HN launch, developer Alexander describes keeping that coordination on a separate server while shell and file operations run on connected worker machines. Each session is stored in one append-only file, where new events are added at the end rather than rewriting earlier ones, which the developer presents as both recoverable state and an agent trace.
+
+For illustration, an engineer investigating a failed task could inspect the session file on the server even if the laptop running a tool had disconnected. The design separates where actions happen from where their history lives. The announcement says a new session can search an earlier state file for context, rather than relying on a condensed summary. That is a described workflow, not an independently tested recovery guarantee.
+
+The server holds model credentials and routes tool calls over a built-in private network that uses WireGuard, an encrypted VPN protocol. The developer also explicitly describes unrestricted agent access within the chosen worker computer. Readable session files therefore help investigation but do not establish permission enforcement, complete audit coverage or safe execution. This edition has not tested the harness.
+
+Why it matters: For teams evaluating workstation agents: inspect session-file coverage and recovery behavior, and assess worker permissions separately from trace readability.
+
+![Mainplane keeps agent session state in readable files on a separate server](/edition-images/2026-10-27/mainplane-session-files.webp)
+
+## Arize’s tool-call checks catch leaks that an answer-only judge misses
+
+Source: Arize AI — https://arize.com/blog/indirect-prompt-injection-ai-agents/
+Published: 2026-10-26
 Channel: news
 
-Evaluation scorers turn an AI system’s answers into results that engineers compare across releases. TestMu AI’s October 25 comparison of LangSmith and Braintrust includes an original test of their associated open-source scoring libraries. It reports different exact-match outcomes on seven of twenty identical input pairs. The test ran October 19; October 25 is the article’s publication date.
+Arize Phoenix records the steps an AI agent takes so engineers can inspect and evaluate its behavior. Arize’s new experiment uses those traces to investigate indirect prompt injection: instructions in an external page that redirect an agent away from the user’s task. A support agent read 100 poisoned order pages, once each, using synthetic customer records.
 
-For example, two JSON objects containing the same keys and values in different orders failed autoevals’ exact-match check but passed openevals’. A team migrating its evaluation code could therefore see a score change even when its agent produced the same answer. That operational implication is editorial guidance, not a measured deployment outcome.
+Arize reports 28 unauthorized lookups that returned data. A deterministic check examined tool calls against the logged-in customer’s permitted scope and flagged all 28. A language-model judge reading only final answers identified five. The difference matters because an agent can retrieve forbidden information without repeating it in its reply. In the article’s example, an order-summary request led to lookups for a different customer named by the fetched page.
 
-The published run used autoevals 0.4.0 and openevals 0.2.0 without model judges. This small, vendor-published comparison does not establish either platform’s overall quality, and this edition has not independently rerun it.
+The team then bound customer tools to the session identity in code. In that test, 20 attempted out-of-scope lookups returned no data. These are vendor-reported results from one experimental setup, not a universal security rate. Arize also describes applying evaluations and monitors to production traces. Engineers should validate a judge against known tool-level outcomes before treating its score as evidence of access compliance.
 
-Why it matters: For evaluation owners: test scorer migrations against fixed examples before interpreting score changes as model improvements.
+Why it matters: For teams evaluating agents with customer-data tools: test access scope at the tool boundary and compare answer judges with trace-level ground truth.
 
-![Two evaluation libraries disagree on identical structured answers](/edition-images/2026-10-26/scorer-comparison.webp)
+![Arize’s tool-call checks catch leaks that an answer-only judge misses](/edition-images/2026-10-27/arize-scope-checks.webp)
 
-## Phoenix refreshes MiniMax model choices while preserving custom IDs
+## Elastic checks what log sampling leaves out before generating detection rules
 
-Source: Arize AI / Phoenix — https://github.com/Arize-ai/phoenix/releases/tag/arize-phoenix-v20.26.1
-Published: 2026-10-25
+Source: Elastic Observability Labs — https://www.elastic.co/observability-labs/blog/log-sampling-significant-events
+Published: 2026-10-26
+Channel: news
+
+Elastic Significant Events uses language models to help turn unfamiliar logs into detection rules. Its October 26 engineering article separates learning what a log source contains from generating queries about it. That separation makes it possible to investigate whether a poor rule came from missing evidence or from misusing a fact already extracted.
+
+The extraction stage records Knowledge Indicators: descriptions of services, dependencies, technologies, infrastructure and schema, with supporting log evidence. By default, a run reads up to five batches of 20 documents and can stop earlier when successive batches add nothing new. Code steers sampling toward unexplained entities and diverse message patterns, alongside random samples. A workflow exposes each extraction run for inspection.
+
+In the source’s demonstration, a generic error-level query missed an incident because the relevant services did not record severity in the expected way. The example shows why checking generated query syntax alone cannot establish detection coverage. Engineers building AI-assisted operations tools should inspect what the model actually saw. This is the first part of a vendor engineering series; query generation and final event detection are reserved for later articles, and extraction can still miss important facts.
+
+Why it matters: For teams building AI log-analysis workflows: evaluate evidence coverage separately from generated-query quality, and retain inspectable extraction runs.
+
+![Elastic checks what log sampling leaves out before generating detection rules](/edition-images/2026-10-27/elastic-sampling.webp)
+
+## Langfuse gives telemetry time to flush after gateway connections drain
+
+Source: Langfuse — https://github.com/langfuse/langfuse/releases/tag/v4.70.1
+Published: 2026-10-26
 Channel: github
 
-Phoenix is an open-source platform for examining AI traces and running evaluations; its playground lets engineers try model calls. The October 25 stable release updates the MiniMax text-model catalog. The linked change places MiniMax-M3.1-Flash first and MiniMax-M3 second, replacing an older suggested preset.
+Langfuse is a platform for recording and evaluating AI application activity. Its AI gateway handles model requests and sends telemetry about them. Release v4.70.1 fixes a shutdown problem: a slow connection could consume the entire shutdown deadline, leaving no time to send pending inference records or operational metrics.
 
-The change preserves the provider-default fallback so saved and custom model identifiers still resolve. For illustration, an engineer comparing a saved configuration with a newly selected preset should record the actual model identifier used for each run. A refreshed menu alone does not establish that two runs used equivalent settings, or that one model performs better.
+The linked implementation separates connection draining from telemetry flushing. Draining gives existing connections time to finish after a termination signal. The flush clock now starts after that phase ends. For illustration, a long-running streamed answer could reach the connection-drain limit during a deployment; pending telemetry would then receive its own opportunity to leave the process. This describes the intended mechanism, not a guarantee against every source of lost records.
 
-The release’s linked pull request describes tests covering catalog order, model inference, custom identifiers and both regional endpoints. These are maintainer-reported checks, not tests rerun by this edition. The release also adds Microsoft Agent Framework tracing documentation; that is documentation for an existing integration, not evidence that tracing support first became available on October 25.
+Both timeouts default to ten seconds and accept values from one to 300 seconds. The previous shutdown setting remains a fallback for connection draining, with a deprecation warning. Kubernetes operators must allow enough termination grace for any pre-stop delay and both budgets. The release also renews expired media URLs when previews reopen; that is separate from the telemetry-delivery fix.
 
-Why it matters: For Phoenix playground users: check the selected MiniMax model identifier before comparing new runs with saved results.
+Why it matters: For self-hosted gateway operators: review termination grace periods and test record delivery during deployments after upgrading.
 
-![Phoenix refreshes MiniMax model choices while preserving custom IDs](/edition-images/2026-10-26/phoenix-minimax.webp)
+![Langfuse gives telemetry time to flush after gateway connections drain](/edition-images/2026-10-27/langfuse-shutdown.webp)
+
+## Braintrust batches log uploads and records the tool output the model saw
+
+Source: Braintrust — https://github.com/braintrustdata/braintrust-sdk-javascript/releases/tag/braintrust%403.40.0
+Published: 2026-10-26
+Channel: github
+
+Braintrust’s JavaScript SDK records AI application activity for debugging and evaluation. Version 3.40.0 changes both how those records are delivered and what some contain. In long-lived Node processes, nearby log rows are now combined into fewer HTTP requests, with a delay of up to one second before flushing by default.
+
+The release tells applications to call flush() before shutting down on signals or through process.exit(). BRAINTRUST_FLUSH_DELAY_MS controls the delay; serverless and other runtimes continue to flush immediately by default. For illustration, an application that logs a final tool call and exits immediately should explicitly finish sending its records rather than assume the batching timer has already fired.
+
+The SDK also changes records for AI SDK tools that define toModelOutput: tool spans, which record individual operations, and parent tool results capture the transformed value shown to the model instead of the raw execution result. Pi coding-agent fixes preserve system instructions and tool declarations, and keep token usage on child model-call spans to avoid counting it again on the parent task. These are release-note claims; teams should check their own trace contents and shutdown behavior after upgrading.
+
+Why it matters: For JavaScript instrumentation owners: await final delivery at shutdown and verify that tool outputs and token totals match the model calls you intended to record.
+
+![Braintrust batches log uploads and records the tool output the model saw](/edition-images/2026-10-27/braintrust-trace-records.webp)
 
 ---
 

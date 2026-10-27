@@ -1,95 +1,229 @@
 {
-  "date": "2026-10-26",
-  "story_window": "2026-10-25",
-  "dek": "Today’s two updates concern repeatable AI evaluations: an original test shows why scorer changes can move results, while Phoenix refreshes its MiniMax model presets. No HN candidate met this edition’s scope and original-publication requirements.",
+  "date": "2026-10-27",
+  "story_window": "2026-10-26",
+  "dek": "Keep the records that explain an agent’s actions, then check them against what was allowed. Today’s stories cover readable session history, tool-level evaluation, evidence coverage in AI log analysis, and two fixes for trustworthy trace delivery.",
   "stories": [
     {
-      "title": "Two evaluation libraries disagree on identical structured answers",
-      "url": "https://www.testmuai.com/blog/langsmith-vs-braintrust/",
-      "publisher": "TestMu AI",
-      "published": "2026-10-25",
-      "category_key": "evals",
-      "summary": "An original scorer comparison finds that changing libraries can change evaluation results without changing an agent’s answers.",
+      "title": "Mainplane keeps agent session state in readable files on a separate server",
+      "url": "https://news.ycombinator.com/item?id=50246690",
+      "publisher": "Hacker News · Alexander9",
+      "published": "2026-10-26",
+      "category_key": "agents",
+      "summary": "The developer’s first-party launch describes append-only session files that serve as both agent state and execution traces, while tools run on connected machines.",
       "body": [
-        "Evaluation scorers turn an AI system’s answers into results that engineers compare across releases. TestMu AI’s October 25 comparison of LangSmith and Braintrust includes an original test of their associated open-source scoring libraries. It reports different exact-match outcomes on seven of twenty identical input pairs. The test ran October 19; October 25 is the article’s publication date.",
-        "For example, two JSON objects containing the same keys and values in different orders failed autoevals’ exact-match check but passed openevals’. A team migrating its evaluation code could therefore see a score change even when its agent produced the same answer. That operational implication is editorial guidance, not a measured deployment outcome.",
-        "The published run used autoevals 0.4.0 and openevals 0.2.0 without model judges. This small, vendor-published comparison does not establish either platform’s overall quality, and this edition has not independently rerun it."
+        "Mainplane is an agent harness: software that coordinates model calls, tools and session state. In its first-party Show HN launch, developer Alexander describes keeping that coordination on a separate server while shell and file operations run on connected worker machines. Each session is stored in one append-only file, where new events are added at the end rather than rewriting earlier ones, which the developer presents as both recoverable state and an agent trace.",
+        "For illustration, an engineer investigating a failed task could inspect the session file on the server even if the laptop running a tool had disconnected. The design separates where actions happen from where their history lives. The announcement says a new session can search an earlier state file for context, rather than relying on a condensed summary. That is a described workflow, not an independently tested recovery guarantee.",
+        "The server holds model credentials and routes tool calls over a built-in private network that uses WireGuard, an encrypted VPN protocol. The developer also explicitly describes unrestricted agent access within the chosen worker computer. Readable session files therefore help investigation but do not establish permission enforcement, complete audit coverage or safe execution. This edition has not tested the harness."
       ],
       "format": "full",
-      "takeaway": "For evaluation owners: test scorer migrations against fixed examples before interpreting score changes as model improvements.",
-      "image": "/edition-images/2026-10-26/scorer-comparison.webp",
+      "takeaway": "For teams evaluating workstation agents: inspect session-file coverage and recovery behavior, and assess worker permissions separately from trace readability.",
+      "image": "/edition-images/2026-10-27/mainplane-session-files.webp",
       "image_width": 1440,
       "image_height": 960,
       "image_provenance": {
         "kind": "generated-editorial",
         "generator": "built-in-imagegen",
-        "prompt": "Use case: infographic-diagram\nAsset type: standalone newspaper editorial infographic PNG, landscape 1536 by 1024.\nPrimary request: explain that the same structured answer can receive different exact-match scores from two libraries. Source: https://www.testmuai.com/blog/langsmith-vs-braintrust/ . Source-supported example from its published test: two JSON objects with identical keys and values in different key order receive 0 from autoevals 0.4.0 ExactMatch and True from openevals 0.2.0 exact_match. Show one pair of cards feeding two scorer result boxes. Render code exactly and legibly. Title and labels verbatim: \"Same answer, different score\", \"Same values, different key order\", 'Output: {\"b\": 2, \"a\": 1}', 'Reference: {\"a\": 1, \"b\": 2}', \"autoevals 0.4.0\", \"ExactMatch: 0\", \"openevals 0.2.0\", \"exact_match: True\", \"TestMu reported test • October 19, 2026\". Warm cream paper, dark ink, restrained rust and teal accents, strong serif title and readable labels, generous spacing. This is a diagram of a reported test, no fake product screenshot, no logos, no invented metrics. No watermark, no AI-generated label, no decorative footer.",
+        "prompt": "Use case: infographic-diagram. Asset type: standalone PNG newspaper editorial infographic. Explain the Mainplane developer’s conceptual architecture: tool actions happen on worker machines, while agent session state stays on a separate server in an append-only readable file. Show a central server with a document and two worker computers. Exact text: \"Keep the session history\"; \"Agent server\"; \"Append-only session file\"; \"Worker laptop\"; \"Worker desktop\"; \"Tools run on workers\". Connect server to each worker with bidirectional lines; document attached only to server. No implied safety or complete audit guarantee. Style: warm newsprint paper, dark ink, restrained rust accent, clear newspaper serif title, large readable labels and generous spacing. Landscape composition with only three to five elements. No logos, no fake screenshots, no unsupported architecture, no footer, no watermark.",
         "based_on": [
-          "https://www.testmuai.com/blog/langsmith-vs-braintrust/"
+          "https://news.ycombinator.com/item?id=50246690"
         ],
         "reviewed": true,
-        "sha256": "17242a933f9f0c190d4691910b80331aca16395bf11a48d6256f952c9df77c31",
+        "sha256": "22f249c41816a5503cc6ddc7878e67648abfe3815d252cee12f8bde82fb5c6bb",
         "optimization": {
           "format": "webp",
           "quality": 82,
           "max_width": 1440,
-          "source_sha256": "2b063ec3bf8a23d967b2c436fd75785336427bbe268d540399b09bab4484b51e"
+          "source_sha256": "136ad1c39462bf5912bb0e1d1b0cc307be20e051eec74bbda6fd47e305d3c84c"
+        }
+      },
+      "source": "hn",
+      "interest_score": 7,
+      "hn_id": "50246690",
+      "comments": "https://news.ycombinator.com/item?id=50246690",
+      "score_reason": "Concrete agent-state visibility, supported by a first-party launch but without independent coverage or recovery testing.",
+      "source_evidence": {
+        "url": "https://news.ycombinator.com/item?id=50246690",
+        "publication_date": "2026-10-26",
+        "raw_date": "2026-10-26T16:37:03.000Z",
+        "method": "Original first-party Show HN announcement text; official HN API item 50246690 timestamp, not a resurfaced linked article."
+      },
+      "dedupe_key": "hn-original:50246690"
+    },
+    {
+      "title": "Arize’s tool-call checks catch leaks that an answer-only judge misses",
+      "url": "https://arize.com/blog/indirect-prompt-injection-ai-agents/",
+      "publisher": "Arize AI",
+      "published": "2026-10-26",
+      "category_key": "evals",
+      "summary": "In a synthetic support-agent experiment, checking tool calls exposed unauthorized customer lookups that a model judging only final answers often missed.",
+      "body": [
+        "Arize Phoenix records the steps an AI agent takes so engineers can inspect and evaluate its behavior. Arize’s new experiment uses those traces to investigate indirect prompt injection: instructions in an external page that redirect an agent away from the user’s task. A support agent read 100 poisoned order pages, once each, using synthetic customer records.",
+        "Arize reports 28 unauthorized lookups that returned data. A deterministic check examined tool calls against the logged-in customer’s permitted scope and flagged all 28. A language-model judge reading only final answers identified five. The difference matters because an agent can retrieve forbidden information without repeating it in its reply. In the article’s example, an order-summary request led to lookups for a different customer named by the fetched page.",
+        "The team then bound customer tools to the session identity in code. In that test, 20 attempted out-of-scope lookups returned no data. These are vendor-reported results from one experimental setup, not a universal security rate. Arize also describes applying evaluations and monitors to production traces. Engineers should validate a judge against known tool-level outcomes before treating its score as evidence of access compliance."
+      ],
+      "format": "full",
+      "takeaway": "For teams evaluating agents with customer-data tools: test access scope at the tool boundary and compare answer judges with trace-level ground truth.",
+      "image": "/edition-images/2026-10-27/arize-scope-checks.webp",
+      "image_width": 1440,
+      "image_height": 960,
+      "image_provenance": {
+        "kind": "generated-editorial",
+        "generator": "built-in-imagegen",
+        "prompt": "Use case: infographic-diagram. Asset type: standalone PNG newspaper editorial infographic. Explain one source-supported finding from Arize’s synthetic support-agent experiment: access scope must be checked using tool calls, because judging the final answer can miss unauthorized lookups. Three elements: agent tool call, session scope check, trace record for review. Exact text: \"Check the action, not only the answer\"; \"Tool call\"; \"Session scope check\"; \"Trace review\"; small secondary text \"Conceptual workflow\". A branch from scope check reads \"Out of scope: block\". Do not depict answer judging as an access control. No experiment numbers. Style: warm newsprint paper, dark ink, restrained rust accent, clear newspaper serif title, large readable labels and generous spacing. Landscape composition with only three to five elements. No logos, no fake screenshots, no unsupported architecture, no footer, no watermark.",
+        "based_on": [
+          "https://arize.com/blog/indirect-prompt-injection-ai-agents/"
+        ],
+        "reviewed": true,
+        "sha256": "a2a9910cc9b84bb35877158f9f15195f9cb441f1bfc30728554a4153d8171544",
+        "optimization": {
+          "format": "webp",
+          "quality": 82,
+          "max_width": 1440,
+          "source_sha256": "e9826ee550a7efadc77c9341b7e6cb4e75bd4a0c37b6743f2255771eb4dd6bdc"
         }
       },
       "source": "news",
       "interest_score": 8,
-      "dedupe_key": "article:testmuai.com/blog/langsmith-vs-braintrust",
-      "score_reason": "An original, versioned scorer experiment gives a concrete migration risk; limited sample and vendor authorship remain explicit.",
+      "score_reason": "A concrete reproducible-style experiment distinguishes observed tool behavior from final-answer judging and states its sampling limits.",
       "source_evidence": {
-        "url": "https://www.testmuai.com/blog/langsmith-vs-braintrust/",
-        "publication_date": "2026-10-25",
-        "raw_date": "2026-10-25",
-        "method": "Original publisher page visible Published on: October 25, 2026; distinct from experiment timestamp October 19. Web reader lines 150–152 and 245–304."
-      }
+        "url": "https://arize.com/blog/indirect-prompt-injection-ai-agents/",
+        "publication_date": "2026-10-26",
+        "raw_date": "2026-10-26T07:00:54-07:00",
+        "method": "Primary HTML datePublished and article:published_time agree on October 26; visible label gives October 2026. dateModified was not used."
+      },
+      "dedupe_key": "article:arize.com/blog/indirect-prompt-injection-ai-agents"
     },
     {
-      "title": "Phoenix refreshes MiniMax model choices while preserving custom IDs",
-      "url": "https://github.com/Arize-ai/phoenix/releases/tag/arize-phoenix-v20.26.1",
-      "publisher": "Arize AI / Phoenix",
-      "published": "2026-10-25",
+      "title": "Elastic checks what log sampling leaves out before generating detection rules",
+      "url": "https://www.elastic.co/observability-labs/blog/log-sampling-significant-events",
+      "publisher": "Elastic Observability Labs",
+      "published": "2026-10-26",
       "category_key": "evals",
-      "summary": "Phoenix 20.26.1 updates MiniMax playground presets and retains a fallback for saved or custom model identifiers.",
+      "summary": "Elastic explains an inspectable extraction loop that builds evidence about a log source before a language model generates detection queries.",
       "body": [
-        "Phoenix is an open-source platform for examining AI traces and running evaluations; its playground lets engineers try model calls. The October 25 stable release updates the MiniMax text-model catalog. The linked change places MiniMax-M3.1-Flash first and MiniMax-M3 second, replacing an older suggested preset.",
-        "The change preserves the provider-default fallback so saved and custom model identifiers still resolve. For illustration, an engineer comparing a saved configuration with a newly selected preset should record the actual model identifier used for each run. A refreshed menu alone does not establish that two runs used equivalent settings, or that one model performs better.",
-        "The release’s linked pull request describes tests covering catalog order, model inference, custom identifiers and both regional endpoints. These are maintainer-reported checks, not tests rerun by this edition. The release also adds Microsoft Agent Framework tracing documentation; that is documentation for an existing integration, not evidence that tracing support first became available on October 25."
+        "Elastic Significant Events uses language models to help turn unfamiliar logs into detection rules. Its October 26 engineering article separates learning what a log source contains from generating queries about it. That separation makes it possible to investigate whether a poor rule came from missing evidence or from misusing a fact already extracted.",
+        "The extraction stage records Knowledge Indicators: descriptions of services, dependencies, technologies, infrastructure and schema, with supporting log evidence. By default, a run reads up to five batches of 20 documents and can stop earlier when successive batches add nothing new. Code steers sampling toward unexplained entities and diverse message patterns, alongside random samples. A workflow exposes each extraction run for inspection.",
+        "In the source’s demonstration, a generic error-level query missed an incident because the relevant services did not record severity in the expected way. The example shows why checking generated query syntax alone cannot establish detection coverage. Engineers building AI-assisted operations tools should inspect what the model actually saw. This is the first part of a vendor engineering series; query generation and final event detection are reserved for later articles, and extraction can still miss important facts."
       ],
       "format": "full",
-      "takeaway": "For Phoenix playground users: check the selected MiniMax model identifier before comparing new runs with saved results.",
-      "image": "/edition-images/2026-10-26/phoenix-minimax.webp",
+      "takeaway": "For teams building AI log-analysis workflows: evaluate evidence coverage separately from generated-query quality, and retain inspectable extraction runs.",
+      "image": "/edition-images/2026-10-27/elastic-sampling.webp",
+      "image_width": 1440,
+      "image_height": 720,
+      "image_provenance": {
+        "kind": "generated-editorial",
+        "generator": "built-in-imagegen",
+        "prompt": "Use case: infographic-diagram. Asset type: standalone PNG newspaper editorial infographic. Explain Elastic’s separation of log evidence extraction from model-generated detection queries. Three elements linked left to right: varied log documents, evidence cards, detection query. Exact text: \"Check the evidence before the rule\"; \"Sample diverse logs\"; \"Record supported facts\"; \"Generate detection queries\"; secondary text \"Review coverage separately\". Emphasize that missing input evidence can leave gaps. Show a magnifying glass over evidence cards. No fabricated metrics or performance claims. Style: warm newsprint paper, dark ink, restrained rust accent, clear newspaper serif title, large readable labels and generous spacing. Landscape composition with only three to five elements. No logos, no fake screenshots, no unsupported architecture, no footer, no watermark.",
+        "based_on": [
+          "https://www.elastic.co/observability-labs/blog/log-sampling-significant-events"
+        ],
+        "reviewed": true,
+        "sha256": "7ef0466b8b63afd2732978f58aefe56091c729792bc57005c11ef8a43b828ad9",
+        "optimization": {
+          "format": "webp",
+          "quality": 82,
+          "max_width": 1440,
+          "source_sha256": "26fefd3b27b239e329c85a51500a5a21105b941305ffce994eb96de6a06157fd"
+        }
+      },
+      "source": "news",
+      "interest_score": 8,
+      "score_reason": "Source-grounded implementation explains measurable input coverage and diagnosis of model-assisted detection failures.",
+      "source_evidence": {
+        "url": "https://www.elastic.co/observability-labs/blog/log-sampling-significant-events",
+        "publication_date": "2026-10-26",
+        "raw_date": "2026-10-26T00:00:00.000Z",
+        "method": "Original article time element and JSON-LD datePublished both identify October 26."
+      },
+      "dedupe_key": "article:elastic.co/observability-labs/blog/log-sampling-significant-events"
+    },
+    {
+      "title": "Langfuse gives telemetry time to flush after gateway connections drain",
+      "url": "https://github.com/langfuse/langfuse/releases/tag/v4.70.1",
+      "publisher": "Langfuse",
+      "published": "2026-10-26",
+      "category_key": "observability",
+      "summary": "The gateway now starts a separate telemetry-flush deadline after connections finish draining, preventing slow streams from consuming both budgets.",
+      "body": [
+        "Langfuse is a platform for recording and evaluating AI application activity. Its AI gateway handles model requests and sends telemetry about them. Release v4.70.1 fixes a shutdown problem: a slow connection could consume the entire shutdown deadline, leaving no time to send pending inference records or operational metrics.",
+        "The linked implementation separates connection draining from telemetry flushing. Draining gives existing connections time to finish after a termination signal. The flush clock now starts after that phase ends. For illustration, a long-running streamed answer could reach the connection-drain limit during a deployment; pending telemetry would then receive its own opportunity to leave the process. This describes the intended mechanism, not a guarantee against every source of lost records.",
+        "Both timeouts default to ten seconds and accept values from one to 300 seconds. The previous shutdown setting remains a fallback for connection draining, with a deprecation warning. Kubernetes operators must allow enough termination grace for any pre-stop delay and both budgets. The release also renews expired media URLs when previews reopen; that is separate from the telemetry-delivery fix."
+      ],
+      "format": "full",
+      "takeaway": "For self-hosted gateway operators: review termination grace periods and test record delivery during deployments after upgrading.",
+      "image": "/edition-images/2026-10-27/langfuse-shutdown.webp",
+      "image_width": 1440,
+      "image_height": 720,
+      "image_provenance": {
+        "kind": "generated-editorial",
+        "generator": "built-in-imagegen",
+        "prompt": "Use case: infographic-diagram. Asset type: standalone newspaper editorial infographic PNG. Explain Langfuse v4.70.1 gateway shutdown: connection draining and telemetry flushing now have separate time budgets; the flush clock starts when draining ends. Warm newsprint paper, dark ink, restrained rust accent, stable newspaper serif typography, generous spacing. Landscape composition with a clear title and three sequential connected elements, readable at article width. Exact text: \"Give telemetry time to leave\"; \"Termination signal\"; \"Drain connections\"; \"Then flush telemetry\"; beneath the last two boxes: \"Separate time budgets\". One horizontal sequence; show pending record cards leaving the final box. No invented measurements, no product screenshot, no logos, no footer, no watermark. Keep diagram conceptual and show only the supported sequence.",
+        "based_on": [
+          "https://github.com/langfuse/langfuse/releases/tag/v4.70.1"
+        ],
+        "reviewed": true,
+        "sha256": "2eea92e5697a29fba8f9c5d5529fe454b50d0718526f22c787cc7eba747fb5a7",
+        "optimization": {
+          "format": "webp",
+          "quality": 82,
+          "max_width": 1440,
+          "source_sha256": "f1431f6f9b65a80a31895fd1516ebe2c94e8ef2c29afb29012e6ea85d42ce69e"
+        }
+      },
+      "source": "github",
+      "interest_score": 8,
+      "score_reason": "Direct telemetry-loss fix with separate deadlines, documented compatibility and a linked regression test.",
+      "source_evidence": {
+        "url": "https://github.com/langfuse/langfuse/releases/tag/v4.70.1",
+        "publication_date": "2026-10-26",
+        "raw_date": "2026-10-26T11:01:26Z",
+        "method": "Official GitHub release API published_at; stable, non-draft release. Shutdown behavior corroborated by linked PR 19082."
+      },
+      "dedupe_key": "release:langfuse/langfuse:v4.70.1"
+    },
+    {
+      "title": "Braintrust batches log uploads and records the tool output the model saw",
+      "url": "https://github.com/braintrustdata/braintrust-sdk-javascript/releases/tag/braintrust%403.40.0",
+      "publisher": "Braintrust",
+      "published": "2026-10-26",
+      "category_key": "observability",
+      "summary": "The JavaScript SDK adds delayed batching in long-lived Node processes and fixes tool-output records and duplicate token accounting.",
+      "body": [
+        "Braintrust’s JavaScript SDK records AI application activity for debugging and evaluation. Version 3.40.0 changes both how those records are delivered and what some contain. In long-lived Node processes, nearby log rows are now combined into fewer HTTP requests, with a delay of up to one second before flushing by default.",
+        "The release tells applications to call flush() before shutting down on signals or through process.exit(). BRAINTRUST_FLUSH_DELAY_MS controls the delay; serverless and other runtimes continue to flush immediately by default. For illustration, an application that logs a final tool call and exits immediately should explicitly finish sending its records rather than assume the batching timer has already fired.",
+        "The SDK also changes records for AI SDK tools that define toModelOutput: tool spans, which record individual operations, and parent tool results capture the transformed value shown to the model instead of the raw execution result. Pi coding-agent fixes preserve system instructions and tool declarations, and keep token usage on child model-call spans to avoid counting it again on the parent task. These are release-note claims; teams should check their own trace contents and shutdown behavior after upgrading."
+      ],
+      "format": "full",
+      "takeaway": "For JavaScript instrumentation owners: await final delivery at shutdown and verify that tool outputs and token totals match the model calls you intended to record.",
+      "image": "/edition-images/2026-10-27/braintrust-trace-records.webp",
       "image_width": 1440,
       "image_height": 960,
       "image_provenance": {
         "kind": "generated-editorial",
         "generator": "built-in-imagegen",
-        "prompt": "Use case: infographic-diagram\nAsset type: standalone newspaper editorial infographic PNG, landscape 1536 by 1024.\nPrimary request: explain the MiniMax text-model preset update in Phoenix 20.26.1. Source-supported facts from https://github.com/Arize-ai/phoenix/releases/tag/arize-phoenix-v20.26.1 and linked PR 17237: shared catalog lists MiniMax-M3.1-Flash first and MiniMax-M3 second; provider-default fallback is retained for saved and custom model IDs. Title verbatim \"Phoenix refreshes MiniMax presets\". Two clean side-by-side panels: one headed \"Preset catalog\" containing a vertical ordered list \"1  MiniMax-M3.1-Flash\" and \"2  MiniMax-M3\"; another headed \"Fallback preserved\" containing two simple document icons labelled \"Saved model IDs\" and \"Custom model IDs\" pointing to \"Provider default\". No arrow between the two independent panels. Small subtitle \"Phoenix 20.26.1\". Warm cream newsprint, dark ink, strong serif title, restrained teal and rust accents, flat diagram with generous spacing and extremely readable labels. Do not imply automatic model migration or performance improvements. No fake screenshot, no logos, no invented measurements. No watermark, no AI-generated label, no footer.",
+        "prompt": "Use case: infographic-diagram. Asset type: standalone PNG newspaper editorial infographic. Explain Braintrust JavaScript SDK 3.40.0 batching for long-lived Node processes. Nearby log rows gather into one upload batch; on shutdown explicitly call flush() to send pending records. Three elements: small record cards, batch tray, outgoing upload. Exact text: \"Send the final records\"; \"Nearby log rows\"; \"Batch upload\"; \"Before shutdown\"; \"Call flush()\". Use a distinct timeline along the bottom with the before-shutdown call connected to the batch. Do not imply serverless batching or guaranteed delivery. No numbers. Style: warm newsprint paper, dark ink, restrained rust accent, clear newspaper serif title, large readable labels and generous spacing. Landscape composition with only three to five elements. No logos, no fake screenshots, no unsupported architecture, no footer, no watermark.",
         "based_on": [
-          "https://github.com/Arize-ai/phoenix/releases/tag/arize-phoenix-v20.26.1"
+          "https://github.com/braintrustdata/braintrust-sdk-javascript/releases/tag/braintrust%403.40.0"
         ],
         "reviewed": true,
-        "sha256": "42b0a7d5a3ece354a73efa7407f2ecddc66d987390dadcfe1da1897aa47244a5",
+        "sha256": "b0aa6fcde2f1311af7d371418fa15008590ba0135c5eec312520a0a8956345e1",
         "optimization": {
           "format": "webp",
           "quality": 82,
           "max_width": 1440,
-          "source_sha256": "0221770589ffcbc2166e73892e40dd071e3f8c5305faf3946f62416aeffcdb72"
+          "source_sha256": "d34a2df8bfc540dcaa679443628e51c4e9d7dd563e6e953b8fe5c82bd6ce942e"
         }
       },
       "source": "github",
-      "interest_score": 6,
-      "dedupe_key": "release:arize-ai/phoenix:arize-phoenix-v20.26.1",
-      "score_reason": "Verified stable patch with a narrow evaluation-workflow improvement; no measured reliability or performance claim.",
+      "interest_score": 8,
+      "score_reason": "Concrete delivery and trace-fidelity fixes affect debugging, evaluation evidence and usage accounting.",
       "source_evidence": {
-        "url": "https://github.com/Arize-ai/phoenix/releases/tag/arize-phoenix-v20.26.1",
-        "publication_date": "2026-10-25",
-        "raw_date": "2026-10-25T18:28:18Z",
-        "method": "Official GitHub release API published_at; draft=false and prerelease=false. Release notes and linked PRs 17237 and 17209 reviewed."
-      }
+        "url": "https://github.com/braintrustdata/braintrust-sdk-javascript/releases/tag/braintrust%403.40.0",
+        "publication_date": "2026-10-26",
+        "raw_date": "2026-10-26T20:49:50Z",
+        "method": "Official GitHub releases API published_at, with draft:false and prerelease:false; primary release notes reviewed."
+      },
+      "dedupe_key": "release:braintrustdata/braintrust-sdk-javascript:braintrust@3.40.0"
     }
   ],
   "research": {
@@ -112,82 +246,105 @@
       "https://www.splunk.com/en_us/blog/observability.html",
       "https://www.dynatrace.com/news/",
       "https://www.datadoghq.com/blog/index.xml",
-      "https://www.testmuai.com/blog/langsmith-vs-braintrust/"
+      "https://langfuse.com/changelog",
+      "https://arize.com/blog/indirect-prompt-injection-ai-agents/",
+      "https://www.elastic.co/observability-labs/blog/log-sampling-significant-events",
+      "https://www.digitalocean.com/blog/managed-agents-enforce-nvidia-openshell",
+      "https://opentelemetry.io/blog/2026/case-for-opentelemetry-maintainership/",
+      "https://predeploy.ai/llm-evaluation"
     ],
     "excluded": [
       {
-        "url": "https://github.com/premtonx/statetrack",
-        "hn_id": "50236197",
-        "reason": "Generic infrastructure change tracking; no concrete new AI operating or evaluation change, and original October 25 publication not established."
+        "url": "https://demo.uvobservability.com/",
+        "hn_id": "50242126",
+        "reason": "Generic telemetry platform announcement. Original launch text is absent, author comment is flagged, demo serves only an application shell; no concrete AI-system observability mechanism established. Excluded without inventing feature claims."
       },
       {
-        "url": "https://www.redwoodresearch.org/blog/simulated-control-evaluations",
-        "hn_id": "50232753",
-        "reason": "Original Redwood article visibly dated October 24, 2026. October 25 HN resurfacing is not publication evidence."
+        "url": "https://stockpickersgame.com",
+        "hn_id": "50250758",
+        "reason": "Rule-based stock-market simulation; explicitly not AI agents, outside beat."
       },
       {
-        "url": "https://mta.rip/?station=127&route=1&view=trackmap",
-        "hn_id": "50235759",
-        "reason": "Subway visualization, outside AI observability beat."
+        "url": "https://dealvectorai.com",
+        "hn_id": "50250585",
+        "reason": "Canadian property market product, outside AI observability."
       },
       {
-        "url": "https://news.ycombinator.com/item?id=50234108",
-        "hn_id": "50234108",
-        "reason": "General agent adoption discussion with unverified statistics; no original concrete observability implementation or evaluation evidence."
+        "url": "https://arxiv.org/abs/2510.13939",
+        "hn_id": "50245780",
+        "reason": "Creative-writing preference study, outside operational AI observability; linked arXiv identifier is from 2025."
       },
       {
-        "url": "https://www.dailycal.org/news/campus/academics/ai-use-leads-uc-berkeley-math-professor-to-see-no-point-in-grading-homework/article_bdf1eae2-c08b-491f-b9f1-81a7cea177de.html",
-        "hn_id": "50233304",
-        "reason": "Education and homework grading, outside operating-AI observability beat."
+        "url": "https://news.ycombinator.com/item?id=50244521",
+        "hn_id": "50244521",
+        "reason": "Recruitment discussion, no concrete AI observability or evaluation implementation."
       },
       {
-        "url": "https://www.billboard.com/pro/elvis-presley-estate-sues-suno-anthropic/",
-        "hn_id": "50233231",
-        "reason": "Training-data copyright lawsuit, outside beat; same event as other Elvis lawsuit candidate."
+        "url": "https://news.ycombinator.com/item?id=50242424",
+        "hn_id": "50242424",
+        "reason": "Open-source marketing discussion, outside beat."
       },
       {
-        "url": "https://github.com/stubbi/openxet",
-        "hn_id": "50229716",
-        "reason": "Data-storage protocol implementation, no concrete AI observability change."
+        "url": "https://www.wired.com/story/ai-agents-are-trying-to-be-journalists-now/",
+        "hn_id": "50242281",
+        "reason": "Journalism automation, no concrete AI-system telemetry or evaluation change established."
       },
       {
-        "url": "https://www.hollywoodreporter.com/music/music-industry-news/anthropic-elvis-presley-lawsuit-ai-1236739617/",
-        "hn_id": "50229645",
-        "reason": "Training-data copyright lawsuit, outside beat and cross-post of same event."
+        "url": "https://www.theguardian.com/us-news/2026/oct/25/elvis-presley-anthropic-lawsuit-ai-models-music",
+        "hn_id": "50238561",
+        "reason": "Training-data copyright lawsuit, outside beat; linked primary article dated October 25, outside window."
       },
       {
-        "url": "https://github.com/Tomotsugu-dev/Hindsight",
-        "hn_id": "50229028",
-        "reason": "Personal computer activity tracking and summaries, not AI-system telemetry or evaluation."
+        "url": "https://github.com/langfuse/langfuse/releases/tag/v3.225.14",
+        "reason": "Stable October 26 release verified; Node security rebuild and skipped credential-dependent CI tests provide too little AI-observability-specific change for a separate story."
       },
       {
-        "url": "https://github.com/zephium-browser/Zephium",
-        "hn_id": "50227943",
-        "reason": "Browser/workspace launch, no concrete tracing or evaluation change."
+        "url": "https://opentelemetry.io/blog/2026/case-for-opentelemetry-maintainership/",
+        "reason": "Original October 26 publication verified. Project maintainership argument has no concrete AI-system operational change; outside this edition’s narrow beat."
       },
       {
-        "url": "https://codex.danielvaughan.com/2026/09/02/parsing-the-stream-live-trace-model-long-horizon-agents-codex-cli/",
-        "reason": "Original September article; October 25 update is not original publication."
+        "url": "https://www.digitalocean.com/blog/managed-agents-enforce-nvidia-openshell",
+        "reason": "Original published_at 2026-10-26T17:21:41.854Z verified separately from the visible Updated/dateModified. Agent sandbox and credential/egress controls, but no new telemetry/evaluation mechanism selected."
       },
       {
-        "url": "https://www.minnews.co.kr/atl/view.asp?a_id=31555",
-        "reason": "Secondary October 25 report refers to earlier Grafana announcement; historical Grafana event already covered October 21."
+        "url": "https://www.datadoghq.com/blog/best-practices-for-scaling-ab-testing-with-experiment-protocols/",
+        "reason": "October 26 RSS entry and primary article checked; general product experiment protocols, no AI-specific operational evaluation change selected."
       },
       {
-        "url": "https://www.deterministicai.org/incidents/",
-        "reason": "Rolling incident register version date does not establish original October 25 publication of underlying incidents."
+        "url": "https://www.datadoghq.com/blog/monitor-oracle-ai-database-across-clouds/",
+        "reason": "October 26 RSS entry and primary article checked; general database performance/migration/cost monitoring. AI branding alone does not establish AI-model or agent observability relevance."
       },
       {
-        "url": "https://docs.rs/crate/helios-observability/0.2.6",
-        "reason": "Generic Rust observability crate listing; no source-established AI-specific operational change selected."
+        "url": "https://blogs.oracle.com/observability/introducing-the-oci-observability-mcp-server",
+        "reason": "Uncertain supplemental candidate: primary page blocked HTTP 403 and web reader errors on repeated opens. Search-retrieved primary content describes general AI-assisted cloud troubleshooting, but full primary-page verification was unavailable; excluded, not treated as publication proof."
+      },
+      {
+        "url": "https://predeploy.ai/llm-evaluation",
+        "reason": "Primary guide and Written 2026-10-26 label read. General evaluation checklist without a new implementation, experiment or specific operational change; lower original-news value than selected material."
+      },
+      {
+        "url": "https://revoxy.ai/blog/llm-evaluation-metrics/",
+        "reason": "Search discovery only; generic synthesized evaluation guide, not a selected primary implementation or original experiment."
+      },
+      {
+        "url": "https://futurumgroup.com/insights/claude-agent-observability-cant-be-the-audit-record-on-its-own/",
+        "reason": "Secondary analysis of Claude agent observability; underlying launch was already covered in the October 15 issue. No rewritten-headline repeat."
+      },
+      {
+        "url": "https://aaif.io/working-groups/observability-traceability",
+        "reason": "Rolling meeting schedule; event date does not prove original publication of a story."
+      },
+      {
+        "url": "https://benchlm.ai/benchmarks",
+        "reason": "Rolling benchmark aggregation and update dates do not establish original publication of underlying events."
       }
     ],
-    "note": "Scoped sweep, not exhaustive. All 13 historical issues (76 stories) parsed and original events compared; selected items have no URL/event/cross-post duplicate. Supplied discovery artifact reused to respect run-only writes; all 10 HN items rechecked against official API and all 8 GitHub watchlist release APIs independently rechecked. HTTP failures on Arize/DigitalOcean/TestMu recovered with successful web reader; GitHub web-tool failure recovered by official API HTTP. No required check remains failed.",
+    "note": "Scoped sweep, not exhaustive. All 14 historical issues (78 stories) parsed and compared by URL, event and cross-post identity. Supplied discovery artifact reused to honor run-only write scope; fetch:sources was not rerun because it writes outside this run. All nine HN candidates and eight GitHub watchlist APIs independently checked. All eleven configured News surfaces read, with RSS and exact-date searches as supplements. Optional unreadable Oracle candidate was excluded with the access failure recorded; no selected story depends on snippets. No required source-channel check remains incomplete.",
     "source_checks": {
       "hn": {
         "status": "complete",
-        "candidates": 10,
-        "retained": 0,
+        "candidates": 9,
+        "retained": 1,
         "queries": [
           "observability",
           "LLM evaluation",
@@ -195,91 +352,94 @@
           "agent telemetry",
           "langfuse"
         ],
-        "method": "Supplied discovery and official HN API items source-14.txt through source-23.txt; individual exclusions recorded."
+        "method": "Supplied source candidates and official HN APIs in api-8.json through api-16.json; Show HN text verified, Ultraviolet comments separately reviewed."
       },
       "news": {
         "status": "complete",
         "configured_surfaces": 11,
-        "retained": 1,
+        "retained": 2,
         "notes": [
-          "Arize official index read with web tool after HTTP 403; latest dated research October 20; featured software factory already covered October 23.",
-          "Langfuse blog newest October 22; no October 25 item found.",
-          "LangChain latest visible article October 24; outside window.",
-          "Braintrust newest listed October 15; outside window.",
-          "OpenTelemetry newest October 23 ecosystem post; outside window.",
-          "Elastic newest October 22; outside window.",
-          "Datadog official index and RSS checked; newest RSS October 22.",
-          "Honeycomb newest October 20; outside window.",
-          "DigitalOcean read using web tool after HTTP 403; newest October 23 prompt caching already covered.",
-          "Splunk index explicitly No results; supplemental exact-date official-domain search found no candidate.",
-          "Dynatrace latest October 23; outside window.",
-          "Supplemental TestMu original scorer test retained; published October 25, not the October 19 experiment date."
+          "Arize index and new prompt-injection article read. Primary article datePublished and article:published_time establish October 26; selected experiment differs from October 15 permissions opinion covered October 16.",
+          "Langfuse blog and changelog checked; latest blog entries October 22, latest dated changelog FIPS entry October 23, outside window. October 26 stable release selected separately.",
+          "LangChain recent-post list latest October 24 company-harness article; no October 26 candidate found.",
+          "Braintrust official blog latest listed post October 15; stable October 26 JavaScript SDK release checked through official API separately.",
+          "OpenTelemetry original maintainership post dated October 26 read and excluded for beat relevance.",
+          "Elastic original log-sampling article time element and datePublished October 26 verified; selected for inspectable/evaluable AI extraction workflow.",
+          "Datadog blog plus RSS read; both October 26 entries followed to primary articles and excluded for lack of concrete AI-system relevance.",
+          "Honeycomb official index newest in-window-or-earlier entry October 20; no October 26 item found. October 27 page-level date is not original October 26 evidence.",
+          "DigitalOcean index and October 26 Managed Agents article read; original published_at distinguished from last_validated_at/dateModified, then excluded for beat scope.",
+          "Splunk official index returned No results; supplemental exact-date official-domain search found no eligible observability article. Search returned Red Hat app listing, a general infrastructure integration outside beat.",
+          "Dynatrace newsroom and embedded blog listings read; newest surfaced blog October 23 and releases October 12/October 1, outside window."
         ],
         "searches": [
-          "\"2026-10-25\" \"observability\"",
-          "\"October 25, 2026\" \"evaluation\" AI",
-          "\"October 25, 2026\" \"LLM\" tracing evaluation",
-          "site:splunk.com/en_us/blog \"October 25, 2026\"",
-          "\"2026-10-25\" \"agent\" \"monitoring\""
+          "\"October 26, 2026\" \"observability\"",
+          "\"2026-10-26\" \"evaluation\" LLM",
+          "\"October 26, 2026\" \"LangSmith\"",
+          "\"October 26, 2026\" \"AI\" tracing",
+          "site:splunk.com/en_us/blog \"October 26, 2026\" observability",
+          "site:datadoghq.com/blog \"October 26, 2026\""
         ]
       },
       "github": {
         "status": "complete",
-        "candidates": 1,
-        "retained": 1,
+        "candidates": 3,
+        "retained": 2,
         "checks": [
           {
             "repository": "langfuse/langfuse",
             "status": "complete",
-            "checked": 100,
-            "in_window": []
+            "releases_checked": 100,
+            "in_window": [
+              "https://github.com/langfuse/langfuse/releases/tag/v4.70.1",
+              "https://github.com/langfuse/langfuse/releases/tag/v3.225.14"
+            ]
           },
           {
             "repository": "Arize-ai/phoenix",
             "status": "complete",
-            "checked": 100,
-            "in_window": [
-              "https://github.com/Arize-ai/phoenix/releases/tag/arize-phoenix-v20.26.1"
-            ]
+            "releases_checked": 100,
+            "in_window": []
           },
           {
             "repository": "Arize-ai/openinference",
             "status": "complete",
-            "checked": 100,
+            "releases_checked": 100,
             "in_window": []
           },
           {
             "repository": "langchain-ai/langsmith-sdk",
             "status": "complete",
-            "checked": 100,
+            "releases_checked": 100,
             "in_window": []
           },
           {
             "repository": "braintrustdata/braintrust-sdk",
             "status": "complete",
-            "checked": 100,
-            "in_window": []
+            "releases_checked": 100,
+            "in_window": [
+              "https://github.com/braintrustdata/braintrust-sdk-javascript/releases/tag/braintrust%403.40.0"
+            ]
           },
           {
             "repository": "wandb/weave",
             "status": "complete",
-            "checked": 100,
+            "releases_checked": 100,
             "in_window": []
           },
           {
             "repository": "langwatch/langwatch",
             "status": "complete",
-            "checked": 100,
+            "releases_checked": 100,
             "in_window": []
           },
           {
             "repository": "Helicone/helicone",
             "status": "complete",
-            "checked": 4,
+            "releases_checked": 4,
             "in_window": []
           }
         ],
-        "method": "Official API stable published_at verified; notes and linked PR bodies reviewed."
+        "method": "Official GitHub release published_at; stable non-draft filtering. Langfuse PR 19082 read for the shutdown mechanism. Watchlist scope only."
       }
     }
   },
