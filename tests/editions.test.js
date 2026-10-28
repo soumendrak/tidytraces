@@ -50,6 +50,8 @@ test('machine-readable exports use the AI issue and preserve separate source and
   const feeds = latestIssueFeeds(parsed);
   assert.equal(JSON.parse(feeds.json).canonical_url, 'https://tidytraces.com/');
   assert.equal(JSON.parse(feeds.json).date, issue.date);
+  assert.equal(JSON.parse(feeds.json).dek, issue.dek);
+  assert.ok(!feeds.markdown.includes(issue.dek), 'the edition summary stays in metadata, not before the stories');
   assert.match(feeds.markdown, /Source claim\./);
   assert.match(feeds.markdown, /Why it matters: Editorial context\./);
   assert.match(latestIssueFeeds({ ...parsed, stories: [] }).markdown, /No qualifying stories/);

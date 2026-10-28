@@ -5,7 +5,7 @@ description: Create a dated AI observability newspaper from the previous day's v
 
 # AI Observability Newspaper
 
-Produce the edition, not just discovery candidates. Use the existing newspaper reader at `/`, with All / HN / News / GitHub Section buttons, All / Recommended / Must-Read signal filters, and the publication calendar. Do not add an engineering edition or redesign the site.
+Produce the edition, not just discovery candidates. Use the existing newspaper reader at `/`, with All / HN / News / GitHub Section buttons, All / Recommended / Must-Read signal filters, and the publication calendar. Do not add an engineering edition or redesign the site. Start the reading content with the news stories; do not add a pre-story TL;DR, edition introduction, or summary block in the reader, PDF, or Markdown export. Keep `dek` as a concise metadata description for page metadata and JSON, not a rendered introduction.
 
 ## Run inputs
 
@@ -32,7 +32,7 @@ Write an empty `stories` array only after completing all three source checks and
 
 ## Validate and finish
 
-Perform the editorial-policy readability review on every story, including briefs, before validating the draft. Read stories independently and out of order; revise any opening that assumes another story's context or product knowledge. Review topic ordering and the edition introduction to reduce context switching without changing source tabs, filters, or the reader. Confirm each infographic explains one source-supported idea and the text remains understandable without it. These are manual editorial checks; passing the automated validator does not establish readability.
+Perform the editorial-policy readability review on every story, including briefs, before validating the draft. Read stories independently and out of order; revise any opening that assumes another story's context or product knowledge. Review topic ordering and story openings to reduce context switching without changing source tabs, filters, or the reader. Confirm each infographic explains one source-supported idea and the text remains understandable without it. These are manual editorial checks; passing the automated validator does not establish readability.
 
 Use the repository's schema and `scripts/lib/daily-newspaper.js` draft validator. The daily validator enforces text depth, date evidence, global deduplication, and one reviewed local infographic per story. Asset validation checks actual WebP files, the 300 KB size limit, dimensions, complete decoding, and review hashes. Run `npm test`, `npm run check`, and `npm run build`. Confirm that the root and dated issue contain the new edition, RSS points to its dated URL, and `/md` and `/json` use its data. Keep existing reader/source/signal semantics intact.
 
