@@ -1,0 +1,298 @@
+{
+  "date": "2026-10-28",
+  "story_window": "2026-10-27",
+  "dek": "Follow model activity across platform and application traces, then check what your telemetry records—and whether credentials escape into it. Today’s maintenance update also tightens secret handling for Langfuse version 3.",
+  "stories": [
+    {
+      "title": "Elastic shows how to join Claude activity with application traces",
+      "url": "https://www.elastic.co/observability-labs/blog/ai-agent-observability-claude-platform-opentelemetry",
+      "publisher": "Elastic Observability Labs",
+      "published": "2026-10-27",
+      "category_key": "observability",
+      "summary": "Elastic documents two export paths for Claude activity: platform records from the console and application records from the SDK.",
+      "body": [
+        "Elastic, a platform for searching operational data, documents how to investigate Claude activity alongside application traces. Its October 27 guide uses OpenTelemetry, a standard for exporting telemetry. A span records one operation. Console export supplies platform activity; SDK export adds work inside the application.",
+        "For illustration, a slow assistant might spend time in a model request or in a custom tool. Sending both streams helps distinguish those steps. The guide says console export cannot see work that stays inside your process. That requires application instrumentation.",
+        "Setup needs a Claude organization administrator, an Elastic trace endpoint and a key allowed to write traces. The guide includes a test-span query to check delivery. Full-content mode includes conversation text; metadata-only mode omits it. Claude export is in public beta. Elastic’s GenAI tab is a technical preview on Serverless and Cloud Hosted 9.6; older versions show key values."
+      ],
+      "format": "full",
+      "takeaway": "For teams exporting Claude traces: test both platform and application coverage, and choose content retention before enabling export.",
+      "image": "/edition-images/2026-10-28/elastic-claude-traces.webp",
+      "image_width": 1440,
+      "image_height": 960,
+      "image_provenance": {
+        "kind": "generated-editorial",
+        "generator": "built-in-imagegen",
+        "prompt": "Use case: infographic-diagram. Asset type: standalone newspaper editorial infographic PNG. Title verbatim: \"Claude traces: two views of one turn\". Labels verbatim: \"Claude Console\", \"Platform activity\", \"Application SDK\", \"Your process\", \"Elastic trace\". Source-supported mechanism: Two complementary exports. Console sees platform activity; SDK adds work inside your own application. Draw two paths converging into one trace; do not imply console sees custom local tools. Style: warm cream newsprint, black ink, restrained rust accents, large clear serif headline and readable labels, hand-drawn linework, generous spacing. Landscape 3:2. Explain only this idea, no invented metrics, no fake screenshots, no logos, no watermark or footer.",
+        "based_on": [
+          "https://www.elastic.co/observability-labs/blog/ai-agent-observability-claude-platform-opentelemetry"
+        ],
+        "reviewed": true,
+        "sha256": "0a0342f38bf8fc0fd072ed85f756a87da0940f0e22467d1a92cbc114d0c09936",
+        "optimization": {
+          "format": "webp",
+          "quality": 82,
+          "max_width": 1440,
+          "source_sha256": "adc20dd512258c4e437e79f0d8d8b2a44b9f84669078b3d2be0d7f45dbd31f7b"
+        }
+      },
+      "source": "news",
+      "interest_score": 8,
+      "dedupe_key": "article:elastic.co/observability-labs/blog/ai-agent-observability-claude-platform-opentelemetry",
+      "score_reason": "Concrete two-path instrumentation guide with a delivery test, content-retention choices and version limits.",
+      "source_evidence": {
+        "url": "https://www.elastic.co/observability-labs/blog/ai-agent-observability-claude-platform-opentelemetry",
+        "publication_date": "2026-10-27",
+        "raw_date": "2026-10-27T00:00:00.000Z",
+        "method": "Visible original article date and publisher article dateTime; not modification metadata"
+      }
+    },
+    {
+      "title": "Langfuse records more facts about gateway model calls",
+      "url": "https://github.com/langfuse/langfuse/releases/tag/v4.71.0",
+      "publisher": "Langfuse",
+      "published": "2026-10-27",
+      "category_key": "observability",
+      "summary": "Langfuse 4.71.0 expands gateway generation records and fixes model attribution for routed LiteLLM calls.",
+      "body": [
+        "Langfuse is a platform for recording and evaluating AI application activity. Its 4.71.0 release adds model, key-owner, byte and upstream-error facts to generation records from its AI gateway, the component through which applications send model requests. These fields give operators more evidence about a call than a success or failure result alone.",
+        "For illustration, a team investigating a failed assistant request could examine the recorded upstream error and key owner while checking which model handled the call. That is a debugging use for the added facts, not a claim that the release automatically identifies the root cause. The release separately fixes OpenTelemetry recording to use the model dispatched by LiteLLM for routed calls, where the selected model can differ from the original request.",
+        "Other changes extract nested messages and Pydantic agent history into normalized input and output, and count self-hosted traces and observations from the events table in events-only mode. The notes describe implementation changes without a completeness benchmark. Teams should confirm their own records after upgrading, particularly when routing or ingestion settings differ between environments."
+      ],
+      "format": "full",
+      "takeaway": "For gateway operators: compare a routed call’s recorded model and error fields with provider evidence after upgrading.",
+      "image": "/edition-images/2026-10-28/langfuse-gateway-facts.webp",
+      "image_width": 1440,
+      "image_height": 960,
+      "image_provenance": {
+        "kind": "generated-editorial",
+        "generator": "built-in-imagegen",
+        "prompt": "Use case: infographic-diagram. Asset type: standalone newspaper editorial infographic PNG. Title verbatim: \"More evidence for gateway calls\". Labels verbatim: \"Model\", \"Key owner\", \"Bytes\", \"Upstream error\", \"Generation record\". Source-supported mechanism: Langfuse 4.71.0 adds these four facts to gateway generation records. Four labeled cards connecting to one record. No invented values. Style: warm cream newsprint, black ink, restrained rust accents, large clear serif headline and readable labels, hand-drawn linework, generous spacing. Landscape 3:2. Explain only this idea, no invented metrics, no fake screenshots, no logos, no watermark or footer.",
+        "based_on": [
+          "https://github.com/langfuse/langfuse/releases/tag/v4.71.0"
+        ],
+        "reviewed": true,
+        "sha256": "44a8e521b0a1e053b7b18c8920ed5c3f22ed494bd88e8741bb3b959803388ed5",
+        "optimization": {
+          "format": "webp",
+          "quality": 82,
+          "max_width": 1440,
+          "source_sha256": "b6ec3e580789c6921e40a414ff4828f64071f355ced3565aab04dbeb18d9b0c3"
+        }
+      },
+      "source": "github",
+      "interest_score": 8,
+      "dedupe_key": "release:langfuse/langfuse:v4.71.0",
+      "score_reason": "Release adds specific gateway evidence and corrects attribution of routed model calls.",
+      "source_evidence": {
+        "url": "https://github.com/langfuse/langfuse/releases/tag/v4.71.0",
+        "publication_date": "2026-10-27",
+        "raw_date": "2026-10-27T15:03:06Z",
+        "method": "GitHub release API published_at; draft=false and prerelease=false"
+      }
+    },
+    {
+      "title": "Weir checks where planted credentials leave an agent",
+      "url": "https://news.ycombinator.com/item?id=50261335",
+      "publisher": "Hacker News · CodeNinja778",
+      "published": "2026-10-27",
+      "category_key": "evals",
+      "summary": "Weir’s developer describes deterministic credential-flow tests that distinguish a clean run from a required path that was never exercised.",
+      "body": [
+        "Weir is a tool for checking whether credentials cross an AI agent’s boundaries. In its original Show HN announcement, the developer describes planting fake credentials where real ones would live, running the agent’s normal flows, and searching the resulting telemetry and outgoing requests for those exact values. The report identifies destinations without printing the credential.",
+        "For illustration, a fake API key placed in an agent’s environment might appear in a trace even though it was intended only for authentication. The test can expose that unwanted copy. If a required path was not exercised, the developer says Weir reports an incomplete result rather than a clean one. The test is deterministic and offline; Linux can additionally restrict outside network access.",
+        "A separate Claude Code mode observes known credentials entering a session or leaving in tool calls, with an optional tool-result redaction hook. These are limited checks: matching does not cover hashed, split or truncated credentials. Redaction cannot undo a credential already pasted into a conversation, and failed-command output can still reach the model. The announcement supplies the developer’s claims, not an independent security audit."
+      ],
+      "format": "full",
+      "takeaway": "For agent developers: test credential destinations with fake values and investigate incomplete runs before accepting a clean verdict.",
+      "image": "/edition-images/2026-10-28/weir-credential-tests.webp",
+      "image_width": 1440,
+      "image_height": 960,
+      "image_provenance": {
+        "kind": "generated-editorial",
+        "generator": "built-in-imagegen",
+        "prompt": "Use case: infographic-diagram. Standalone newspaper infographic PNG, landscape 3:2. Warm cream paper, black ink and rust accent, large serif labels, sparse clear line drawings. Title exact: \"Test where a fake key goes\". Three steps exact: \"Plant fake key\" then \"Run agent flows\" then \"Inspect destinations\". Below, THREE SEPARATE verdict cards with no checkmark icons: \"Leak\", \"Clean\", \"Incomplete\". Exact explanatory line: \"Required path not exercised = incomplete\". This illustrates Weir testing known fake credential values in outgoing telemetry and requests. Do not combine Clean and Incomplete in one card. No real credentials. No invented metrics, no fake screenshot, no watermark, no footer. Spell labels exactly.",
+        "based_on": [
+          "https://news.ycombinator.com/item?id=50261335"
+        ],
+        "reviewed": true,
+        "sha256": "c1783e3784af7fb37a376546377f627804b10f99b3ae309f64700164072aee9e",
+        "optimization": {
+          "format": "webp",
+          "quality": 82,
+          "max_width": 1440,
+          "source_sha256": "385a6de116907a4bba901dc21cf2c5028710d7902a4c35a51bc139fe672a34be"
+        }
+      },
+      "source": "hn",
+      "interest_score": 8,
+      "hn_id": "50261335",
+      "comments": "https://news.ycombinator.com/item?id=50261335",
+      "dedupe_key": "hn-original:50261335",
+      "score_reason": "Reproducible credential-flow testing approach with explicit incomplete-run semantics and matching limits; not independently audited.",
+      "source_evidence": {
+        "url": "https://news.ycombinator.com/item?id=50261335",
+        "publication_date": "2026-10-27",
+        "raw_date": "2026-10-27T16:07:29Z",
+        "method": "Original first-party Show HN announcement text and official HN API Unix timestamp 1793117249"
+      }
+    },
+    {
+      "title": "Langfuse backports webhook-secret and access checks to version 3",
+      "url": "https://github.com/langfuse/langfuse/releases/tag/v3.225.15",
+      "publisher": "Langfuse",
+      "published": "2026-10-27",
+      "category_key": "observability",
+      "summary": "The version 3 maintenance release masks and encrypts legacy webhook headers and requires secrets again when destinations change.",
+      "body": [
+        "Langfuse records AI application activity and supports automation around that data. Its 3.225.15 maintenance release brings four fixes to the version 3 branch, including two affecting secrets used by outbound integrations. The release notes describe masking and encrypting legacy webhook headers, plus requiring secrets again when a webhook or PostHog destination changes.",
+        "For illustration, an operator changing the destination of an existing automation should review which credentials authorize the new connection. Requiring those secrets again makes the destination change an explicit configuration step. This is an illustrative administrative workflow; the release notes do not describe an observed exploit, affected customer count, or a complete migration procedure.",
+        "The same release checks that a project referenced by an invitation belongs to the organization and validates an annotation queue when items are added. Annotation queues organize examples for human review, so their access and item-handling checks matter to evaluation operations. All four entries are identified as backports. This maintenance update is distinct from the version 4 gateway telemetry changes; version 3 operators should review the linked fixes for their deployment."
+      ],
+      "format": "full",
+      "takeaway": "For version 3 administrators: review automation destinations and secret handling when planning this maintenance update.",
+      "image": "/edition-images/2026-10-28/langfuse-v3-secrets.webp",
+      "image_width": 1440,
+      "image_height": 960,
+      "image_provenance": {
+        "kind": "generated-editorial",
+        "generator": "built-in-imagegen",
+        "prompt": "Use case: infographic-diagram. Asset type: standalone newspaper editorial infographic PNG. Title verbatim: \"Review secrets when destinations change\". Labels verbatim: \"Webhook headers\", \"Mask and encrypt\", \"Destination changes\", \"Require secrets again\", \"Langfuse 3.225.15\". Source-supported mechanism: Two separate rows illustrating two verified fixes: legacy webhook headers masked and encrypted; webhook or PostHog destination changes require secrets again. Do not suggest changing destination automatically encrypts headers. Style: warm cream newsprint, black ink, restrained rust accents, large clear serif headline and readable labels, hand-drawn linework, generous spacing. Landscape 3:2. Explain only this idea, no invented metrics, no fake screenshots, no logos, no watermark or footer.",
+        "based_on": [
+          "https://github.com/langfuse/langfuse/releases/tag/v3.225.15"
+        ],
+        "reviewed": true,
+        "sha256": "615c6355e45d50e5f1b31e233c89503ded3a6949ec2db83df457f3aff3ac60dc",
+        "optimization": {
+          "format": "webp",
+          "quality": 82,
+          "max_width": 1440,
+          "source_sha256": "3c84851761b31ae11662200126dba7650b2127abf220cd9c1c3edf7a76ec772f"
+        }
+      },
+      "source": "github",
+      "interest_score": 8,
+      "dedupe_key": "release:langfuse/langfuse:v3.225.15",
+      "score_reason": "Version 3 backports address outbound secret handling and access validation in an AI telemetry platform.",
+      "source_evidence": {
+        "url": "https://github.com/langfuse/langfuse/releases/tag/v3.225.15",
+        "publication_date": "2026-10-27",
+        "raw_date": "2026-10-27T14:40:56Z",
+        "method": "GitHub release API published_at; draft=false and prerelease=false"
+      }
+    }
+  ],
+  "edition": "AI Observability Daily",
+  "research": {
+    "status": "complete",
+    "completed_sources": [
+      "hn",
+      "news",
+      "github"
+    ],
+    "checked_urls": [
+      "https://arize.com/blog/",
+      "https://langfuse.com/blog",
+      "https://www.langchain.com/blog",
+      "https://www.braintrust.dev/blog",
+      "https://opentelemetry.io/blog/",
+      "https://www.elastic.co/observability-labs/blog",
+      "https://www.datadoghq.com/blog/",
+      "https://www.honeycomb.io/blog/",
+      "https://www.digitalocean.com/blog",
+      "https://www.splunk.com/en_us/blog/observability.html",
+      "https://www.dynatrace.com/news/",
+      "https://www.elastic.co/observability-labs/blog/ai-agent-observability-claude-platform-opentelemetry",
+      "https://arize.com/blog/i-put-a-ghost-in-claude-code-then-i-evaluated-it/",
+      "https://www.langchain.com/blog/design-agent",
+      "https://grafana.com/blog/agent-observability-faq-understand-the-value-of-monitoring-evaluating-and-improving-your-ai-agents/"
+    ],
+    "excluded": [
+      {
+        "url": "https://flightdeck-hq.com/",
+        "reason": "No dated first-party explanatory announcement beyond title; publisher page undated; conservatively excluded."
+      },
+      {
+        "url": "https://crulon.ai/#talk",
+        "reason": "Not selected: generic AI/business material or no independently verified in-window original publication and sufficiently concrete AI-observability content."
+      },
+      {
+        "url": "https://www.nytimes.com/interactive/2026/10/26/technology/ai-agent-hacks-training.html",
+        "reason": "Linked article URL identifies October 26, outside frozen window; HN resurfacing is not publication evidence."
+      },
+      {
+        "url": "https://formstep.io/",
+        "reason": "Not selected: generic AI/business material or no independently verified in-window original publication and sufficiently concrete AI-observability content."
+      },
+      {
+        "url": "https://huggingface.co/datasets/taktekhq/lebanese-legislation",
+        "reason": "Not selected: generic AI/business material or no independently verified in-window original publication and sufficiently concrete AI-observability content."
+      },
+      {
+        "url": "https://www.theregister.com/ai-and-ml/2026/10/26/alibabas-qwen-ai-caught-trying-to-contact-server-in-china/5305561",
+        "reason": "Linked article URL identifies October 26, outside frozen window; HN resurfacing is not publication evidence."
+      },
+      {
+        "url": "https://nimwiki.com/publicwikis/aijobs/",
+        "reason": "Not selected: generic AI/business material or no independently verified in-window original publication and sufficiently concrete AI-observability content."
+      },
+      {
+        "url": "https://www.withnative.ai/research-and-posts/markdown-context-benchmark",
+        "reason": "Not selected: generic AI/business material or no independently verified in-window original publication and sufficiently concrete AI-observability content."
+      },
+      {
+        "url": "https://www.maxtaylor.me/articles/same-price-different-reason-probing-ai-pricing-agents-for-collusion",
+        "reason": "Not selected: generic AI/business material or no independently verified in-window original publication and sufficiently concrete AI-observability content."
+      },
+      {
+        "url": "https://www.bloomberg.com/news/articles/2026-10-27/ai-talent-war-has-quant-firms-racing-to-fund-phds-build-labs",
+        "reason": "Not selected: generic AI/business material or no independently verified in-window original publication and sufficiently concrete AI-observability content."
+      },
+      {
+        "url": "https://getkavel.com/ai-crawlers/",
+        "reason": "Not selected: generic AI/business material or no independently verified in-window original publication and sufficiently concrete AI-observability content."
+      },
+      {
+        "url": "https://macpackwala.workflows-of-ai.com/",
+        "reason": "Not selected: generic AI/business material or no independently verified in-window original publication and sufficiently concrete AI-observability content."
+      },
+      {
+        "url": "https://zenodo.org/records/23642239",
+        "reason": "Not selected: generic AI/business material or no independently verified in-window original publication and sufficiently concrete AI-observability content."
+      },
+      {
+        "url": "https://www.wired.com/story/ai-agents-are-trying-to-be-journalists-now/",
+        "reason": "Not selected: generic AI/business material or no independently verified in-window original publication and sufficiently concrete AI-observability content."
+      },
+      {
+        "url": "https://twitter.com/IntCyberDigest/status/2114838732197224927",
+        "reason": "Not selected: generic AI/business material or no independently verified in-window original publication and sufficiently concrete AI-observability content."
+      },
+      {
+        "url": "https://news.ycombinator.com/item?id=50253561",
+        "reason": "Not selected: generic AI/business material or no independently verified in-window original publication and sufficiently concrete AI-observability content."
+      },
+      {
+        "url": "https://news.ycombinator.com/item?id=50257116",
+        "reason": "Ask HN request for opinions without a substantive new source announcement."
+      },
+      {
+        "url": "https://grafana.com/blog/agent-observability-faq-understand-the-value-of-monitoring-evaluating-and-improving-your-ai-agents/",
+        "reason": "FAQ revisits the Agent Observability launch already covered on October 21; no separate new release established."
+      },
+      {
+        "url": "https://www.langchain.com/blog/design-agent",
+        "reason": "Dated October 27 but primarily creative production and agent UX; not selected for this AI-observability-only edition."
+      },
+      {
+        "url": "https://arize.com/blog/i-put-a-ghost-in-claude-code-then-i-evaluated-it/",
+        "reason": "Verified October 27 datePublished; eligible seasonal coding-mod experiment, not selected for this focused four-story edition."
+      },
+      {
+        "url": "https://opentelemetry.io/blog/",
+        "reason": "October 27 OTTL stability post is general telemetry news; no concrete AI-specific operational change selected."
+      }
+    ],
+    "note": "Scoped primary-source sweep, not exhaustive web coverage. Used supplied discovery artifact fetched 2026-10-28T00:49:55.485Z; did not rerun fetch:sources because this session may write only inside its run directory. Reviewed every historical issue (October 13–27), comparing canonical URLs, announcement identities and headlines. Official HN API confirms the retained original Show HN text and timestamp. Both GitHub stable releases were rechecked directly against the API. Configured news surfaces fetched successfully by HTTP; saved snapshots and news-checks.json. Web-reader API failures were resolved through direct HTTP. No modification dates used."
+  }
+}

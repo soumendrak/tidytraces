@@ -1,91 +1,75 @@
-# AI Observability Daily — 2026-10-27
+# AI Observability Daily — 2026-10-28
 
 By Soumendra Kumar Sahoo
 
 Canonical: https://tidytraces.com/
-Coverage window: 2026-10-26
+Coverage window: 2026-10-27
 
-Keep the records that explain an agent’s actions, then check them against what was allowed. Today’s stories cover readable session history, tool-level evaluation, evidence coverage in AI log analysis, and two fixes for trustworthy trace delivery.
+Follow model activity across platform and application traces, then check what your telemetry records—and whether credentials escape into it. Today’s maintenance update also tightens secret handling for Langfuse version 3.
 
-## Mainplane keeps agent session state in readable files on a separate server
+## Elastic shows how to join Claude activity with application traces
 
-Source: Hacker News · Alexander9 — https://news.ycombinator.com/item?id=50246690
-Published: 2026-10-26
+Source: Elastic Observability Labs — https://www.elastic.co/observability-labs/blog/ai-agent-observability-claude-platform-opentelemetry
+Published: 2026-10-27
+Channel: news
+
+Elastic, a platform for searching operational data, documents how to investigate Claude activity alongside application traces. Its October 27 guide uses OpenTelemetry, a standard for exporting telemetry. A span records one operation. Console export supplies platform activity; SDK export adds work inside the application.
+
+For illustration, a slow assistant might spend time in a model request or in a custom tool. Sending both streams helps distinguish those steps. The guide says console export cannot see work that stays inside your process. That requires application instrumentation.
+
+Setup needs a Claude organization administrator, an Elastic trace endpoint and a key allowed to write traces. The guide includes a test-span query to check delivery. Full-content mode includes conversation text; metadata-only mode omits it. Claude export is in public beta. Elastic’s GenAI tab is a technical preview on Serverless and Cloud Hosted 9.6; older versions show key values.
+
+Why it matters: For teams exporting Claude traces: test both platform and application coverage, and choose content retention before enabling export.
+
+![Elastic shows how to join Claude activity with application traces](/edition-images/2026-10-28/elastic-claude-traces.webp)
+
+## Langfuse records more facts about gateway model calls
+
+Source: Langfuse — https://github.com/langfuse/langfuse/releases/tag/v4.71.0
+Published: 2026-10-27
+Channel: github
+
+Langfuse is a platform for recording and evaluating AI application activity. Its 4.71.0 release adds model, key-owner, byte and upstream-error facts to generation records from its AI gateway, the component through which applications send model requests. These fields give operators more evidence about a call than a success or failure result alone.
+
+For illustration, a team investigating a failed assistant request could examine the recorded upstream error and key owner while checking which model handled the call. That is a debugging use for the added facts, not a claim that the release automatically identifies the root cause. The release separately fixes OpenTelemetry recording to use the model dispatched by LiteLLM for routed calls, where the selected model can differ from the original request.
+
+Other changes extract nested messages and Pydantic agent history into normalized input and output, and count self-hosted traces and observations from the events table in events-only mode. The notes describe implementation changes without a completeness benchmark. Teams should confirm their own records after upgrading, particularly when routing or ingestion settings differ between environments.
+
+Why it matters: For gateway operators: compare a routed call’s recorded model and error fields with provider evidence after upgrading.
+
+![Langfuse records more facts about gateway model calls](/edition-images/2026-10-28/langfuse-gateway-facts.webp)
+
+## Weir checks where planted credentials leave an agent
+
+Source: Hacker News · CodeNinja778 — https://news.ycombinator.com/item?id=50261335
+Published: 2026-10-27
 Channel: hn
 
-Mainplane is an agent harness: software that coordinates model calls, tools and session state. In its first-party Show HN launch, developer Alexander describes keeping that coordination on a separate server while shell and file operations run on connected worker machines. Each session is stored in one append-only file, where new events are added at the end rather than rewriting earlier ones, which the developer presents as both recoverable state and an agent trace.
+Weir is a tool for checking whether credentials cross an AI agent’s boundaries. In its original Show HN announcement, the developer describes planting fake credentials where real ones would live, running the agent’s normal flows, and searching the resulting telemetry and outgoing requests for those exact values. The report identifies destinations without printing the credential.
 
-For illustration, an engineer investigating a failed task could inspect the session file on the server even if the laptop running a tool had disconnected. The design separates where actions happen from where their history lives. The announcement says a new session can search an earlier state file for context, rather than relying on a condensed summary. That is a described workflow, not an independently tested recovery guarantee.
+For illustration, a fake API key placed in an agent’s environment might appear in a trace even though it was intended only for authentication. The test can expose that unwanted copy. If a required path was not exercised, the developer says Weir reports an incomplete result rather than a clean one. The test is deterministic and offline; Linux can additionally restrict outside network access.
 
-The server holds model credentials and routes tool calls over a built-in private network that uses WireGuard, an encrypted VPN protocol. The developer also explicitly describes unrestricted agent access within the chosen worker computer. Readable session files therefore help investigation but do not establish permission enforcement, complete audit coverage or safe execution. This edition has not tested the harness.
+A separate Claude Code mode observes known credentials entering a session or leaving in tool calls, with an optional tool-result redaction hook. These are limited checks: matching does not cover hashed, split or truncated credentials. Redaction cannot undo a credential already pasted into a conversation, and failed-command output can still reach the model. The announcement supplies the developer’s claims, not an independent security audit.
 
-Why it matters: For teams evaluating workstation agents: inspect session-file coverage and recovery behavior, and assess worker permissions separately from trace readability.
+Why it matters: For agent developers: test credential destinations with fake values and investigate incomplete runs before accepting a clean verdict.
 
-![Mainplane keeps agent session state in readable files on a separate server](/edition-images/2026-10-27/mainplane-session-files.webp)
+![Weir checks where planted credentials leave an agent](/edition-images/2026-10-28/weir-credential-tests.webp)
 
-## Arize’s tool-call checks catch leaks that an answer-only judge misses
+## Langfuse backports webhook-secret and access checks to version 3
 
-Source: Arize AI — https://arize.com/blog/indirect-prompt-injection-ai-agents/
-Published: 2026-10-26
-Channel: news
-
-Arize Phoenix records the steps an AI agent takes so engineers can inspect and evaluate its behavior. Arize’s new experiment uses those traces to investigate indirect prompt injection: instructions in an external page that redirect an agent away from the user’s task. A support agent read 100 poisoned order pages, once each, using synthetic customer records.
-
-Arize reports 28 unauthorized lookups that returned data. A deterministic check examined tool calls against the logged-in customer’s permitted scope and flagged all 28. A language-model judge reading only final answers identified five. The difference matters because an agent can retrieve forbidden information without repeating it in its reply. In the article’s example, an order-summary request led to lookups for a different customer named by the fetched page.
-
-The team then bound customer tools to the session identity in code. In that test, 20 attempted out-of-scope lookups returned no data. These are vendor-reported results from one experimental setup, not a universal security rate. Arize also describes applying evaluations and monitors to production traces. Engineers should validate a judge against known tool-level outcomes before treating its score as evidence of access compliance.
-
-Why it matters: For teams evaluating agents with customer-data tools: test access scope at the tool boundary and compare answer judges with trace-level ground truth.
-
-![Arize’s tool-call checks catch leaks that an answer-only judge misses](/edition-images/2026-10-27/arize-scope-checks.webp)
-
-## Elastic checks what log sampling leaves out before generating detection rules
-
-Source: Elastic Observability Labs — https://www.elastic.co/observability-labs/blog/log-sampling-significant-events
-Published: 2026-10-26
-Channel: news
-
-Elastic Significant Events uses language models to help turn unfamiliar logs into detection rules. Its October 26 engineering article separates learning what a log source contains from generating queries about it. That separation makes it possible to investigate whether a poor rule came from missing evidence or from misusing a fact already extracted.
-
-The extraction stage records Knowledge Indicators: descriptions of services, dependencies, technologies, infrastructure and schema, with supporting log evidence. By default, a run reads up to five batches of 20 documents and can stop earlier when successive batches add nothing new. Code steers sampling toward unexplained entities and diverse message patterns, alongside random samples. A workflow exposes each extraction run for inspection.
-
-In the source’s demonstration, a generic error-level query missed an incident because the relevant services did not record severity in the expected way. The example shows why checking generated query syntax alone cannot establish detection coverage. Engineers building AI-assisted operations tools should inspect what the model actually saw. This is the first part of a vendor engineering series; query generation and final event detection are reserved for later articles, and extraction can still miss important facts.
-
-Why it matters: For teams building AI log-analysis workflows: evaluate evidence coverage separately from generated-query quality, and retain inspectable extraction runs.
-
-![Elastic checks what log sampling leaves out before generating detection rules](/edition-images/2026-10-27/elastic-sampling.webp)
-
-## Langfuse gives telemetry time to flush after gateway connections drain
-
-Source: Langfuse — https://github.com/langfuse/langfuse/releases/tag/v4.70.1
-Published: 2026-10-26
+Source: Langfuse — https://github.com/langfuse/langfuse/releases/tag/v3.225.15
+Published: 2026-10-27
 Channel: github
 
-Langfuse is a platform for recording and evaluating AI application activity. Its AI gateway handles model requests and sends telemetry about them. Release v4.70.1 fixes a shutdown problem: a slow connection could consume the entire shutdown deadline, leaving no time to send pending inference records or operational metrics.
+Langfuse records AI application activity and supports automation around that data. Its 3.225.15 maintenance release brings four fixes to the version 3 branch, including two affecting secrets used by outbound integrations. The release notes describe masking and encrypting legacy webhook headers, plus requiring secrets again when a webhook or PostHog destination changes.
 
-The linked implementation separates connection draining from telemetry flushing. Draining gives existing connections time to finish after a termination signal. The flush clock now starts after that phase ends. For illustration, a long-running streamed answer could reach the connection-drain limit during a deployment; pending telemetry would then receive its own opportunity to leave the process. This describes the intended mechanism, not a guarantee against every source of lost records.
+For illustration, an operator changing the destination of an existing automation should review which credentials authorize the new connection. Requiring those secrets again makes the destination change an explicit configuration step. This is an illustrative administrative workflow; the release notes do not describe an observed exploit, affected customer count, or a complete migration procedure.
 
-Both timeouts default to ten seconds and accept values from one to 300 seconds. The previous shutdown setting remains a fallback for connection draining, with a deprecation warning. Kubernetes operators must allow enough termination grace for any pre-stop delay and both budgets. The release also renews expired media URLs when previews reopen; that is separate from the telemetry-delivery fix.
+The same release checks that a project referenced by an invitation belongs to the organization and validates an annotation queue when items are added. Annotation queues organize examples for human review, so their access and item-handling checks matter to evaluation operations. All four entries are identified as backports. This maintenance update is distinct from the version 4 gateway telemetry changes; version 3 operators should review the linked fixes for their deployment.
 
-Why it matters: For self-hosted gateway operators: review termination grace periods and test record delivery during deployments after upgrading.
+Why it matters: For version 3 administrators: review automation destinations and secret handling when planning this maintenance update.
 
-![Langfuse gives telemetry time to flush after gateway connections drain](/edition-images/2026-10-27/langfuse-shutdown.webp)
-
-## Braintrust batches log uploads and records the tool output the model saw
-
-Source: Braintrust — https://github.com/braintrustdata/braintrust-sdk-javascript/releases/tag/braintrust%403.40.0
-Published: 2026-10-26
-Channel: github
-
-Braintrust’s JavaScript SDK records AI application activity for debugging and evaluation. Version 3.40.0 changes both how those records are delivered and what some contain. In long-lived Node processes, nearby log rows are now combined into fewer HTTP requests, with a delay of up to one second before flushing by default.
-
-The release tells applications to call flush() before shutting down on signals or through process.exit(). BRAINTRUST_FLUSH_DELAY_MS controls the delay; serverless and other runtimes continue to flush immediately by default. For illustration, an application that logs a final tool call and exits immediately should explicitly finish sending its records rather than assume the batching timer has already fired.
-
-The SDK also changes records for AI SDK tools that define toModelOutput: tool spans, which record individual operations, and parent tool results capture the transformed value shown to the model instead of the raw execution result. Pi coding-agent fixes preserve system instructions and tool declarations, and keep token usage on child model-call spans to avoid counting it again on the parent task. These are release-note claims; teams should check their own trace contents and shutdown behavior after upgrading.
-
-Why it matters: For JavaScript instrumentation owners: await final delivery at shutdown and verify that tool outputs and token totals match the model calls you intended to record.
-
-![Braintrust batches log uploads and records the tool output the model saw](/edition-images/2026-10-27/braintrust-trace-records.webp)
+![Langfuse backports webhook-secret and access checks to version 3](/edition-images/2026-10-28/langfuse-v3-secrets.webp)
 
 ---
 
