@@ -5,8 +5,6 @@ By Soumendra Kumar Sahoo
 Canonical: https://tidytraces.com/
 Coverage window: 2026-10-27
 
-Follow model activity across platform and application traces, then check what your telemetry records—and whether credentials escape into it. Today’s maintenance update also tightens secret handling for Langfuse version 3.
-
 ## Elastic shows how to join Claude activity with application traces
 
 Source: Elastic Observability Labs — https://www.elastic.co/observability-labs/blog/ai-agent-observability-claude-platform-opentelemetry

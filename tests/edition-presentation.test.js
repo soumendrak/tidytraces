@@ -66,6 +66,7 @@ test('every built edition page has the top byline and no visible per-image AI ca
     for (const file of ['index.html', ...days.map((day) => `ai-observability/${day}/index.html`)]) {
       const html = await readFile(path.join(outDir, file), 'utf8');
       assert.deepEqual(auditEditionHtml(html), [], file);
+      assert.doesNotMatch(html, /class="edition-dek"/, `${file} starts with stories rather than an edition summary`);
       const day = file === 'index.html' ? days.toSorted().at(-1) : file.split('/')[1];
       assert.match(html, new RegExp(`href="/pdf/${day}\\.pdf" download="tidy-traces-${day}\\.pdf"`), 'the download belongs to the displayed issue');
     }

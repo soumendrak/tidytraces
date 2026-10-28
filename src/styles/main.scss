@@ -1815,11 +1815,6 @@ body.modal-open {
     margin: 2mm 0;
   }
 
-  .masthead .edition-dek {
-    font-size: 10pt;
-    margin: 3mm auto 2mm;
-  }
-
   .masthead .edition-window {
     font-size: 8pt;
     margin: 2mm 0 3mm;
@@ -1940,5 +1935,4 @@ body.modal-open {
   background: rgba(255,255,255,0.015);
 }
 
-.edition-dek { max-width:760px; margin:1.2rem auto .6rem; color:var(--ink-soft); font-size:1rem; }
 .edition-window { color:var(--ink-faint); font-size:.75rem; margin:.5rem 0 1rem; }

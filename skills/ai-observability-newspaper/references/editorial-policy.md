@@ -36,7 +36,7 @@ Use this consistent structure within the existing fields; do not add schema fiel
 
 Keep full stories normally 150–220 body words, with the existing 130-word minimum. Apply the same logical sequence compactly to valid 60+ word briefs; retain their source-specific `brief_reason`. Do not shorten stories below the existing gates or pad thin announcements. Make the opening understandable before introducing specialist detail; make the technical depth useful to readers who continue.
 
-Reduce topic changes across an edition: order related stories together in the `stories` array where the existing reader permits, and use `dek` to introduce the edition's main themes in plain language. Use brief topic signposts in story openings when helpful. Preserve independent comprehension, source classifications, source-tab order, signal filters, and existing category values; do not imply a causal connection between unrelated announcements or add new section objects.
+Reduce topic changes across an edition: order related stories together in the `stories` array where the existing reader permits, and keep `dek` as a concise metadata description of the edition. Do not render it or add a TL;DR, introduction, or summary block before the stories in the reader, PDF, or Markdown export. Use brief topic signposts in story openings when helpful. Preserve independent comprehension, source classifications, source-tab order, signal filters, and existing category values; do not imply a causal connection between unrelated announcements or add new section objects.
 
 ### Illustrative writing pattern
 
@@ -63,7 +63,7 @@ Before publication, read every story independently and in a different order. Rev
 - Does one concrete example make the mechanism easier to understand, with hypothetical details clearly distinguished from source evidence?
 - Does the technical detail follow the explanation, and does the takeaway identify who is affected and a justified action or implication?
 - Does the story make sense without its infographic, and does that infographic explain one source-supported idea rather than introduce another learning task?
-- Do the edition introduction and story ordering help readers move between themes while keeping every story self-contained?
+- Do story ordering and individual openings help readers move between themes while keeping every story self-contained?
 
 Treat these as manual quality gates. Automated word-count, evidence, and asset validation remains required and does not replace this review.
 
