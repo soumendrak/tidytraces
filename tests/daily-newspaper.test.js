@@ -48,6 +48,15 @@ test('daily contract blocks relabelled dates, incomplete research, thin text and
   assert.equal(validateDailyDraft({ ...issue, stories: [] }, dates).stories.length, 0);
 });
 
+test('story text carries no dates or version numbers; the takeaway stays separate', () => {
+  for (const text of ['Shipped on 2026-10-12.', 'Released October 12 to all users.', 'Upgrade to v4.57.0 first.', 'Version 1.2.3 adds spans.']) {
+    for (const field of ['title', 'summary', 'takeaway']) assert.throws(() => validateDailyDraft({ ...issue, stories: [{ ...story, [field]: text }] }, dates), /dates or version numbers/, `${field}: ${text}`);
+    assert.throws(() => validateDailyDraft({ ...issue, stories: [{ ...story, body: [`${story.body[0]} ${text}`] }] }, dates), /dates or version numbers/, `body: ${text}`);
+  }
+  assert.doesNotThrow(() => validateDailyDraft({ ...issue, stories: [{ ...story, summary: 'Scores rose from 0.8 to 0.9 and latency fell 2.5x; teams may 3 times retry.' }] }, dates));
+  assert.throws(() => validateDailyDraft({ ...issue, stories: [{ ...story, takeaway: ' ' }] }, dates), /why it matters/);
+});
+
 test('deduplication catches same-day URL variants and historic cross-posts with rewritten titles', () => {
   assert.throws(() => assertNoDuplicateStories({ ...issue, stories: [story, { ...story, title: 'Other headline', dedupe_key: 'other', url: story.url + '/?utm_source=hn#read' }] }), /Duplicate/);
   const previous = { date: '2026-10-12', stories: [{ ...story, title: 'Earlier headline', url: 'https://other.example/blog', source_evidence: undefined }] };

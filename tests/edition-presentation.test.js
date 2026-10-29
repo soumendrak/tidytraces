@@ -67,6 +67,7 @@ test('every built edition page has the top byline and no visible per-image AI ca
       const html = await readFile(path.join(outDir, file), 'utf8');
       assert.deepEqual(auditEditionHtml(html), [], file);
       assert.doesNotMatch(html, /class="edition-dek"/, `${file} starts with stories rather than an edition summary`);
+      assert.doesNotMatch(html.match(/<div class="story-body[^]*?<\/div>/g)?.join('') ?? '', /Why it matters/, `${file} keeps why-it-matters out of story bodies`);
       const day = file === 'index.html' ? days.toSorted().at(-1) : file.split('/')[1];
       assert.match(html, new RegExp(`href="/pdf/${day}\\.pdf" download="tidy-traces-${day}\\.pdf"`), 'the download belongs to the displayed issue');
     }
@@ -106,6 +107,39 @@ test('every built edition page has the top byline and no visible per-image AI ca
       await site.keyboard.press('Enter');
       assert.deepEqual(await site.evaluate(() => [window.scrollY, document.activeElement.tagName]), [0, 'MAIN'], 'reduced motion jumps to the top and focus moves to main');
       await site.waitForFunction(() => document.querySelector('.back-to-top').hidden);
+      const popover = async (page) => page.$eval('.story .why-info', (el) => {
+        const tip = el.querySelector('.why-tooltip');
+        return [el.previousElementSibling?.textContent, el.querySelector('button').getAttribute('aria-expanded'), getComputedStyle(tip).visibility, tip.querySelector('strong')?.textContent];
+      });
+      const takeaways = JSON.parse(await readFile(path.join(repo, 'src/data/ai-observability', `${latest}.json`), 'utf8')).stories.map((story) => `Why it matters ${story.takeaway}`);
+      assert.ok(takeaways.includes(await site.$eval('.story .why-tooltip', (el) => el.textContent.replace(/\s+/g, ' ').trim())), 'the popover carries the story takeaway');
+      assert.deepEqual(await popover(site), ['Permalink', 'false', 'hidden', 'Why it matters'], 'the icon sits beside the permalink, closed');
+      await site.$eval('.story .why-info button', (el) => el.scrollIntoView());
+      await site.click('.story .why-info button');
+      assert.deepEqual((await popover(site)).slice(1, 3), ['true', 'visible'], 'click opens');
+      await site.keyboard.press('Escape');
+      assert.deepEqual((await popover(site)).slice(1, 3), ['false', 'hidden'], 'Escape closes');
+      await site.focus('.story .why-info button');
+      await site.keyboard.press('Enter');
+      assert.deepEqual((await popover(site)).slice(1, 3), ['true', 'visible'], 'keyboard opens');
+      await site.mouse.click(2, 2);
+      assert.deepEqual((await popover(site)).slice(1, 3), ['false', 'hidden'], 'an outside click closes');
+      const touch = await browser.newPage();
+      await touch.setRequestInterception(true);
+      touch.on('request', async (request) => {
+        const { pathname } = new URL(request.url());
+        const body = await readFile(path.join(outDir, pathname.endsWith('/') ? `${pathname}index.html` : pathname)).catch(() => null);
+        if (body) request.respond({ body, contentType: { '.js': 'text/javascript', '.css': 'text/css' }[path.extname(pathname)] || 'text/html' });
+        else request.abort();
+      });
+      await touch.setViewport({ width: 390, height: 700, isMobile: true, hasTouch: true });
+      await touch.goto('https://tidytraces.test/', { waitUntil: 'load' });
+      await touch.$eval('.story .why-info button', (el) => el.scrollIntoView());
+      await touch.tap('.story .why-info button');
+      assert.deepEqual((await popover(touch)).slice(1, 3), ['true', 'visible'], 'a tap opens on mobile');
+      assert.ok(await touch.$eval('.story .why-tooltip', (el) => { const r = el.getBoundingClientRect(); return r.left >= 0 && r.right <= window.innerWidth; }), 'the popover fits the mobile viewport');
+      await touch.tap('.story .why-info button');
+      assert.deepEqual((await popover(touch)).slice(1, 3), ['false', 'hidden'], 'a second tap closes');
       await site.emulateMediaType('print');
       await site.evaluate(() => { document.querySelector('.back-to-top').hidden = false; });
       assert.equal(await site.$eval('.back-to-top', (el) => getComputedStyle(el).display), 'none', 'hidden in print');
