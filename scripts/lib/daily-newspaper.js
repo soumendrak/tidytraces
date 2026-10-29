@@ -49,6 +49,9 @@ export function assertNoBurnedInAiLabel(issue) {
   return issue;
 }
 
+const MONTH = String.raw`(?:Jan(?:uary)?|Feb(?:ruary)?|Mar(?:ch)?|Apr(?:il)?|May|June?|July?|Aug(?:ust)?|Sept?(?:ember)?|Oct(?:ober)?|Nov(?:ember)?|Dec(?:ember)?)`;
+const DATE_OR_VERSION = new RegExp(String.raw`\b\d{4}-\d{2}-\d{2}\b|\b(?:19|20)\d{2}\b|\b${MONTH}\.? \d{1,2}\b|\b\d{1,2} ${MONTH}\b|\b[vV]\d+(?:\.\d+)*\b|\b\d+\.\d+\.\d+\b|[A-Za-z]-?\d+\.\d+|\b[A-Z][A-Za-z]* \d+\.\d+|\b[rR]elease \d+(?:\.\d+)*\b|\b[vV]ersion \d`);
+
 export function validateDailyDraft(raw, dates, history = []) {
   const issue = observabilityIssueSchema.parse(raw);
   if (issue.date !== dates.date || issue.story_window !== dates.storyWindow) throw new Error('Draft does not match the frozen run dates');
@@ -63,6 +66,8 @@ export function validateDailyDraft(raw, dates, history = []) {
     urls.add(story.url);
     if (typeof evidence.raw_date !== 'string' || !/^\d{4}-\d{2}-\d{2}(?:T.*)?$/.test(evidence.raw_date) || evidence.raw_date.slice(0, 10) !== dates.storyWindow || !Number.isFinite(Date.parse(evidence.raw_date))) throw new Error(`Original source date is outside the window: ${story.title}`);
     if (story.interest_score !== undefined && !(typeof story.score_reason === 'string' && story.score_reason.trim())) throw new Error(`Signal score needs an editorial reason: ${story.title}`);
+    if (typeof story.takeaway !== 'string' || !story.takeaway.trim()) throw new Error(`Story needs a takeaway for its why it matters popover: ${story.title}`);
+    if ([story.title, story.summary, ...(story.body || []), story.takeaway].some((text) => DATE_OR_VERSION.test(text || ''))) throw new Error(`Story text must not contain dates or version numbers: ${story.title}`);
     const words = story.body?.join(' ').trim().split(/\s+/).length || 0;
     if (story.format === 'brief') {
       if (words < 60 || typeof story.brief_reason !== 'string' || !story.brief_reason.trim()) throw new Error(`A brief needs substantive text and a source-specific reason: ${story.title}`);

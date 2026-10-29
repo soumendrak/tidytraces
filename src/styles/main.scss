@@ -1174,6 +1174,7 @@ img { max-width: 100%; display: block; }
 }
 
 .story-byline {
+  position: relative;
   font-size: 0.68rem;
   letter-spacing: 0.02em;
   text-transform: uppercase;
@@ -1213,32 +1214,43 @@ img { max-width: 100%; display: block; }
 }
 
 .why-info {
-  position: relative;
+  display: inline-flex;
+  align-items: center;
+  margin-left: 0.45em;
+  vertical-align: middle;
+}
+
+.why-info-button {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  margin-left: 0.45em;
-  vertical-align: middle;
+  padding: 0.2em;
+  border: 0;
+  background: none;
   color: var(--ink-faint);
-  cursor: help;
+  cursor: pointer;
 }
 
 .why-info-icon {
   display: block;
 }
 
-.why-info:hover,
-.why-info:focus {
+.why-info-button:hover,
+.why-info-button:focus-visible,
+.why-info-button[aria-expanded="true"] {
   color: var(--accent-ink);
-  outline: none;
+}
+
+.why-info-button:focus-visible {
+  outline: 1px solid var(--accent-ink);
 }
 
 .why-tooltip {
   position: absolute;
-  top: 145%;
+  top: calc(100% + 4px);
   left: 0;
   width: 240px;
-  max-width: 60vw;
+  max-width: 100%;
   background: var(--bg-well);
   color: var(--ink-soft);
   border: 1px solid var(--rule-soft);
@@ -1262,9 +1274,7 @@ img { max-width: 100%; display: block; }
   color: var(--accent-ink);
 }
 
-.why-info:hover .why-tooltip,
-.why-info:focus .why-tooltip,
-.why-info:focus-within .why-tooltip {
+.why-info-button[aria-expanded="true"] + .why-tooltip {
   opacity: 1;
   visibility: visible;
   transform: translateY(0);

@@ -36,7 +36,7 @@ const stories = edition.stories.map((story) => ({
     if (index !== 0) return `<p>${escape(paragraph)}</p>`;
     const [initial = '', ...rest] = Array.from(paragraph);
     return `<p><span class="drop-cap">${escape(initial)}</span>${escape(rest.join(''))}</p>`;
-  }).join('') + `<p><strong>Why it matters</strong> ${escape(story.takeaway)}</p>`,
+  }).join(''),
 }));
 function escape(text: string) {
   return text.replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('"', '&quot;');

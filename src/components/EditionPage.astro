@@ -312,23 +312,19 @@ const breadcrumbSchema = {
 								<a class="story-source-link" href={story.url} target="_blank" rel="noopener noreferrer">{sourceLabelFor(story)} &rsaquo;</a>
 								<span class="story-source-sep">&middot;</span>
 								<a class="story-source-link" href={`${issueHref}#${story.slug}`} aria-label={`Permanent link to ${story.title}`}>Permalink</a>
+								{story.why_read && (
+									<span class="why-info">
+										<button type="button" class="why-info-button" aria-expanded="false" aria-controls={`why-${story.slug}`} aria-label={`Why it matters: ${story.title}`}>
+											<svg class="why-info-icon" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+										</button>
+										<span class="why-tooltip" id={`why-${story.slug}`} role="note"><strong>Why it matters</strong> {story.why_read}</span>
+									</span>
+								)}
 								{story.comments && (
 									<>
 										<span class="story-source-sep">&middot;</span>
 										<a class="story-source-link" href={story.comments} target="_blank" rel="noopener noreferrer">Discuss &rsaquo;</a>
 									</>
-								)}
-								{(story.why_read || story.authors.length > 0) && (
-									<span class="why-info" tabindex="0">
-										<svg class="why-info-icon" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
-										<span class="why-tooltip">
-											{story.why_read && <><strong>Why read:</strong> {story.why_read}</>}
-											{story.why_read && story.authors.length > 0 && <br />}
-											{story.authors.length > 0 && (
-												<><strong>Authors:</strong> {story.authors.join(', ')}</>
-											)}
-										</span>
-									</span>
 								)}
 							</div>
 							<h2 class="story-headline" itemprop="headline">
@@ -376,6 +372,7 @@ const breadcrumbSchema = {
 	</div>
 </Layout>
 
+<script src="../scripts/why-popover.ts"></script>
 <script>
 	import { matchesStoryFilters } from '../lib/storyFilters.js';
 
