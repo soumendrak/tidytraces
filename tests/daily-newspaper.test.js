@@ -49,7 +49,7 @@ test('daily contract blocks relabelled dates, incomplete research, thin text and
 });
 
 test('story text carries no dates or version numbers; the takeaway stays separate', () => {
-  for (const text of ['Shipped on 2026-10-12.', 'Released October 12 to all users.', 'Upgrade to v4.57.0 first.', 'Version 1.2.3 adds spans.']) {
+  for (const text of ['Shipped on 2026-10-12.', 'Released October 12 to all users.', 'Upgrade to v4.57.0 first.', 'Version 1.2.3 adds spans.', 'It was released October 2026.', 'Shipped on 27 October.', 'Arrived in 2026.', 'Adds Python 3.12 support.', 'Uses the GPT-4.1 model.', 'The release 2.0 ships.', 'Targets OpenTelemetry 1.30 today.']) {
     for (const field of ['title', 'summary', 'takeaway']) assert.throws(() => validateDailyDraft({ ...issue, stories: [{ ...story, [field]: text }] }, dates), /dates or version numbers/, `${field}: ${text}`);
     assert.throws(() => validateDailyDraft({ ...issue, stories: [{ ...story, body: [`${story.body[0]} ${text}`] }] }, dates), /dates or version numbers/, `body: ${text}`);
   }

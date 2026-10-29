@@ -49,7 +49,8 @@ export function assertNoBurnedInAiLabel(issue) {
   return issue;
 }
 
-const DATE_OR_VERSION = /\b\d{4}-\d{2}-\d{2}\b|\b(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Sept|Oct|Nov|Dec)[a-z]*\.? \d{1,2}\b|\b[vV]\d+(?:\.\d+)*\b|\b\d+\.\d+\.\d+\b|\b[vV]ersion \d/;
+const MONTH = String.raw`(?:Jan(?:uary)?|Feb(?:ruary)?|Mar(?:ch)?|Apr(?:il)?|May|June?|July?|Aug(?:ust)?|Sept?(?:ember)?|Oct(?:ober)?|Nov(?:ember)?|Dec(?:ember)?)`;
+const DATE_OR_VERSION = new RegExp(String.raw`\b\d{4}-\d{2}-\d{2}\b|\b(?:19|20)\d{2}\b|\b${MONTH}\.? \d{1,2}\b|\b\d{1,2} ${MONTH}\b|\b[vV]\d+(?:\.\d+)*\b|\b\d+\.\d+\.\d+\b|[A-Za-z]-?\d+\.\d+|\b[A-Z][A-Za-z]* \d+\.\d+|\b[rR]elease \d+(?:\.\d+)*\b|\b[vV]ersion \d`);
 
 export function validateDailyDraft(raw, dates, history = []) {
   const issue = observabilityIssueSchema.parse(raw);
