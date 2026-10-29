@@ -1,73 +1,97 @@
-# AI Observability Daily — 2026-10-28
+# AI Observability Daily — 2026-10-29
 
 By Soumendra Kumar Sahoo
 
 Canonical: https://tidytraces.com/
-Coverage window: 2026-10-27
+Coverage window: 2026-10-28
 
-## Elastic shows how to join Claude activity with application traces
+## DigitalOcean Signals points reviewers to specific agent conversation steps
 
-Source: Elastic Observability Labs — https://www.elastic.co/observability-labs/blog/ai-agent-observability-claude-platform-opentelemetry
-Published: 2026-10-27
+Source: DigitalOcean — https://www.digitalocean.com/blog/digitalocean-signals-observability-ai-agents
+Published: 2026-10-28
 Channel: news
 
-Elastic, a platform for searching operational data, documents how to investigate Claude activity alongside application traces. Its October 27 guide uses OpenTelemetry, a standard for exporting telemetry. A span records one operation. Console export supplies platform activity; SDK export adds work inside the application.
+DigitalOcean Signals examines production agent conversations to help teams decide which sessions deserve review. Its October 28 article describes a public preview for Managed Agents and Inference Engine. Instead of asking another language model to grade every conversation, Signals detects behavioral patterns such as repeated tool attempts, user corrections and external API errors. Each signal includes a run, step, confidence score and snippet.
 
-For illustration, a slow assistant might spend time in a model request or in a custom tool. Sending both streams helps distinguish those steps. The guide says console export cannot see work that stays inside your process. That requires application instrumentation.
+For illustration, an assistant might finish its run successfully after repeatedly retrying a failing command. A completion metric would miss that experience; a retry signal gives a reviewer a specific step to inspect. DigitalOcean describes this as first-pass triage, and a flag does not establish that an answer was wrong. Sessions can also contain useful positive examples.
 
-Setup needs a Claude organization administrator, an Elastic trace endpoint and a key allowed to write traces. The guide includes a test-span query to check delivery. Full-content mode includes conversation text; metadata-only mode omits it. Claude export is in public beta. Elastic’s GenAI tab is a technical preview on Serverless and Cloud Hosted 9.6; older versions show key values.
+Analysis is off by default and applies to conversations beginning after consent. Reports update after inactivity and closure; dashboard metrics can lag by up to an hour. Selected sessions can become evaluation datasets and simulation scenarios. Exports redact personal information in free text, but the article says scenario creation uses the non-redacted version before redacting displayed content. Teams handling sensitive conversations should examine that distinction before enabling the preview.
 
-Why it matters: For teams exporting Claude traces: test both platform and application coverage, and choose content retention before enabling export.
+Why it matters: For teams running DigitalOcean agents: evaluate signal usefulness on a small consented workload, and review export and scenario privacy behavior before expanding access.
 
-![Elastic shows how to join Claude activity with application traces](/edition-images/2026-10-28/elastic-claude-traces.webp)
+![DigitalOcean Signals points reviewers to specific agent conversation steps](/edition-images/2026-10-29/digitalocean.webp)
 
-## Langfuse records more facts about gateway model calls
+## Braintrust adds server-side tool traces and safer voice recording controls
 
-Source: Langfuse — https://github.com/langfuse/langfuse/releases/tag/v4.71.0
-Published: 2026-10-27
+Source: Braintrust — https://github.com/braintrustdata/braintrust-sdk-javascript/releases/tag/braintrust%403.41.0
+Published: 2026-10-28
 Channel: github
 
-Langfuse is a platform for recording and evaluating AI application activity. Its 4.71.0 release adds model, key-owner, byte and upstream-error facts to generation records from its AI gateway, the component through which applications send model requests. These fields give operators more evidence about a call than a success or failure result alone.
+Braintrust records AI application activity so engineers can inspect failures and evaluate behavior. JavaScript SDK 3.41.0 adds tracing for Model Context Protocol servers, which expose tools, prompts and resources to AI clients. The linked implementation captures tool calls, prompt retrievals and resource reads, with request and session identifiers for correlation. Tool responses marked isError count as failures even when their handlers do not throw an exception.
 
-For illustration, a team investigating a failed assistant request could examine the recorded upstream error and key owner while checking which model handled the call. That is a debugging use for the added facts, not a claim that the release automatically identifies the root cause. The release separately fixes OpenTelemetry recording to use the model dispatched by LiteLLM for routed calls, where the selected model can differ from the original request.
+The same release fixes a separate evidence gap in LiveKit voice agents. Previously, a job could exit after session.close() resolved while recordings were still uploading. The close now waits for the recording upload. For illustration, an engineer investigating a call should have a better chance of retaining its final recording during a normal close, flush and exit sequence; this does not promise recovery after an arbitrary process crash.
 
-Other changes extract nested messages and Pydantic agent history into normalized input and output, and count self-hosted traces and observations from the events table in events-only mode. The notes describe implementation changes without a completeness benchmark. Teams should confirm their own records after upgrading, particularly when routing or ingestion settings differ between environments.
+Caller and agent audio now require separate explicit capture flags. The broad attachment setting no longer enables LiveKit audio. The optional @braintrust/audio package adds compressed recordings; without it, the implementation falls back to raw audio. Teams upgrading existing voice instrumentation therefore need to check both consent settings and shutdown behavior.
 
-Why it matters: For gateway operators: compare a routed call’s recorded model and error fields with provider evidence after upgrading.
+Why it matters: For Braintrust voice-agent operators: migrate audio opt-in flags and test normal close, flush and exit with a recording before relying on the updated trace evidence.
 
-![Langfuse records more facts about gateway model calls](/edition-images/2026-10-28/langfuse-gateway-facts.webp)
+![Braintrust adds server-side tool traces and safer voice recording controls](/edition-images/2026-10-29/braintrust.webp)
 
-## Weir checks where planted credentials leave an agent
+## LangWatch SDK 2.0 separates dashboard calls from analytics reports
 
-Source: Hacker News · CodeNinja778 — https://news.ycombinator.com/item?id=50261335
-Published: 2026-10-27
-Channel: hn
-
-Weir is a tool for checking whether credentials cross an AI agent’s boundaries. In its original Show HN announcement, the developer describes planting fake credentials where real ones would live, running the agent’s normal flows, and searching the resulting telemetry and outgoing requests for those exact values. The report identifies destinations without printing the credential.
-
-For illustration, a fake API key placed in an agent’s environment might appear in a trace even though it was intended only for authentication. The test can expose that unwanted copy. If a required path was not exercised, the developer says Weir reports an incomplete result rather than a clean one. The test is deterministic and offline; Linux can additionally restrict outside network access.
-
-A separate Claude Code mode observes known credentials entering a session or leaving in tool calls, with an optional tool-result redaction hook. These are limited checks: matching does not cover hashed, split or truncated credentials. Redaction cannot undo a credential already pasted into a conversation, and failed-command output can still reach the model. The announcement supplies the developer’s claims, not an independent security audit.
-
-Why it matters: For agent developers: test credential destinations with fake values and investigate incomplete runs before accepting a clean verdict.
-
-![Weir checks where planted credentials leave an agent](/edition-images/2026-10-28/weir-credential-tests.webp)
-
-## Langfuse backports webhook-secret and access checks to version 3
-
-Source: Langfuse — https://github.com/langfuse/langfuse/releases/tag/v3.225.15
-Published: 2026-10-27
+Source: LangWatch — https://github.com/langwatch/langwatch/releases/tag/typescript-sdk%40v2.0.0
+Published: 2026-10-28
 Channel: github
 
-Langfuse records AI application activity and supports automation around that data. Its 3.225.15 maintenance release brings four fixes to the version 3 branch, including two affecting secrets used by outbound integrations. The release notes describe masking and encrypting legacy webhook headers, plus requiring secrets again when a webhook or PostHog destination changes.
+LangWatch is a platform for observing and evaluating AI applications. Its TypeScript SDK 2.0.0 release changes the meaning of a familiar API path: client.dashboards now addresses the new Dashboards product rather than the older Reports API. Existing report operations move to client.analyticsReports. The release also renames Reports tools exposed through Model Context Protocol, the interface agents use to call external tools.
 
-For illustration, an operator changing the destination of an existing automation should review which credentials authorize the new connection. Requiring those secrets again makes the destination change an explicit configuration step. This is an illustrative administrative workflow; the release notes do not describe an observed exploit, affected customer count, or a complete migration procedure.
+For illustration, a team might have a script that retrieves a recurring agent-quality report. After upgrading, continuing to call the dashboards path would target a different product. The useful migration check is whether the script still retrieves the intended report, not simply whether its request succeeds. This example illustrates the compatibility risk; the notes do not report a measured customer incident.
 
-The same release checks that a project referenced by an invitation belongs to the organization and validates an annotation queue when items are added. Annotation queues organize examples for human review, so their access and item-handling checks matter to evaluation operations. All four entries are identified as backports. This maintenance update is distinct from the version 4 gateway telemetry changes; version 3 operators should review the linked fixes for their deployment.
+The release adds REST creation and deletion for dashboard boards and records each request’s credential type. Legacy project keys become ingestion-only. Those changes make both API paths and permissions relevant to upgrade testing. This is a major SDK release with explicit breaking changes, so teams should review report consumers and credentials together before rolling it through production monitoring workflows.
 
-Why it matters: For version 3 administrators: review automation destinations and secret handling when planning this maintenance update.
+Why it matters: For LangWatch integration owners: inventory dashboards calls, migrate report consumers to analyticsReports, and verify read permissions separately from telemetry ingestion.
 
-![Langfuse backports webhook-secret and access checks to version 3](/edition-images/2026-10-28/langfuse-v3-secrets.webp)
+![LangWatch SDK 2.0 separates dashboard calls from analytics reports](/edition-images/2026-10-29/langwatch.webp)
+
+## LangChain tests whether stable evidence paths make agent answers repeatable
+
+Source: LangChain — https://www.langchain.com/blog/building-agent-memory-openwiki-graphs
+Published: 2026-10-28
+Channel: news
+
+OpenWiki compiles source documents into a linked wiki that agents can reuse as memory. LangChain’s October 28 experiment asks whether that memory also makes answers easier to reproduce and audit. It tests a synthetic insurance library containing 111 documents and a controlled ledger of 972 facts, with 80 lookup questions and 50 questions requiring connections across documents. Each question runs three times.
+
+The important distinction is between correct answers and consistent evidence. The study scores accuracy against the fact ledger, while citation consistency measures overlap between cited sources across repeated runs. A model could repeatedly cite the same wrong passage, so consistency alone is not correctness. For illustration, an insurance assistant answering a coverage question may need both an original policy and a later amendment; checking only its final answer can hide a changing evidence path.
+
+LangChain adds a graph linking wiki claims to specific supporting paragraphs and related documents. It reports higher accuracy and citation consistency for connected questions, while simple lookups remain as accurate and faster without the wiki. Reported answer costs exclude compilation and updates. This is a publisher-run synthetic experiment, not independent proof of production gains.
+
+Why it matters: For retrieval evaluation owners: measure evidence stability alongside answer accuracy, and include memory maintenance costs when testing whether a compiled wiki is worthwhile.
+
+![LangChain tests whether stable evidence paths make agent answers repeatable](/edition-images/2026-10-29/openwiki-reviewed.webp)
+
+## Phoenix preserves custom evaluator metadata alongside results
+
+Source: Arize AI / Phoenix — https://github.com/Arize-ai/phoenix/releases/tag/%40arizeai/phoenix-evals%402.7.1
+Published: 2026-10-28
+Channel: github
+
+Phoenix provides tools for inspecting AI runs and scoring their results. Its TypeScript evaluation package 2.7.1 fixes createEvaluator, a helper that wraps custom evaluation functions, so it retains metadata those functions return. For illustration, a team’s scorer could attach context explaining a result; preserving that context helps a reviewer interpret the score. The release establishes metadata preservation, not improved scoring accuracy or any particular metadata format. It lists this as a narrow patch and reports no benchmark or broader evaluator redesign.
+
+Why it matters: For custom evaluator authors: run a known example through createEvaluator and confirm its returned metadata reaches the result you inspect.
+
+![Phoenix preserves custom evaluator metadata alongside results](/edition-images/2026-10-29/phoenix-evals.webp)
+
+## Phoenix keeps schema descriptions and defaults when converting prompts
+
+Source: Arize AI / Phoenix — https://github.com/Arize-ai/phoenix/releases/tag/%40arizeai/phoenix-client%407.16.3
+Published: 2026-10-28
+Channel: github
+
+Phoenix’s client helps applications work with AI prompts and their structured definitions. Version 7.16.3 fixes toSDK conversion of prompt tool and response-format schemas: description, default and other keywords next to anyOf are retained. The anyOf keyword describes alternative valid shapes. For illustration, a test prompt using alternatives and an adjacent description should keep both when converted for use. This patch concerns the definition passed onward; it does not establish that a model follows that definition. The release supplies no measured evaluation improvement.
+
+Why it matters: For teams testing structured prompts: compare converted schemas with the originals, including annotations beside anyOf, before attributing changed outputs to a model.
+
+![Phoenix keeps schema descriptions and defaults when converting prompts](/edition-images/2026-10-29/phoenix-client.webp)
 
 ---
 

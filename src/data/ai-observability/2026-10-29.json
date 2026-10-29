@@ -1,0 +1,538 @@
+{
+  "date": "2026-10-29",
+  "story_window": "2026-10-28",
+  "dek": "Conversation review, evidence repeatability and trace preservation: two original reports and four stable SDK updates for engineers operating AI systems.",
+  "stories": [
+    {
+      "title": "DigitalOcean Signals points reviewers to specific agent conversation steps",
+      "url": "https://www.digitalocean.com/blog/digitalocean-signals-observability-ai-agents",
+      "publisher": "DigitalOcean",
+      "published": "2026-10-28",
+      "category_key": "observability",
+      "summary": "Signals enters public preview with opt-in, deterministic analysis of production conversations and links to the steps behind each signal.",
+      "body": [
+        "DigitalOcean Signals examines production agent conversations to help teams decide which sessions deserve review. Its October 28 article describes a public preview for Managed Agents and Inference Engine. Instead of asking another language model to grade every conversation, Signals detects behavioral patterns such as repeated tool attempts, user corrections and external API errors. Each signal includes a run, step, confidence score and snippet.",
+        "For illustration, an assistant might finish its run successfully after repeatedly retrying a failing command. A completion metric would miss that experience; a retry signal gives a reviewer a specific step to inspect. DigitalOcean describes this as first-pass triage, and a flag does not establish that an answer was wrong. Sessions can also contain useful positive examples.",
+        "Analysis is off by default and applies to conversations beginning after consent. Reports update after inactivity and closure; dashboard metrics can lag by up to an hour. Selected sessions can become evaluation datasets and simulation scenarios. Exports redact personal information in free text, but the article says scenario creation uses the non-redacted version before redacting displayed content. Teams handling sensitive conversations should examine that distinction before enabling the preview."
+      ],
+      "format": "full",
+      "takeaway": "For teams running DigitalOcean agents: evaluate signal usefulness on a small consented workload, and review export and scenario privacy behavior before expanding access.",
+      "image": "/edition-images/2026-10-29/digitalocean.webp",
+      "image_width": 1440,
+      "image_height": 960,
+      "image_provenance": {
+        "kind": "generated-editorial",
+        "generator": "built-in-imagegen",
+        "prompt": "Use case: infographic-diagram. Standalone newspaper infographic PNG, landscape 1536x1024. Explain DigitalOcean Signals first-pass conversation triage. Source-supported facts from https://www.digitalocean.com/blog/digitalocean-signals-observability-ai-agents : opt-in conversation analysis detects behavioral patterns deterministically and links signals to exact steps; humans or evaluators judge flagged sessions. Warm cream newsprint, dark ink, restrained teal and rust, serif headline, generous whitespace and large readable labels. Title verbatim \"Find the conversation worth reviewing\". Three connected elements left to right labelled \"Conversation steps\", \"Deterministic signals\", \"Review the flagged step\". Beneath middle element small labels \"Retries\", \"Tool failures\", \"Corrections\". Beneath final element \"A signal is a review cue, not a verdict\". Small subtitle \"DigitalOcean Signals • Public Preview\". No invented metrics, logos, fake screenshots, footer or watermark.",
+        "based_on": [
+          "https://www.digitalocean.com/blog/digitalocean-signals-observability-ai-agents"
+        ],
+        "reviewed": true,
+        "sha256": "44b717e90a4839170aff28f2d2e305d5e484701c27e82e2a278ea203ca9d61f9",
+        "optimization": {
+          "format": "webp",
+          "quality": 82,
+          "max_width": 1440,
+          "source_sha256": "22af139295595dc8eac5763ba1d71c7f25bd70350ec6135cbff79f5051f5fdc3"
+        }
+      },
+      "source": "news",
+      "interest_score": 8,
+      "score_reason": "A concrete production-review workflow connects behavioral evidence to evaluation cases, with preview and privacy limits explicit.",
+      "dedupe_key": "article:digitalocean.com/blog/digitalocean-signals-observability-ai-agents",
+      "source_evidence": {
+        "url": "https://www.digitalocean.com/blog/digitalocean-signals-observability-ai-agents",
+        "publication_date": "2026-10-28",
+        "raw_date": "2026-10-28T18:13:23.754Z",
+        "method": "Original publisher HTML embedded article published_at field; corroborated by October 28 blog index listing. Visible Updated/dateModified was not used as original-publication proof."
+      }
+    },
+    {
+      "title": "Braintrust adds server-side tool traces and safer voice recording controls",
+      "url": "https://github.com/braintrustdata/braintrust-sdk-javascript/releases/tag/braintrust%403.41.0",
+      "publisher": "Braintrust",
+      "published": "2026-10-28",
+      "category_key": "observability",
+      "summary": "JavaScript SDK 3.41.0 adds MCP server tracing and changes LiveKit audio capture and upload completion behavior.",
+      "body": [
+        "Braintrust records AI application activity so engineers can inspect failures and evaluate behavior. JavaScript SDK 3.41.0 adds tracing for Model Context Protocol servers, which expose tools, prompts and resources to AI clients. The linked implementation captures tool calls, prompt retrievals and resource reads, with request and session identifiers for correlation. Tool responses marked isError count as failures even when their handlers do not throw an exception.",
+        "The same release fixes a separate evidence gap in LiveKit voice agents. Previously, a job could exit after session.close() resolved while recordings were still uploading. The close now waits for the recording upload. For illustration, an engineer investigating a call should have a better chance of retaining its final recording during a normal close, flush and exit sequence; this does not promise recovery after an arbitrary process crash.",
+        "Caller and agent audio now require separate explicit capture flags. The broad attachment setting no longer enables LiveKit audio. The optional @braintrust/audio package adds compressed recordings; without it, the implementation falls back to raw audio. Teams upgrading existing voice instrumentation therefore need to check both consent settings and shutdown behavior."
+      ],
+      "format": "full",
+      "takeaway": "For Braintrust voice-agent operators: migrate audio opt-in flags and test normal close, flush and exit with a recording before relying on the updated trace evidence.",
+      "image": "/edition-images/2026-10-29/braintrust.webp",
+      "image_width": 1440,
+      "image_height": 960,
+      "image_provenance": {
+        "kind": "generated-editorial",
+        "generator": "built-in-imagegen",
+        "prompt": "Use case: infographic-diagram. Asset: standalone landscape newspaper infographic PNG 1536x1024. Title verbatim \"Finish the recording before exit\". Source https://github.com/braintrustdata/braintrust-sdk-javascript/releases/tag/braintrust%403.41.0. Three ordered stages labelled \"Explicit audio opt-in\", \"Wait for upload\", \"Close, flush, exit\". Subtitle \"Braintrust 3.41.0 • LiveKit integration\". Source-supported facts: caller and agent recordings need separate opt-in flags; session.close() now waits for the recording upload; normal close then flush then exit preserves recordings. Do not imply arbitrary crashes are protected. Warm cream newsprint, dark ink, restrained rust and teal accents, clear serif headline, generous space, large readable labels at article width. Explain only the single supplied mechanism. No invented architecture, fake screenshots, logos, metrics, footer or watermark.",
+        "based_on": [
+          "https://github.com/braintrustdata/braintrust-sdk-javascript/releases/tag/braintrust%403.41.0"
+        ],
+        "reviewed": true,
+        "sha256": "44ec928685f18b713325e7123fa25825ff861081465361f523640fb81f9c1ecd",
+        "optimization": {
+          "format": "webp",
+          "quality": 82,
+          "max_width": 1440,
+          "source_sha256": "8a596903ac2c04338cadff3e95572bc6e6fa83d886ec7f64b072fd48deed4ab6"
+        }
+      },
+      "source": "github",
+      "interest_score": 8,
+      "score_reason": "Adds concrete tool visibility and fixes recording loss while narrowing audio capture controls; no independent performance claim.",
+      "dedupe_key": "release:braintrustdata/braintrust-sdk-javascript:braintrust@3.41.0",
+      "source_evidence": {
+        "url": "https://github.com/braintrustdata/braintrust-sdk-javascript/releases/tag/braintrust%403.41.0",
+        "publication_date": "2026-10-28",
+        "raw_date": "2026-10-28T16:14:41Z",
+        "method": "Official GitHub release API published_at; draft=false and prerelease=false. Release notes and linked pull requests 2679, 2656 and 2658 reviewed."
+      }
+    },
+    {
+      "title": "LangWatch SDK 2.0 separates dashboard calls from analytics reports",
+      "url": "https://github.com/langwatch/langwatch/releases/tag/typescript-sdk%40v2.0.0",
+      "publisher": "LangWatch",
+      "published": "2026-10-28",
+      "category_key": "observability",
+      "summary": "The TypeScript SDK changes what its dashboards path addresses; existing report integrations need the analyticsReports path.",
+      "body": [
+        "LangWatch is a platform for observing and evaluating AI applications. Its TypeScript SDK 2.0.0 release changes the meaning of a familiar API path: client.dashboards now addresses the new Dashboards product rather than the older Reports API. Existing report operations move to client.analyticsReports. The release also renames Reports tools exposed through Model Context Protocol, the interface agents use to call external tools.",
+        "For illustration, a team might have a script that retrieves a recurring agent-quality report. After upgrading, continuing to call the dashboards path would target a different product. The useful migration check is whether the script still retrieves the intended report, not simply whether its request succeeds. This example illustrates the compatibility risk; the notes do not report a measured customer incident.",
+        "The release adds REST creation and deletion for dashboard boards and records each request’s credential type. Legacy project keys become ingestion-only. Those changes make both API paths and permissions relevant to upgrade testing. This is a major SDK release with explicit breaking changes, so teams should review report consumers and credentials together before rolling it through production monitoring workflows."
+      ],
+      "format": "full",
+      "takeaway": "For LangWatch integration owners: inventory dashboards calls, migrate report consumers to analyticsReports, and verify read permissions separately from telemetry ingestion.",
+      "image": "/edition-images/2026-10-29/langwatch.webp",
+      "image_width": 1440,
+      "image_height": 960,
+      "image_provenance": {
+        "kind": "generated-editorial",
+        "generator": "built-in-imagegen",
+        "prompt": "Use case: infographic-diagram. Asset: standalone landscape newspaper infographic PNG 1536x1024. Title verbatim \"Separate dashboards from reports\". Source https://github.com/langwatch/langwatch/releases/tag/typescript-sdk%40v2.0.0. Two independent panels with no connecting arrow. Left panel header \"Dashboards\" and exact code label \"client.dashboards\". Right panel header \"Analytics reports\" and exact code label \"client.analyticsReports\". Subtitle \"LangWatch TypeScript SDK 2.0.0\". Source-supported facts: client.dashboards addresses the new Dashboards API; old Reports use client.analyticsReports. Warm cream newsprint, dark ink, restrained rust and teal accents, clear serif headline, generous space, large readable labels at article width. Explain only the single supplied mechanism. No invented architecture, fake screenshots, logos, metrics, footer or watermark.",
+        "based_on": [
+          "https://github.com/langwatch/langwatch/releases/tag/typescript-sdk%40v2.0.0"
+        ],
+        "reviewed": true,
+        "sha256": "f9073826f592bb87b264527b6f929dcc060d61fc3523e3ea79497ad1a2182aab",
+        "optimization": {
+          "format": "webp",
+          "quality": 82,
+          "max_width": 1440,
+          "source_sha256": "519a6bb069f20662366a90ecf8f78827036e0c72f7495ce8b561581c0b46f44e"
+        }
+      },
+      "source": "github",
+      "interest_score": 8,
+      "score_reason": "Explicit breaking API and credential changes can affect production AI reporting workflows; migration is concrete and actionable.",
+      "dedupe_key": "release:langwatch/langwatch:typescript-sdk@v2.0.0",
+      "source_evidence": {
+        "url": "https://github.com/langwatch/langwatch/releases/tag/typescript-sdk%40v2.0.0",
+        "publication_date": "2026-10-28",
+        "raw_date": "2026-10-28T08:08:03Z",
+        "method": "Official GitHub release API published_at; draft=false and prerelease=false. October 28 release notes explicitly identify the breaking dashboards/report change."
+      }
+    },
+    {
+      "title": "LangChain tests whether stable evidence paths make agent answers repeatable",
+      "url": "https://www.langchain.com/blog/building-agent-memory-openwiki-graphs",
+      "publisher": "LangChain",
+      "published": "2026-10-28",
+      "category_key": "evals",
+      "summary": "An OpenWiki experiment measures answer accuracy separately from citation consistency, then adds explicit links to supporting passages.",
+      "body": [
+        "OpenWiki compiles source documents into a linked wiki that agents can reuse as memory. LangChain’s October 28 experiment asks whether that memory also makes answers easier to reproduce and audit. It tests a synthetic insurance library containing 111 documents and a controlled ledger of 972 facts, with 80 lookup questions and 50 questions requiring connections across documents. Each question runs three times.",
+        "The important distinction is between correct answers and consistent evidence. The study scores accuracy against the fact ledger, while citation consistency measures overlap between cited sources across repeated runs. A model could repeatedly cite the same wrong passage, so consistency alone is not correctness. For illustration, an insurance assistant answering a coverage question may need both an original policy and a later amendment; checking only its final answer can hide a changing evidence path.",
+        "LangChain adds a graph linking wiki claims to specific supporting paragraphs and related documents. It reports higher accuracy and citation consistency for connected questions, while simple lookups remain as accurate and faster without the wiki. Reported answer costs exclude compilation and updates. This is a publisher-run synthetic experiment, not independent proof of production gains."
+      ],
+      "format": "full",
+      "takeaway": "For retrieval evaluation owners: measure evidence stability alongside answer accuracy, and include memory maintenance costs when testing whether a compiled wiki is worthwhile.",
+      "image": "/edition-images/2026-10-29/openwiki-reviewed.webp",
+      "image_width": 1440,
+      "image_height": 960,
+      "image_provenance": {
+        "kind": "generated-editorial",
+        "generator": "built-in-imagegen",
+        "prompt": "Use case: infographic-diagram. Asset: standalone landscape newspaper infographic PNG 1536x1024. Title verbatim \"Follow answers back to evidence\". Source https://www.langchain.com/blog/building-agent-memory-openwiki-graphs. Show three connected cards labelled \"Wiki claim\", \"Typed evidence link\", \"Supporting paragraph\". Small subtitle \"OpenWiki experiment\". Additional text \"Citation consistency and answer accuracy are separate checks\". Source-supported facts: experiment materializes wiki citations as typed graph edges linking claims to supporting paragraphs; citation consistency measures overlap across repeated runs, not correctness. Warm cream newsprint, dark ink, restrained rust and teal accents, clear serif headline, generous space, large readable labels at article width. Explain only the single supplied mechanism. No invented architecture, fake screenshots, logos, metrics, footer or watermark.\n\nFinal edit prompt: Edit this newspaper infographic. Change only the explanatory text beneath Supporting paragraph from \"The paragraph from the wiki that the claim cites.\" to exactly \"The original source paragraph that supports the claim.\" Supporting paragraphs come from original source documents, not the compiled wiki. Keep the remaining layout, labels, colors and typography. No footer or watermark.\n",
+        "based_on": [
+          "https://www.langchain.com/blog/building-agent-memory-openwiki-graphs"
+        ],
+        "reviewed": true,
+        "sha256": "d56c3351919796f877624519aded3d900f36789e448a81e0e5e7bc5c0121de4b",
+        "optimization": {
+          "format": "webp",
+          "quality": 82,
+          "max_width": 1440,
+          "source_sha256": "f2d2608f844e52a94bc64c6cfe4de84f551341e386db5ee930acfba7a43e8287"
+        }
+      },
+      "source": "news",
+      "interest_score": 8,
+      "score_reason": "A controlled original experiment distinguishes reproducibility from correctness and states dataset and cost limitations.",
+      "dedupe_key": "article:langchain.com/blog/building-agent-memory-openwiki-graphs",
+      "source_evidence": {
+        "url": "https://www.langchain.com/blog/building-agent-memory-openwiki-graphs",
+        "publication_date": "2026-10-28",
+        "raw_date": "2026-10-28",
+        "method": "Original article byline shows October 28, 2026, corroborated by publisher Recent stories index; primary HTML saved in run evidence."
+      }
+    },
+    {
+      "title": "Phoenix preserves custom evaluator metadata alongside results",
+      "url": "https://github.com/Arize-ai/phoenix/releases/tag/%40arizeai/phoenix-evals%402.7.1",
+      "publisher": "Arize AI / Phoenix",
+      "published": "2026-10-28",
+      "category_key": "evals",
+      "summary": "The TypeScript evaluation package fixes metadata lost when a custom evaluator is wrapped with createEvaluator.",
+      "body": [
+        "Phoenix provides tools for inspecting AI runs and scoring their results. Its TypeScript evaluation package 2.7.1 fixes createEvaluator, a helper that wraps custom evaluation functions, so it retains metadata those functions return. For illustration, a team’s scorer could attach context explaining a result; preserving that context helps a reviewer interpret the score. The release establishes metadata preservation, not improved scoring accuracy or any particular metadata format. It lists this as a narrow patch and reports no benchmark or broader evaluator redesign."
+      ],
+      "format": "brief",
+      "brief_reason": "The primary stable-release note documents one metadata-preservation fix and supplies no broader measured result; a full story would add unsupported detail.",
+      "takeaway": "For custom evaluator authors: run a known example through createEvaluator and confirm its returned metadata reaches the result you inspect.",
+      "image": "/edition-images/2026-10-29/phoenix-evals.webp",
+      "image_width": 1440,
+      "image_height": 960,
+      "image_provenance": {
+        "kind": "generated-editorial",
+        "generator": "built-in-imagegen",
+        "prompt": "Use case: infographic-diagram. Asset: standalone landscape newspaper infographic PNG 1536x1024. Title verbatim \"Keep the explanation with the score\". Source https://github.com/Arize-ai/phoenix/releases/tag/%40arizeai/phoenix-evals%402.7.1. Three connected elements labelled \"Custom evaluator\", \"createEvaluator wrapper\", \"Result with metadata\". In final element separate short labels \"Score\" and \"Metadata\". Subtitle \"Phoenix evals 2.7.1\". Source-supported fact: createEvaluator now preserves metadata returned by custom evaluator functions. Show conceptual flow only; no invented metadata fields or metrics. Warm cream newsprint, dark ink, restrained rust and teal accents, clear serif headline, generous space, large readable labels at article width. Explain only the single supplied mechanism. No invented architecture, fake screenshots, logos, metrics, footer or watermark.",
+        "based_on": [
+          "https://github.com/Arize-ai/phoenix/releases/tag/%40arizeai/phoenix-evals%402.7.1"
+        ],
+        "reviewed": true,
+        "sha256": "233b64d9161b4face9c17b071930cfc7f1bf85c5efd57f07709f9126e235b237",
+        "optimization": {
+          "format": "webp",
+          "quality": 82,
+          "max_width": 1440,
+          "source_sha256": "00abce184a8af83c27aef7491c57371cbbfd084ede38f45c801f2bca18196927"
+        }
+      },
+      "source": "github",
+      "interest_score": 7,
+      "score_reason": "A narrow but directly relevant fix preserves context needed to interpret evaluation results.",
+      "dedupe_key": "release:arize-ai/phoenix:@arizeai/phoenix-evals@2.7.1",
+      "source_evidence": {
+        "url": "https://github.com/Arize-ai/phoenix/releases/tag/%40arizeai/phoenix-evals%402.7.1",
+        "publication_date": "2026-10-28",
+        "raw_date": "2026-10-28T05:19:13Z",
+        "method": "Official GitHub release API published_at; draft=false and prerelease=false; primary patch note names metadata retention in createEvaluator."
+      }
+    },
+    {
+      "title": "Phoenix keeps schema descriptions and defaults when converting prompts",
+      "url": "https://github.com/Arize-ai/phoenix/releases/tag/%40arizeai/phoenix-client%407.16.3",
+      "publisher": "Arize AI / Phoenix",
+      "published": "2026-10-28",
+      "category_key": "evals",
+      "summary": "Client 7.16.3 preserves schema keywords beside anyOf when converting tool and response-format definitions with toSDK.",
+      "body": [
+        "Phoenix’s client helps applications work with AI prompts and their structured definitions. Version 7.16.3 fixes toSDK conversion of prompt tool and response-format schemas: description, default and other keywords next to anyOf are retained. The anyOf keyword describes alternative valid shapes. For illustration, a test prompt using alternatives and an adjacent description should keep both when converted for use. This patch concerns the definition passed onward; it does not establish that a model follows that definition. The release supplies no measured evaluation improvement."
+      ],
+      "format": "brief",
+      "brief_reason": "The primary patch note describes one schema-conversion correction without measurements or enough additional source detail for a full story.",
+      "takeaway": "For teams testing structured prompts: compare converted schemas with the originals, including annotations beside anyOf, before attributing changed outputs to a model.",
+      "image": "/edition-images/2026-10-29/phoenix-client.webp",
+      "image_width": 1440,
+      "image_height": 960,
+      "image_provenance": {
+        "kind": "generated-editorial",
+        "generator": "built-in-imagegen",
+        "prompt": "Use case: infographic-diagram. Asset: standalone landscape newspaper infographic PNG 1536x1024. Title verbatim \"Preserve schema details during conversion\". Source https://github.com/Arize-ai/phoenix/releases/tag/%40arizeai/phoenix-client%407.16.3. Three connected cards labelled \"Prompt schema\", \"toSDK conversion\", \"Schema details retained\". Under first and last cards the exact labels \"anyOf\", \"description\", \"default\". Subtitle \"Phoenix client 7.16.3\". Source-supported fact: toSDK keeps description, default and other keywords next to anyOf in prompt tool and response-format schemas. No claims about model compliance. Warm cream newsprint, dark ink, restrained rust and teal accents, clear serif headline, generous space, large readable labels at article width. Explain only the single supplied mechanism. No invented architecture, fake screenshots, logos, metrics, footer or watermark.",
+        "based_on": [
+          "https://github.com/Arize-ai/phoenix/releases/tag/%40arizeai/phoenix-client%407.16.3"
+        ],
+        "reviewed": true,
+        "sha256": "6b7a0f82b4f6395c1f54c9086773c2c495665062c7df54c47ff9ea2ad0501c3c",
+        "optimization": {
+          "format": "webp",
+          "quality": 82,
+          "max_width": 1440,
+          "source_sha256": "ea7219bf833d31d3f605ff591f1a75de4c996a4f0bf919e57ca56618f2bc5a22"
+        }
+      },
+      "source": "github",
+      "interest_score": 7,
+      "score_reason": "A precise conversion fix helps preserve evaluation inputs, with no claim about downstream model compliance.",
+      "dedupe_key": "release:arize-ai/phoenix:@arizeai/phoenix-client@7.16.3",
+      "source_evidence": {
+        "url": "https://github.com/Arize-ai/phoenix/releases/tag/%40arizeai/phoenix-client%407.16.3",
+        "publication_date": "2026-10-28",
+        "raw_date": "2026-10-28T05:19:10Z",
+        "method": "Official GitHub release API published_at; draft=false and prerelease=false; primary release note specifies toSDK keyword preservation."
+      }
+    }
+  ],
+  "research": {
+    "status": "complete",
+    "completed_sources": [
+      "hn",
+      "news",
+      "github"
+    ],
+    "checked_urls": [
+      "https://arize.com/blog/",
+      "https://langfuse.com/blog",
+      "https://www.langchain.com/blog",
+      "https://www.braintrust.dev/blog",
+      "https://opentelemetry.io/blog/",
+      "https://www.elastic.co/observability-labs/blog",
+      "https://www.datadoghq.com/blog/",
+      "https://www.honeycomb.io/blog/",
+      "https://www.digitalocean.com/blog",
+      "https://www.splunk.com/en_us/blog/observability.html",
+      "https://www.dynatrace.com/news/",
+      "https://langfuse.com/changelog",
+      "https://www.datadoghq.com/blog/index.xml",
+      "https://arize.com/blog/i-put-a-ghost-in-claude-code-then-i-evaluated-it/",
+      "https://opentelemetry.io/blog/2026/filelog-protobuf-checkpoints/",
+      "https://www.datadoghq.com/blog/infrastructure-monitoring-basic/",
+      "https://www.splunk.com/en_us/blog/platform/dashboard-studio-more-ways-to-visualize-your-data.html",
+      "https://www.langchain.com/blog/proactive-agents",
+      "https://www.educba.com/llm-observability/",
+      "https://www.langchain.com/blog/building-agent-memory-openwiki-graphs",
+      "https://www.digitalocean.com/blog/digitalocean-signals-observability-ai-agents"
+    ],
+    "excluded": [
+      {
+        "url": "https://jabhook.ai/",
+        "hn_id": "50281455",
+        "reason": "Computer-vision martial arts training, outside AI observability beat."
+      },
+      {
+        "url": "https://noyb.eu/en/ai-training-platform-outlier-illegally-surveils-european-platform-workers",
+        "hn_id": "50281071",
+        "reason": "Worker surveillance complaint, not instrumentation or evaluation of deployed AI systems."
+      },
+      {
+        "url": "https://tedium.co/2026/10/27/ai-startups-sketchy-behavior/",
+        "hn_id": "50280720",
+        "reason": "General AI startup commentary; URL is October 27, outside frozen window."
+      },
+      {
+        "url": "https://techcrunch.com/2026/10/23/openai-says-it-will-no-longer-train-its-ai-models-on-the-live-internet-citing-significant-risks/",
+        "hn_id": "50279501",
+        "reason": "General training-policy report originally dated October 23; resurfacing excluded."
+      },
+      {
+        "url": "https://maevyn.codes/addenda/ai-usage-policy-and-guide",
+        "hn_id": "50277418",
+        "reason": "Personal usage policy, not operating-AI telemetry or evaluation."
+      },
+      {
+        "url": "https://vulang.org/",
+        "hn_id": "50276431",
+        "reason": "Programming-language launch, outside beat."
+      },
+      {
+        "url": "https://www.nytimes.com/interactive/2026/10/26/technology/ai-agent-hacks-training.html",
+        "hn_id": "50275417",
+        "reason": "Training behavior article originally dated October 26, outside frozen window."
+      },
+      {
+        "url": "https://app.userrank.ai/",
+        "hn_id": "50275266",
+        "reason": "Personal productivity practice counts and rankings; no concrete runtime reliability or evaluation evidence selected."
+      },
+      {
+        "url": "https://www.wordstodata.com/",
+        "hn_id": "50274235",
+        "reason": "Legal source-data versioning tool; not a new AI execution tracing or evaluation implementation."
+      },
+      {
+        "url": "https://nebul.com/nebul-expands-to-belgium-with-more-than-1000-nvidia-blackwell-ultra-gpus-in-gb300-nvl72-rack-scale-systems/",
+        "hn_id": "50273938",
+        "reason": "GPU capacity announcement; outside beat."
+      },
+      {
+        "url": "https://news.ycombinator.com/item?id=50271924",
+        "hn_id": "50271924",
+        "reason": "General philosophical discussion, outside beat."
+      },
+      {
+        "url": "https://mst-us.ai/tools/",
+        "hn_id": "50270840",
+        "reason": "Equipment drawing and bill-of-materials tools, outside beat."
+      },
+      {
+        "url": "https://binary.so",
+        "hn_id": "50269124",
+        "reason": "Hiring workflow software, outside beat."
+      },
+      {
+        "url": "https://github.com/jgrichardson/shufler",
+        "hn_id": "50272639",
+        "reason": "Editorially not selected: visual software-work pipeline and terminal orchestration, rather than detailed AI execution evidence or evaluation; first-party launch reviewed."
+      },
+      {
+        "url": "https://github.com/Arize-ai/phoenix/releases/tag/arize-phoenix-evals-v3.9.5",
+        "reason": "Documentation-only correction to PrecisionRecallFScore examples; no runtime change selected. Release API says October 28 but notes heading says October 27; not used to infer an original October 28 article."
+      },
+      {
+        "url": "https://github.com/Arize-ai/phoenix/releases/tag/%40arizeai/phoenix-mcp%404.3.18",
+        "reason": "Dependency-only update to the Phoenix client fix covered once in this draft; no separate substantive event."
+      },
+      {
+        "url": "https://github.com/Arize-ai/phoenix/releases/tag/%40arizeai/phoenix-cli%401.18.10",
+        "reason": "Dependency-only update to the Phoenix client fix covered once in this draft; no separate substantive event."
+      },
+      {
+        "url": "https://github.com/braintrustdata/braintrust-sdk-javascript/releases/tag/%40braintrust/audio%400.1.0",
+        "reason": "Same compressed recording announcement as Braintrust 3.41.0, covered within that story rather than duplicated."
+      },
+      {
+        "url": "https://arize.com/blog/i-put-a-ghost-in-claude-code-then-i-evaluated-it/",
+        "reason": "datePublished 2026-10-27T09:41:36-07:00; dateModified 2026-10-28T12:20:25-07:00 is not original publication."
+      },
+      {
+        "url": "https://opentelemetry.io/blog/2026/filelog-protobuf-checkpoints/",
+        "reason": "October 28 general file-log checkpoint optimization; no concrete AI-specific operational change selected."
+      },
+      {
+        "url": "https://www.datadoghq.com/blog/infrastructure-monitoring-basic/",
+        "reason": "October 28 baseline host-monitoring tier for noncritical workloads; no concrete AI observability change."
+      },
+      {
+        "url": "https://www.splunk.com/en_us/blog/platform/dashboard-studio-more-ways-to-visualize-your-data.html",
+        "reason": "October 28 generic visualization features; no concrete operating-AI relevance established."
+      },
+      {
+        "url": "https://www.langchain.com/blog/proactive-agents",
+        "reason": "Agent scheduling architecture tutorial; no specific tracing, evaluation or telemetry change selected."
+      },
+      {
+        "url": "https://www.educba.com/llm-observability/",
+        "reason": "Updated October 28 label does not establish original publication; no eligible original announcement verified."
+      }
+    ],
+    "note": "Scoped sweep, not exhaustive. Read all 16 historical issues (87 stories) and compared original events, URLs and cross-posts. No retained duplicate. Supplied discovery reused and all five HN queries rerun directly into run evidence to respect output-only writes. All 14 HN items and eight watchlist GitHub APIs checked. Transient web-reader failures for Elastic and Dynatrace recovered using successful primary HTTP fetches. Build, promotion, commit and publication belong to outer runner.",
+    "source_checks": {
+      "hn": {
+        "status": "complete",
+        "candidates": 14,
+        "retained": 0,
+        "queries": [
+          "observability",
+          "LLM evaluation",
+          "AI tracing",
+          "agent telemetry",
+          "langfuse"
+        ],
+        "evidence": [
+          "hn-discovery.json",
+          "hn-checks.json"
+        ]
+      },
+      "news": {
+        "status": "complete",
+        "retained": 2,
+        "configured_surfaces": 11,
+        "notes": [
+          "Arize newest featured article originally October 27; October 28 modification excluded.",
+          "Langfuse newest blog October 23, changelog October 23; prior events already in history.",
+          "LangChain two October 28 articles reviewed; evidence-grounded memory experiment retained, scheduling tutorial not selected.",
+          "Braintrust latest blog October 15; outside window.",
+          "OpenTelemetry October 28 checkpoint article reviewed; generic telemetry optimization not selected.",
+          "Elastic latest October 27 Claude observability article already covered in October 28 edition.",
+          "Datadog official RSS October 28 Infrastructure Basic article reviewed; generic host-monitoring tier excluded.",
+          "Honeycomb latest in-window-or-earlier article October 20; October 29 items outside window.",
+          "DigitalOcean October 28 Signals article retained; original embedded published_at verified separately from Updated label.",
+          "Splunk configured index returns No results; supplemental exact-date search located generic Dashboard Studio article, reviewed and excluded.",
+          "Dynatrace news latest October 27; no eligible October 28 item found."
+        ],
+        "searches": [
+          "\"2026-10-28\" \"observability\"",
+          "\"October 28, 2026\" \"evaluation\" AI",
+          "\"2026-10-28\" \"tracing\"",
+          "\"October 28, 2026\" \"LLM\" observability",
+          "site:splunk.com/en_us/blog \"October 28, 2026\""
+        ],
+        "evidence": [
+          "news-surface-checks.json",
+          "news-0.txt",
+          "building-agent-memory-openwiki-graphs.html",
+          "proactive-agents.html",
+          "arize-ghost.html",
+          "datadog-basic.txt",
+          "splunk-dashboards.txt",
+          "otel-checkpoints.txt"
+        ]
+      },
+      "github": {
+        "status": "complete",
+        "candidates": 8,
+        "retained": 4,
+        "checks": [
+          {
+            "repository": "langfuse/langfuse",
+            "status": "complete",
+            "releases_checked": 100,
+            "in_window": []
+          },
+          {
+            "repository": "Arize-ai/phoenix",
+            "status": "complete",
+            "releases_checked": 100,
+            "in_window": [
+              "https://github.com/Arize-ai/phoenix/releases/tag/arize-phoenix-evals-v3.9.5",
+              "https://github.com/Arize-ai/phoenix/releases/tag/%40arizeai/phoenix-mcp%404.3.18",
+              "https://github.com/Arize-ai/phoenix/releases/tag/%40arizeai/phoenix-evals%402.7.1",
+              "https://github.com/Arize-ai/phoenix/releases/tag/%40arizeai/phoenix-client%407.16.3",
+              "https://github.com/Arize-ai/phoenix/releases/tag/%40arizeai/phoenix-cli%401.18.10"
+            ]
+          },
+          {
+            "repository": "Arize-ai/openinference",
+            "status": "complete",
+            "releases_checked": 100,
+            "in_window": []
+          },
+          {
+            "repository": "langchain-ai/langsmith-sdk",
+            "status": "complete",
+            "releases_checked": 100,
+            "in_window": []
+          },
+          {
+            "repository": "braintrustdata/braintrust-sdk",
+            "status": "complete",
+            "releases_checked": 100,
+            "in_window": [
+              "https://github.com/braintrustdata/braintrust-sdk-javascript/releases/tag/braintrust%403.41.0",
+              "https://github.com/braintrustdata/braintrust-sdk-javascript/releases/tag/%40braintrust/audio%400.1.0"
+            ]
+          },
+          {
+            "repository": "wandb/weave",
+            "status": "complete",
+            "releases_checked": 100,
+            "in_window": []
+          },
+          {
+            "repository": "langwatch/langwatch",
+            "status": "complete",
+            "releases_checked": 100,
+            "in_window": [
+              "https://github.com/langwatch/langwatch/releases/tag/typescript-sdk%40v2.0.0"
+            ]
+          },
+          {
+            "repository": "Helicone/helicone",
+            "status": "complete",
+            "releases_checked": 4,
+            "in_window": []
+          }
+        ],
+        "evidence": [
+          "github-checks.json",
+          "pr-2679.json",
+          "pr-2656.json",
+          "pr-2658.json"
+        ]
+      }
+    }
+  }
+}
