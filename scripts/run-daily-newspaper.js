@@ -73,6 +73,7 @@ function run(argv, logName, stdin) {
         if (code !== 0) reject(new Error(`${argv[0]} exited ${code}; see ${logName}`)); else resolve();
       } catch (error) { reject(error); }
     });
+    child.stdin.on('error', (error) => { if (error.code !== 'EPIPE') reject(error); });
     child.stdin.end(stdin || '');
   });
 }

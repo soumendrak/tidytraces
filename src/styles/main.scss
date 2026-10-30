@@ -1118,8 +1118,6 @@ img { max-width: 100%; display: block; }
 }
 
 .story {
-  break-inside: avoid;
-  -webkit-column-break-inside: avoid;
   margin: 0 0 1.1rem;
   padding-bottom: 1rem;
   border-bottom: 1px solid var(--rule-hair);
@@ -1127,6 +1125,21 @@ img { max-width: 100%; display: block; }
 
 .story:last-child {
   border-bottom: none;
+}
+
+.story-byline,
+.story-headline,
+.story-image-wrapper {
+  break-after: avoid;
+}
+
+.story-image-wrapper {
+  break-inside: avoid;
+}
+
+.story-body p {
+  orphans: 3;
+  widows: 3;
 }
 
 .story-headline {

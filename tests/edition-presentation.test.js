@@ -10,6 +10,7 @@ import { auditEditionHtml } from '../scripts/lib/edition-html-audit.js';
 import { EDITION_AUTHOR, EDITION_MASTHEAD, AI_IMAGE_DISCLOSURE, imageCaptionFor } from '../src/lib/editionCredits.js';
 import { latestIssueFeeds } from '../src/lib/latestIssueFeeds.js';
 import { generatePdfs } from '../scripts/lib/pdf-editions.js';
+import { assertEditionLayout } from './lib/edition-layout.js';
 
 // Regression guard: the byline and the hidden, edition-level AI disclosure were twice
 // deployed from an uncommitted tree and then silently reverted by the next clean daily
@@ -149,12 +150,13 @@ test('every built edition page has the top subheader credit and no visible per-i
       });
       await touch.setViewport({ width: 390, height: 700, isMobile: true, hasTouch: true });
       await touch.goto('https://tidytraces.test/', { waitUntil: 'load' });
-      await touch.$eval('.story .why-info button', (el) => el.scrollIntoView());
+      await touch.$eval('.story .why-info button', (el) => el.scrollIntoView({ behavior: 'instant' }));
       await touch.tap('.story .why-info button');
       assert.deepEqual((await popover(touch)).slice(1, 3), ['true', 'visible'], 'a tap opens on mobile');
       assert.ok(await touch.$eval('.story .why-tooltip', (el) => { const r = el.getBoundingClientRect(); return r.left >= 0 && r.right <= window.innerWidth; }), 'the popover fits the mobile viewport');
       await touch.tap('.story .why-info button');
       assert.deepEqual((await popover(touch)).slice(1, 3), ['false', 'hidden'], 'a second tap closes');
+      await assertEditionLayout(browser, outDir, days);
       const mastheadView = () => site.$eval('.masthead-name', (h1) => [getComputedStyle(h1.querySelector('.masthead-print-logo')).display, getComputedStyle(h1.querySelector('.masthead-title-link')).display, getComputedStyle(document.querySelector('.masthead-subheader')).display, h1.scrollWidth <= h1.clientWidth]);
       assert.deepEqual(await mastheadView(), ['none', 'inline', 'block', true], 'the website shows the text masthead and subheader, not the logo, within a mobile viewport');
       await site.emulateMediaType('print');
