@@ -10,6 +10,7 @@ import { auditEditionHtml } from '../scripts/lib/edition-html-audit.js';
 import { EDITION_AUTHOR, AI_IMAGE_DISCLOSURE, imageCaptionFor } from '../src/lib/editionCredits.js';
 import { latestIssueFeeds } from '../src/lib/latestIssueFeeds.js';
 import { generatePdfs } from '../scripts/lib/pdf-editions.js';
+import { assertEditionLayout } from './lib/edition-layout.js';
 
 // Regression guard: the byline and the hidden, edition-level AI disclosure were twice
 // deployed from an uncommitted tree and then silently reverted by the next clean daily
@@ -134,12 +135,13 @@ test('every built edition page has the top byline and no visible per-image AI ca
       });
       await touch.setViewport({ width: 390, height: 700, isMobile: true, hasTouch: true });
       await touch.goto('https://tidytraces.test/', { waitUntil: 'load' });
-      await touch.$eval('.story .why-info button', (el) => el.scrollIntoView());
+      await touch.$eval('.story .why-info button', (el) => el.scrollIntoView({ behavior: 'instant' }));
       await touch.tap('.story .why-info button');
       assert.deepEqual((await popover(touch)).slice(1, 3), ['true', 'visible'], 'a tap opens on mobile');
       assert.ok(await touch.$eval('.story .why-tooltip', (el) => { const r = el.getBoundingClientRect(); return r.left >= 0 && r.right <= window.innerWidth; }), 'the popover fits the mobile viewport');
       await touch.tap('.story .why-info button');
       assert.deepEqual((await popover(touch)).slice(1, 3), ['false', 'hidden'], 'a second tap closes');
+      await assertEditionLayout(browser, outDir, days);
       await site.emulateMediaType('print');
       await site.evaluate(() => { document.querySelector('.back-to-top').hidden = false; });
       assert.equal(await site.$eval('.back-to-top', (el) => getComputedStyle(el).display), 'none', 'hidden in print');

@@ -5,6 +5,7 @@ import Footer from './Footer.astro';
 import BrandLogo from './BrandLogo.astro';
 import { SITE_METADATA } from '../config';
 import { resolveStoryImage } from '../lib/storyFilters.js';
+import { leavesRoomAfterFeature } from '../lib/storyLayout.js';
 import { EDITION_AUTHOR, AI_IMAGE_DISCLOSURE } from '../lib/editionCredits.js';
 
 const SOURCE_LABEL: Record<string, string> = {
@@ -263,7 +264,7 @@ const breadcrumbSchema = {
 						let isFeature = false;
 						if (!isLead) {
 							storiesSinceFeature++;
-							if (storiesSinceFeature >= nextFeatureGap && hasImage) {
+							if (storiesSinceFeature >= nextFeatureGap && hasImage && leavesRoomAfterFeature(index, stories.length)) {
 								isFeature = true;
 								storiesSinceFeature = 0;
 								nextFeatureGap = randomFeatureGap(featureRng);
@@ -375,6 +376,7 @@ const breadcrumbSchema = {
 <script src="../scripts/why-popover.ts"></script>
 <script>
 	import { matchesStoryFilters } from '../lib/storyFilters.js';
+	import { leavesRoomAfterFeature } from '../lib/storyLayout.js';
 
 	const prevBtn = document.getElementById('prev-day-btn') as HTMLButtonElement;
 	const nextBtn = document.getElementById('next-day-btn') as HTMLButtonElement;
@@ -470,7 +472,7 @@ const breadcrumbSchema = {
 				// A feature can never be the very next visible story after the lead.
 				return;
 			}
-			if (story.getAttribute('data-feature') === 'true') {
+			if (story.getAttribute('data-feature') === 'true' && leavesRoomAfterFeature(i, visibleStories.length)) {
 				story.classList.add('is-feature');
 				if (story.getAttribute('data-feature-reverse') === 'true') {
 					story.classList.add('is-feature-reverse');
@@ -565,7 +567,6 @@ const breadcrumbSchema = {
 		width: 100%;
 		max-width: 560px;
 		height: auto;
-		aspect-ratio: auto;
 		overflow: hidden;
 		border-radius: 4px;
 		margin: 1em 0;
@@ -598,7 +599,6 @@ const breadcrumbSchema = {
 	.story-featured-image {
 		width: 100%;
 		height: auto;
-		aspect-ratio: auto;
 		display: block;
 		border-radius: 4px;
 		mix-blend-mode: multiply;
