@@ -10,10 +10,12 @@ export function auditEditionHtml(html) {
   const firstStory = body.search(/<article class="story[\s"]/);
   const masthead = body.match(/<header class="masthead"[\s\S]*?<\/header>/)?.[0] || '';
   const mastheadEnd = masthead ? body.indexOf(masthead) + masthead.length : -1;
-  const byline = masthead.match(/<p class="edition-byline"[^>]*>([\s\S]*?)<\/p>/);
-  if (!byline || !text(byline[1]).includes(`By ${EDITION_AUTHOR.name}`) || (firstStory >= 0 && mastheadEnd > firstStory)) {
-    problems.push(`Missing author byline "By ${EDITION_AUTHOR.name}" in the masthead above the first story`);
+  const credit = masthead.match(/<p class="masthead-subheader"[^>]*>([\s\S]*?)<\/p>/)?.[1] || '';
+  const links = [...credit.matchAll(/<a\b[^>]*href="([^"]*)"[^>]*>([\s\S]*?)<\/a>/g)];
+  if (links.length !== 1 || links[0][1] !== EDITION_AUTHOR.url || text(links[0][2]) !== EDITION_AUTHOR.name || (firstStory >= 0 && mastheadEnd > firstStory)) {
+    problems.push(`Missing author credit linking "${EDITION_AUTHOR.name}" to ${EDITION_AUTHOR.url} in the masthead subheader above the first story`);
   }
+  if (/class="(edition-byline|masthead-tagline)"/.test(masthead)) problems.push('The masthead must not carry the old byline or tagline');
   const imageAreas = [
     ...body.matchAll(/<div class="story-image-wrapper[^"]*"[^>]*>([\s\S]*?)<\/div>/g),
     ...body.matchAll(/<figcaption[^>]*>([\s\S]*?)<\/figcaption>/g),

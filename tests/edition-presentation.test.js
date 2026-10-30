@@ -17,21 +17,27 @@ import { generatePdfs } from '../scripts/lib/pdf-editions.js';
 
 const repo = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const generated = { kind: 'generated-editorial', generator: 'built-in-imagegen', prompt: 'Trace flow', based_on: ['https://example.com/a'], reviewed: true, sha256: 'a'.repeat(64) };
-const page = ({ masthead = `<p class="edition-byline">By <a href="${EDITION_AUTHOR.url}">${EDITION_AUTHOR.name}</a></p>`, wrapper = '', disclosure = `<p id="ai-image-disclosure" class="visually-hidden ai-image-disclosure">${AI_IMAGE_DISCLOSURE}</p>` } = {}) =>
+const credit = `<p class="masthead-subheader">${EDITION_MASTHEAD.credit} <a href="${EDITION_AUTHOR.url}" rel="author">${EDITION_AUTHOR.name}</a>.</p>`;
+const page = ({ masthead = credit, wrapper = '', disclosure = `<p id="ai-image-disclosure" class="visually-hidden ai-image-disclosure">${AI_IMAGE_DISCLOSURE}</p>` } = {}) =>
   `<html><head><meta name="description" content="AI-generated"></head><body><header class="masthead" data-astro-cid-x><h1>Tidy Traces</h1>${masthead}</header>` +
   `<article class="story is-lead has-image"><div class="story-image-wrapper is-loading" data-astro-cid-x><img src="/a.webp" data-image-provenance="generated-editorial" aria-describedby="ai-image-disclosure">${wrapper}</div>` +
   `<div class="story-body"><p>Teams audit AI-generated code paths.</p></div></article>${disclosure}</body></html>`;
 
-test('edition audit accepts a top byline with one hidden edition-level AI disclosure', () => {
+test('edition audit accepts a top subheader credit with one hidden edition-level AI disclosure', () => {
   assert.deepEqual(auditEditionHtml(page()), []);
 });
 
-test('edition audit rejects visible per-image AI captions and a missing or misplaced byline', () => {
+test('edition audit rejects visible per-image AI captions, a missing or misplaced subheader credit, and the old byline or tagline', () => {
   assert.match(auditEditionHtml(page({ wrapper: '<p class="image-caption">AI-generated editorial infographic · based on the linked source</p>' })).join('\n'), /per-image AI caption/);
   assert.match(auditEditionHtml(page({ wrapper: '<figcaption>AI generated</figcaption>' })).join('\n'), /per-image AI caption/);
-  assert.match(auditEditionHtml(page({ masthead: '' })).join('\n'), /byline/);
-  const late = page({ masthead: '' }).replace('</article>', `</article><p class="edition-byline">By ${EDITION_AUTHOR.name}</p>`);
-  assert.match(auditEditionHtml(late).join('\n'), /byline/);
+  assert.match(auditEditionHtml(page({ masthead: '' })).join('\n'), /author credit/);
+  const late = page({ masthead: '' }).replace('</article>', `</article>${credit}`);
+  assert.match(auditEditionHtml(late).join('\n'), /author credit/);
+  assert.match(auditEditionHtml(page({ masthead: '<p class="masthead-subheader">Daily AI observability news.</p>' })).join('\n'), /author credit/);
+  assert.match(auditEditionHtml(page({ masthead: credit.replace(/<a [^>]*>|<\/a>/g, '') })).join('\n'), /author credit/);
+  assert.match(auditEditionHtml(page({ masthead: credit.replace(EDITION_AUTHOR.url, 'https://example.com') })).join('\n'), /author credit/);
+  assert.match(auditEditionHtml(page().replace('</header>', `<p class="edition-byline">By ${EDITION_AUTHOR.name}</p></header>`)).join('\n'), /old byline or tagline/);
+  assert.match(auditEditionHtml(page().replace('</header>', '<p class="masthead-tagline">AI Observability Daily · Observability · Evals · AI agents</p></header>')).join('\n'), /old byline or tagline/);
   assert.match(auditEditionHtml(page({ disclosure: '' })).join('\n'), /disclosure/);
   assert.match(auditEditionHtml(page({ disclosure: `<p class="ai-image-disclosure">${AI_IMAGE_DISCLOSURE}</p>` })).join('\n'), /visually hidden/);
   const twice = page().replace('</body>', `<p class="visually-hidden ai-image-disclosure">${AI_IMAGE_DISCLOSURE}</p></body>`);
@@ -55,7 +61,7 @@ test('markdown export carries the byline up top and one AI disclosure at the end
   assert.doesNotMatch(markdown.slice(0, markdown.lastIndexOf(AI_IMAGE_DISCLOSURE)), /AI[-\s]generated/i);
 });
 
-test('every built edition page has the top byline and no visible per-image AI caption', async () => {
+test('every built edition page has the top subheader credit and no visible per-image AI caption', async () => {
   const { build } = await import('astro');
   const outDir = await mkdtemp(path.join(tmpdir(), 'tidytraces-build-'));
   try {
@@ -71,7 +77,10 @@ test('every built edition page has the top byline and no visible per-image AI ca
       const headline = masthead.match(/<h1 class="masthead-name"[^>]*>([^]*?)<\/h1>\s*<p class="masthead-subheader"[^>]*>([^]*?)<\/p>/);
       assert.ok(headline, `${file} has the text masthead directly followed by the subheader`);
       assert.equal(headline[1].match(/<a class="masthead-title-link"[^>]*>([^<]*)<\/a>/)?.[1], EDITION_MASTHEAD.title, `${file} masthead reads the configured title`);
-      assert.equal(headline[2], EDITION_MASTHEAD.subheader, `${file} subheader reads the configured line`);
+      assert.equal(headline[2].replace(/<[^>]*>/g, ''), `${EDITION_MASTHEAD.credit} ${EDITION_AUTHOR.name}.`, `${file} subheader reads the configured line`);
+      assert.deepEqual([...headline[2].matchAll(/<a\b([^>]*)>([^<]*)<\/a>/g)].map(([, attrs, name]) => [attrs.match(/href="([^"]*)"/)?.[1], name]), [['https://www.soumendrak.com', EDITION_AUTHOR.name]], `${file} links the full author name once to the author's website`);
+      assert.equal(masthead.split(EDITION_AUTHOR.name).length - 1, 1, `${file} names the author once in the header`);
+      assert.doesNotMatch(masthead, /edition-byline|masthead-tagline|Observability · Evals · AI agents|>By </, `${file} drops the old byline and tagline`);
       assert.doesNotMatch(html, /Coverage window|edition-window/, `${file} has no coverage-window line`);
       assert.doesNotMatch(html.match(/<div class="story-body[^]*?<\/div>/g)?.join('') ?? '', /Why it matters/, `${file} keeps why-it-matters out of story bodies`);
       const day = file === 'index.html' ? days.toSorted().at(-1) : file.split('/')[1];
@@ -150,7 +159,7 @@ test('every built edition page has the top byline and no visible per-image AI ca
       assert.deepEqual(await mastheadView(), ['none', 'inline', 'block', true], 'the website shows the text masthead and subheader, not the logo, within a mobile viewport');
       await site.emulateMediaType('print');
       await site.evaluate(() => { document.querySelector('.back-to-top').hidden = false; });
-      assert.deepEqual((await mastheadView()).slice(0, 3), ['inline', 'none', 'none'], 'the PDF keeps the logo masthead');
+      assert.deepEqual((await mastheadView()).slice(0, 3), ['inline', 'none', 'block'], 'the PDF keeps the logo masthead with the subheader credit');
       assert.equal(await site.$eval('.back-to-top', (el) => getComputedStyle(el).display), 'none', 'hidden in print');
     } finally { await browser.close(); }
     await generatePdfs({ outDir });
