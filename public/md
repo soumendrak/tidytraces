@@ -1,97 +1,165 @@
-# AI Observability Daily — 2026-10-29
+# AI Observability Daily — 2026-10-30
 
 By Soumendra Kumar Sahoo
 
 Canonical: https://tidytraces.com/
-Coverage window: 2026-10-28
+Coverage window: 2026-10-29
 
-## DigitalOcean Signals points reviewers to specific agent conversation steps
+## Apgar compares production agent releases without a model judge
 
-Source: DigitalOcean — https://www.digitalocean.com/blog/digitalocean-signals-observability-ai-agents
-Published: 2026-10-28
+Source: Oimo AI — https://news.ycombinator.com/item?id=50292363
+Published: 2026-10-29
+Channel: hn
+
+Apgar is an open-source release health checker for AI agents that compares behavior in production traces. Its authors, who build financial agents, say offline evaluations miss some real conversations, while running a model judge over more than a small sample costs too much. They built Apgar to answer a narrower question: did this release behave worse than the previous one?
+
+First, Apgar reads a release identifier from traces collected through Langfuse or OpenTelemetry. During the first hours of a release, it compares eleven behavioral metrics with the previous release, including tool calls per turn, repeated failed calls, loops, output length, and cost per turn. Its release page shows changes in both directions. When a metric worsens, Slack and webhook notifications identify the signal and where the change is concentrated, such as a particular channel or longer sessions.
+
+The checker runs with ClickHouse using Docker Compose or Helm. It does not use a model judge, but the authors emphasize its boundary: an incorrect answer can escape detection if the surrounding behavior looks unchanged. Their answer-quality evaluations remain necessary.
+
+Why it matters: Teams already collecting agent traces can trial release comparisons alongside answer-quality evaluations; behavioral stability alone cannot certify correctness.
+
+![Apgar compares production agent releases without a model judge](/edition-images/2026-10-30/apgar-release-checks.webp)
+
+## DigitalOcean explains how to test the whole agent conversation
+
+Source: DigitalOcean — https://www.digitalocean.com/blog/inside-digitalocean-simulations
+Published: 2026-10-29
 Channel: news
 
-DigitalOcean Signals examines production agent conversations to help teams decide which sessions deserve review. Its October 28 article describes a public preview for Managed Agents and Inference Engine. Instead of asking another language model to grade every conversation, Signals detects behavioral patterns such as repeated tool attempts, user corrections and external API errors. Each signal includes a run, step, confidence score and snippet.
+DigitalOcean Simulations is a public-preview capability in its Evaluations service that tests an agent through a conversation with a simulated user. The engineering walkthrough addresses a gap in single-response checks: an answer can sound reasonable while the agent forgets an earlier choice or skips a necessary tool call.
 
-For illustration, an assistant might finish its run successfully after repeatedly retrying a failing command. A completion metric would miss that experience; a retry signal gives a reviewer a specific step to inspect. DigitalOcean describes this as first-pass triage, and a flag does not establish that an answer was wrong. Sessions can also contain useful positive examples.
+First, a scenario defines the situation, an optional user persona, stopping criteria, and a turn limit. A simulator then reacts to what the agent actually returns rather than following a fixed script. The agent runs in an isolated Harness Runtime sandbox with its production configuration and live Action Gateway tools. Each exchange adds messages, tool inputs and outputs, timestamps, and token usage to a trajectory, the ordered record of the episode.
 
-Analysis is off by default and applies to conversations beginning after consent. Reports update after inactivity and closure; dashboard metrics can lag by up to an hour. Selected sessions can become evaluation datasets and simulation scenarios. Exports redact personal information in free text, but the article says scenario creation uses the non-redacted version before redacting displayed content. Teams handling sensitive conversations should examine that distinction before enabling the preview.
+After execution, a model judge scores that whole record for selected conversational metrics. Baseline and candidate runs use the same scenarios; DigitalOcean advises keeping simulator and judge models unchanged for comparisons. Used scenario sets lock, so edits require a copy. The article’s example score comparison is illustrative, not an independent benchmark. The preview has no service-level agreement and is not recommended for production workloads.
 
-Why it matters: For teams running DigitalOcean agents: evaluate signal usefulness on a small consented workload, and review export and scenario privacy behavior before expanding access.
+Why it matters: Evaluation owners can test whether an agent preserves decisions across turns, while controlling the simulator and judge to keep comparisons meaningful.
 
-![DigitalOcean Signals points reviewers to specific agent conversation steps](/edition-images/2026-10-29/digitalocean.webp)
+![DigitalOcean explains how to test the whole agent conversation](/edition-images/2026-10-30/digitalocean-conversation-tests.webp)
 
-## Braintrust adds server-side tool traces and safer voice recording controls
+## LangChain links browser-tool tuning to traces and repeatable tests
 
-Source: Braintrust — https://github.com/braintrustdata/braintrust-sdk-javascript/releases/tag/braintrust%403.41.0
-Published: 2026-10-28
-Channel: github
-
-Braintrust records AI application activity so engineers can inspect failures and evaluate behavior. JavaScript SDK 3.41.0 adds tracing for Model Context Protocol servers, which expose tools, prompts and resources to AI clients. The linked implementation captures tool calls, prompt retrievals and resource reads, with request and session identifiers for correlation. Tool responses marked isError count as failures even when their handlers do not throw an exception.
-
-The same release fixes a separate evidence gap in LiveKit voice agents. Previously, a job could exit after session.close() resolved while recordings were still uploading. The close now waits for the recording upload. For illustration, an engineer investigating a call should have a better chance of retaining its final recording during a normal close, flush and exit sequence; this does not promise recovery after an arbitrary process crash.
-
-Caller and agent audio now require separate explicit capture flags. The broad attachment setting no longer enables LiveKit audio. The optional @braintrust/audio package adds compressed recordings; without it, the implementation falls back to raw audio. Teams upgrading existing voice instrumentation therefore need to check both consent settings and shutdown behavior.
-
-Why it matters: For Braintrust voice-agent operators: migrate audio opt-in flags and test normal close, flush and exit with a recording before relying on the updated trace evidence.
-
-![Braintrust adds server-side tool traces and safer voice recording controls](/edition-images/2026-10-29/braintrust.webp)
-
-## LangWatch SDK 2.0 separates dashboard calls from analytics reports
-
-Source: LangWatch — https://github.com/langwatch/langwatch/releases/tag/typescript-sdk%40v2.0.0
-Published: 2026-10-28
-Channel: github
-
-LangWatch is a platform for observing and evaluating AI applications. Its TypeScript SDK 2.0.0 release changes the meaning of a familiar API path: client.dashboards now addresses the new Dashboards product rather than the older Reports API. Existing report operations move to client.analyticsReports. The release also renames Reports tools exposed through Model Context Protocol, the interface agents use to call external tools.
-
-For illustration, a team might have a script that retrieves a recurring agent-quality report. After upgrading, continuing to call the dashboards path would target a different product. The useful migration check is whether the script still retrieves the intended report, not simply whether its request succeeds. This example illustrates the compatibility risk; the notes do not report a measured customer incident.
-
-The release adds REST creation and deletion for dashboard boards and records each request’s credential type. Legacy project keys become ingestion-only. Those changes make both API paths and permissions relevant to upgrade testing. This is a major SDK release with explicit breaking changes, so teams should review report consumers and credentials together before rolling it through production monitoring workflows.
-
-Why it matters: For LangWatch integration owners: inventory dashboards calls, migrate report consumers to analyticsReports, and verify read permissions separately from telemetry ingestion.
-
-![LangWatch SDK 2.0 separates dashboard calls from analytics reports](/edition-images/2026-10-29/langwatch.webp)
-
-## LangChain tests whether stable evidence paths make agent answers repeatable
-
-Source: LangChain — https://www.langchain.com/blog/building-agent-memory-openwiki-graphs
-Published: 2026-10-28
+Source: LangChain — https://www.langchain.com/blog/browser-use-in-managed-deep-agents
+Published: 2026-10-29
 Channel: news
 
-OpenWiki compiles source documents into a linked wiki that agents can reuse as memory. LangChain’s October 28 experiment asks whether that memory also makes answers easier to reproduce and audit. It tests a synthetic insurance library containing 111 documents and a controlled ledger of 972 facts, with 80 lookup questions and 50 questions requiring connections across documents. Each question runs three times.
+Managed Deep Agents is LangChain’s service for deploying agents in LangSmith without running their infrastructure. Its new managed browser lets agents interact with rendered websites and test application changes. The article explains why fetching page HTML is insufficient for clicking through a real workflow, and why giving an agent a password risks placing it in messages and traces.
 
-The important distinction is between correct answers and consistent evidence. The study scores accuracy against the fact ledger, while citation consistency measures overlap between cited sources across repeated runs. A model could repeatedly cite the same wrong passage, so consistency alone is not correctness. For illustration, an insurance assistant answering a coverage question may need both an original policy and a later amendment; checking only its final answer can hide a changing evidence path.
+First, developers declare a browser with conversation or user scope. The service supplies tools to inspect the page, run actions, take screenshots, and hand control to a person. For application testing, a private connection lets the remote browser reach an app inside the agent’s sandbox without a public address. Browser actions are code that can later be saved as a replayable test file.
 
-LangChain adds a graph linking wiki claims to specific supporting paragraphs and related documents. It reports higher accuracy and citation consistency for connected questions, while simple lookups remain as accurate and faster without the wiki. Reported answer costs exclude compilation and updates. This is a publisher-run synthetic experiment, not independent proof of production gains.
+LangChain says it tuned these tools by running browser benchmarks, inspecting LangSmith traces, and evaluating changes. It reports a ninety-percent pass rate across one hundred WebVoyager tasks for a total cost of $1.98; those are vendor-reported results for that test setup. At sign-in, a human can take the browser, authenticate, and hand it back so credentials stay out of the model’s messages.
 
-Why it matters: For retrieval evaluation owners: measure evidence stability alongside answer accuracy, and include memory maintenance costs when testing whether a compiled wiki is worthwhile.
+Why it matters: Teams evaluating browser agents can inspect action traces and preserve successful flows as regression tests; the reported benchmark does not establish performance on their own sites.
 
-![LangChain tests whether stable evidence paths make agent answers repeatable](/edition-images/2026-10-29/openwiki-reviewed.webp)
+![LangChain links browser-tool tuning to traces and repeatable tests](/edition-images/2026-10-30/langchain-browser-tests.webp)
 
-## Phoenix preserves custom evaluator metadata alongside results
+## Datadog uses agent traces to decide which compute should stay warm
 
-Source: Arize AI / Phoenix — https://github.com/Arize-ai/phoenix/releases/tag/%40arizeai/phoenix-evals%402.7.1
-Published: 2026-10-28
+Source: Datadog — https://www.datadoghq.com/blog/serverless-ai-agents/
+Published: 2026-10-29
+Channel: news
+
+Datadog Agent Observability records model and tool activity, while its application and serverless monitoring products measure execution behavior. A new guide uses those signals to evaluate where agent workloads should run. Its starting problem is paying for allocated compute while an agent waits for tools, model responses, or human approval.
+
+First, teams build an execution profile covering traffic bursts, concurrency, response-time goals, active compute, elapsed time, and runtime requirements. Traces distinguish time spent on individual steps from the duration of the whole run. For resumable work, the guide recommends bounded steps with durable progress records, allowing compute to stop during waits. Retries must avoid repeating external side effects.
+
+Then teams compare on-demand execution with warm or dedicated capacity over the same demand window. The guide counts costs from failed and abandoned attempts, but divides by completed runs to calculate cost per successful run. Finally, production traces identify which constraint needs attention. Warm capacity can help startup delay, but cannot remove unnecessary model turns. The recommendation is to move the constrained step while leaving suitable intermittent work serverless; it is guidance, not a universal cost guarantee.
+
+Why it matters: Engineers reviewing agent hosting costs can measure waiting, startup delay, and failed attempts before changing capacity for an entire workflow.
+
+![Datadog uses agent traces to decide which compute should stay warm](/edition-images/2026-10-30/datadog-agent-execution.webp)
+
+## Dynatrace accepts more AI telemetry through a shared data model
+
+Source: Dynatrace — https://www.dynatrace.com/news/blog/dynatrace-unifies-ai-observability-ingest-across-coding-agents-oneagent-and-openinference/
+Published: 2026-10-29
+Channel: news
+
+Dynatrace AI Observability collects AI application telemetry alongside service and infrastructure data. Its ingestion update addresses teams running a mixture of coding agents, Python model clients, and frameworks already instrumented with OpenInference. Each can otherwise require a separate route into monitoring.
+
+First, OneAgent can instrument supported Python applications through a setting, capturing logs, traces, and model-specific telemetry without application code changes. Additional experimental sensors are enabled individually. Dynatrace warns that their attribute collection is best-effort and that completeness and schemas can change. Second, existing OpenInference records can enter directly, with their attributes normalized into the same gen_ai.* model. A span, the record of one operation in a trace, can then sit beside the rest of an application’s activity.
+
+The announcement also describes receiving OpenTelemetry signals from coding agents to inspect token consumption, cost, session activity, and tool behavior. Dynatrace is retiring OpenLLMetry support and advises users to choose OneAgent, OpenInference, or direct OpenTelemetry instrumentation as a replacement. It says a documentation notice with transition details will follow. The announcement describes compatibility paths, rather than reporting an independent comparison of telemetry completeness.
+
+Why it matters: Platform teams using OpenLLMetry should review the linked transition notice and test the fields they rely on when choosing a replacement ingest path.
+
+![Dynatrace accepts more AI telemetry through a shared data model](/edition-images/2026-10-30/dynatrace-ingest-paths.webp)
+
+## Langfuse ties gateway traces to the key and service that sent them
+
+Source: Langfuse — https://github.com/langfuse/langfuse/releases/tag/v4.72.0
+Published: 2026-10-29
 Channel: github
 
-Phoenix provides tools for inspecting AI runs and scoring their results. Its TypeScript evaluation package 2.7.1 fixes createEvaluator, a helper that wraps custom evaluation functions, so it retains metadata those functions return. For illustration, a team’s scorer could attach context explaining a result; preserving that context helps a reviewer interpret the score. The release establishes metadata preservation, not improved scoring accuracy or any particular metadata format. It lists this as a narrow patch and reports no benchmark or broader evaluator redesign.
+Langfuse is an AI engineering platform for tracing model calls and evaluating application behavior. Its latest server release expands visibility into requests passing through its AI gateway. The changes target attribution and accounting: operators need to know which credential, service, or user generated activity before interpreting usage.
 
-Why it matters: For custom evaluator authors: run a known example through createEvaluator and confirm its returned metadata reaches the result you inspect.
+First, ingestion attributes gateway spans to the gateway API key and service. A span is the record of one operation within a trace. The release also defaults a service key’s user identifier to its key name and fixes user-bound key generations so they consistently belong to that key’s user. An analytics tab in gateway settings provides another entry point for reviewing activity.
 
-![Phoenix preserves custom evaluator metadata alongside results](/edition-images/2026-10-29/phoenix-evals.webp)
+Alongside those changes, the generic model-usage mapping stops counting the cache-write duration breakdown twice, and model-price lookup accepts any usage key. The release also adds trace-level evaluator filter conditions and PagerDuty delivery for alerts, project notifications, and prompt changes, with the routing key stored on the automation. These are release-note descriptions of individual changes; the source supplies no benchmark or quantified claim about the resulting accounting accuracy.
 
-## Phoenix keeps schema descriptions and defaults when converting prompts
+Why it matters: Gateway operators should compare key, service, and user attribution after upgrading and recheck cache-write usage where the affected mapping is used.
 
-Source: Arize AI / Phoenix — https://github.com/Arize-ai/phoenix/releases/tag/%40arizeai/phoenix-client%407.16.3
-Published: 2026-10-28
+![Langfuse ties gateway traces to the key and service that sent them](/edition-images/2026-10-30/langfuse-gateway-attribution.webp)
+
+## Braintrust captures tool and prompt content by default in MCP traces
+
+Source: Braintrust — https://github.com/braintrustdata/braintrust-sdk-javascript/releases/tag/braintrust%403.42.0
+Published: 2026-10-29
 Channel: github
 
-Phoenix’s client helps applications work with AI prompts and their structured definitions. Version 7.16.3 fixes toSDK conversion of prompt tool and response-format schemas: description, default and other keywords next to anyOf are retained. The anyOf keyword describes alternative valid shapes. For illustration, a test prompt using alternatives and an adjacent description should keep both when converted for use. This patch concerns the definition passed onward; it does not establish that a model follows that definition. The release supplies no measured evaluation improvement.
+Braintrust’s JavaScript software development kit (SDK) records AI application activity for tracing and evaluation. Its release changes instrumentation for the Model Context Protocol, the interface agents use to connect to external tools and prompts. Tool and prompt content is now captured by default, making the recorded payload an explicit part of the upgrade decision.
 
-Why it matters: For teams testing structured prompts: compare converted schemas with the originals, including annotations beside anyOf, before attributing changed outputs to a model.
+The same release adds tracing for server notifications and session metadata. The release notes do not describe notification fields, retention controls, or benchmark results, so those details cannot be inferred from the announcement. The concrete change to review is what information these integrations now send into traces.
 
-![Phoenix keeps schema descriptions and defaults when converting prompts](/edition-images/2026-10-29/phoenix-client.webp)
+Why it matters: Before upgrading a content-sensitive integration, compare representative MCP traces with your collection policy and verify which tool and prompt payloads are recorded.
+
+![Braintrust captures tool and prompt content by default in MCP traces](/edition-images/2026-10-30/braintrust-tool-content.webp)
+
+## Phoenix redacts personal information from exported logs and spans
+
+Source: Arize AI — https://github.com/Arize-ai/phoenix/releases/tag/arize-phoenix-v20.27.0
+Published: 2026-10-29
+Channel: github
+
+Arize Phoenix is an open-source platform for tracing and evaluating AI applications. Its server release includes privacy-related changes in telemetry leaving the server: exported logs and spans are redacted for personally identifiable information. A span records one operation within a trace, so exported records can contain details beyond the final model answer.
+
+The release describes two changes to that reporting path. It redacts personal information from exported logs and spans, and records reported client errors by route rather than full URL. The notes do not enumerate every field or redaction rule, so they do not establish that arbitrary sensitive content is removed. A separate trace fix saves a sanitized dataframe together with document metadata.
+
+Other changes affect how operators inspect and evaluate runs. A trace-error subquery is scoped to the selected project and time range, and the span-filter query language receives three fixes found during security review. Python classification evaluators gain support for TypeSafe Jev decision models. The release also exposes prompt creation timestamps through the API. These are distinct release-note changes; no measured privacy coverage or evaluation-quality improvement is reported.
+
+Why it matters: Teams exporting Phoenix telemetry should inspect representative output against their data-handling rules; the release notes alone do not demonstrate complete sensitive-data removal.
+
+![Phoenix redacts personal information from exported logs and spans](/edition-images/2026-10-30/phoenix-export-redaction.webp)
+
+## OpenInference stops Anthropic calls from gaining a second trace record
+
+Source: Arize AI — https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-anthropic-v3.1.1
+Published: 2026-10-29
+Channel: github
+
+OpenInference provides instrumentation that records AI application operations as traces. Its Python Anthropic integration fixes a case where the Anthropic client adds a second span to each traced call. A span is one operation record, so this change addresses duplicate representation of the same call rather than a newly observed model action.
+
+The instrumentor stops the extra span from being added with the affected newer client behavior. The release also raises the minimum dependency on OpenInference semantic conventions, the shared definitions for trace attributes. Its short notes do not report performance measurements or describe a migration procedure. The separate runtime-compatibility releases published alongside it are not evidence of additional duplicate-span fixes.
+
+Why it matters: Users of the Python Anthropic instrumentor can verify that one model call produces the expected trace structure after upgrading.
+
+![OpenInference stops Anthropic calls from gaining a second trace record](/edition-images/2026-10-30/openinference-anthropic-spans.webp)
+
+## Dynatrace shows which AI processes its vulnerability counts cover
+
+Source: Dynatrace — https://www.dynatrace.com/news/blog/surface-vulnerabilities-in-your-ai-services/
+Published: 2026-10-29
+Channel: news
+
+Dynatrace AI Observability identifies AI services, while Runtime Vulnerability Analytics detects vulnerable code in running processes. A new dashboard combines those views to show findings specifically for AI workloads. The operational problem is interpreting a clean count: no findings can mean either no detected vulnerability or missing monitoring coverage.
+
+First, AI Observability discovers GenAI entities and their processes. Monitoring rules then determine which processes Runtime Vulnerability Analytics scans. Only covered processes contribute to vulnerability counts. The dashboard separates distinct vulnerabilities from vulnerability-and-process pairs, affected processes, and affected packages, so repeated exposure across processes does not masquerade as additional unique flaws.
+
+A dedicated coverage table lists AI processes and whether scanning covers them. An uncovered process needs monitoring-rule attention; an entirely empty table can mean no running AI processes or missing AI instrumentation. Dynatrace recommends a roughly thirty-minute window for a current snapshot, then reviewing coverage before interpreting an empty result. The source describes runtime findings in loaded and executing code; it does not establish that a zero count proves an AI service is secure.
+
+Why it matters: AI platform owners should check scan coverage before sharing vulnerability totals; unmonitored processes are absent from those findings.
+
+![Dynatrace shows which AI processes its vulnerability counts cover](/edition-images/2026-10-30/dynatrace-scan-coverage.webp)
 
 ---
 

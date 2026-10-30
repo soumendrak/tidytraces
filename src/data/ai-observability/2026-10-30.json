@@ -1,0 +1,975 @@
+{
+  "date": "2026-10-30",
+  "story_window": "2026-10-29",
+  "dek": "Verified AI observability coverage of agent evaluation, telemetry attribution and privacy, execution costs, and monitoring coverage.",
+  "stories": [
+    {
+      "title": "Apgar compares production agent releases without a model judge",
+      "url": "https://news.ycombinator.com/item?id=50292363",
+      "publisher": "Oimo AI",
+      "published": "2026-10-29",
+      "category_key": "evals",
+      "summary": "Apgar checks behavioral changes across production releases using existing traces. Its authors distinguish those signals from judging whether an answer is correct.",
+      "body": [
+        "Apgar is an open-source release health checker for AI agents that compares behavior in production traces. Its authors, who build financial agents, say offline evaluations miss some real conversations, while running a model judge over more than a small sample costs too much. They built Apgar to answer a narrower question: did this release behave worse than the previous one?",
+        "First, Apgar reads a release identifier from traces collected through Langfuse or OpenTelemetry. During the first hours of a release, it compares eleven behavioral metrics with the previous release, including tool calls per turn, repeated failed calls, loops, output length, and cost per turn. Its release page shows changes in both directions. When a metric worsens, Slack and webhook notifications identify the signal and where the change is concentrated, such as a particular channel or longer sessions.",
+        "The checker runs with ClickHouse using Docker Compose or Helm. It does not use a model judge, but the authors emphasize its boundary: an incorrect answer can escape detection if the surrounding behavior looks unchanged. Their answer-quality evaluations remain necessary."
+      ],
+      "format": "full",
+      "takeaway": "Teams already collecting agent traces can trial release comparisons alongside answer-quality evaluations; behavioral stability alone cannot certify correctness.",
+      "image": "/edition-images/2026-10-30/apgar-release-checks.webp",
+      "image_width": 1440,
+      "image_height": 960,
+      "image_provenance": {
+        "kind": "generated-editorial",
+        "generator": "built-in-imagegen",
+        "prompt": "Use case: infographic-diagram. Asset type: standalone newspaper editorial infographic PNG, landscape 1536x1024. Style: warm ivory newsprint, dark ink, restrained rust-red accents, hand-etched simple symbols, generous whitespace, bold readable serif title and large labels. One clear source-supported idea, readable at article width. No invented metrics, no fake screenshots, no logos, no watermark, no footer. Render only the exact text requested. Title: \"Did this agent release regress?\" Show two folders labelled \"Previous release\" and \"New release\" converging by arrows on a central comparison gauge labelled \"Compare trace behavior\", then an arrow to a bell labelled \"Notify on regression\". Small three tags around comparison: \"Tool retries\", \"Loops\", \"Cost per turn\". A separated lower note reads \"Behavior signals do not judge answer correctness\". This depicts Apgar comparing production traces across releases and notifying about worsening behavior, based on https://news.ycombinator.com/item?id=50292363 . Do not imply automatic rollback.",
+        "based_on": [
+          "https://news.ycombinator.com/item?id=50292363"
+        ],
+        "reviewed": true,
+        "sha256": "aa9029948c30d3cd66e9bf99339bafc24913ff78b250ad5bb185c6c950020dcb",
+        "optimization": {
+          "format": "webp",
+          "quality": 82,
+          "max_width": 1440,
+          "source_sha256": "1f7265774828c5cd1d15b2e501f2a42d738f69da74d8e1da04e8042c1fe063b6"
+        },
+        "original_png": "apgar-release-checks.png"
+      },
+      "source": "hn",
+      "interest_score": 8,
+      "hn_id": "50292363",
+      "comments": "https://news.ycombinator.com/item?id=50292363",
+      "score_reason": "Direct production regression workflow with explicit limitations, described in an original first-party launch.",
+      "dedupe_key": "hn-original:50292363",
+      "source_evidence": {
+        "url": "https://news.ycombinator.com/item?id=50292363",
+        "publication_date": "2026-10-29",
+        "raw_date": "2026-10-29T17:04:06Z",
+        "method": "Original first-party Show HN announcement; official Firebase item time 1793293446 converted to UTC, with author text describing the launch."
+      }
+    },
+    {
+      "title": "DigitalOcean explains how to test the whole agent conversation",
+      "url": "https://www.digitalocean.com/blog/inside-digitalocean-simulations",
+      "publisher": "DigitalOcean",
+      "published": "2026-10-29",
+      "category_key": "evals",
+      "summary": "DigitalOcean details its public-preview simulation pipeline, including live tools, complete conversation records, and controlled baseline comparisons.",
+      "body": [
+        "DigitalOcean Simulations is a public-preview capability in its Evaluations service that tests an agent through a conversation with a simulated user. The engineering walkthrough addresses a gap in single-response checks: an answer can sound reasonable while the agent forgets an earlier choice or skips a necessary tool call.",
+        "First, a scenario defines the situation, an optional user persona, stopping criteria, and a turn limit. A simulator then reacts to what the agent actually returns rather than following a fixed script. The agent runs in an isolated Harness Runtime sandbox with its production configuration and live Action Gateway tools. Each exchange adds messages, tool inputs and outputs, timestamps, and token usage to a trajectory, the ordered record of the episode.",
+        "After execution, a model judge scores that whole record for selected conversational metrics. Baseline and candidate runs use the same scenarios; DigitalOcean advises keeping simulator and judge models unchanged for comparisons. Used scenario sets lock, so edits require a copy. The article’s example score comparison is illustrative, not an independent benchmark. The preview has no service-level agreement and is not recommended for production workloads."
+      ],
+      "format": "full",
+      "takeaway": "Evaluation owners can test whether an agent preserves decisions across turns, while controlling the simulator and judge to keep comparisons meaningful.",
+      "image": "/edition-images/2026-10-30/digitalocean-conversation-tests.webp",
+      "image_width": 1440,
+      "image_height": 960,
+      "image_provenance": {
+        "kind": "generated-editorial",
+        "generator": "built-in-imagegen",
+        "prompt": "Use case: infographic-diagram. Asset type: standalone newspaper editorial infographic PNG, landscape 1536x1024. Style: warm ivory newsprint, dark ink, restrained rust-red accents, hand-etched simple symbols, generous whitespace, bold readable serif title and large labels. One clear source-supported idea, readable at article width. No invented metrics, no fake screenshots, no logos, no watermark, no footer. Render only the exact text requested. Title: \"Test the whole conversation\". A simple left-to-right four-stage sequence: a scenario card labelled \"Define a scenario\", two chat balloons labelled \"Simulate a user\", a ledger containing a small tool icon labelled \"Record messages and tool calls\", and a magnifier labelled \"Judge the trajectory\". Under the ledger put \"Trajectory = ordered conversation record\". Small badge \"Public preview\". Based on https://www.digitalocean.com/blog/inside-digitalocean-simulations . No benchmark numbers or performance claims.",
+        "based_on": [
+          "https://www.digitalocean.com/blog/inside-digitalocean-simulations"
+        ],
+        "reviewed": true,
+        "sha256": "d613c5509480063894f3b1314a21e9da1b1e49333724f81458f2176cd38a6cf5",
+        "optimization": {
+          "format": "webp",
+          "quality": 82,
+          "max_width": 1440,
+          "source_sha256": "5301edefd56f1353b433f37ae4928d1d3b1e0a7712568f52e9bff63577a8f1ab"
+        },
+        "original_png": "digitalocean-conversation-tests.png"
+      },
+      "source": "news",
+      "interest_score": 8,
+      "score_reason": "Detailed primary-source evaluation mechanism with explicit comparison controls and preview limitations.",
+      "dedupe_key": "article:www.digitalocean.com/blog/inside-digitalocean-simulations",
+      "source_evidence": {
+        "url": "https://www.digitalocean.com/blog/inside-digitalocean-simulations",
+        "publication_date": "2026-10-29",
+        "raw_date": "2026-10-29T12:52:58.880Z",
+        "method": "Original article Published time element with itemProp=datePublished; datetime matches the visible publication day."
+      }
+    },
+    {
+      "title": "LangChain links browser-tool tuning to traces and repeatable tests",
+      "url": "https://www.langchain.com/blog/browser-use-in-managed-deep-agents",
+      "publisher": "LangChain",
+      "published": "2026-10-29",
+      "category_key": "evals",
+      "summary": "Managed Deep Agents adds a remote browser and describes how trace review and evaluations shaped its tools. Human handoff keeps sign-in credentials out of model messages.",
+      "body": [
+        "Managed Deep Agents is LangChain’s service for deploying agents in LangSmith without running their infrastructure. Its new managed browser lets agents interact with rendered websites and test application changes. The article explains why fetching page HTML is insufficient for clicking through a real workflow, and why giving an agent a password risks placing it in messages and traces.",
+        "First, developers declare a browser with conversation or user scope. The service supplies tools to inspect the page, run actions, take screenshots, and hand control to a person. For application testing, a private connection lets the remote browser reach an app inside the agent’s sandbox without a public address. Browser actions are code that can later be saved as a replayable test file.",
+        "LangChain says it tuned these tools by running browser benchmarks, inspecting LangSmith traces, and evaluating changes. It reports a ninety-percent pass rate across one hundred WebVoyager tasks for a total cost of $1.98; those are vendor-reported results for that test setup. At sign-in, a human can take the browser, authenticate, and hand it back so credentials stay out of the model’s messages."
+      ],
+      "format": "full",
+      "takeaway": "Teams evaluating browser agents can inspect action traces and preserve successful flows as regression tests; the reported benchmark does not establish performance on their own sites.",
+      "image": "/edition-images/2026-10-30/langchain-browser-tests.webp",
+      "image_width": 1440,
+      "image_height": 960,
+      "image_provenance": {
+        "kind": "generated-editorial",
+        "generator": "built-in-imagegen",
+        "prompt": "Use case: infographic-diagram. Asset type: standalone newspaper editorial infographic PNG, landscape 1536x1024. Style: warm ivory newsprint, dark ink, restrained rust-red accents, hand-etched simple symbols, generous whitespace, bold readable serif title and large labels. One clear source-supported idea, readable at article width. No invented metrics, no fake screenshots, no logos, no watermark, no footer. Render only the exact text requested. Title: \"From browser actions to repeatable tests\". Three simple connected elements: remote browser labelled \"Run browser actions\", magnifying glass over trace ledger labelled \"Inspect traces and evaluate\", saved script page labelled \"Save a replayable test\". Lower separate small handoff symbol with label \"A person signs in directly\". Source https://www.langchain.com/blog/browser-use-in-managed-deep-agents describes tools tuned with trace review and evaluations, code actions can be saved as test file, and user handoff protects passwords from model messages. This is a conceptual workflow, not an actual interface. No benchmark numbers.",
+        "based_on": [
+          "https://www.langchain.com/blog/browser-use-in-managed-deep-agents"
+        ],
+        "reviewed": true,
+        "sha256": "5b0a94f76fd6a095516d32065288275f618ab702b2910407a19e49e8141bee86",
+        "optimization": {
+          "format": "webp",
+          "quality": 82,
+          "max_width": 1440,
+          "source_sha256": "9f0bb69424f4756d13f07056824c455169eb08f63b6d2da84a873d9fd57e5185"
+        },
+        "original_png": "langchain-browser-tests.png"
+      },
+      "source": "news",
+      "interest_score": 8,
+      "score_reason": "Concrete trace-and-evaluation development workflow, with a source-scoped benchmark and credential-handling mechanism.",
+      "dedupe_key": "article:www.langchain.com/blog/browser-use-in-managed-deep-agents",
+      "source_evidence": {
+        "url": "https://www.langchain.com/blog/browser-use-in-managed-deep-agents",
+        "publication_date": "2026-10-29",
+        "raw_date": "2026-10-29T15:00:00.000Z",
+        "method": "Original Article JSON-LD datePublished, corroborated by the visible article date. Related release overview treated as the same announcement."
+      }
+    },
+    {
+      "title": "Datadog uses agent traces to decide which compute should stay warm",
+      "url": "https://www.datadoghq.com/blog/serverless-ai-agents/",
+      "publisher": "Datadog",
+      "published": "2026-10-29",
+      "category_key": "observability",
+      "summary": "A deployment guide separates active work from waiting and compares execution cost per successful agent run before moving individual steps to dedicated capacity.",
+      "body": [
+        "Datadog Agent Observability records model and tool activity, while its application and serverless monitoring products measure execution behavior. A new guide uses those signals to evaluate where agent workloads should run. Its starting problem is paying for allocated compute while an agent waits for tools, model responses, or human approval.",
+        "First, teams build an execution profile covering traffic bursts, concurrency, response-time goals, active compute, elapsed time, and runtime requirements. Traces distinguish time spent on individual steps from the duration of the whole run. For resumable work, the guide recommends bounded steps with durable progress records, allowing compute to stop during waits. Retries must avoid repeating external side effects.",
+        "Then teams compare on-demand execution with warm or dedicated capacity over the same demand window. The guide counts costs from failed and abandoned attempts, but divides by completed runs to calculate cost per successful run. Finally, production traces identify which constraint needs attention. Warm capacity can help startup delay, but cannot remove unnecessary model turns. The recommendation is to move the constrained step while leaving suitable intermittent work serverless; it is guidance, not a universal cost guarantee."
+      ],
+      "format": "full",
+      "takeaway": "Engineers reviewing agent hosting costs can measure waiting, startup delay, and failed attempts before changing capacity for an entire workflow.",
+      "image": "/edition-images/2026-10-30/datadog-agent-execution.webp",
+      "image_width": 1440,
+      "image_height": 960,
+      "image_provenance": {
+        "kind": "generated-editorial",
+        "generator": "built-in-imagegen",
+        "prompt": "Use case: infographic-diagram. Standalone newspaper editorial PNG, landscape 1536x1024. Warm ivory newsprint, dark ink, rust-red restrained accents, hand-etched simple diagrams and large readable serif text. Title \"Measure work and waiting\". Draw a timeline labelled \"Agent run\" with alternating short solid dark segments labelled \"Active work\" and long hollow segments labelled \"Waiting\". Under it, a magnifier points to a simple comparison scale with labels \"On-demand\" and \"Warm capacity\". Under that the exact guidance \"Compare cost per successful run\". No numerical metrics. This is a conceptual guide to using an execution profile to compare compute placement, based on https://www.datadoghq.com/blog/serverless-ai-agents/ . Do not imply on-demand is always cheaper or every wait can release compute. No logos, no fake screenshots, no watermark or footer.",
+        "based_on": [
+          "https://www.datadoghq.com/blog/serverless-ai-agents/"
+        ],
+        "reviewed": true,
+        "sha256": "8bdc6c4ecdc046aaba552b83ae7b139bd0a7c9486ad3c074e6a546a06ef010ae",
+        "optimization": {
+          "format": "webp",
+          "quality": 82,
+          "max_width": 1440,
+          "source_sha256": "796927a15bc3ba8d2784e1a114c7fc5ff1169741149688ddff35c8d49c0d324d"
+        },
+        "original_png": "datadog-agent-execution.png"
+      },
+      "source": "news",
+      "interest_score": 8,
+      "score_reason": "Detailed source-backed operational method connecting AI traces to cost and latency placement decisions.",
+      "dedupe_key": "article:www.datadoghq.com/blog/serverless-ai-agents/",
+      "source_evidence": {
+        "url": "https://www.datadoghq.com/blog/serverless-ai-agents/",
+        "publication_date": "2026-10-29",
+        "raw_date": "2026-10-29T00:00:00.000Z",
+        "method": "Original Article JSON-LD datePublished; visible Published time element datetime=2026-10-29 agrees."
+      }
+    },
+    {
+      "title": "Dynatrace accepts more AI telemetry through a shared data model",
+      "url": "https://www.dynatrace.com/news/blog/dynatrace-unifies-ai-observability-ingest-across-coding-agents-oneagent-and-openinference/",
+      "publisher": "Dynatrace",
+      "published": "2026-10-29",
+      "category_key": "observability",
+      "summary": "Dynatrace describes OneAgent, OpenInference, and coding-agent ingestion paths, alongside a planned retirement of OpenLLMetry support.",
+      "body": [
+        "Dynatrace AI Observability collects AI application telemetry alongside service and infrastructure data. Its ingestion update addresses teams running a mixture of coding agents, Python model clients, and frameworks already instrumented with OpenInference. Each can otherwise require a separate route into monitoring.",
+        "First, OneAgent can instrument supported Python applications through a setting, capturing logs, traces, and model-specific telemetry without application code changes. Additional experimental sensors are enabled individually. Dynatrace warns that their attribute collection is best-effort and that completeness and schemas can change. Second, existing OpenInference records can enter directly, with their attributes normalized into the same gen_ai.* model. A span, the record of one operation in a trace, can then sit beside the rest of an application’s activity.",
+        "The announcement also describes receiving OpenTelemetry signals from coding agents to inspect token consumption, cost, session activity, and tool behavior. Dynatrace is retiring OpenLLMetry support and advises users to choose OneAgent, OpenInference, or direct OpenTelemetry instrumentation as a replacement. It says a documentation notice with transition details will follow. The announcement describes compatibility paths, rather than reporting an independent comparison of telemetry completeness."
+      ],
+      "format": "full",
+      "takeaway": "Platform teams using OpenLLMetry should review the linked transition notice and test the fields they rely on when choosing a replacement ingest path.",
+      "image": "/edition-images/2026-10-30/dynatrace-ingest-paths.webp",
+      "image_width": 1440,
+      "image_height": 960,
+      "image_provenance": {
+        "kind": "generated-editorial",
+        "generator": "built-in-imagegen",
+        "prompt": "Use case: infographic-diagram. Standalone newspaper infographic PNG, landscape 1536x1024. Warm ivory paper, dark ink, sparse rust-red accent, large serif title and clear readable labels, generous whitespace, simple engraved symbols. Render only specified text. No logo, watermark, footer, unsupported metrics, or screenshots. Title \"Different AI traces, one data model\". Three labelled source boxes \"OneAgent\", \"OpenInference\", \"Coding-agent telemetry\" feed a central box \"Normalize attributes\" then a single ledger \"Dynatrace AI Observability\" with a label \"gen_ai.*\". A separate small note \"Experimental sensors: collection is best-effort\". Based on https://www.dynatrace.com/news/blog/dynatrace-unifies-ai-observability-ingest-across-coding-agents-oneagent-and-openinference/ . Conceptual ingest view only, no extra infrastructure or guaranteed field completeness.",
+        "based_on": [
+          "https://www.dynatrace.com/news/blog/dynatrace-unifies-ai-observability-ingest-across-coding-agents-oneagent-and-openinference/"
+        ],
+        "reviewed": true,
+        "sha256": "90628d658150f4005f1c120db3a27fb36c6f77e6556bf8027b2173a37b444786",
+        "optimization": {
+          "format": "webp",
+          "quality": 82,
+          "max_width": 1440,
+          "source_sha256": "9cc5aebcc52bb0d0f1935ba727a7fd6e88f4ddd2d82eb55e54e7306b9f73efa9"
+        },
+        "original_png": "dynatrace-ingest-paths.png"
+      },
+      "source": "news",
+      "interest_score": 8,
+      "score_reason": "Direct AI telemetry compatibility change and migration implication, with experimental collection limits retained.",
+      "dedupe_key": "article:www.dynatrace.com/news/blog/dynatrace-unifies-ai-observability-ingest-across-coding-agents-oneagent-and-openinference/",
+      "source_evidence": {
+        "url": "https://www.dynatrace.com/news/blog/dynatrace-unifies-ai-observability-ingest-across-coding-agents-oneagent-and-openinference/",
+        "publication_date": "2026-10-29",
+        "raw_date": "2026-10-29T18:40:26+00:00",
+        "method": "Original BlogPosting JSON-LD datePublished and Published time element agree; dateModified was not used."
+      }
+    },
+    {
+      "title": "Langfuse ties gateway traces to the key and service that sent them",
+      "url": "https://github.com/langfuse/langfuse/releases/tag/v4.72.0",
+      "publisher": "Langfuse",
+      "published": "2026-10-29",
+      "category_key": "observability",
+      "summary": "Langfuse adds gateway attribution and analytics, fixes cache-usage accounting, and introduces PagerDuty notification routing.",
+      "body": [
+        "Langfuse is an AI engineering platform for tracing model calls and evaluating application behavior. Its latest server release expands visibility into requests passing through its AI gateway. The changes target attribution and accounting: operators need to know which credential, service, or user generated activity before interpreting usage.",
+        "First, ingestion attributes gateway spans to the gateway API key and service. A span is the record of one operation within a trace. The release also defaults a service key’s user identifier to its key name and fixes user-bound key generations so they consistently belong to that key’s user. An analytics tab in gateway settings provides another entry point for reviewing activity.",
+        "Alongside those changes, the generic model-usage mapping stops counting the cache-write duration breakdown twice, and model-price lookup accepts any usage key. The release also adds trace-level evaluator filter conditions and PagerDuty delivery for alerts, project notifications, and prompt changes, with the routing key stored on the automation. These are release-note descriptions of individual changes; the source supplies no benchmark or quantified claim about the resulting accounting accuracy."
+      ],
+      "format": "full",
+      "takeaway": "Gateway operators should compare key, service, and user attribution after upgrading and recheck cache-write usage where the affected mapping is used.",
+      "image": "/edition-images/2026-10-30/langfuse-gateway-attribution.webp",
+      "image_width": 1440,
+      "image_height": 960,
+      "image_provenance": {
+        "kind": "generated-editorial",
+        "generator": "built-in-imagegen",
+        "prompt": "Use case: infographic-diagram. Standalone newspaper infographic PNG, landscape 1536x1024. Warm ivory paper, dark ink, sparse rust-red accent, large serif title and clear readable labels, generous whitespace, simple engraved symbols. Render only specified text. No logo, watermark, footer, unsupported metrics, or screenshots. Title \"Know who sent the model call\". A gateway operation card labelled \"Gateway span\" connects to three small identity tags \"API key\", \"Service\", \"User\". Then one arrow from the grouped tagged card goes to a simple ledger labelled \"Review gateway activity\". A definition below reads \"Span = one operation record\". Based on Langfuse release https://github.com/langfuse/langfuse/releases/tag/v4.72.0 : gateway spans attributed to key and service; user-bound key generations attributed to key user; gateway analytics added. No invented figures.",
+        "based_on": [
+          "https://github.com/langfuse/langfuse/releases/tag/v4.72.0"
+        ],
+        "reviewed": true,
+        "sha256": "1f2d5a9ed47d09ba7f26ab0704c4e92e78f9ccfc023de86cd81187b5e32daa34",
+        "optimization": {
+          "format": "webp",
+          "quality": 82,
+          "max_width": 1440,
+          "source_sha256": "08ab547063f9ed83f285a8ea6c7951d93920602afd24d0f3bd18689247cf8180"
+        },
+        "original_png": "langfuse-gateway-attribution.png"
+      },
+      "source": "github",
+      "interest_score": 8,
+      "score_reason": "Concrete attribution and usage-accounting changes for operating model gateways.",
+      "dedupe_key": "release:github.com/langfuse/langfuse/releases/tag/v4.72.0",
+      "source_evidence": {
+        "url": "https://github.com/langfuse/langfuse/releases/tag/v4.72.0",
+        "publication_date": "2026-10-29",
+        "raw_date": "2026-10-29T16:14:48Z",
+        "method": "GitHub release API published_at; release is neither draft nor prerelease. Original release body reviewed."
+      }
+    },
+    {
+      "title": "Braintrust captures tool and prompt content by default in MCP traces",
+      "url": "https://github.com/braintrustdata/braintrust-sdk-javascript/releases/tag/braintrust%403.42.0",
+      "publisher": "Braintrust",
+      "published": "2026-10-29",
+      "category_key": "observability",
+      "summary": "Braintrust’s JavaScript SDK changes default content capture and adds server notifications and session metadata to MCP tracing.",
+      "body": [
+        "Braintrust’s JavaScript software development kit (SDK) records AI application activity for tracing and evaluation. Its release changes instrumentation for the Model Context Protocol, the interface agents use to connect to external tools and prompts. Tool and prompt content is now captured by default, making the recorded payload an explicit part of the upgrade decision.",
+        "The same release adds tracing for server notifications and session metadata. The release notes do not describe notification fields, retention controls, or benchmark results, so those details cannot be inferred from the announcement. The concrete change to review is what information these integrations now send into traces."
+      ],
+      "format": "brief",
+      "brief_reason": "The original release contains three short change bullets and does not document payload schemas or configuration controls; a brief preserves that evidence limit.",
+      "takeaway": "Before upgrading a content-sensitive integration, compare representative MCP traces with your collection policy and verify which tool and prompt payloads are recorded.",
+      "image": "/edition-images/2026-10-30/braintrust-tool-content.webp",
+      "image_width": 1440,
+      "image_height": 960,
+      "image_provenance": {
+        "kind": "generated-editorial",
+        "generator": "built-in-imagegen",
+        "prompt": "Use case: infographic-diagram. Standalone editorial newspaper infographic PNG, landscape 1536x1024. Warm ivory paper, dark ink and restrained rust-red accents, bold serif title, large readable labels, spare hand-etched symbols, generous whitespace. Only exact requested text. No invented metrics, logos, fake screenshots, footer or watermark. Title \"More content enters MCP traces\". A tool-call card labelled \"Tool content\" and a prompt card labelled \"Prompt content\" feed a trace ledger labelled \"Captured by default\". To the side two smaller ledger tabs read \"Server notifications\" and \"Session metadata\". Bottom small note \"Review collection policy before upgrading\". Based on https://github.com/braintrustdata/braintrust-sdk-javascript/releases/tag/braintrust%403.42.0 . MCP means Model Context Protocol; include a short subtitle \"Model Context Protocol instrumentation\". No retention settings or controls invented.",
+        "based_on": [
+          "https://github.com/braintrustdata/braintrust-sdk-javascript/releases/tag/braintrust%403.42.0"
+        ],
+        "reviewed": true,
+        "sha256": "1fda2b879ec088ac574e8b10dea30b46a6cafb4bbae2af68f6ad08928bea0dd3",
+        "optimization": {
+          "format": "webp",
+          "quality": 82,
+          "max_width": 1440,
+          "source_sha256": "6975acd64927b909016d886233ab9784584c129e8c5c0c43faf31d972a9d480e"
+        },
+        "original_png": "braintrust-tool-content.png"
+      },
+      "source": "github",
+      "interest_score": 8,
+      "score_reason": "Default payload capture and session tracing directly affect visibility and data collection decisions.",
+      "dedupe_key": "release:github.com/braintrustdata/braintrust-sdk-javascript/releases/tag/braintrust%403.42.0",
+      "source_evidence": {
+        "url": "https://github.com/braintrustdata/braintrust-sdk-javascript/releases/tag/braintrust%403.42.0",
+        "publication_date": "2026-10-29",
+        "raw_date": "2026-10-29T14:04:53Z",
+        "method": "GitHub stable release API published_at; draft=false and prerelease=false; original release notes reviewed."
+      }
+    },
+    {
+      "title": "Phoenix redacts personal information from exported logs and spans",
+      "url": "https://github.com/Arize-ai/phoenix/releases/tag/arize-phoenix-v20.27.0",
+      "publisher": "Arize AI",
+      "published": "2026-10-29",
+      "category_key": "observability",
+      "summary": "Phoenix includes exported-telemetry redaction and tighter error reporting, alongside fixes to trace queries and evaluation behavior.",
+      "body": [
+        "Arize Phoenix is an open-source platform for tracing and evaluating AI applications. Its server release includes privacy-related changes in telemetry leaving the server: exported logs and spans are redacted for personally identifiable information. A span records one operation within a trace, so exported records can contain details beyond the final model answer.",
+        "The release describes two changes to that reporting path. It redacts personal information from exported logs and spans, and records reported client errors by route rather than full URL. The notes do not enumerate every field or redaction rule, so they do not establish that arbitrary sensitive content is removed. A separate trace fix saves a sanitized dataframe together with document metadata.",
+        "Other changes affect how operators inspect and evaluate runs. A trace-error subquery is scoped to the selected project and time range, and the span-filter query language receives three fixes found during security review. Python classification evaluators gain support for TypeSafe Jev decision models. The release also exposes prompt creation timestamps through the API. These are distinct release-note changes; no measured privacy coverage or evaluation-quality improvement is reported."
+      ],
+      "format": "full",
+      "takeaway": "Teams exporting Phoenix telemetry should inspect representative output against their data-handling rules; the release notes alone do not demonstrate complete sensitive-data removal.",
+      "image": "/edition-images/2026-10-30/phoenix-export-redaction.webp",
+      "image_width": 1440,
+      "image_height": 960,
+      "image_provenance": {
+        "kind": "generated-editorial",
+        "generator": "built-in-imagegen",
+        "prompt": "Use case: infographic-diagram. Standalone editorial newspaper infographic PNG, landscape 1536x1024. Warm ivory paper, dark ink and restrained rust-red accents, bold serif title, large readable labels, spare hand-etched symbols, generous whitespace. Only exact requested text. No invented metrics, logos, fake screenshots, footer or watermark. Title \"Redact telemetry before export\". A simple record stack labelled \"Logs and spans\" leads by arrow to a filter labelled \"Redact personal information\", then by arrow to a ledger labelled \"Exported telemetry\". Show a few redaction bars on the output ledger, with a separate short note \"Verify sensitive fields in your own output\". Based on https://github.com/Arize-ai/phoenix/releases/tag/arize-phoenix-v20.27.0 whose notes state exported logs and spans redact PII. Do not imply all secrets are removed or certify security. The note is editorial verification guidance.",
+        "based_on": [
+          "https://github.com/Arize-ai/phoenix/releases/tag/arize-phoenix-v20.27.0"
+        ],
+        "reviewed": true,
+        "sha256": "8ca1c4eb7dc8ac3b25cc8b4a6af870e3410612de99ad7522bcb4e51900ba5ce9",
+        "optimization": {
+          "format": "webp",
+          "quality": 82,
+          "max_width": 1440,
+          "source_sha256": "ea62db0f1861e6f7f4b90d1b31f888c28e13d9552fd8c740055d6e9506ceeca5"
+        },
+        "original_png": "phoenix-export-redaction.png"
+      },
+      "source": "github",
+      "interest_score": 8,
+      "score_reason": "Privacy and query-scoping fixes directly affect observability operation; unknown redaction coverage is stated.",
+      "dedupe_key": "release:github.com/Arize-ai/phoenix/releases/tag/arize-phoenix-v20.27.0",
+      "source_evidence": {
+        "url": "https://github.com/Arize-ai/phoenix/releases/tag/arize-phoenix-v20.27.0",
+        "publication_date": "2026-10-29",
+        "raw_date": "2026-10-29T20:23:40Z",
+        "method": "GitHub release API published_at, with draft=false and prerelease=false; release notes reviewed."
+      }
+    },
+    {
+      "title": "OpenInference stops Anthropic calls from gaining a second trace record",
+      "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-anthropic-v3.1.1",
+      "publisher": "Arize AI",
+      "published": "2026-10-29",
+      "category_key": "observability",
+      "summary": "The Python Anthropic instrumentor fixes duplicate spans introduced with newer client behavior and raises its semantic-conventions dependency floor.",
+      "body": [
+        "OpenInference provides instrumentation that records AI application operations as traces. Its Python Anthropic integration fixes a case where the Anthropic client adds a second span to each traced call. A span is one operation record, so this change addresses duplicate representation of the same call rather than a newly observed model action.",
+        "The instrumentor stops the extra span from being added with the affected newer client behavior. The release also raises the minimum dependency on OpenInference semantic conventions, the shared definitions for trace attributes. Its short notes do not report performance measurements or describe a migration procedure. The separate runtime-compatibility releases published alongside it are not evidence of additional duplicate-span fixes."
+      ],
+      "format": "brief",
+      "brief_reason": "The original release has two short fixes: duplicate Anthropic spans and a shared dependency floor. It does not provide implementation detail or measured outcomes.",
+      "takeaway": "Users of the Python Anthropic instrumentor can verify that one model call produces the expected trace structure after upgrading.",
+      "image": "/edition-images/2026-10-30/openinference-anthropic-spans.webp",
+      "image_width": 1440,
+      "image_height": 960,
+      "image_provenance": {
+        "kind": "generated-editorial",
+        "generator": "built-in-imagegen",
+        "prompt": "Use case: infographic-diagram. Standalone editorial newspaper infographic PNG, landscape 1536x1024. Warm ivory paper, dark ink and restrained rust-red accents, bold serif title, large readable labels, spare hand-etched symbols, generous whitespace. Only exact requested text. No invented metrics, logos, fake screenshots, footer or watermark. Title \"One model call, no duplicate span\". Show a side-by-side comparison. Left heading \"Duplicate record\" with one call arrow splitting into two identical simple rectangles labelled \"Span\" and \"Span\". Right heading \"Corrected trace\" with one call arrow leading to one rectangle labelled \"Span\". Each originating call icon is labelled \"Anthropic call\". Underneath \"Span = one operation record\". Based on https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-anthropic-v3.1.1 : fix stops newer Anthropic client adding a second span to every traced call. No performance numbers, and avoid implying the entire trace has only one span.",
+        "based_on": [
+          "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-anthropic-v3.1.1"
+        ],
+        "reviewed": true,
+        "sha256": "dd2d360368db1c54bff35d811850c44dacba04c0955ad86c7306dd8002f0175b",
+        "optimization": {
+          "format": "webp",
+          "quality": 82,
+          "max_width": 1440,
+          "source_sha256": "4eba2e2fba50a4150a44120cfdf3147efd425e3020a548f34d83275400ed6d8b"
+        },
+        "original_png": "openinference-anthropic-spans.png"
+      },
+      "source": "github",
+      "interest_score": 7,
+      "score_reason": "Narrow but concrete telemetry correctness fix; sparse notes do not justify broader claims.",
+      "dedupe_key": "release:github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-anthropic-v3.1.1",
+      "source_evidence": {
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-anthropic-v3.1.1",
+        "publication_date": "2026-10-29",
+        "raw_date": "2026-10-29T22:00:16Z",
+        "method": "GitHub stable release API published_at; draft=false and prerelease=false; source names the affected Anthropic client range."
+      }
+    },
+    {
+      "title": "Dynatrace shows which AI processes its vulnerability counts cover",
+      "url": "https://www.dynatrace.com/news/blog/surface-vulnerabilities-in-your-ai-services/",
+      "publisher": "Dynatrace",
+      "published": "2026-10-29",
+      "category_key": "observability",
+      "summary": "A ready-made dashboard pairs runtime vulnerability findings with scan coverage for AI processes. Unscanned processes do not contribute to the totals.",
+      "body": [
+        "Dynatrace AI Observability identifies AI services, while Runtime Vulnerability Analytics detects vulnerable code in running processes. A new dashboard combines those views to show findings specifically for AI workloads. The operational problem is interpreting a clean count: no findings can mean either no detected vulnerability or missing monitoring coverage.",
+        "First, AI Observability discovers GenAI entities and their processes. Monitoring rules then determine which processes Runtime Vulnerability Analytics scans. Only covered processes contribute to vulnerability counts. The dashboard separates distinct vulnerabilities from vulnerability-and-process pairs, affected processes, and affected packages, so repeated exposure across processes does not masquerade as additional unique flaws.",
+        "A dedicated coverage table lists AI processes and whether scanning covers them. An uncovered process needs monitoring-rule attention; an entirely empty table can mean no running AI processes or missing AI instrumentation. Dynatrace recommends a roughly thirty-minute window for a current snapshot, then reviewing coverage before interpreting an empty result. The source describes runtime findings in loaded and executing code; it does not establish that a zero count proves an AI service is secure."
+      ],
+      "format": "full",
+      "takeaway": "AI platform owners should check scan coverage before sharing vulnerability totals; unmonitored processes are absent from those findings.",
+      "image": "/edition-images/2026-10-30/dynatrace-scan-coverage.webp",
+      "image_width": 1440,
+      "image_height": 960,
+      "image_provenance": {
+        "kind": "generated-editorial",
+        "generator": "built-in-imagegen",
+        "prompt": "Use case: infographic-diagram. Standalone newspaper infographic PNG, landscape 1536x1024. Warm ivory paper, dark ink, sparse rust-red accent, large serif title and clear readable labels, generous whitespace, simple engraved symbols. Render only specified text. No logo, watermark, footer, unsupported metrics, or screenshots. Title \"Check coverage before counting findings\". Two process cards side-by-side, one labelled \"Scanned AI process\" with a check, one \"Unscanned AI process\" with an outlined circle. Only the scanned card sends an arrow to a findings ledger labelled \"Included in findings\". The unscanned card connects by a dotted line to a separate note \"Missing from totals\". At bottom a magnifying-glass label \"Review the coverage table\". Based on https://www.dynatrace.com/news/blog/surface-vulnerabilities-in-your-ai-services/ . Do not imply unscanned means secure. Conceptual workflow.",
+        "based_on": [
+          "https://www.dynatrace.com/news/blog/surface-vulnerabilities-in-your-ai-services/"
+        ],
+        "reviewed": true,
+        "sha256": "225a7cd49e3c4b7606b4d47eac7a929d0df5ce31314542e520e9d904cdadd9aa",
+        "optimization": {
+          "format": "webp",
+          "quality": 82,
+          "max_width": 1440,
+          "source_sha256": "c2d0d2f98cba6e43ddf958db618d153d8952e6d4bff61a99da76b5237143097a"
+        },
+        "original_png": "dynatrace-scan-coverage.png"
+      },
+      "source": "news",
+      "interest_score": 8,
+      "score_reason": "Useful source-supported telemetry coverage distinction directly tied to AI services.",
+      "dedupe_key": "article:www.dynatrace.com/news/blog/surface-vulnerabilities-in-your-ai-services/",
+      "source_evidence": {
+        "url": "https://www.dynatrace.com/news/blog/surface-vulnerabilities-in-your-ai-services/",
+        "publication_date": "2026-10-29",
+        "raw_date": "2026-10-29T18:03:00+00:00",
+        "method": "Original BlogPosting JSON-LD datePublished corroborated by the Published time element."
+      }
+    }
+  ],
+  "research": {
+    "status": "complete",
+    "completed_sources": [
+      "hn",
+      "news",
+      "github"
+    ],
+    "checked_urls": [
+      "https://arize.com/blog/",
+      "https://langfuse.com/blog",
+      "https://www.langchain.com/blog",
+      "https://www.braintrust.dev/blog",
+      "https://opentelemetry.io/blog/",
+      "https://www.elastic.co/observability-labs/blog",
+      "https://www.datadoghq.com/blog/",
+      "https://www.honeycomb.io/blog/",
+      "https://www.digitalocean.com/blog",
+      "https://www.splunk.com/en_us/blog/observability.html",
+      "https://www.dynatrace.com/news/",
+      "https://langfuse.com/changelog",
+      "https://arize.com/blog/i-put-a-ghost-in-claude-code-then-i-evaluated-it/",
+      "https://www.langchain.com/blog/managed-deep-agents-browser-use-and-asynchronous-subagents",
+      "https://www.langchain.com/blog/browser-use-in-managed-deep-agents",
+      "https://www.elastic.co/observability-labs/blog/esql-detection-queries-opentelemetry-logs",
+      "https://www.digitalocean.com/blog/inside-digitalocean-simulations",
+      "https://www.digitalocean.com/blog/introducing-signals-and-simulations",
+      "https://www.dynatrace.com/news/blog/dynatrace-unifies-ai-observability-ingest-across-coding-agents-oneagent-and-openinference/",
+      "https://www.dynatrace.com/news/blog/surface-vulnerabilities-in-your-ai-services/",
+      "https://www.datadoghq.com/blog/serverless-ai-agents/",
+      "https://www.datadoghq.com/blog/ai-agent-security-lessons/"
+    ],
+    "excluded": [
+      {
+        "url": "https://crm-ui-dev.vercel.app/l/nntrRQU42bvB7bxs",
+        "reason": "Linked landing surface returned no readable article text or original publication evidence; excluded as unverifiable, not replaced by HN submission time."
+      },
+      {
+        "url": "https://control.turbolytics.io/",
+        "reason": "Postgres/pipeline data observability announcement; no concrete AI system monitoring or evaluation contribution established."
+      },
+      {
+        "url": "https://blog.cloudflare.com/one-observability-platform/",
+        "reason": "Original Cloudflare article published 2026-10-02T18:00:00.000Z; HN submission is resurfacing."
+      },
+      {
+        "url": "https://noyb.eu/en/ai-training-platform-outlier-illegally-surveils-european-platform-workers",
+        "reason": "General AI, product, business, opinion, or engineering topic; no concrete AI observability contribution established from candidate review."
+      },
+      {
+        "url": "https://www.sql-server-tool.com/blog-vb6-ai-agents.htm",
+        "reason": "General AI, product, business, opinion, or engineering topic; no concrete AI observability contribution established from candidate review."
+      },
+      {
+        "url": "https://www.nbcnews.com/business/markets/alphabet-google-stock-ai-advertising-rcna606322",
+        "reason": "General AI, product, business, opinion, or engineering topic; no concrete AI observability contribution established from candidate review."
+      },
+      {
+        "url": "https://news.ycombinator.com/item?id=50291116",
+        "reason": "Firmware behavior simulation and hardware validation; outside the selected AI observability/evaluation beat."
+      },
+      {
+        "url": "https://www.wavefunction.si/",
+        "reason": "General AI, product, business, opinion, or engineering topic; no concrete AI observability contribution established from candidate review."
+      },
+      {
+        "url": "https://statebase.dev",
+        "reason": "General AI, product, business, opinion, or engineering topic; no concrete AI observability contribution established from candidate review."
+      },
+      {
+        "url": "https://kylemayer.io/drawing/",
+        "reason": "General AI, product, business, opinion, or engineering topic; no concrete AI observability contribution established from candidate review."
+      },
+      {
+        "url": "https://www.bostonglobe.com/2026/10/23/opinion/ai-impact-cognitive-ability-eric-so/",
+        "reason": "General AI, product, business, opinion, or engineering topic; no concrete AI observability contribution established from candidate review."
+      },
+      {
+        "url": "https://www.cnbc.com/2026/10/29/alphabet-google-search-ai-earnings.html",
+        "reason": "General AI, product, business, opinion, or engineering topic; no concrete AI observability contribution established from candidate review."
+      },
+      {
+        "url": "https://news.ycombinator.com/item?id=50285795",
+        "reason": "General AI, product, business, opinion, or engineering topic; no concrete AI observability contribution established from candidate review."
+      },
+      {
+        "url": "https://docloop.com/careers/engineering-alignment-quiz",
+        "reason": "General AI, product, business, opinion, or engineering topic; no concrete AI observability contribution established from candidate review."
+      },
+      {
+        "url": "https://www.fabivo.app/en",
+        "reason": "General AI, product, business, opinion, or engineering topic; no concrete AI observability contribution established from candidate review."
+      },
+      {
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-semantic-conventions-v0.1.43",
+        "reason": "Narrower OpenInference compatibility or instrumentation update not selected in this scoped edition; do not treat separate package tags for the same shared change as independent stories."
+      },
+      {
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-vertexai-v0.1.31",
+        "reason": "Narrower OpenInference compatibility or instrumentation update not selected in this scoped edition; do not treat separate package tags for the same shared change as independent stories."
+      },
+      {
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-vertexai-v0.1.30",
+        "reason": "Narrower OpenInference compatibility or instrumentation update not selected in this scoped edition; do not treat separate package tags for the same shared change as independent stories."
+      },
+      {
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-v0.1.74",
+        "reason": "Narrower OpenInference compatibility or instrumentation update not selected in this scoped edition; do not treat separate package tags for the same shared change as independent stories."
+      },
+      {
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-v0.1.73",
+        "reason": "Narrower OpenInference compatibility or instrumentation update not selected in this scoped edition; do not treat separate package tags for the same shared change as independent stories."
+      },
+      {
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-typesafe-v0.1.7",
+        "reason": "Narrower OpenInference compatibility or instrumentation update not selected in this scoped edition; do not treat separate package tags for the same shared change as independent stories."
+      },
+      {
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-typesafe-v0.1.6",
+        "reason": "Narrower OpenInference compatibility or instrumentation update not selected in this scoped edition; do not treat separate package tags for the same shared change as independent stories."
+      },
+      {
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-together-v0.1.15",
+        "reason": "Narrower OpenInference compatibility or instrumentation update not selected in this scoped edition; do not treat separate package tags for the same shared change as independent stories."
+      },
+      {
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-together-v0.1.14",
+        "reason": "Narrower OpenInference compatibility or instrumentation update not selected in this scoped edition; do not treat separate package tags for the same shared change as independent stories."
+      },
+      {
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-strands-agents-v0.1.14",
+        "reason": "Narrower OpenInference compatibility or instrumentation update not selected in this scoped edition; do not treat separate package tags for the same shared change as independent stories."
+      },
+      {
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-strands-agents-v0.1.13",
+        "reason": "Narrower OpenInference compatibility or instrumentation update not selected in this scoped edition; do not treat separate package tags for the same shared change as independent stories."
+      },
+      {
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-smolagents-v0.1.45",
+        "reason": "Narrower OpenInference compatibility or instrumentation update not selected in this scoped edition; do not treat separate package tags for the same shared change as independent stories."
+      },
+      {
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-smolagents-v0.1.44",
+        "reason": "Narrower OpenInference compatibility or instrumentation update not selected in this scoped edition; do not treat separate package tags for the same shared change as independent stories."
+      },
+      {
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-pydantic-ai-v0.1.32",
+        "reason": "Narrower OpenInference compatibility or instrumentation update not selected in this scoped edition; do not treat separate package tags for the same shared change as independent stories."
+      },
+      {
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-pydantic-ai-v0.1.31",
+        "reason": "Narrower OpenInference compatibility or instrumentation update not selected in this scoped edition; do not treat separate package tags for the same shared change as independent stories."
+      },
+      {
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-portkey-v0.1.24",
+        "reason": "Narrower OpenInference compatibility or instrumentation update not selected in this scoped edition; do not treat separate package tags for the same shared change as independent stories."
+      },
+      {
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-portkey-v0.1.23",
+        "reason": "Narrower OpenInference compatibility or instrumentation update not selected in this scoped edition; do not treat separate package tags for the same shared change as independent stories."
+      },
+      {
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-openllmetry-v0.1.25",
+        "reason": "Narrower OpenInference compatibility or instrumentation update not selected in this scoped edition; do not treat separate package tags for the same shared change as independent stories."
+      },
+      {
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-openllmetry-v0.1.24",
+        "reason": "Narrower OpenInference compatibility or instrumentation update not selected in this scoped edition; do not treat separate package tags for the same shared change as independent stories."
+      },
+      {
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-openlit-v0.1.20",
+        "reason": "Narrower OpenInference compatibility or instrumentation update not selected in this scoped edition; do not treat separate package tags for the same shared change as independent stories."
+      },
+      {
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-openai-v0.1.68",
+        "reason": "Narrower OpenInference compatibility or instrumentation update not selected in this scoped edition; do not treat separate package tags for the same shared change as independent stories."
+      },
+      {
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-openai-v0.1.67",
+        "reason": "Narrower OpenInference compatibility or instrumentation update not selected in this scoped edition; do not treat separate package tags for the same shared change as independent stories."
+      },
+      {
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-openai-agents-v2.7.0",
+        "reason": "Narrower OpenInference compatibility or instrumentation update not selected in this scoped edition; do not treat separate package tags for the same shared change as independent stories."
+      },
+      {
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-openai-agents-v2.6.1",
+        "reason": "Narrower OpenInference compatibility or instrumentation update not selected in this scoped edition; do not treat separate package tags for the same shared change as independent stories."
+      },
+      {
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-ollama-v0.1.15",
+        "reason": "Narrower OpenInference compatibility or instrumentation update not selected in this scoped edition; do not treat separate package tags for the same shared change as independent stories."
+      },
+      {
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-ollama-v0.1.14",
+        "reason": "Narrower OpenInference compatibility or instrumentation update not selected in this scoped edition; do not treat separate package tags for the same shared change as independent stories."
+      },
+      {
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-mistralai-v2.3.0",
+        "reason": "Narrower OpenInference compatibility or instrumentation update not selected in this scoped edition; do not treat separate package tags for the same shared change as independent stories."
+      },
+      {
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-mistralai-v2.2.3",
+        "reason": "Narrower OpenInference compatibility or instrumentation update not selected in this scoped edition; do not treat separate package tags for the same shared change as independent stories."
+      },
+      {
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-mcp-v2.1.0",
+        "reason": "Narrower OpenInference compatibility or instrumentation update not selected in this scoped edition; do not treat separate package tags for the same shared change as independent stories."
+      },
+      {
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-llama-index-v4.7.0",
+        "reason": "Narrower OpenInference compatibility or instrumentation update not selected in this scoped edition; do not treat separate package tags for the same shared change as independent stories."
+      },
+      {
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-llama-index-v4.6.2",
+        "reason": "Narrower OpenInference compatibility or instrumentation update not selected in this scoped edition; do not treat separate package tags for the same shared change as independent stories."
+      },
+      {
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-litellm-v0.1.52",
+        "reason": "Narrower OpenInference compatibility or instrumentation update not selected in this scoped edition; do not treat separate package tags for the same shared change as independent stories."
+      },
+      {
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-langchain-v0.1.81",
+        "reason": "Narrower OpenInference compatibility or instrumentation update not selected in this scoped edition; do not treat separate package tags for the same shared change as independent stories."
+      },
+      {
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-instructor-v0.1.30",
+        "reason": "Narrower OpenInference compatibility or instrumentation update not selected in this scoped edition; do not treat separate package tags for the same shared change as independent stories."
+      },
+      {
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-haystack-v0.1.48",
+        "reason": "Narrower OpenInference compatibility or instrumentation update not selected in this scoped edition; do not treat separate package tags for the same shared change as independent stories."
+      },
+      {
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-haystack-v0.1.47",
+        "reason": "Narrower OpenInference compatibility or instrumentation update not selected in this scoped edition; do not treat separate package tags for the same shared change as independent stories."
+      },
+      {
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-guardrails-v0.1.28",
+        "reason": "Narrower OpenInference compatibility or instrumentation update not selected in this scoped edition; do not treat separate package tags for the same shared change as independent stories."
+      },
+      {
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-groq-v0.1.35",
+        "reason": "Narrower OpenInference compatibility or instrumentation update not selected in this scoped edition; do not treat separate package tags for the same shared change as independent stories."
+      },
+      {
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-groq-v0.1.34",
+        "reason": "Narrower OpenInference compatibility or instrumentation update not selected in this scoped edition; do not treat separate package tags for the same shared change as independent stories."
+      },
+      {
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-google-genai-v1.5.0",
+        "reason": "Narrower OpenInference compatibility or instrumentation update not selected in this scoped edition; do not treat separate package tags for the same shared change as independent stories."
+      },
+      {
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-google-genai-v1.4.15",
+        "reason": "Narrower OpenInference compatibility or instrumentation update not selected in this scoped edition; do not treat separate package tags for the same shared change as independent stories."
+      },
+      {
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-google-adk-v1.1.0",
+        "reason": "Narrower OpenInference compatibility or instrumentation update not selected in this scoped edition; do not treat separate package tags for the same shared change as independent stories."
+      },
+      {
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-google-adk-v1.0.6",
+        "reason": "Narrower OpenInference compatibility or instrumentation update not selected in this scoped edition; do not treat separate package tags for the same shared change as independent stories."
+      },
+      {
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-dspy-v0.1.49",
+        "reason": "Narrower OpenInference compatibility or instrumentation update not selected in this scoped edition; do not treat separate package tags for the same shared change as independent stories."
+      },
+      {
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-crewai-v1.1.22",
+        "reason": "Narrower OpenInference compatibility or instrumentation update not selected in this scoped edition; do not treat separate package tags for the same shared change as independent stories."
+      },
+      {
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-cohere-v0.1.17",
+        "reason": "Narrower OpenInference compatibility or instrumentation update not selected in this scoped edition; do not treat separate package tags for the same shared change as independent stories."
+      },
+      {
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-cohere-v0.1.16",
+        "reason": "Narrower OpenInference compatibility or instrumentation update not selected in this scoped edition; do not treat separate package tags for the same shared change as independent stories."
+      },
+      {
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-claude-agent-sdk-v0.1.24",
+        "reason": "Narrower OpenInference compatibility or instrumentation update not selected in this scoped edition; do not treat separate package tags for the same shared change as independent stories."
+      },
+      {
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-claude-agent-sdk-v0.1.23",
+        "reason": "Narrower OpenInference compatibility or instrumentation update not selected in this scoped edition; do not treat separate package tags for the same shared change as independent stories."
+      },
+      {
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-beeai-v0.1.31",
+        "reason": "Narrower OpenInference compatibility or instrumentation update not selected in this scoped edition; do not treat separate package tags for the same shared change as independent stories."
+      },
+      {
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-bedrock-v0.1.62",
+        "reason": "Narrower OpenInference compatibility or instrumentation update not selected in this scoped edition; do not treat separate package tags for the same shared change as independent stories."
+      },
+      {
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-autogen-v0.1.16",
+        "reason": "Narrower OpenInference compatibility or instrumentation update not selected in this scoped edition; do not treat separate package tags for the same shared change as independent stories."
+      },
+      {
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-autogen-agentchat-v0.1.24",
+        "reason": "Narrower OpenInference compatibility or instrumentation update not selected in this scoped edition; do not treat separate package tags for the same shared change as independent stories."
+      },
+      {
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-autogen-agentchat-v0.1.23",
+        "reason": "Narrower OpenInference compatibility or instrumentation update not selected in this scoped edition; do not treat separate package tags for the same shared change as independent stories."
+      },
+      {
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-anthropic-v3.2.0",
+        "reason": "Narrower OpenInference compatibility or instrumentation update not selected in this scoped edition; do not treat separate package tags for the same shared change as independent stories."
+      },
+      {
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-agno-v1.1.0",
+        "reason": "Narrower OpenInference compatibility or instrumentation update not selected in this scoped edition; do not treat separate package tags for the same shared change as independent stories."
+      },
+      {
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-agno-v1.0.16",
+        "reason": "Narrower OpenInference compatibility or instrumentation update not selected in this scoped edition; do not treat separate package tags for the same shared change as independent stories."
+      },
+      {
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-agentspec-v0.1.16",
+        "reason": "Narrower OpenInference compatibility or instrumentation update not selected in this scoped edition; do not treat separate package tags for the same shared change as independent stories."
+      },
+      {
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-agent-framework-v0.1.15",
+        "reason": "Narrower OpenInference compatibility or instrumentation update not selected in this scoped edition; do not treat separate package tags for the same shared change as independent stories."
+      },
+      {
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-agent-framework-v0.1.14",
+        "reason": "Narrower OpenInference compatibility or instrumentation update not selected in this scoped edition; do not treat separate package tags for the same shared change as independent stories."
+      },
+      {
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-ag2-v0.1.14",
+        "reason": "Narrower OpenInference compatibility or instrumentation update not selected in this scoped edition; do not treat separate package tags for the same shared change as independent stories."
+      },
+      {
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-ag2-v0.1.13",
+        "reason": "Narrower OpenInference compatibility or instrumentation update not selected in this scoped edition; do not treat separate package tags for the same shared change as independent stories."
+      },
+      {
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/%40arizeai/openinference-instrumentation-claude-agent-sdk%400.3.6",
+        "reason": "Narrower OpenInference compatibility or instrumentation update not selected in this scoped edition; do not treat separate package tags for the same shared change as independent stories."
+      },
+      {
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/%40arizeai/openinference-instrumentation-bedrock%400.5.6",
+        "reason": "Narrower OpenInference compatibility or instrumentation update not selected in this scoped edition; do not treat separate package tags for the same shared change as independent stories."
+      },
+      {
+        "url": "https://arize.com/blog/i-put-a-ghost-in-claude-code-then-i-evaluated-it/",
+        "reason": "Primary article:published_time is 2026-10-27T16:41:36+00:00; outside frozen publication window."
+      },
+      {
+        "url": "https://www.langchain.com/blog/managed-deep-agents-browser-use-and-asynchronous-subagents",
+        "reason": "Same Managed Deep Agents browser announcement as the retained technical walkthrough; consolidated to avoid duplicate event coverage."
+      },
+      {
+        "url": "https://www.elastic.co/observability-labs/blog/esql-detection-queries-opentelemetry-logs",
+        "reason": "AI-assisted detection-query generation for ordinary demo shop logs; no concrete AI workload observability contribution, so excluded from this AI-observability-only edition."
+      },
+      {
+        "url": "https://www.digitalocean.com/blog/introducing-signals-and-simulations",
+        "reason": "Earlier launch overview, not a new publication on the frozen news day. The retained Simulations article is a distinct detailed execution/validation walkthrough."
+      },
+      {
+        "url": "https://www.digitalocean.com/blog/digitalocean-signals-observability-ai-agents",
+        "reason": "Published 2026-10-28 and already covered in edition 2026-10-29."
+      },
+      {
+        "url": "https://www.datadoghq.com/blog/ai-agent-security-lessons/",
+        "reason": "Original visible publication 2026-08-27, outside window."
+      },
+      {
+        "url": "https://opentelemetry.io/blog/",
+        "reason": "In-window resource-detector customization and governance-election posts do not establish concrete AI workload relevance; not retained."
+      },
+      {
+        "url": "https://discover.splunk.com/Your-Path-to-AgenticOps-AI-Experiences-for-Every-Splunk-Practitioner.html",
+        "reason": "Event date is not original publication evidence; focused search found no verified in-window AI-observability publication."
+      }
+    ],
+    "note": "Scoped official-source sweep; no claim of exhaustive web coverage. Frozen publication day 2026-10-29. HN discovery supplied by the outer runner; no re-run of fetch:sources because it writes outside this run directory. All earlier issues read and original-event duplicates excluded. Datadog timing guide and DigitalOcean simulation walkthrough are distinct from earlier product announcements.",
+    "source_checks": {
+      "hn": {
+        "status": "complete",
+        "discovery_file": "/workspace/tidytraces/.cache/source-candidates/2026-10-29.json",
+        "queries": [
+          "observability",
+          "LLM evaluation",
+          "AI tracing",
+          "agent telemetry",
+          "langfuse"
+        ],
+        "candidates_reviewed": 16,
+        "retained_original_post_api": "https://hacker-news.firebaseio.com/v0/item/50292363.json"
+      },
+      "news": [
+        {
+          "source": "Arize AI",
+          "url": "https://arize.com/blog/",
+          "status": "complete",
+          "note": "Arize index reviewed; newest featured evaluation article verified outside window."
+        },
+        {
+          "source": "Langfuse",
+          "url": "https://langfuse.com/blog",
+          "status": "complete",
+          "note": "Langfuse blog and changelog reviewed; visible latest dated entries precede window."
+        },
+        {
+          "source": "LangSmith",
+          "url": "https://www.langchain.com/blog",
+          "status": "complete",
+          "note": "LangChain index and both original browser articles reviewed; one announcement retained through technical walkthrough."
+        },
+        {
+          "source": "Braintrust",
+          "url": "https://www.braintrust.dev/blog",
+          "status": "complete",
+          "note": "Braintrust index reviewed; newest visible dated article precedes window."
+        },
+        {
+          "source": "OpenTelemetry",
+          "url": "https://opentelemetry.io/blog/",
+          "status": "complete",
+          "note": "OpenTelemetry index reviewed; in-window articles outside concrete AI workload beat."
+        },
+        {
+          "source": "Elastic Observability Labs",
+          "url": "https://www.elastic.co/observability-labs/blog",
+          "status": "complete",
+          "note": "Elastic index and original detection-query article reviewed; no AI workload contribution established for new post."
+        },
+        {
+          "source": "Datadog",
+          "url": "https://www.datadoghq.com/blog/",
+          "status": "complete",
+          "note": "Datadog index, original serverless agent article, and agent-security article checked; serverless article date verified and retained."
+        },
+        {
+          "source": "Honeycomb",
+          "url": "https://www.honeycomb.io/blog/",
+          "status": "complete",
+          "note": "Honeycomb index reviewed; latest visible articles predate window."
+        },
+        {
+          "source": "DigitalOcean",
+          "url": "https://www.digitalocean.com/blog",
+          "status": "complete",
+          "note": "DigitalOcean index and Simulations walkthrough reviewed; prior Signals story excluded across history."
+        },
+        {
+          "source": "Splunk Observability",
+          "url": "https://www.splunk.com/en_us/blog/observability.html",
+          "status": "complete",
+          "note": "Splunk surface responded with No results; supplementary date-targeted official-domain search surfaced events but no verified in-window article. This is a scoped check, not an assertion no publication exists."
+        },
+        {
+          "source": "Dynatrace",
+          "url": "https://www.dynatrace.com/news/",
+          "status": "complete",
+          "note": "Dynatrace index and two original AI workload articles reviewed; distinct ingest and runtime scan-coverage changes retained."
+        }
+      ],
+      "github": [
+        {
+          "repository": "langfuse/langfuse",
+          "releases_checked": 100,
+          "stable_in_window": 1,
+          "coverage": "Latest 100 releases requested, not a global GitHub search"
+        },
+        {
+          "repository": "Arize-ai/phoenix",
+          "releases_checked": 100,
+          "stable_in_window": 1,
+          "coverage": "Latest 100 releases requested, not a global GitHub search"
+        },
+        {
+          "repository": "Arize-ai/openinference",
+          "releases_checked": 100,
+          "stable_in_window": 65,
+          "coverage": "Latest 100 releases requested, not a global GitHub search"
+        },
+        {
+          "repository": "langchain-ai/langsmith-sdk",
+          "releases_checked": 100,
+          "stable_in_window": 0,
+          "coverage": "Latest 100 releases requested, not a global GitHub search"
+        },
+        {
+          "repository": "braintrustdata/braintrust-sdk",
+          "releases_checked": 100,
+          "stable_in_window": 1,
+          "coverage": "Latest 100 releases requested, not a global GitHub search"
+        },
+        {
+          "repository": "wandb/weave",
+          "releases_checked": 100,
+          "stable_in_window": 0,
+          "coverage": "Latest 100 releases requested, not a global GitHub search"
+        },
+        {
+          "repository": "langwatch/langwatch",
+          "releases_checked": 100,
+          "stable_in_window": 0,
+          "coverage": "Latest 100 releases requested, not a global GitHub search"
+        },
+        {
+          "repository": "Helicone/helicone",
+          "releases_checked": 4,
+          "stable_in_window": 0,
+          "coverage": "Latest 100 releases requested, not a global GitHub search"
+        }
+      ]
+    }
+  }
+}
