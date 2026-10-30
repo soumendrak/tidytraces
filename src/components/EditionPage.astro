@@ -5,7 +5,7 @@ import Footer from './Footer.astro';
 import BrandLogo from './BrandLogo.astro';
 import { SITE_METADATA } from '../config';
 import { resolveStoryImage } from '../lib/storyFilters.js';
-import { EDITION_AUTHOR, AI_IMAGE_DISCLOSURE } from '../lib/editionCredits.js';
+import { EDITION_AUTHOR, EDITION_MASTHEAD, AI_IMAGE_DISCLOSURE } from '../lib/editionCredits.js';
 
 const SOURCE_LABEL: Record<string, string> = {
 	arxiv: 'arXiv',
@@ -49,10 +49,9 @@ interface Props {
 	allDays: { day: string; label: string }[];
 	isHomepage?: boolean;
 	dek?: string;
-	storyWindow?: string;
 }
 
-const { day, contentFingerprint, stories, issue, prevDay, nextDay, isHomepage = false, dek, storyWindow } = Astro.props;
+const { day, contentFingerprint, stories, issue, prevDay, nextDay, isHomepage = false, dek } = Astro.props;
 
 const editionName = 'AI Observability Daily';
 const archiveHref = '/archive/';
@@ -204,11 +203,9 @@ const breadcrumbSchema = {
 						<ThemeToggleButton />
 					</div>
 				</div>
-				<h1 class="masthead-name"><BrandLogo /></h1>
-<p class="masthead-tagline">{editionName} · Observability · Evals · AI agents</p>
-				<p class="edition-byline">By <a href={EDITION_AUTHOR.url} rel="author">{EDITION_AUTHOR.name}</a></p>
+				<h1 class="masthead-name"><span class="masthead-print-logo"><BrandLogo /></span><a class="masthead-title-link" href="/">{EDITION_MASTHEAD.title}</a></h1>
+				<p class="masthead-subheader">{EDITION_MASTHEAD.credit} <a href={EDITION_AUTHOR.url} rel="author">{EDITION_AUTHOR.name}</a>.</p>
 				<hr class="masthead-rule-thick" />
-				{storyWindow && <p class="edition-window">Coverage window: {storyWindow} · Original sources, independent editorial takeaways.</p>}
 
 				<div class="filter-bar">
 					<div class="filter-group source-filter" id="source-filter-container">
