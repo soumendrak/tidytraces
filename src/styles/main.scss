@@ -992,6 +992,18 @@ img { max-width: 100%; display: block; }
   }
 }
 
+.masthead-print-logo {
+  display: none;
+}
+
+.masthead-subheader {
+  font-family: var(--font-body);
+  font-style: italic;
+  font-size: clamp(0.95rem, 2.4vw, 1.1rem);
+  color: var(--ink-soft);
+  margin: 0.35rem 0 0.25rem;
+}
+
 .edition-byline {
   font-family: var(--font-body);
   font-size: 0.78rem;
@@ -1825,9 +1837,13 @@ body.modal-open {
     margin: 2mm 0;
   }
 
-  .masthead .edition-window {
-    font-size: 8pt;
-    margin: 2mm 0 3mm;
+  .masthead-title-link,
+  .masthead-subheader {
+    display: none !important;
+  }
+
+  .masthead-print-logo {
+    display: inline !important;
   }
 
   .story .story-body {
@@ -1945,4 +1961,3 @@ body.modal-open {
   background: rgba(255,255,255,0.015);
 }
 
-.edition-window { color:var(--ink-faint); font-size:.75rem; margin:.5rem 0 1rem; }

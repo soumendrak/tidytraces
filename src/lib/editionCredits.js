@@ -4,6 +4,7 @@
  * edition (visually hidden), never as a visible caption under each image.
  */
 export const EDITION_AUTHOR = { name: 'Soumendra Kumar Sahoo', url: 'https://soumendrak.com' };
+export const EDITION_MASTHEAD = { title: 'The Tidy Traces', subheader: `Daily AI observability news by ${EDITION_AUTHOR.name}.` };
 export const AI_IMAGE_DISCLOSURE = 'Story infographics in this edition are AI-generated editorial illustrations based on the linked sources.';
 
 export const isGeneratedImage = (story) => story.image_provenance?.kind === 'generated-editorial';

@@ -7,7 +7,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { execFileSync, spawnSync } from 'node:child_process';
 import { auditEditionHtml } from '../scripts/lib/edition-html-audit.js';
-import { EDITION_AUTHOR, AI_IMAGE_DISCLOSURE, imageCaptionFor } from '../src/lib/editionCredits.js';
+import { EDITION_AUTHOR, EDITION_MASTHEAD, AI_IMAGE_DISCLOSURE, imageCaptionFor } from '../src/lib/editionCredits.js';
 import { latestIssueFeeds } from '../src/lib/latestIssueFeeds.js';
 import { generatePdfs } from '../scripts/lib/pdf-editions.js';
 
@@ -67,6 +67,12 @@ test('every built edition page has the top byline and no visible per-image AI ca
       const html = await readFile(path.join(outDir, file), 'utf8');
       assert.deepEqual(auditEditionHtml(html), [], file);
       assert.doesNotMatch(html, /class="edition-dek"/, `${file} starts with stories rather than an edition summary`);
+      const masthead = html.match(/<header class="masthead"[^]*?<\/header>/)[0];
+      const headline = masthead.match(/<h1 class="masthead-name"[^>]*>([^]*?)<\/h1>\s*<p class="masthead-subheader"[^>]*>([^]*?)<\/p>/);
+      assert.ok(headline, `${file} has the text masthead directly followed by the subheader`);
+      assert.equal(headline[1].match(/<a class="masthead-title-link"[^>]*>([^<]*)<\/a>/)?.[1], EDITION_MASTHEAD.title, `${file} masthead reads the configured title`);
+      assert.equal(headline[2], EDITION_MASTHEAD.subheader, `${file} subheader reads the configured line`);
+      assert.doesNotMatch(html, /Coverage window|edition-window/, `${file} has no coverage-window line`);
       assert.doesNotMatch(html.match(/<div class="story-body[^]*?<\/div>/g)?.join('') ?? '', /Why it matters/, `${file} keeps why-it-matters out of story bodies`);
       const day = file === 'index.html' ? days.toSorted().at(-1) : file.split('/')[1];
       assert.match(html, new RegExp(`href="/pdf/${day}\\.pdf" download="tidy-traces-${day}\\.pdf"`), 'the download belongs to the displayed issue');
@@ -140,8 +146,11 @@ test('every built edition page has the top byline and no visible per-image AI ca
       assert.ok(await touch.$eval('.story .why-tooltip', (el) => { const r = el.getBoundingClientRect(); return r.left >= 0 && r.right <= window.innerWidth; }), 'the popover fits the mobile viewport');
       await touch.tap('.story .why-info button');
       assert.deepEqual((await popover(touch)).slice(1, 3), ['false', 'hidden'], 'a second tap closes');
+      const mastheadView = () => site.$eval('.masthead-name', (h1) => [getComputedStyle(h1.querySelector('.masthead-print-logo')).display, getComputedStyle(h1.querySelector('.masthead-title-link')).display, getComputedStyle(document.querySelector('.masthead-subheader')).display, h1.scrollWidth <= h1.clientWidth]);
+      assert.deepEqual(await mastheadView(), ['none', 'inline', 'block', true], 'the website shows the text masthead and subheader, not the logo, within a mobile viewport');
       await site.emulateMediaType('print');
       await site.evaluate(() => { document.querySelector('.back-to-top').hidden = false; });
+      assert.deepEqual((await mastheadView()).slice(0, 3), ['inline', 'none', 'none'], 'the PDF keeps the logo masthead');
       assert.equal(await site.$eval('.back-to-top', (el) => getComputedStyle(el).display), 'none', 'hidden in print');
     } finally { await browser.close(); }
     await generatePdfs({ outDir });
