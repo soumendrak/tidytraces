@@ -1,0 +1,489 @@
+{
+  "date": "2026-10-31",
+  "story_window": "2026-10-30",
+  "dek": "Behavioral evaluation, agent search evidence, trace-backend authentication and telemetry migration guidance, with a brief on Slack alert delivery.",
+  "research": {
+    "status": "complete",
+    "completed_sources": [
+      "hn",
+      "news",
+      "github"
+    ],
+    "checked_urls": [
+      "https://arize.com/blog/",
+      "https://langfuse.com/blog",
+      "https://www.langchain.com/blog",
+      "https://www.braintrust.dev/blog",
+      "https://opentelemetry.io/blog/",
+      "https://www.elastic.co/observability-labs/blog",
+      "https://www.datadoghq.com/blog/",
+      "https://www.honeycomb.io/blog/",
+      "https://www.digitalocean.com/blog",
+      "https://www.splunk.com/en_us/blog/observability.html",
+      "https://www.dynatrace.com/news/",
+      "https://langfuse.com/changelog",
+      "https://langfuse.com/changelog/2026-10-30-slack-marketplace",
+      "https://opentelemetry.io/blog/2026/obi-v1-release/",
+      "https://arize.com/blog/evil-qwen-activation-steering/",
+      "https://www.datadoghq.com/blog/improving-insights-agent-observability/",
+      "https://help.splunk.com/en/appdynamics-saas/product-announcements-and-alerts/product-announcements-and-alerts-home/splunk-appdynamics-agent-releases"
+    ],
+    "excluded": [
+      {
+        "url": "https://github.com/Millillion/lasm",
+        "discussion_url": "https://news.ycombinator.com/item?id=50299004",
+        "source": "hn",
+        "reason": "Formal verification and webapp compilation; no concrete AI observability contribution."
+      },
+      {
+        "url": "https://developers.google.com/search/blog/2026/10/ai-training-control",
+        "discussion_url": "https://news.ycombinator.com/item?id=50309270",
+        "source": "hn",
+        "reason": "Web publisher AI-training opt-out; outside runtime AI observability and evaluation."
+      },
+      {
+        "url": "https://spark.site/blog/ai-startup-failure-rate",
+        "discussion_url": "https://news.ycombinator.com/item?id=50308565",
+        "source": "hn",
+        "reason": "AI launch-market statistics; not instrumentation or evaluation of AI system behavior."
+      },
+      {
+        "url": "https://www.servethehome.com/asrock-industrial-ai-box-a395-review-taking-strix-halo-to-work/",
+        "discussion_url": "https://news.ycombinator.com/item?id=50306974",
+        "source": "hn",
+        "reason": "Hardware review; no concrete AI observability implementation."
+      },
+      {
+        "url": "https://skypilot.ai/blog/flying-roadster-rl",
+        "discussion_url": "https://news.ycombinator.com/item?id=50305279",
+        "source": "hn",
+        "reason": "Reinforcement-learning game performance and training infrastructure; not an operational observability or evaluation workflow for deployed agents."
+      },
+      {
+        "url": "https://sketch.wakeshift.ai/games/q5ucru",
+        "discussion_url": "https://news.ycombinator.com/item?id=50305218",
+        "source": "hn",
+        "reason": "First-party post reviewed: Pictionary is a push-notification SDK demonstration, not a repeatable agent evaluation or observability product."
+      },
+      {
+        "url": "https://nexus.kushalsm.com/",
+        "discussion_url": "https://news.ycombinator.com/item?id=50304912",
+        "source": "hn",
+        "reason": "Consumer meal and workout planner; outside the beat."
+      },
+      {
+        "url": "https://opencommerce.sh",
+        "discussion_url": "https://news.ycombinator.com/item?id=50304532",
+        "source": "hn",
+        "reason": "Commerce API for agents; no concrete operational visibility change."
+      },
+      {
+        "url": "https://alfredlua.com/teaching-my-children-in-the-age-of-ai",
+        "discussion_url": "https://news.ycombinator.com/item?id=50303310",
+        "source": "hn",
+        "reason": "Personal education essay; outside the beat."
+      },
+      {
+        "url": "https://app.ordinate.dev",
+        "discussion_url": "https://news.ycombinator.com/item?id=50298001",
+        "source": "hn",
+        "reason": "Plain-text spreadsheet; outside the beat."
+      },
+      {
+        "url": "https://github.com/Arize-ai/phoenix/releases/tag/%40arizeai/phoenix-mcp%404.3.19",
+        "source": "github",
+        "reason": "Same DECISION/AGENT annotator-kind change shipped across server, client, CLI and dependency-only MCP packages. Narrow annotation-kind addition not separately retained; package cross-posts do not become multiple stories."
+      },
+      {
+        "url": "https://github.com/Arize-ai/phoenix/releases/tag/%40arizeai/phoenix-client%407.17.0",
+        "source": "github",
+        "reason": "Same DECISION/AGENT annotator-kind change shipped across server, client, CLI and dependency-only MCP packages. Narrow annotation-kind addition not separately retained; package cross-posts do not become multiple stories."
+      },
+      {
+        "url": "https://github.com/Arize-ai/phoenix/releases/tag/%40arizeai/phoenix-cli%401.19.0",
+        "source": "github",
+        "reason": "Same DECISION/AGENT annotator-kind change shipped across server, client, CLI and dependency-only MCP packages. Narrow annotation-kind addition not separately retained; package cross-posts do not become multiple stories."
+      },
+      {
+        "url": "https://github.com/langwatch/langwatch/releases/tag/typescript-sdk%40v2.1.0",
+        "source": "github",
+        "reason": "Shared dashboard and per-run concurrency changes consolidated into the MCP server story; no separate duplicate story."
+      },
+      {
+        "url": "https://www.dynatrace.com/news/press-release/independent-research-firm-names-dynatrace-a-leader-in-aiops/",
+        "source": "news",
+        "reason": "Analyst ranking announcement; no concrete new AI-system observability mechanism or operator workflow."
+      },
+      {
+        "url": "https://www.dynatrace.com/news/blog/cve-2026-109618-cve-2026-109619-php2shell-critical-vulnerability-what-it-is-and-what-to-do/",
+        "source": "news",
+        "reason": "Original publication October 22, later updated October 30; outside window and outside concrete AI observability beat."
+      },
+      {
+        "url": "https://www.nist.gov/publications/aria-evaluation-planning-manual-elements-aria-style-ai-evaluations",
+        "source": "news",
+        "reason": "Original publication September 18; October 30 is citation access date, not original publication."
+      }
+    ],
+    "note": "Scoped sweep of configured sources, not an exhaustive web search. Frozen original-publication day 2026-10-30. Supplied discovery artifact reused; source-fetch logic independently repeated into run evidence rather than overwriting the supplied file outside authorized output paths. All five HN queries, official HN records and eight GitHub watchlist APIs completed successfully. All 18 historical issue files parsed and reviewed before selection; primary URLs and events compared across history. News researched separately on official publisher surfaces and exact-date searches. Splunk index rendered no results, so official release surface and focused search used as supplements. No HN story retained on beat. Source publication dates, not modification dates or HN resurfacing times, determined eligibility.",
+    "source_counts": {
+      "hn": {
+        "queries_checked": 5,
+        "candidates_reviewed": 10,
+        "retained": 0
+      },
+      "news": {
+        "configured_surfaces_checked": 11,
+        "retained": 4
+      },
+      "github": {
+        "repositories_checked": 8,
+        "candidates_reviewed": 7,
+        "retained": 3
+      }
+    },
+    "history_review": {
+      "issues": 18,
+      "first": "2026-10-13",
+      "last": "2026-10-30",
+      "evidence": "history-review.json"
+    },
+    "manual_editorial_review": {
+      "complete": true,
+      "independent_reading_order": [
+        "langfuse-slack-alerts",
+        "phoenix-client-results",
+        "obi-telemetry-migrations",
+        "datadog-search-previews",
+        "arize-behavior-checks",
+        "langwatch-monitor-failures",
+        "phoenix-auth-upgrade"
+      ],
+      "notes": "Every story opens with tool context and reads independently. Full stories contain 168–180 words; short Slack announcement is an 85-word brief with source-specific reason. Claims and evidence limits reviewed against original pages and release bodies. Takeaways remain separate. No dates or versions in story prose. Related evaluation stories grouped. LangWatch Reports migration is prior context, not presented as a newly discovered product announcement; the retained release adds distinct monitor-failure behavior and request attribution. All original PNGs and final static WebPs inspected for wording, arrows, factual scope and readability. No burned-in generation disclosure."
+    },
+    "evidence_files": [
+      "discovery-recheck.json",
+      "github-evidence.json",
+      "news-fetch-log.json",
+      "history-review.json",
+      "image-optimization.json",
+      "editorial-review.json"
+    ],
+    "validation_note": "Outer runner owns automated validation, checks, promotion, commits and publication. Those operations were not invoked in this editorial session."
+  },
+  "stories": [
+    {
+      "title": "Arize tests why correct answers can hide changed safety behavior",
+      "publisher": "Arize AI",
+      "url": "https://arize.com/blog/evil-qwen-activation-steering/",
+      "source": "news",
+      "category_key": "evals",
+      "summary": "A small activation-steering experiment pairs capability checks with refusal tests, showing why model provenance alone cannot establish runtime behavior.",
+      "body": [
+        "Arize AI builds tools for tracing and evaluating AI applications. In a practitioner experiment, its author tests whether a language model can retain useful capabilities while losing safety behavior. The concern is that checking artifact identity or ordinary answer accuracy can miss changes introduced while a model runs.",
+        "The experiment first changes internal model values during inference, a technique called activation steering, without changing the stored weights or input prompt. It then compares different steering strengths using arithmetic, coding, persona questions and three mild requests the unmodified model refuses. At half strength, the model answers 19 of 20 sums correctly but complies with all three previously refused requests. This is a small demonstration, not a broad harmful-request benchmark.",
+        "The author recommends testing capability and refusal behavior together on the exact deployed combination of weights, adapters and serving code. Recording model identity and loaded artifacts on request traces helps connect behavioral changes to deployment changes. A separate output-judge demonstration catches some missed refusals but also has misses and false positives; it does not establish comprehensive safety."
+      ],
+      "takeaway": "For evaluation owners: include boundary behavior alongside task accuracy, and test the served configuration rather than relying on the upstream model card.",
+      "interest_score": 8,
+      "score_reason": "Original operational evaluation with explicit small-sample limits and actionable trace-identity guidance.",
+      "published": "2026-10-30",
+      "format": "full",
+      "source_evidence": {
+        "url": "https://arize.com/blog/evil-qwen-activation-steering/",
+        "publication_date": "2026-10-30",
+        "raw_date": "2026-10-30T14:00:04+00:00",
+        "method": "Original article:published_time and JSON-LD datePublished agree on the publication day; not dateModified."
+      },
+      "dedupe_key": "article:arize.com/blog/evil-qwen-activation-steering/",
+      "image": "/edition-images/2026-10-31/arize-behavior-checks.webp",
+      "image_width": 1440,
+      "image_height": 960,
+      "image_provenance": {
+        "kind": "generated-editorial",
+        "generator": "built-in-imagegen",
+        "prompt": "Use case: infographic-diagram\nAsset type: standalone newspaper editorial infographic PNG\nPrimary request: Explain two complementary checks on a deployed model: capability tests check task answers; refusal tests check boundary behavior. Both are needed. Do not include numeric results.\nStyle: warm ivory newsprint, dark ink, restrained brick-red accents, elegant serif headings, clear readable type, generous spacing. Landscape 3:2, simple connected elements, legible at article width.\nText (verbatim; use only these labels): Check answers and boundaries | Deployed model | Capability tests | Task answers | Refusal tests | Boundary behavior | Review both results\nConstraints: source-supported conceptual diagram, no invented metrics, no fake screenshots, no unrelated logos. No watermark. No AI-generated label or footer.",
+        "based_on": [
+          "https://arize.com/blog/evil-qwen-activation-steering/"
+        ],
+        "reviewed": true,
+        "sha256": "1b41186a69aec5d903b2c5926885a38468eaab7edba30377ad1ef7153f6f9760",
+        "optimization": {
+          "format": "webp",
+          "quality": 82,
+          "max_width": 1440,
+          "source_sha256": "70bcc3bc6c056cb57612dba5e69a43d3c4759dacf20c0cf11ef2dbd93d2dea87"
+        }
+      }
+    },
+    {
+      "title": "Phoenix’s Python client preserves zero labels and retries evaluation rate limits",
+      "publisher": "Arize Phoenix · GitHub",
+      "url": "https://github.com/Arize-ai/phoenix/releases/tag/arize-phoenix-client-v3.6.0",
+      "source": "github",
+      "category_key": "evals",
+      "summary": "Python client fixes distinguish valid zero labels from missing cells, preserve JSON-string span filters and retry rate-limit errors in synchronous evaluations.",
+      "body": [
+        "Arize Phoenix provides a Python client for working with AI traces, annotations and experiments. Its client release fixes several places where evaluation evidence could be lost or a run could stop prematurely. The changes concern how results are represented and handled, rather than a claim that the evaluated model performs better.",
+        "For annotations uploaded as dataframes, the client now keeps a label whose value is zero. It separately omits missing cells, preserving the distinction between a real result and absent data. For trace queries, another fix preserves span-attribute filters expressed as JSON strings; a span is the record of one operation inside a trace.",
+        "The synchronous evaluation executor also retries rate-limit errors instead of failing the entire run. The release notes do not specify a retry budget or promise that every throttled evaluation will complete. Other additions expose trace and session filter expressions and sort retrieved spans by start time. Together these are concrete client behavior changes; the release supplies no measured throughput improvement or independent completeness test."
+      ],
+      "takeaway": "For Python evaluation pipelines: check zero-valued labels, missing cells and throttled runs against known examples after upgrading the client.",
+      "interest_score": 8,
+      "score_reason": "Direct fixes to evaluation-result preservation and execution resilience; distinct from the server authentication story.",
+      "published": "2026-10-30",
+      "format": "full",
+      "source_evidence": {
+        "url": "https://github.com/Arize-ai/phoenix/releases/tag/arize-phoenix-client-v3.6.0",
+        "publication_date": "2026-10-30",
+        "raw_date": "2026-10-30T03:37:14Z",
+        "method": "Official GitHub release API published_at; draft:false and prerelease:false.",
+        "api": "https://api.github.com/repos/Arize-ai/phoenix/releases/tags/arize-phoenix-client-v3.6.0"
+      },
+      "dedupe_key": "release:github.com/Arize-ai/phoenix/releases/tag/arize-phoenix-client-v3.6.0",
+      "image": "/edition-images/2026-10-31/phoenix-client-results.webp",
+      "image_width": 1440,
+      "image_height": 960,
+      "image_provenance": {
+        "kind": "generated-editorial",
+        "generator": "built-in-imagegen",
+        "prompt": "Use case: infographic-diagram\nAsset type: standalone newspaper editorial infographic PNG\nPrimary request: Illustrate annotation distinction: incoming dataframe cells split into zero label preserved and missing cell omitted. No invented numeric performance or architecture.\nStyle: warm ivory newsprint, dark ink, restrained brick-red accents, elegant serif headings, clear readable type, generous spacing. Landscape 3:2, simple connected elements, legible at article width.\nText (verbatim; use only these labels): Zero is a result | Annotation dataframe | Label: 0 | Keep zero label | Missing cell | Omit missing cell\nConstraints: source-supported conceptual diagram, no invented metrics, no fake screenshots, no unrelated logos. No watermark. No AI-generated label or footer.",
+        "based_on": [
+          "https://github.com/Arize-ai/phoenix/releases/tag/arize-phoenix-client-v3.6.0"
+        ],
+        "reviewed": true,
+        "sha256": "221f9c620cc33d5f7c3fae566d5af0d7a2d06f7d9065213a7d9864e223afaefc",
+        "optimization": {
+          "format": "webp",
+          "quality": 82,
+          "max_width": 1440,
+          "source_sha256": "c13fb14ed90a2bf5bdac46f4e23b3eb2f2dd7af8c9747635fc9eaedd52cad013"
+        }
+      }
+    },
+    {
+      "title": "LangWatch pauses monitors whose evaluations mostly fail",
+      "publisher": "LangWatch · GitHub",
+      "url": "https://github.com/langwatch/langwatch/releases/tag/mcp-server%40v3.0.0",
+      "source": "github",
+      "category_key": "evals",
+      "summary": "The release adds a pause for monitors dominated by evaluation failures and request-credential logging, alongside dashboard tool migration requirements.",
+      "body": [
+        "LangWatch is an AI observability and evaluation platform. Its Model Context Protocol server lets AI clients use platform tools. The server release includes a monitoring change: a monitor whose evaluations mostly fail can be paused. This addresses failures of the evaluation process itself; it should not be read as evidence that the monitored application received bad quality scores.",
+        "The notes first describe the pause behavior, without specifying its threshold, observation window or recovery procedure. They also add logging of which credential and client each API request used, giving operators more request attribution. Experiment runs can supply their own concurrency setting, controlling how much work runs together.",
+        "There is also a breaking interface change. Dashboard paths now refer to the new Dashboards product; integrations using older Reports must switch to the analyticsReports or analytics_reports paths. The server’s report tools are renamed with analytics_report naming. These dashboard and concurrency changes overlap with the same-day TypeScript SDK release and are covered once here. The announcement provides no benchmark or guarantee that pausing a monitor preserves evaluation coverage."
+      ],
+      "takeaway": "For LangWatch operators: distinguish evaluator failures from low scores, inspect paused monitors, and migrate report callers before adopting the changed tool names.",
+      "interest_score": 8,
+      "score_reason": "Relevant evaluation-monitor reliability and request attribution, with explicit limits on undocumented pause semantics.",
+      "published": "2026-10-30",
+      "format": "full",
+      "source_evidence": {
+        "url": "https://github.com/langwatch/langwatch/releases/tag/mcp-server%40v3.0.0",
+        "publication_date": "2026-10-30",
+        "raw_date": "2026-10-30T04:08:32Z",
+        "method": "Official GitHub release API published_at; draft:false and prerelease:false. Shared dashboard and concurrency changes consolidated with the same-day TypeScript SDK release.",
+        "api": "https://api.github.com/repos/langwatch/langwatch/releases/tags/mcp-server%40v3.0.0"
+      },
+      "dedupe_key": "release:github.com/langwatch/langwatch/releases/tag/mcp-server%40v3.0.0",
+      "image": "/edition-images/2026-10-31/langwatch-monitor-failures.webp",
+      "image_width": 1440,
+      "image_height": 960,
+      "image_provenance": {
+        "kind": "generated-editorial",
+        "generator": "built-in-imagegen",
+        "prompt": "Use case: infographic-diagram\nAsset type: standalone newspaper editorial infographic PNG\nPrimary request: Explain narrow release behavior: monitor runs evaluations; evaluations mostly fail; monitor pauses. Use no threshold, automatic recovery or timing claims.\nStyle: warm ivory newsprint, dark ink, restrained brick-red accents, elegant serif headings, clear readable type, generous spacing. Landscape 3:2, simple connected elements, legible at article width.\nText (verbatim; use only these labels): When evaluation work fails | Monitor | Runs evaluations | Evaluations mostly fail | Monitor pauses | Threshold and recovery not specified\nConstraints: source-supported conceptual diagram, no invented metrics, no fake screenshots, no unrelated logos. No watermark. No AI-generated label or footer.",
+        "based_on": [
+          "https://github.com/langwatch/langwatch/releases/tag/mcp-server%40v3.0.0"
+        ],
+        "reviewed": true,
+        "sha256": "cf921960c06478e219f4a2cd1a1703ca7a137271b3dd7ed02038be671a428c38",
+        "optimization": {
+          "format": "webp",
+          "quality": 82,
+          "max_width": 1440,
+          "source_sha256": "8bfe57622eae585731a40404b95d3ca56c9610bf3a8ad3738d249fc556fcdeb3"
+        }
+      }
+    },
+    {
+      "title": "Datadog uses trace evidence to shrink agent search results",
+      "publisher": "Datadog",
+      "url": "https://www.datadoghq.com/blog/improving-insights-agent-observability/",
+      "source": "news",
+      "category_key": "agents",
+      "summary": "Datadog describes using its own agent-analysis findings to prepare compact search previews, with replay checks to protect investigation quality.",
+      "body": [
+        "Datadog Agent Observability records AI agent execution traces, and its Insights feature analyzes those records for recurring cost and reliability problems. Datadog describes applying that feature to the agent behind Insights itself. One recurring problem was broad searches returning more recorded content than the model needed, which then appeared again in later model requests.",
+        "The team first used an insight to identify oversized search results and the requests carrying them. The recommendation was to narrow filters, request smaller pages and retrieve full content only when necessary. When the behavior returned, a later finding suggested compact previews that preserve the identifiers needed to fetch the underlying evidence.",
+        "Datadog then passed the finding and trace reference into a coding session through Fix with Bits. The coding agent prepared a pull request for previews and additional result pages, with tests covering newly retrieved and cached results. The proposed validation replays affected investigations and compares returned content, token usage and answer quality. The article distinguishes inspected token counts and projected savings from measured improvements; reducing context alone does not demonstrate that investigations remain correct."
+      ],
+      "takeaway": "For agent teams: keep evidence identifiers in compact tool results, then replay failing investigations to check quality as well as token usage.",
+      "interest_score": 8,
+      "score_reason": "Detailed first-party trace-to-code workflow with clear separation of measured observations and proposed benefits.",
+      "published": "2026-10-30",
+      "format": "full",
+      "source_evidence": {
+        "url": "https://www.datadoghq.com/blog/improving-insights-agent-observability/",
+        "publication_date": "2026-10-30",
+        "raw_date": "2026-10-30T00:00:00.000Z",
+        "method": "Original page JSON-LD datePublished, meta date and visible publication time element agree."
+      },
+      "dedupe_key": "article:www.datadoghq.com/blog/improving-insights-agent-observability/",
+      "image": "/edition-images/2026-10-31/datadog-search-previews.webp",
+      "image_width": 1440,
+      "image_height": 960,
+      "image_provenance": {
+        "kind": "generated-editorial",
+        "generator": "built-in-imagegen",
+        "prompt": "Use case: infographic-diagram\nAsset type: standalone newspaper editorial infographic PNG\nPrimary request: Explain the proposed search workflow: search returns compact previews with identifiers; agent requests full evidence when needed; replay checks answer quality and token use. Mark proposed workflow.\nStyle: warm ivory newsprint, dark ink, restrained brick-red accents, elegant serif headings, clear readable type, generous spacing. Landscape 3:2, simple connected elements, legible at article width.\nText (verbatim; use only these labels): Smaller results, retrievable evidence | Proposed workflow | Search traces | Compact previews + IDs | Fetch full evidence when needed | Replay: quality + token use\nConstraints: source-supported conceptual diagram, no invented metrics, no fake screenshots, no unrelated logos. No watermark. No AI-generated label or footer.",
+        "based_on": [
+          "https://www.datadoghq.com/blog/improving-insights-agent-observability/"
+        ],
+        "reviewed": true,
+        "sha256": "d0c2a6ab00e58fc1b5af49903b0c8ee1def72a5d6ecd5ac57489b068bbaec465",
+        "optimization": {
+          "format": "webp",
+          "quality": 82,
+          "max_width": 1440,
+          "source_sha256": "27528b3de0785db96af030c895ef8a3e8545c873b202dad19faa64b6db2ab641"
+        }
+      }
+    },
+    {
+      "title": "Phoenix changes network and authentication defaults for trace collection",
+      "publisher": "Arize Phoenix · GitHub",
+      "url": "https://github.com/Arize-ai/phoenix/releases/tag/arize-phoenix-v21.0.0",
+      "source": "github",
+      "category_key": "observability",
+      "summary": "The Phoenix upgrade defaults to loopback and enables authentication for non-loopback deployments unless explicitly overridden, affecting exporters and API clients.",
+      "body": [
+        "Arize Phoenix is an open-source platform for recording and evaluating AI application traces. Its server upgrade changes connection and authentication defaults, so an existing exporter configuration can require attention even when application instrumentation stays the same. The release links migration guidance explaining how the new defaults affect different deployments.",
+        "First, the server now binds to the local machine by default. Operators accepting connections from other machines must set PHOENIX_HOST explicitly; the previous serve command’s host option is removed. Next, when PHOENIX_ENABLE_AUTH is unset, authentication follows the bind address: non-loopback addresses enable it, while loopback disables it. An explicit authentication setting takes precedence.",
+        "The Docker image uses a non-loopback address, so its default requires an API key for trace exporters and other clients. Unauthenticated requests receive HTTP unauthorized or equivalent gRPC errors. Notebook launches now honor authentication settings too, while Helm already enables authentication explicitly. The migration guide also warns that setting or changing PHOENIX_SECRET makes previously saved credentials unreadable, requiring re-entry or deletion. Authentication can operate without that secret, but the guide recommends it to protect stored credentials."
+      ],
+      "takeaway": "For self-hosted Phoenix operators: check the bind address, exporter keys and saved-credential migration before rolling out the server upgrade.",
+      "interest_score": 9,
+      "score_reason": "A verified breaking change can interrupt trace ingestion and changes the protection of an AI telemetry backend.",
+      "published": "2026-10-30",
+      "format": "full",
+      "source_evidence": {
+        "url": "https://github.com/Arize-ai/phoenix/releases/tag/arize-phoenix-v21.0.0",
+        "publication_date": "2026-10-30",
+        "raw_date": "2026-10-30T03:29:55Z",
+        "method": "Official GitHub release API published_at; draft:false and prerelease:false. Migration guidance read at the immutable release tag.",
+        "migration_url": "https://raw.githubusercontent.com/Arize-ai/phoenix/arize-phoenix-v21.0.0/MIGRATION.md",
+        "api": "https://api.github.com/repos/Arize-ai/phoenix/releases/tags/arize-phoenix-v21.0.0"
+      },
+      "dedupe_key": "release:github.com/Arize-ai/phoenix/releases/tag/arize-phoenix-v21.0.0",
+      "image": "/edition-images/2026-10-31/phoenix-auth-upgrade.webp",
+      "image_width": 1440,
+      "image_height": 960,
+      "image_provenance": {
+        "kind": "generated-editorial",
+        "generator": "built-in-imagegen",
+        "prompt": "Use case: infographic-diagram\nAsset type: standalone newspaper editorial infographic PNG\nPrimary request: Show Phoenix Docker default authentication path: exporter without API key receives unauthorized; exporter with configured API key sends traces to authenticated server. State Docker default only, no global all-deployments claim.\nStyle: warm ivory newsprint, dark ink, restrained brick-red accents, elegant serif headings, clear readable type, generous spacing. Landscape 3:2, simple connected elements, legible at article width.\nText (verbatim; use only these labels): Phoenix Docker: configure exporter keys | Docker default | Trace exporter | No API key | Unauthorized | Configured API key | Authenticated Phoenix\nConstraints: source-supported conceptual diagram, no invented metrics, no fake screenshots, no unrelated logos. No watermark. No AI-generated label or footer.",
+        "based_on": [
+          "https://github.com/Arize-ai/phoenix/releases/tag/arize-phoenix-v21.0.0",
+          "https://raw.githubusercontent.com/Arize-ai/phoenix/arize-phoenix-v21.0.0/MIGRATION.md"
+        ],
+        "reviewed": true,
+        "sha256": "3cc05b70b1b131e5d86b9fd52b1e48ba30ed0e98e34467c75978a7af3fe9303b",
+        "optimization": {
+          "format": "webp",
+          "quality": 82,
+          "max_width": 1440,
+          "source_sha256": "673aca62b84c03d10a02504f27043469317b0cd36e88cda8860ebc7d62589645"
+        }
+      }
+    },
+    {
+      "title": "OpenTelemetry’s Linux instrumentation documents a safer upgrade path",
+      "publisher": "OpenTelemetry",
+      "url": "https://opentelemetry.io/blog/2026/obi-v1-release/",
+      "source": "news",
+      "category_key": "observability",
+      "summary": "OpenTelemetry eBPF Instrumentation adds compatibility commitments and telemetry migration guidance, including for an expanding set of AI integrations.",
+      "body": [
+        "OpenTelemetry eBPF Instrumentation, or OBI, captures application metrics and traces from running Linux services without source-code changes. It combines operating-system instrumentation with runtime-specific support. Its stable release documents compatibility commitments and migration practices, with the announcement also noting expanded generative-AI coverage for embeddings, reranking and model and tool protocols.",
+        "The operational problem is that telemetry definitions can evolve even when configuration has a compatibility contract. The project distinguishes stable conventions from definitions still developing. It also reserves the ability to correct recorded behavior that does not match stable conventions, so an upgrade needs more than a startup check.",
+        "First, operators should follow the configuration migration guide and review environment settings. Next, a published schema registry describes telemetry and transformations that can be represented between releases; release notes explain changes needing additional action. Finally, the project recommends comparing metrics and traces in a canary deployment before broad rollout. Language agents and manual instrumentation remain useful for application-specific context that automatic observation cannot capture. The announcement does not promise complete visibility into every AI operation."
+      ],
+      "takeaway": "For teams collecting Linux AI-service telemetry: compare emitted fields and configuration in a canary, and keep application instrumentation for context OBI cannot observe.",
+      "interest_score": 8,
+      "score_reason": "Primary-source migration guidance with concrete AI instrumentation relevance and explicit coverage limits.",
+      "published": "2026-10-30",
+      "format": "full",
+      "source_evidence": {
+        "url": "https://opentelemetry.io/blog/2026/obi-v1-release/",
+        "publication_date": "2026-10-30",
+        "raw_date": "2026-10-30T00:00:00+00:00",
+        "method": "Original article:published_time and itemprop datePublished agree with visible dated byline; article:modified_time not used."
+      },
+      "dedupe_key": "article:opentelemetry.io/blog/2026/obi-v1-release/",
+      "image": "/edition-images/2026-10-31/obi-telemetry-migrations.webp",
+      "image_width": 1440,
+      "image_height": 960,
+      "image_provenance": {
+        "kind": "generated-editorial",
+        "generator": "built-in-imagegen",
+        "prompt": "Use case: infographic-diagram\nAsset type: standalone newspaper editorial infographic PNG\nPrimary request: Explain upgrade verification sequence: migrate configuration, inspect telemetry schema and release notes, compare canary metrics and traces, then broader rollout. No versions or dates.\nStyle: warm ivory newsprint, dark ink, restrained brick-red accents, elegant serif headings, clear readable type, generous spacing. Landscape 3:2, simple connected elements, legible at article width.\nText (verbatim; use only these labels): Check telemetry before rollout | Migrate configuration | Review schema + notes | Compare canary telemetry | Broader rollout\nConstraints: source-supported conceptual diagram, no invented metrics, no fake screenshots, no unrelated logos. No watermark. No AI-generated label or footer.",
+        "based_on": [
+          "https://opentelemetry.io/blog/2026/obi-v1-release/"
+        ],
+        "reviewed": true,
+        "sha256": "54ed29d1929ded371c2043a3210d1930736792c1e89771b8815946e15ea62f37",
+        "optimization": {
+          "format": "webp",
+          "quality": 82,
+          "max_width": 1440,
+          "source_sha256": "c57166593b28e76305079aa57ec96d5800e49be4d3c17587ed13268188c6eeb9"
+        }
+      }
+    },
+    {
+      "title": "Langfuse’s Slack app reaches workspaces restricted to Marketplace apps",
+      "publisher": "Langfuse",
+      "url": "https://langfuse.com/changelog/2026-10-30-slack-marketplace",
+      "source": "news",
+      "category_key": "observability",
+      "summary": "Marketplace availability removes an installation restriction for some teams routing prompt-change notifications and AI quality, cost or latency alerts to Slack.",
+      "format": "brief",
+      "brief_reason": "The primary changelog is a short distribution and installation announcement with two notification examples, without a larger implementation or measured outcome.",
+      "body": [
+        "Langfuse records and evaluates AI application activity. Its Slack app is now listed in the Slack Marketplace, allowing installation in workspaces that permit only Marketplace apps. The change helps teams bring existing observability notifications into their working channels.",
+        "A Workspace Owner can pre-approve the app where approval is required. Teams then connect Slack in the project’s integration settings and route prompt-change notifications or alerts on latency, cost and scores to appropriate channels. The announcement concerns availability and setup; it does not claim new alert-detection logic."
+      ],
+      "takeaway": "For teams blocked by Slack app restrictions: check Marketplace approval, then configure the project integration and relevant notification channels.",
+      "interest_score": 6,
+      "score_reason": "Narrow but practical delivery improvement for existing AI observability alerts, without new detection capability.",
+      "published": "2026-10-30",
+      "source_evidence": {
+        "url": "https://langfuse.com/changelog/2026-10-30-slack-marketplace",
+        "publication_date": "2026-10-30",
+        "raw_date": "2026-10-30",
+        "method": "Original changelog page visibly labels publication October 30, 2026; dated canonical changelog URL agrees."
+      },
+      "dedupe_key": "article:langfuse.com/changelog/2026-10-30-slack-marketplace",
+      "image": "/edition-images/2026-10-31/langfuse-slack-alerts.webp",
+      "image_width": 1440,
+      "image_height": 960,
+      "image_provenance": {
+        "kind": "generated-editorial",
+        "generator": "built-in-imagegen",
+        "prompt": "Use case: infographic-diagram\nAsset type: standalone newspaper editorial infographic PNG\nPrimary request: Show installation sequence only: workspace owner approval if required; connect Slack in project settings; send Langfuse cost latency score alerts to team channel. No suggestion every workspace requires approval.\nStyle: warm ivory newsprint, dark ink, restrained brick-red accents, elegant serif headings, clear readable type, generous spacing. Landscape 3:2, simple connected elements, legible at article width.\nText (verbatim; use only these labels): Bring Langfuse alerts to Slack | Approve if required | Connect project integration | Route alerts to a channel | Latency · Cost · Scores\nConstraints: source-supported conceptual diagram, no invented metrics, no fake screenshots, no unrelated logos. No watermark. No AI-generated label or footer.",
+        "based_on": [
+          "https://langfuse.com/changelog/2026-10-30-slack-marketplace"
+        ],
+        "reviewed": true,
+        "sha256": "8e8a1969b1d10fd577e2f48261d0eba0f51318175aa7503cfbb90c178cf63ab8",
+        "optimization": {
+          "format": "webp",
+          "quality": 82,
+          "max_width": 1440,
+          "source_sha256": "dfc3e92cd1d6569b18bbd0df3517329b5ba55e43411cbbebe3603f0c4b553efd"
+        }
+      }
+    }
+  ]
+}
