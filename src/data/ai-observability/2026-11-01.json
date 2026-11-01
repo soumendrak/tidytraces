@@ -1,0 +1,308 @@
+{
+  "date": "2026-11-01",
+  "story_window": "2026-10-31",
+  "dek": "A swarm-viewer prototype and OpenInference fixes for image accounting, structured documents and interrupted streams.",
+  "research": {
+    "status": "complete",
+    "completed_sources": [
+      "hn",
+      "news",
+      "github"
+    ],
+    "checked_urls": [
+      "https://arize.com/blog/",
+      "https://langfuse.com/blog",
+      "https://www.langchain.com/blog",
+      "https://www.braintrust.dev/blog",
+      "https://opentelemetry.io/blog/",
+      "https://www.elastic.co/observability-labs/blog",
+      "https://www.datadoghq.com/blog/",
+      "https://www.honeycomb.io/blog/",
+      "https://www.digitalocean.com/blog",
+      "https://www.splunk.com/en_us/blog/observability.html",
+      "https://www.dynatrace.com/news/",
+      "https://langfuse.com/changelog",
+      "https://www.splunk.com/en_us/blog",
+      "https://www.splunk.com/en_us/blog/observability/ai-sre-in-splunk-observability-cloud-can-remediate-incidents-with-claude-managed-agents"
+    ],
+    "excluded": [
+      {
+        "url": "https://news.ycombinator.com/item?id=50318869",
+        "reason": "Outside AI-observability beat: search-result quality, word puzzle, or website training preferences; discovery time is not original article publication evidence."
+      },
+      {
+        "url": "https://www.jointter.com/",
+        "reason": "Outside AI-observability beat: search-result quality, word puzzle, or website training preferences; discovery time is not original article publication evidence."
+      },
+      {
+        "url": "https://www.seroundtable.com/google-ai-training-control-42430.html",
+        "reason": "Outside AI-observability beat: search-result quality, word puzzle, or website training preferences; discovery time is not original article publication evidence."
+      },
+      {
+        "url": "https://openai.com/index/helping-websites-express-ai-training-preferences/",
+        "reason": "Outside AI-observability beat: search-result quality, word puzzle, or website training preferences; discovery time is not original article publication evidence."
+      },
+      {
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-v0.1.75",
+        "reason": "Verified stable publication in window; shared message-role/content type guards are a narrower incremental patch, not selected."
+      },
+      {
+        "url": "https://www.splunk.com/en_us/blog/observability/ai-sre-in-splunk-observability-cloud-can-remediate-incidents-with-claude-managed-agents",
+        "reason": "Featured article original JSON-LD datePublished is 2026-09-17; outside window."
+      },
+      {
+        "url": "https://www.datadoghq.com/blog/improving-insights-agent-observability/",
+        "reason": "Original 2026-10-30 item already covered in prior edition; not relabelled."
+      },
+      {
+        "url": "https://opentelemetry.io/blog/2026/obi-v1-release/",
+        "reason": "Original 2026-10-30 item already covered in prior edition; outside window."
+      },
+      {
+        "url": "https://langfuse.com/changelog/2026-10-30-slack-marketplace",
+        "reason": "Latest changelog item is outside window and already covered."
+      }
+    ],
+    "note": "Scoped sweep of configured sources plus exact-date searches; no claim of exhaustive web coverage. All 19 historical issues read and compared by primary event, URL, headline and body. HN/GitHub discovery rerun from repository script with only its output redirected into run evidence to respect write restrictions. No verified in-window News item selected. Splunk category surface returned No results; general blog and featured primary article checked as fallback. Web-tool failures for swarm and GitHub were resolved through direct primary HTTP requests.",
+    "source_counts": {
+      "hn": {
+        "candidates": 5,
+        "selected": 1
+      },
+      "news": {
+        "configured_surfaces_checked": 11,
+        "selected": 0
+      },
+      "github": {
+        "repositories_checked": 8,
+        "candidates": 3,
+        "selected": 2
+      }
+    },
+    "checks": {
+      "hn": {
+        "queries": [
+          "observability",
+          "LLM evaluation",
+          "AI tracing",
+          "agent telemetry",
+          "langfuse"
+        ],
+        "official_item_verified": "hn-50317729.txt",
+        "discovery": "2026-10-31.json"
+      },
+      "github": {
+        "watchlist_checks": [
+          {
+            "repository": "langfuse/langfuse",
+            "releases_checked": 100,
+            "coverage": "latest 100 releases; not a global GitHub search"
+          },
+          {
+            "repository": "Arize-ai/phoenix",
+            "releases_checked": 100,
+            "coverage": "latest 100 releases; not a global GitHub search"
+          },
+          {
+            "repository": "Arize-ai/openinference",
+            "releases_checked": 100,
+            "coverage": "latest 100 releases; not a global GitHub search"
+          },
+          {
+            "repository": "langchain-ai/langsmith-sdk",
+            "releases_checked": 100,
+            "coverage": "latest 100 releases; not a global GitHub search"
+          },
+          {
+            "repository": "braintrustdata/braintrust-sdk",
+            "releases_checked": 100,
+            "coverage": "latest 100 releases; not a global GitHub search"
+          },
+          {
+            "repository": "wandb/weave",
+            "releases_checked": 100,
+            "coverage": "latest 100 releases; not a global GitHub search"
+          },
+          {
+            "repository": "langwatch/langwatch",
+            "releases_checked": 100,
+            "coverage": "latest 100 releases; not a global GitHub search"
+          },
+          {
+            "repository": "Helicone/helicone",
+            "releases_checked": 4,
+            "coverage": "latest 100 releases; not a global GitHub search"
+          }
+        ],
+        "stable_release_evidence": [
+          "python-openinference-instrumentation-openai-v0.1.69.txt",
+          "python-openinference-instrumentation-anthropic-v3.3.0.txt"
+        ]
+      },
+      "news": {
+        "http_evidence": "http-checks.json",
+        "search_queries": [
+          "\"2026-10-31\" \"observability\"",
+          "\"October 31, 2026\" \"evaluation\" AI",
+          "site:splunk.com/en_us/blog \"October 31, 2026\"",
+          "site:datadoghq.com/blog \"October 31, 2026\"",
+          "\"2026-10-31\" \"LLM\" tracing evaluation -site:ossean.com",
+          "site:langfuse.com/changelog \"2026-10-31\""
+        ],
+        "result": "No primary publication on the frozen day verified in the scoped sweep; index dates, live benchmark snapshots and secondary daily digests not accepted as publication proof."
+      }
+    },
+    "deduplication": {
+      "history_files": 19,
+      "review": "No selected event repeats earlier coverage. Earlier JavaScript Anthropic release concerned output JSON shape, system-prompt placement and parallel tool replies; selected Python release concerns document fields and placeholder handling."
+    }
+  },
+  "stories": [
+    {
+      "title": "Mantiq prototypes a path from swarm overviews to individual agent actions",
+      "publisher": "Alex Strick van Linschoten",
+      "source": "hn",
+      "category_key": "agents",
+      "summary": "A prototype viewer combines several kinds of activity records and lets investigators move from a swarm overview to messages and file changes. Its large swarm demonstration uses synthetic data.",
+      "body": [
+        "Mantiq is Alex Strick van Linschoten’s prototype system for recording and exploring groups of AI agents working together. It combines model and tool calls, operating-system process starts, file reads and writes, messages between agents, and container output. The author’s starting problem is that an agent’s account of its work may be wrong, while failures can appear across several kinds of evidence.",
+        "The viewer first gives investigators an overview of the swarm. They can filter for an observed problem and see the agents involved, then move from swarm to team to individual agent. Zooming further reaches a message or file edit. Another view stacks teams horizontally and time vertically, making simultaneous failures appear as a layer that investigators can select for detail.",
+        "The article demonstrates a small team building a Lisp interpreter and prototypes views over a synthetic 10,000-agent swarm. These are interface experiments, rather than evidence of production operation at that scale. The author says explanatory views still need more work for complex interactions; the accompanying analysis agent also generates some explanations, so those interpretations remain distinct from the recorded events."
+      ],
+      "takeaway": "For teams investigating multi-agent work: evaluate whether a viewer connects high-level patterns to recorded messages, files and processes, and distinguish generated explanations from those records.",
+      "interest_score": 8,
+      "score_reason": "A concrete practitioner prototype connects multiple evidence streams and shows investigation paths, with synthetic-scale limits stated.",
+      "published": "2026-10-31",
+      "format": "full",
+      "url": "https://alexstrick.com/posts/2026-10-31-swarm-observability.html",
+      "hn_id": "50317729",
+      "comments": "https://news.ycombinator.com/item?id=50317729",
+      "dedupe_key": "article:alexstrick.com/posts/2026-10-31-swarm-observability.html",
+      "source_evidence": {
+        "url": "https://alexstrick.com/posts/2026-10-31-swarm-observability.html",
+        "publication_date": "2026-10-31",
+        "raw_date": "2026-10-31",
+        "method": "Original publisher HTML dcterms.date and visible Published date agree. Official HN item confirms discovery only; not used as original publication proof."
+      },
+      "image": "/edition-images/2026-11-01/swarm-viewer.webp",
+      "image_width": 1440,
+      "image_height": 960,
+      "image_provenance": {
+        "kind": "generated-editorial",
+        "generator": "built-in-imagegen",
+        "prompt": "Use case: infographic-diagram\nAsset type: standalone newspaper editorial infographic PNG\nStyle: warm ivory newsprint, dark ink, restrained brick red accents, elegant serif heading, large clear labels, generous spacing. Landscape 3:2.\nPrimary request: Explain one navigation path in the Mantiq prototype viewer, from swarm overview to team to agent to a recorded message or file edit. This is a conceptual explanation, not a screenshot.\nText (verbatim; only these labels): Inspect a swarm one step at a time | Prototype viewer | Swarm overview | Team | Agent | Message or file edit\nConstraints: four connected elements, no invented metrics, no logos, no watermark, no footer.",
+        "based_on": [
+          "https://alexstrick.com/posts/2026-10-31-swarm-observability.html"
+        ],
+        "reviewed": true,
+        "sha256": "6799844f19c5d454718876fa1c806fce63e0db474a97fcbb4a934dbdbd71a95e",
+        "optimization": {
+          "format": "webp",
+          "quality": 82,
+          "max_width": 1440,
+          "source_sha256": "ef677c929aca6b9345f03322feb6fc9da5814331b03f240864f7264bac09a583"
+        }
+      }
+    },
+    {
+      "title": "OpenInference records model and token counts for OpenAI image calls",
+      "publisher": "Arize OpenInference · GitHub",
+      "source": "github",
+      "category_key": "observability",
+      "summary": "Image generation, editing and variation spans gain model and usage fields. The change improves accounting inputs while leaving the text-versus-image token split unrecorded.",
+      "body": [
+        "OpenInference’s Python OpenAI instrumentation records model interactions as trace spans, records of individual operations that tools such as Arize and Phoenix can inspect. Its image-call update addresses missing accounting inputs: image generation, editing and variation spans previously lacked the model and token-count attributes those tools use for cost calculations.",
+        "First, the instrumentor reads input, output and total token counts from the response’s usage information. It records them for synchronous and asynchronous calls, including when the returned image list is empty. For streamed generation and editing, the final completion event supplies usage. Next, it takes the model name from the request when the caller explicitly supplied one; image responses do not provide it.",
+        "The change does not record the separate text and image input-token counts. The pull request explains that these can have different prices, and accurate pricing needs a corresponding semantic-convention addition. Responses with no usage information remain unchanged. The author reports comparing stored Phoenix spans against real generation responses for synchronous, asynchronous and streaming calls; that verification supports captured fields, rather than complete billing accuracy across every image operation."
+      ],
+      "takeaway": "For teams tracking image-generation spend: verify the new fields reach stored spans, and check pricing assumptions before treating combined input-token counts as an accurate bill.",
+      "interest_score": 8,
+      "score_reason": "Concrete instrumentation coverage closes missing accounting fields while explicitly documenting the remaining pricing limitation.",
+      "published": "2026-10-31",
+      "format": "full",
+      "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-openai-v0.1.69",
+      "dedupe_key": "release:Arize-ai/openinference:python-openinference-instrumentation-openai-v0.1.69",
+      "source_evidence": {
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-openai-v0.1.69",
+        "publication_date": "2026-10-31",
+        "raw_date": "2026-10-31T04:05:13Z",
+        "method": "Official GitHub release API published_at; draft:false and prerelease:false. Linked merged pull-request descriptions, source patches and regression tests reviewed for implementation detail.",
+        "api": "https://api.github.com/repos/Arize-ai/openinference/releases/429711289",
+        "implementation_urls": [
+          "https://github.com/Arize-ai/openinference/pull/4197"
+        ]
+      },
+      "image": "/edition-images/2026-11-01/image-accounting.webp",
+      "image_width": 1440,
+      "image_height": 960,
+      "image_provenance": {
+        "kind": "generated-editorial",
+        "generator": "built-in-imagegen",
+        "prompt": "Use case: infographic-diagram\nAsset type: standalone newspaper editorial infographic PNG\nStyle: warm ivory newsprint, dark ink, restrained brick red accents, elegant serif heading, large clear labels, generous spacing. Landscape 3:2.\nPrimary request: Explain that OpenInference records usage from image responses and model name from the request into an image-call trace span. Keep the limitation prominent: text/image token split is not recorded. No claim of accurate billing.\nText (verbatim; only these labels): Image calls gain accounting fields | Request: model | Response: token counts | Image-call trace span | Text/image token split not recorded\nConstraints: two inputs converge into one trace span, separate limitation below, no invented metrics, no logos, no watermark, no footer.",
+        "based_on": [
+          "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-openai-v0.1.69",
+          "https://github.com/Arize-ai/openinference/pull/4197"
+        ],
+        "reviewed": true,
+        "sha256": "7facadc62f570d6f6bd92cedbba37d6e258a0e68967a5bb170aeeb1860db8014",
+        "optimization": {
+          "format": "webp",
+          "quality": 82,
+          "max_width": 1440,
+          "source_sha256": "74b47999a138754eb38dea67ea4da529b36f3b14cb32735e31733ba97a789f17"
+        }
+      }
+    },
+    {
+      "title": "OpenInference preserves document structure and unknown values in Anthropic traces",
+      "publisher": "Arize OpenInference · GitHub",
+      "source": "github",
+      "category_key": "observability",
+      "summary": "Anthropic instrumentation maps document blocks to dedicated attributes and avoids presenting unfinished tool inputs or token placeholders as final values.",
+      "body": [
+        "OpenInference’s Python Anthropic instrumentation records model requests and responses for AI trace inspection. Its update changes how documents and interrupted streams appear in those records. Documents previously stored as generic JSON text gain dedicated fields, while unfinished tool calls stop acquiring misleading empty arguments.",
+        "For documents, the instrumentor first identifies the source type. Inline encoded documents become data URLs with a media type; linked PDFs retain their URL; plain text becomes verbatim document content; uploaded files use a document identifier. A supplied title becomes the document name. Input and output messages share this mapping, while nested content and unknown source types retain generic recording.",
+        "For streams, the instrumentor tracks which content blocks started and finished. If a tool block remains unfinished, it omits its arguments instead of serializing the SDK’s empty placeholder. Completed blocks retain their arguments, including genuinely empty ones. It also withholds completion and total token counts until output usage is known, rather than treating the initial placeholder as final. The linked implementation and regression tests cover these distinctions; this is a correction to the recorded evidence, not a claim that interrupted work completed successfully."
+      ],
+      "takeaway": "For Anthropic trace consumers: handle absent arguments and token totals as unknown, and review document-content retention settings when adopting the structured fields.",
+      "interest_score": 8,
+      "score_reason": "Directly relevant evidence-quality fixes distinguish incomplete observations from real empty values and preserve document types.",
+      "published": "2026-10-31",
+      "format": "full",
+      "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-anthropic-v3.3.0",
+      "dedupe_key": "release:Arize-ai/openinference:python-openinference-instrumentation-anthropic-v3.3.0",
+      "source_evidence": {
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-anthropic-v3.3.0",
+        "publication_date": "2026-10-31",
+        "raw_date": "2026-10-31T04:05:15Z",
+        "method": "Official GitHub release API published_at; draft:false and prerelease:false. Linked merged pull-request descriptions, source patches and regression tests reviewed for implementation detail.",
+        "api": "https://api.github.com/repos/Arize-ai/openinference/releases/429711301",
+        "implementation_urls": [
+          "https://github.com/Arize-ai/openinference/pull/4156",
+          "https://github.com/Arize-ai/openinference/pull/3982"
+        ]
+      },
+      "image": "/edition-images/2026-11-01/anthropic-streams.webp",
+      "image_width": 1440,
+      "image_height": 960,
+      "image_provenance": {
+        "kind": "generated-editorial",
+        "generator": "built-in-imagegen",
+        "prompt": "Use case: infographic-diagram\nAsset type: standalone newspaper editorial infographic PNG\nStyle: warm ivory newsprint, dark ink, restrained brick red accents, elegant serif heading, large clear labels, generous spacing. Landscape 3:2.\nPrimary request: Explain the OpenInference interrupted Anthropic stream fix. Track tool block completion; omit arguments for unfinished tool blocks; retain arguments for completed tool blocks. Show two branches clearly.\nText (verbatim; only these labels): Keep unfinished tool inputs unknown | Tool block | Unfinished | Omit arguments | Completed | Keep arguments\nConstraints: one node branches into two clearly separated cases, no claim of tool execution, no invented metrics, no logos, no watermark, no footer.",
+        "based_on": [
+          "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-anthropic-v3.3.0",
+          "https://github.com/Arize-ai/openinference/pull/4156",
+          "https://github.com/Arize-ai/openinference/pull/3982"
+        ],
+        "reviewed": true,
+        "sha256": "90751e21104447bfc0b735d9564fbc56ac0039355b6b6828e9ac890c7fb3f600",
+        "optimization": {
+          "format": "webp",
+          "quality": 82,
+          "max_width": 1440,
+          "source_sha256": "f91c5c92bea2b3a4a2763b27b92f49110bd065f23bebdc27f4db432cf3a917ae"
+        }
+      }
+    }
+  ]
+}
