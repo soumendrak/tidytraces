@@ -7,17 +7,19 @@ import { MIN_STORIES_AFTER_FEATURE } from '../../src/lib/storyLayout.js';
 export async function assertEditionLayout(browser, outDir, days) {
   const page = await browser.newPage();
   await page.setRequestInterception(true);
+  let held = [];
   page.on('request', async (request) => {
     const { pathname } = new URL(request.url());
     const body = await readFile(path.join(outDir, pathname.endsWith('/') ? `${pathname}index.html` : pathname)).catch(() => null);
     const contentType = { '.js': 'text/javascript', '.css': 'text/css', '.webp': 'image/webp', '.png': 'image/png' }[path.extname(pathname)] || 'text/html';
-    if (body) request.respond({ body, contentType });
+    if (body && contentType === 'image/webp') held.push(() => request.respond({ body, contentType }).catch(() => {}));
+    else if (body) request.respond({ body, contentType });
     else request.abort();
   });
   for (const width of [1440, 1000]) {
     await page.setViewport({ width, height: 900 });
     for (const day of days) {
-      await page.goto(`https://tidytraces.test/ai-observability/${day}/`, { waitUntil: 'load' });
+      await page.goto(`https://tidytraces.test/ai-observability/${day}/`, { waitUntil: 'domcontentloaded' });
       await page.evaluate(() => document.fonts.ready);
       const layout = await page.evaluate(() => {
         const stories = [...document.querySelectorAll('.newspaper-columns > .story')];
@@ -42,12 +44,14 @@ export async function assertEditionLayout(browser, outDir, days) {
           return Math.abs(img.getBoundingClientRect().height - expected);
         });
         const followers = stories.flatMap((story, index) => (story.classList.contains('is-feature') ? [stories.length - index - 1] : []));
-        return { followers, spread: Math.max(0, ...spreads), tallestHead, imageError: Math.max(0, ...images), pending: document.querySelectorAll('.story-image-wrapper.is-loading').length };
+        return { followers, spread: Math.max(0, ...spreads), tallestHead, imagesReserved: images.every((error) => error < 2), pending: document.querySelectorAll('.story-image-wrapper.is-loading').length };
       });
       assert.ok(layout.spread <= layout.tallestHead + 96, `${day} at ${width}px leaves a ${Math.round(layout.spread)}px column gap`);
       assert.ok(layout.followers.every((count) => count >= MIN_STORIES_AFTER_FEATURE), `${day} at ${width}px keeps every feature above a full row of stories`);
-      assert.ok(layout.imageError < 2, `${day} at ${width}px reserves each image at its intrinsic ratio`);
-      if (width === 1440 && day === days.toSorted().at(-1)) assert.ok(layout.pending > 0, 'lazy images below the fold are still pending when measured');
+      assert.ok(layout.imagesReserved, `${day} at ${width}px reserves each image at its intrinsic ratio`);
+      assert.ok(layout.pending > 0, `${day} at ${width}px is measured before its images load`);
+      await Promise.all(held.map((release) => release()));
+      held = [];
     }
   }
   await page.close();
