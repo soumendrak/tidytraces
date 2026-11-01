@@ -44,12 +44,12 @@ export async function assertEditionLayout(browser, outDir, days) {
           return Math.abs(img.getBoundingClientRect().height - expected);
         });
         const followers = stories.flatMap((story, index) => (story.classList.contains('is-feature') ? [stories.length - index - 1] : []));
-        return { followers, spread: Math.max(0, ...spreads), tallestHead, imagesReserved: images.every((error) => error < 2), pending: document.querySelectorAll('.story-image-wrapper.is-loading').length };
+        return { followers, spread: Math.max(0, ...spreads), tallestHead, imagesReserved: images.every((error) => error < 2), loaded: document.querySelectorAll('.story-image-wrapper:not(.is-loading)').length };
       });
       assert.ok(layout.spread <= layout.tallestHead + 96, `${day} at ${width}px leaves a ${Math.round(layout.spread)}px column gap`);
       assert.ok(layout.followers.every((count) => count >= MIN_STORIES_AFTER_FEATURE), `${day} at ${width}px keeps every feature above a full row of stories`);
       assert.ok(layout.imagesReserved, `${day} at ${width}px reserves each image at its intrinsic ratio`);
-      assert.ok(layout.pending > 0, `${day} at ${width}px is measured before its images load`);
+      assert.equal(layout.loaded, 0, `${day} at ${width}px is measured before its images load`);
       await Promise.all(held.map((release) => release()));
       held = [];
     }
