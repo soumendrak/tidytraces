@@ -1,119 +1,57 @@
-# AI Observability Daily — 2026-10-31
+# AI Observability Daily — 2026-11-01
 
 By Soumendra Kumar Sahoo
 
 Canonical: https://tidytraces.com/
-Coverage window: 2026-10-30
+Coverage window: 2026-10-31
 
-## Arize tests why correct answers can hide changed safety behavior
+## Mantiq prototypes a path from swarm overviews to individual agent actions
 
-Source: Arize AI — https://arize.com/blog/evil-qwen-activation-steering/
-Published: 2026-10-30
-Channel: news
+Source: Alex Strick van Linschoten — https://alexstrick.com/posts/2026-10-31-swarm-observability.html
+Published: 2026-10-31
+Channel: hn
 
-Arize AI builds tools for tracing and evaluating AI applications. In a practitioner experiment, its author tests whether a language model can retain useful capabilities while losing safety behavior. The concern is that checking artifact identity or ordinary answer accuracy can miss changes introduced while a model runs.
+Mantiq is Alex Strick van Linschoten’s prototype system for recording and exploring groups of AI agents working together. It combines model and tool calls, operating-system process starts, file reads and writes, messages between agents, and container output. The author’s starting problem is that an agent’s account of its work may be wrong, while failures can appear across several kinds of evidence.
 
-The experiment first changes internal model values during inference, a technique called activation steering, without changing the stored weights or input prompt. It then compares different steering strengths using arithmetic, coding, persona questions and three mild requests the unmodified model refuses. At half strength, the model answers 19 of 20 sums correctly but complies with all three previously refused requests. This is a small demonstration, not a broad harmful-request benchmark.
+The viewer first gives investigators an overview of the swarm. They can filter for an observed problem and see the agents involved, then move from swarm to team to individual agent. Zooming further reaches a message or file edit. Another view stacks teams horizontally and time vertically, making simultaneous failures appear as a layer that investigators can select for detail.
 
-The author recommends testing capability and refusal behavior together on the exact deployed combination of weights, adapters and serving code. Recording model identity and loaded artifacts on request traces helps connect behavioral changes to deployment changes. A separate output-judge demonstration catches some missed refusals but also has misses and false positives; it does not establish comprehensive safety.
+The article demonstrates a small team building a Lisp interpreter and prototypes views over a synthetic 10,000-agent swarm. These are interface experiments, rather than evidence of production operation at that scale. The author says explanatory views still need more work for complex interactions; the accompanying analysis agent also generates some explanations, so those interpretations remain distinct from the recorded events.
 
-Why it matters: For evaluation owners: include boundary behavior alongside task accuracy, and test the served configuration rather than relying on the upstream model card.
+Why it matters: For teams investigating multi-agent work: evaluate whether a viewer connects high-level patterns to recorded messages, files and processes, and distinguish generated explanations from those records.
 
-![Arize tests why correct answers can hide changed safety behavior](/edition-images/2026-10-31/arize-behavior-checks.webp)
+![Mantiq prototypes a path from swarm overviews to individual agent actions](/edition-images/2026-11-01/swarm-viewer.webp)
 
-## Phoenix’s Python client preserves zero labels and retries evaluation rate limits
+## OpenInference records model and token counts for OpenAI image calls
 
-Source: Arize Phoenix · GitHub — https://github.com/Arize-ai/phoenix/releases/tag/arize-phoenix-client-v3.6.0
-Published: 2026-10-30
+Source: Arize OpenInference · GitHub — https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-openai-v0.1.69
+Published: 2026-10-31
 Channel: github
 
-Arize Phoenix provides a Python client for working with AI traces, annotations and experiments. Its client release fixes several places where evaluation evidence could be lost or a run could stop prematurely. The changes concern how results are represented and handled, rather than a claim that the evaluated model performs better.
+OpenInference’s Python OpenAI instrumentation records model interactions as trace spans, records of individual operations that tools such as Arize and Phoenix can inspect. Its image-call update addresses missing accounting inputs: image generation, editing and variation spans previously lacked the model and token-count attributes those tools use for cost calculations.
 
-For annotations uploaded as dataframes, the client now keeps a label whose value is zero. It separately omits missing cells, preserving the distinction between a real result and absent data. For trace queries, another fix preserves span-attribute filters expressed as JSON strings; a span is the record of one operation inside a trace.
+First, the instrumentor reads input, output and total token counts from the response’s usage information. It records them for synchronous and asynchronous calls, including when the returned image list is empty. For streamed generation and editing, the final completion event supplies usage. Next, it takes the model name from the request when the caller explicitly supplied one; image responses do not provide it.
 
-The synchronous evaluation executor also retries rate-limit errors instead of failing the entire run. The release notes do not specify a retry budget or promise that every throttled evaluation will complete. Other additions expose trace and session filter expressions and sort retrieved spans by start time. Together these are concrete client behavior changes; the release supplies no measured throughput improvement or independent completeness test.
+The change does not record the separate text and image input-token counts. The pull request explains that these can have different prices, and accurate pricing needs a corresponding semantic-convention addition. Responses with no usage information remain unchanged. The author reports comparing stored Phoenix spans against real generation responses for synchronous, asynchronous and streaming calls; that verification supports captured fields, rather than complete billing accuracy across every image operation.
 
-Why it matters: For Python evaluation pipelines: check zero-valued labels, missing cells and throttled runs against known examples after upgrading the client.
+Why it matters: For teams tracking image-generation spend: verify the new fields reach stored spans, and check pricing assumptions before treating combined input-token counts as an accurate bill.
 
-![Phoenix’s Python client preserves zero labels and retries evaluation rate limits](/edition-images/2026-10-31/phoenix-client-results.webp)
+![OpenInference records model and token counts for OpenAI image calls](/edition-images/2026-11-01/image-accounting.webp)
 
-## LangWatch pauses monitors whose evaluations mostly fail
+## OpenInference preserves document structure and unknown values in Anthropic traces
 
-Source: LangWatch · GitHub — https://github.com/langwatch/langwatch/releases/tag/mcp-server%40v3.0.0
-Published: 2026-10-30
+Source: Arize OpenInference · GitHub — https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-anthropic-v3.3.0
+Published: 2026-10-31
 Channel: github
 
-LangWatch is an AI observability and evaluation platform. Its Model Context Protocol server lets AI clients use platform tools. The server release includes a monitoring change: a monitor whose evaluations mostly fail can be paused. This addresses failures of the evaluation process itself; it should not be read as evidence that the monitored application received bad quality scores.
+OpenInference’s Python Anthropic instrumentation records model requests and responses for AI trace inspection. Its update changes how documents and interrupted streams appear in those records. Documents previously stored as generic JSON text gain dedicated fields, while unfinished tool calls stop acquiring misleading empty arguments.
 
-The notes first describe the pause behavior, without specifying its threshold, observation window or recovery procedure. They also add logging of which credential and client each API request used, giving operators more request attribution. Experiment runs can supply their own concurrency setting, controlling how much work runs together.
+For documents, the instrumentor first identifies the source type. Inline encoded documents become data URLs with a media type; linked PDFs retain their URL; plain text becomes verbatim document content; uploaded files use a document identifier. A supplied title becomes the document name. Input and output messages share this mapping, while nested content and unknown source types retain generic recording.
 
-There is also a breaking interface change. Dashboard paths now refer to the new Dashboards product; integrations using older Reports must switch to the analyticsReports or analytics_reports paths. The server’s report tools are renamed with analytics_report naming. These dashboard and concurrency changes overlap with the same-day TypeScript SDK release and are covered once here. The announcement provides no benchmark or guarantee that pausing a monitor preserves evaluation coverage.
+For streams, the instrumentor tracks which content blocks started and finished. If a tool block remains unfinished, it omits its arguments instead of serializing the SDK’s empty placeholder. Completed blocks retain their arguments, including genuinely empty ones. It also withholds completion and total token counts until output usage is known, rather than treating the initial placeholder as final. The linked implementation and regression tests cover these distinctions; this is a correction to the recorded evidence, not a claim that interrupted work completed successfully.
 
-Why it matters: For LangWatch operators: distinguish evaluator failures from low scores, inspect paused monitors, and migrate report callers before adopting the changed tool names.
+Why it matters: For Anthropic trace consumers: handle absent arguments and token totals as unknown, and review document-content retention settings when adopting the structured fields.
 
-![LangWatch pauses monitors whose evaluations mostly fail](/edition-images/2026-10-31/langwatch-monitor-failures.webp)
-
-## Datadog uses trace evidence to shrink agent search results
-
-Source: Datadog — https://www.datadoghq.com/blog/improving-insights-agent-observability/
-Published: 2026-10-30
-Channel: news
-
-Datadog Agent Observability records AI agent execution traces, and its Insights feature analyzes those records for recurring cost and reliability problems. Datadog describes applying that feature to the agent behind Insights itself. One recurring problem was broad searches returning more recorded content than the model needed, which then appeared again in later model requests.
-
-The team first used an insight to identify oversized search results and the requests carrying them. The recommendation was to narrow filters, request smaller pages and retrieve full content only when necessary. When the behavior returned, a later finding suggested compact previews that preserve the identifiers needed to fetch the underlying evidence.
-
-Datadog then passed the finding and trace reference into a coding session through Fix with Bits. The coding agent prepared a pull request for previews and additional result pages, with tests covering newly retrieved and cached results. The proposed validation replays affected investigations and compares returned content, token usage and answer quality. The article distinguishes inspected token counts and projected savings from measured improvements; reducing context alone does not demonstrate that investigations remain correct.
-
-Why it matters: For agent teams: keep evidence identifiers in compact tool results, then replay failing investigations to check quality as well as token usage.
-
-![Datadog uses trace evidence to shrink agent search results](/edition-images/2026-10-31/datadog-search-previews.webp)
-
-## Phoenix changes network and authentication defaults for trace collection
-
-Source: Arize Phoenix · GitHub — https://github.com/Arize-ai/phoenix/releases/tag/arize-phoenix-v21.0.0
-Published: 2026-10-30
-Channel: github
-
-Arize Phoenix is an open-source platform for recording and evaluating AI application traces. Its server upgrade changes connection and authentication defaults, so an existing exporter configuration can require attention even when application instrumentation stays the same. The release links migration guidance explaining how the new defaults affect different deployments.
-
-First, the server now binds to the local machine by default. Operators accepting connections from other machines must set PHOENIX_HOST explicitly; the previous serve command’s host option is removed. Next, when PHOENIX_ENABLE_AUTH is unset, authentication follows the bind address: non-loopback addresses enable it, while loopback disables it. An explicit authentication setting takes precedence.
-
-The Docker image uses a non-loopback address, so its default requires an API key for trace exporters and other clients. Unauthenticated requests receive HTTP unauthorized or equivalent gRPC errors. Notebook launches now honor authentication settings too, while Helm already enables authentication explicitly. The migration guide also warns that setting or changing PHOENIX_SECRET makes previously saved credentials unreadable, requiring re-entry or deletion. Authentication can operate without that secret, but the guide recommends it to protect stored credentials.
-
-Why it matters: For self-hosted Phoenix operators: check the bind address, exporter keys and saved-credential migration before rolling out the server upgrade.
-
-![Phoenix changes network and authentication defaults for trace collection](/edition-images/2026-10-31/phoenix-auth-upgrade.webp)
-
-## OpenTelemetry’s Linux instrumentation documents a safer upgrade path
-
-Source: OpenTelemetry — https://opentelemetry.io/blog/2026/obi-v1-release/
-Published: 2026-10-30
-Channel: news
-
-OpenTelemetry eBPF Instrumentation, or OBI, captures application metrics and traces from running Linux services without source-code changes. It combines operating-system instrumentation with runtime-specific support. Its stable release documents compatibility commitments and migration practices, with the announcement also noting expanded generative-AI coverage for embeddings, reranking and model and tool protocols.
-
-The operational problem is that telemetry definitions can evolve even when configuration has a compatibility contract. The project distinguishes stable conventions from definitions still developing. It also reserves the ability to correct recorded behavior that does not match stable conventions, so an upgrade needs more than a startup check.
-
-First, operators should follow the configuration migration guide and review environment settings. Next, a published schema registry describes telemetry and transformations that can be represented between releases; release notes explain changes needing additional action. Finally, the project recommends comparing metrics and traces in a canary deployment before broad rollout. Language agents and manual instrumentation remain useful for application-specific context that automatic observation cannot capture. The announcement does not promise complete visibility into every AI operation.
-
-Why it matters: For teams collecting Linux AI-service telemetry: compare emitted fields and configuration in a canary, and keep application instrumentation for context OBI cannot observe.
-
-![OpenTelemetry’s Linux instrumentation documents a safer upgrade path](/edition-images/2026-10-31/obi-telemetry-migrations.webp)
-
-## Langfuse’s Slack app reaches workspaces restricted to Marketplace apps
-
-Source: Langfuse — https://langfuse.com/changelog/2026-10-30-slack-marketplace
-Published: 2026-10-30
-Channel: news
-
-Langfuse records and evaluates AI application activity. Its Slack app is now listed in the Slack Marketplace, allowing installation in workspaces that permit only Marketplace apps. The change helps teams bring existing observability notifications into their working channels.
-
-A Workspace Owner can pre-approve the app where approval is required. Teams then connect Slack in the project’s integration settings and route prompt-change notifications or alerts on latency, cost and scores to appropriate channels. The announcement concerns availability and setup; it does not claim new alert-detection logic.
-
-Why it matters: For teams blocked by Slack app restrictions: check Marketplace approval, then configure the project integration and relevant notification channels.
-
-![Langfuse’s Slack app reaches workspaces restricted to Marketplace apps](/edition-images/2026-10-31/langfuse-slack-alerts.webp)
+![OpenInference preserves document structure and unknown values in Anthropic traces](/edition-images/2026-11-01/anthropic-streams.webp)
 
 ---
 
