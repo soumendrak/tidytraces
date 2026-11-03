@@ -1,57 +1,85 @@
-# AI Observability Daily — 2026-11-01
+# AI Observability Daily — 2026-11-03
 
 By Soumendra Kumar Sahoo
 
 Canonical: https://tidytraces.com/
-Coverage window: 2026-10-31
+Coverage window: 2026-11-02
 
-## Mantiq prototypes a path from swarm overviews to individual agent actions
+## Nomos keeps synthetic warnings out of native tool errors
 
-Source: Alex Strick van Linschoten — https://alexstrick.com/posts/2026-10-31-swarm-observability.html
-Published: 2026-10-31
+Source: Mark Gantlett · Show HN — https://news.ycombinator.com/item?id=50337394
+Published: 2026-11-02
 Channel: hn
 
-Mantiq is Alex Strick van Linschoten’s prototype system for recording and exploring groups of AI agents working together. It combines model and tool calls, operating-system process starts, file reads and writes, messages between agents, and container output. The author’s starting problem is that an agent’s account of its work may be wrong, while failures can appear across several kinds of evidence.
+Nomos is a local harness that sits between a software repository and a coding agent. Its developer describes isolating tasks in Git worktrees and checking proposed changes before merging them. The first-party announcement also reports a narrower observability lesson: adding helpful warnings to tool results can make the underlying failure harder for an agent to interpret.
 
-The viewer first gives investigators an overview of the swarm. They can filter for an observed problem and see the agents involved, then move from swarm to team to individual agent. Zooming further reaches a message or file edit. Another view stacks teams horizontally and time vertically, making simultaneous failures appear as a layer that investigators can select for detail.
+The author says an early hook, a handler that runs around tool use, injected process-failure and refusal warnings after operations completed. In a public benchmark, that synthetic text degraded attribution of native operating-system permission errors. The post reports a recovery after changing the hooks, but provides an author-run result rather than independent validation.
 
-The article demonstrates a small team building a Lisp interpreter and prototypes views over a synthetic 10,000-agent swarm. These are interface experiments, rather than evidence of production operation at that scale. The author says explanatory views still need more work for complex interactions; the accompanying analysis agent also generates some explanations, so those interpretations remain distinct from the recorded events.
+The revised approach first applies path guards before a tool runs. After execution, it keeps the hook silent on native result channels, preserving the original error evidence. A separate circuit breaker stops repeated identical failures. The broader harness also returns file-and-line fixes from verification gates. Those controls are distinct from the quality of the error record: the announcement does not establish that every agent shortcut is prevented.
 
-Why it matters: For teams investigating multi-agent work: evaluate whether a viewer connects high-level patterns to recorded messages, files and processes, and distinguish generated explanations from those records.
+Why it matters: For coding-agent harness authors: test whether hook messages preserve native failure evidence, separately from whether enforcement blocks an action.
 
-![Mantiq prototypes a path from swarm overviews to individual agent actions](/edition-images/2026-11-01/swarm-viewer.webp)
+![Nomos keeps synthetic warnings out of native tool errors](/edition-images/2026-11-03/native-tool-errors.webp)
 
-## OpenInference records model and token counts for OpenAI image calls
+## EchoChain measures information changes across repeated model exchanges
 
-Source: Arize OpenInference · GitHub — https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-openai-v0.1.69
-Published: 2026-10-31
+Source: smusali · Show HN — https://news.ycombinator.com/item?id=50331840
+Published: 2026-11-02
+Channel: hn
+
+EchoChain is an open-source Python command-line tool for exploring how information changes when language models repeatedly exchange responses. Its author describes an AI version of telephone: a model converts an answer into a question, another answer follows, and the cycle repeats. The concern is whether factual details survive those transformations.
+
+The announcement describes multi-model testing and model rotation, together with tracking factual claims, calculating semantic similarity and reporting fidelity scores. These are ways to examine changes across the sequence, rather than judging only its final answer. The author also lists reproducibility, statistical tests and visualizations as supported features. The post supplies no numerical comparison establishing which model retains information best.
+
+The tool currently routes calls through OpenRouter and requires an API key for that service. The author connects the experiment to multi-agent systems in which generated information passes between agents without human validation. That is the motivation for the experiment, not evidence that a particular production system loses information at a measured rate. The announcement invites feedback on agent-building and evaluation frameworks.
+
+Why it matters: For multi-agent evaluation teams: consider testing information retention at each handoff, while checking the tool’s scoring definitions before comparing models.
+
+![EchoChain measures information changes across repeated model exchanges](/edition-images/2026-11-03/telephone-evaluations.webp)
+
+## Phoenix adds typed helpers for reusable dataset labels
+
+Source: Arize Phoenix · GitHub — https://github.com/Arize-ai/phoenix/releases/tag/%40arizeai/phoenix-client%407.18.0
+Published: 2026-11-02
 Channel: github
 
-OpenInference’s Python OpenAI instrumentation records model interactions as trace spans, records of individual operations that tools such as Arize and Phoenix can inspect. Its image-call update addresses missing accounting inputs: image generation, editing and variation spans previously lacked the model and token-count attributes those tools use for cost calculations.
+Phoenix’s JavaScript client provides programmatic access to datasets used in AI evaluation workflows. Its release adds typed helpers for dataset labels within the existing datasets scope, allowing callers to manage reusable global labels rather than handling only individual dataset assignments.
 
-First, the instrumentor reads input, output and total token counts from the response’s usage information. It records them for synchronous and asynchronous calls, including when the returned image list is empty. For streamed generation and editing, the final completion event supplies usage. Next, it takes the model name from the request when the caller explicitly supplied one; image responses do not provide it.
+Callers can first manage the shared label resources and list them using cursor pagination, which retrieves successive pages through a continuation marker. They can then assign or replace labels on a dataset selected by name or GlobalID. The compact release note documents those operations, without describing automatic labeling, label-based access controls or measured workflow improvements.
 
-The change does not record the separate text and image input-token counts. The pull request explains that these can have different prices, and accurate pricing needs a corresponding semantic-convention addition. Responses with no usage information remain unchanged. The author reports comparing stored Phoenix spans against real generation responses for synchronous, asynchronous and streaming calls; that verification supports captured fields, rather than complete billing accuracy across every image operation.
+Why it matters: For teams organizing Phoenix evaluation datasets: check whether shared labels fit existing naming conventions before automating assignment or replacement.
 
-Why it matters: For teams tracking image-generation spend: verify the new fields reach stored spans, and check pricing assumptions before treating combined input-token counts as an accurate bill.
+![Phoenix adds typed helpers for reusable dataset labels](/edition-images/2026-11-03/dataset-label-helpers.webp)
 
-![OpenInference records model and token counts for OpenAI image calls](/edition-images/2026-11-01/image-accounting.webp)
+## Phoenix refreshes model prices between server upgrades
 
-## OpenInference preserves document structure and unknown values in Anthropic traces
+Source: Arize AI — https://arize.com/blog/phoenix-automatic-model-pricing-updates/
+Published: 2026-11-02
+Channel: news
 
-Source: Arize OpenInference · GitHub — https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-anthropic-v3.3.0
-Published: 2026-10-31
+Arize Phoenix is an open-source AI observability tool that calculates model-call costs from recorded token usage and model prices. Its built-in pricing catalog previously changed with server releases. A missing or outdated rate therefore required an upgrade or custom configuration. Automatic catalog updates let the server receive revised prices between upgrades.
+
+Shortly after startup, and then about daily, the server downloads a catalog published in the Phoenix GitHub repository from LiteLLM pricing data. It compares catalog generation dates and saves newer model entries and prices in one database transaction. Deployments sharing PostgreSQL use a database lock so only one server applies an update at a time. A saved catalog record prevents an older bundled catalog from overwriting downloaded prices after restart.
+
+Newly received model-call spans, records of individual operations, use updated rates after the pricing cache refreshes. Existing trace costs stay unchanged, and custom model prices take precedence. Failed downloads leave existing prices in use and produce a log entry. Automatic downloads are enabled by default; operators can disable them explicitly or through the setting that disallows external resources. The Models settings page shows the catalog generation date, not the last update-check time.
+
+Why it matters: For Phoenix operators: verify recorded model and token fields against a known call, and check custom rates before relying on calculated costs.
+
+![Phoenix refreshes model prices between server upgrades](/edition-images/2026-11-03/model-price-catalog.webp)
+
+## LangWatch bounds trace-field retrieval to protect workers
+
+Source: LangWatch · GitHub — https://github.com/langwatch/langwatch/releases/tag/langwatch%40v3.22.0
+Published: 2026-11-02
 Channel: github
 
-OpenInference’s Python Anthropic instrumentation records model requests and responses for AI trace inspection. Its update changes how documents and interrupted streams appear in those records. Documents previously stored as generic JSON text gain dedicated fields, while unfinished tool calls stop acquiring misleading empty arguments.
+LangWatch is an AI observability and evaluation platform whose release notes include fixes to reading trace data. One entry bounds recall of offloaded fields so that large traces cannot kill the worker handling them. Offloaded-field recall means retrieving trace content that has been stored separately.
 
-For documents, the instrumentor first identifies the source type. Inline encoded documents become data URLs with a media type; linked PDFs retain their URL; plain text becomes verbatim document content; uploaded files use a document identifier. A supplied title becomes the document name. Input and output messages share this mapping, while nested content and unknown source types retain generic recording.
+A second entry says a span’s own attributes no longer break its read through a request-parameter name. A span is the record of one operation within a trace. These notes identify two read-path corrections, but do not state the retrieval limit, affected payload sizes or measured memory savings. They are selected trace-reliability changes from a broader platform release.
 
-For streams, the instrumentor tracks which content blocks started and finished. If a tool block remains unfinished, it omits its arguments instead of serializing the SDK’s empty placeholder. Completed blocks retain their arguments, including genuinely empty ones. It also withholds completion and total token counts until output usage is known, rather than treating the initial placeholder as final. The linked implementation and regression tests cover these distinctions; this is a correction to the recorded evidence, not a claim that interrupted work completed successfully.
+Why it matters: For LangWatch operators handling large traces: check representative trace reads after upgrading and verify that expected fields remain available.
 
-Why it matters: For Anthropic trace consumers: handle absent arguments and token totals as unknown, and review document-content retention settings when adopting the structured fields.
-
-![OpenInference preserves document structure and unknown values in Anthropic traces](/edition-images/2026-11-01/anthropic-streams.webp)
+![LangWatch bounds trace-field retrieval to protect workers](/edition-images/2026-11-03/trace-recall-limits.webp)
 
 ---
 

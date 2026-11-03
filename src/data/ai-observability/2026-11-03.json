@@ -1,0 +1,412 @@
+{
+  "date": "2026-11-03",
+  "story_window": "2026-11-02",
+  "dek": "Clearer agent error records, model-price updates, information-retention experiments and trace-read reliability.",
+  "stories": [
+    {
+      "title": "Nomos keeps synthetic warnings out of native tool errors",
+      "url": "https://news.ycombinator.com/item?id=50337394",
+      "publisher": "Mark Gantlett · Show HN",
+      "published": "2026-11-02",
+      "category_key": "agents",
+      "summary": "The coding-agent harness author reports that injected hook warnings obscured permission failures, and describes moving enforcement ahead of tool execution.",
+      "body": [
+        "Nomos is a local harness that sits between a software repository and a coding agent. Its developer describes isolating tasks in Git worktrees and checking proposed changes before merging them. The first-party announcement also reports a narrower observability lesson: adding helpful warnings to tool results can make the underlying failure harder for an agent to interpret.",
+        "The author says an early hook, a handler that runs around tool use, injected process-failure and refusal warnings after operations completed. In a public benchmark, that synthetic text degraded attribution of native operating-system permission errors. The post reports a recovery after changing the hooks, but provides an author-run result rather than independent validation.",
+        "The revised approach first applies path guards before a tool runs. After execution, it keeps the hook silent on native result channels, preserving the original error evidence. A separate circuit breaker stops repeated identical failures. The broader harness also returns file-and-line fixes from verification gates. Those controls are distinct from the quality of the error record: the announcement does not establish that every agent shortcut is prevented."
+      ],
+      "format": "full",
+      "takeaway": "For coding-agent harness authors: test whether hook messages preserve native failure evidence, separately from whether enforcement blocks an action.",
+      "image": "/edition-images/2026-11-03/native-tool-errors.webp",
+      "image_width": 1440,
+      "image_height": 960,
+      "image_provenance": {
+        "kind": "generated-editorial",
+        "generator": "built-in-imagegen",
+        "prompt": "Use case: infographic-diagram\nAsset type: newspaper editorial infographic PNG\nPrimary request: Explain the Nomos author’s reported lesson: synthetic hook warnings mixed into tool results can obscure native permission errors; keep the native error channel clear and enforce path guards before tool use. This is an author-reported design lesson, not independently verified.\nStyle: warm ivory newsprint, dark ink, restrained brick red, elegant serif title and large readable labels. Landscape 3:2, generous spacing.\nText (verbatim): Keep native tool errors clear | Author-reported design lesson | Before tool use | Enforce path guards | Tool result | Preserve native errors\nComposition: two separate simple stages with no claim of guaranteed security or measured improvement.\nConstraints: no invented metrics, no screenshots, no logos, no watermark, no footer.",
+        "based_on": [
+          "https://news.ycombinator.com/item?id=50337394"
+        ],
+        "reviewed": true,
+        "sha256": "a8430892621a605b829ee7740614c724dfcd847235839b48c233c73965fc3565",
+        "optimization": {
+          "format": "webp",
+          "quality": 82,
+          "max_width": 1440,
+          "source_sha256": "0097f2b3bcf670efd6c03fdb4c590cc6b90632ef25d48d9e9cf648d3622f5c1d"
+        }
+      },
+      "source": "hn",
+      "interest_score": 8,
+      "hn_id": "50337394",
+      "comments": "https://news.ycombinator.com/item?id=50337394",
+      "score_reason": "A concrete first-party implementation lesson about agent error attribution, with explicit limits on author-reported evaluation evidence.",
+      "source_evidence": {
+        "url": "https://news.ycombinator.com/item?id=50337394",
+        "publication_date": "2026-11-02",
+        "raw_date": "2026-11-02T14:35:12.000Z",
+        "method": "Original first-party Show HN announcement text and timestamp verified through official HN Firebase API; not a resurfaced linked article."
+      },
+      "dedupe_key": "hn-original:50337394"
+    },
+    {
+      "title": "EchoChain measures information changes across repeated model exchanges",
+      "url": "https://news.ycombinator.com/item?id=50331840",
+      "publisher": "smusali · Show HN",
+      "published": "2026-11-02",
+      "category_key": "evals",
+      "summary": "A first-party announcement describes a command-line experiment that tracks factual claims and semantic similarity as models repeatedly transform answers into questions.",
+      "body": [
+        "EchoChain is an open-source Python command-line tool for exploring how information changes when language models repeatedly exchange responses. Its author describes an AI version of telephone: a model converts an answer into a question, another answer follows, and the cycle repeats. The concern is whether factual details survive those transformations.",
+        "The announcement describes multi-model testing and model rotation, together with tracking factual claims, calculating semantic similarity and reporting fidelity scores. These are ways to examine changes across the sequence, rather than judging only its final answer. The author also lists reproducibility, statistical tests and visualizations as supported features. The post supplies no numerical comparison establishing which model retains information best.",
+        "The tool currently routes calls through OpenRouter and requires an API key for that service. The author connects the experiment to multi-agent systems in which generated information passes between agents without human validation. That is the motivation for the experiment, not evidence that a particular production system loses information at a measured rate. The announcement invites feedback on agent-building and evaluation frameworks."
+      ],
+      "format": "full",
+      "takeaway": "For multi-agent evaluation teams: consider testing information retention at each handoff, while checking the tool’s scoring definitions before comparing models.",
+      "image": "/edition-images/2026-11-03/telephone-evaluations.webp",
+      "image_width": 1440,
+      "image_height": 960,
+      "image_provenance": {
+        "kind": "generated-editorial",
+        "generator": "built-in-imagegen",
+        "prompt": "Use case: infographic-diagram\nAsset type: standalone newspaper editorial infographic PNG\nPrimary request: Explain the EchoChain author’s described experiment: answer becomes a question, then a new answer, repeating. Track factual claims and semantic similarity across exchanges. Do not depict any measured loss or result.\nStyle: warm ivory newsprint, dark ink, restrained brick-red accent, elegant serif title, large clear labels, generous space. Landscape 3:2. Simple connected elements, readable at article width.\nText (verbatim): Follow information through model exchanges | Answer | New question | Next answer | Track factual claims and similarity\nConstraints: only the stated source-supported mechanism; no invented metrics, no logos, no screenshots, no watermark, no footer.",
+        "based_on": [
+          "https://news.ycombinator.com/item?id=50331840"
+        ],
+        "reviewed": true,
+        "sha256": "cb01f92e5a354747dcd64652bd9b3988becb0a035b77aae0c5f9fea917fb2d25",
+        "optimization": {
+          "format": "webp",
+          "quality": 82,
+          "max_width": 1440,
+          "source_sha256": "b77ea90d3a1af25bf3531c3e645f223cc7a98d8c62b63e3325fc27f5c40dceeb"
+        }
+      },
+      "source": "hn",
+      "interest_score": 7,
+      "hn_id": "50331840",
+      "comments": "https://news.ycombinator.com/item?id=50331840",
+      "score_reason": "Relevant exploratory evaluation tooling, supported by a first-party announcement but without independently checked results or metric definitions.",
+      "source_evidence": {
+        "url": "https://news.ycombinator.com/item?id=50331840",
+        "publication_date": "2026-11-02",
+        "raw_date": "2026-11-02T01:15:44.000Z",
+        "method": "Original first-party Show HN announcement text and timestamp verified through official HN Firebase API; not a resurfaced linked article."
+      },
+      "dedupe_key": "hn-original:50331840"
+    },
+    {
+      "title": "Phoenix adds typed helpers for reusable dataset labels",
+      "url": "https://github.com/Arize-ai/phoenix/releases/tag/%40arizeai/phoenix-client%407.18.0",
+      "publisher": "Arize Phoenix · GitHub",
+      "published": "2026-11-02",
+      "category_key": "evals",
+      "summary": "The JavaScript client can manage global labels and assign or replace labels on datasets selected by name or identifier.",
+      "body": [
+        "Phoenix’s JavaScript client provides programmatic access to datasets used in AI evaluation workflows. Its release adds typed helpers for dataset labels within the existing datasets scope, allowing callers to manage reusable global labels rather than handling only individual dataset assignments.",
+        "Callers can first manage the shared label resources and list them using cursor pagination, which retrieves successive pages through a continuation marker. They can then assign or replace labels on a dataset selected by name or GlobalID. The compact release note documents those operations, without describing automatic labeling, label-based access controls or measured workflow improvements."
+      ],
+      "format": "brief",
+      "brief_reason": "The primary release contains one compact feature entry specifying label resources, pagination and assignment operations, without further implementation evidence.",
+      "takeaway": "For teams organizing Phoenix evaluation datasets: check whether shared labels fit existing naming conventions before automating assignment or replacement.",
+      "image": "/edition-images/2026-11-03/dataset-label-helpers.webp",
+      "image_width": 1440,
+      "image_height": 960,
+      "image_provenance": {
+        "kind": "generated-editorial",
+        "generator": "built-in-imagegen",
+        "prompt": "Use case: infographic-diagram\nAsset type: standalone newspaper editorial infographic PNG\nPrimary request: Explain the Phoenix client release: manage reusable global labels; assign or replace labels on datasets selected by name or GlobalID. Do not suggest authorization, auto-labeling, or effects on evaluation scores.\nStyle: warm ivory newsprint, dark ink, restrained brick-red accent, elegant serif title, large clear labels, generous space. Landscape 3:2. Simple connected elements, readable at article width.\nText (verbatim): Reuse labels across evaluation datasets | Reusable labels | Dataset by name or GlobalID | Assign or replace labels\nConstraints: only the stated source-supported mechanism; no invented metrics, no logos, no screenshots, no watermark, no footer.",
+        "based_on": [
+          "https://github.com/Arize-ai/phoenix/releases/tag/%40arizeai/phoenix-client%407.18.0"
+        ],
+        "reviewed": true,
+        "sha256": "ad00fc3de738387164429a8e3d46f4ff68a748794226ce60c2c62e80e87c891e",
+        "optimization": {
+          "format": "webp",
+          "quality": 82,
+          "max_width": 1440,
+          "source_sha256": "fd7e921edb8e4b638503f2ac69f00a98cd5179d3946e134c3ace47b2aeeb6332"
+        }
+      },
+      "source": "github",
+      "interest_score": 7,
+      "score_reason": "Directly relevant but narrow evaluation-dataset management improvement.",
+      "dedupe_key": "release:Arize-ai/phoenix:@arizeai/phoenix-client@7.18.0",
+      "source_evidence": {
+        "url": "https://github.com/Arize-ai/phoenix/releases/tag/%40arizeai/phoenix-client%407.18.0",
+        "publication_date": "2026-11-02",
+        "raw_date": "2026-11-02T18:12:53Z",
+        "method": "Official GitHub release API published_at with draft:false and prerelease:false; original release body reviewed."
+      }
+    },
+    {
+      "title": "Phoenix refreshes model prices between server upgrades",
+      "url": "https://arize.com/blog/phoenix-automatic-model-pricing-updates/",
+      "publisher": "Arize AI",
+      "published": "2026-11-02",
+      "category_key": "observability",
+      "summary": "Automatic catalog downloads update built-in token rates for new spans while preserving custom rates and previously recorded costs.",
+      "body": [
+        "Arize Phoenix is an open-source AI observability tool that calculates model-call costs from recorded token usage and model prices. Its built-in pricing catalog previously changed with server releases. A missing or outdated rate therefore required an upgrade or custom configuration. Automatic catalog updates let the server receive revised prices between upgrades.",
+        "Shortly after startup, and then about daily, the server downloads a catalog published in the Phoenix GitHub repository from LiteLLM pricing data. It compares catalog generation dates and saves newer model entries and prices in one database transaction. Deployments sharing PostgreSQL use a database lock so only one server applies an update at a time. A saved catalog record prevents an older bundled catalog from overwriting downloaded prices after restart.",
+        "Newly received model-call spans, records of individual operations, use updated rates after the pricing cache refreshes. Existing trace costs stay unchanged, and custom model prices take precedence. Failed downloads leave existing prices in use and produce a log entry. Automatic downloads are enabled by default; operators can disable them explicitly or through the setting that disallows external resources. The Models settings page shows the catalog generation date, not the last update-check time."
+      ],
+      "format": "full",
+      "takeaway": "For Phoenix operators: verify recorded model and token fields against a known call, and check custom rates before relying on calculated costs.",
+      "image": "/edition-images/2026-11-03/model-price-catalog.webp",
+      "image_width": 1440,
+      "image_height": 960,
+      "image_provenance": {
+        "kind": "generated-editorial",
+        "generator": "built-in-imagegen",
+        "prompt": "Use case: infographic-diagram\nAsset type: standalone newspaper editorial infographic PNG\nPrimary request: Explain only this supported sequence: Phoenix checks a published pricing catalog, applies it only if newer, then updated prices apply to new spans after cache refresh. Existing recorded costs remain unchanged. Custom prices keep precedence.\nStyle: warm ivory newsprint, dark ink, restrained brick-red accent, elegant serif title, large clear labels, generous space. Landscape 3:2. Simple connected elements, readable at article width.\nText (verbatim): Phoenix refreshes built-in prices | Fresh catalog | Newer? | Save prices | New spans use refreshed rates | Existing costs stay unchanged\nConstraints: only the stated source-supported mechanism; no invented metrics, no logos, no screenshots, no watermark, no footer.",
+        "based_on": [
+          "https://arize.com/blog/phoenix-automatic-model-pricing-updates/"
+        ],
+        "reviewed": true,
+        "sha256": "4555cec47f350335c0809db07f2c43e7efac71375b8a7f183051a28c31d3168d",
+        "optimization": {
+          "format": "webp",
+          "quality": 82,
+          "max_width": 1440,
+          "source_sha256": "7f3e08c451f766e370daaa089ef117228e6cb1e3182e0f99f6c3ede2ba5361c0"
+        }
+      },
+      "source": "news",
+      "interest_score": 8,
+      "score_reason": "Concrete cost-accounting behavior with update consistency, failure handling and deployment controls documented by the publisher.",
+      "dedupe_key": "article:arize.com/blog/phoenix-automatic-model-pricing-updates",
+      "source_evidence": {
+        "url": "https://arize.com/blog/phoenix-automatic-model-pricing-updates/",
+        "publication_date": "2026-11-02",
+        "raw_date": "2026-11-02T15:00:40+00:00",
+        "method": "Primary HTML article:published_time corroborated by JSON-LD datePublished (same instant with timezone offset) and publisher publishDate. dateModified not used."
+      }
+    },
+    {
+      "title": "LangWatch bounds trace-field retrieval to protect workers",
+      "url": "https://github.com/langwatch/langwatch/releases/tag/langwatch%40v3.22.0",
+      "publisher": "LangWatch · GitHub",
+      "published": "2026-11-02",
+      "category_key": "observability",
+      "summary": "The release notes list a limit on retrieving offloaded trace fields, alongside a fix that keeps span attributes from breaking reads.",
+      "body": [
+        "LangWatch is an AI observability and evaluation platform whose release notes include fixes to reading trace data. One entry bounds recall of offloaded fields so that large traces cannot kill the worker handling them. Offloaded-field recall means retrieving trace content that has been stored separately.",
+        "A second entry says a span’s own attributes no longer break its read through a request-parameter name. A span is the record of one operation within a trace. These notes identify two read-path corrections, but do not state the retrieval limit, affected payload sizes or measured memory savings. They are selected trace-reliability changes from a broader platform release."
+      ],
+      "format": "brief",
+      "brief_reason": "Two primary release entries identify trace-read corrections but omit bounds, payload thresholds and measured outcomes; a longer account would require unsupported mechanism details.",
+      "takeaway": "For LangWatch operators handling large traces: check representative trace reads after upgrading and verify that expected fields remain available.",
+      "image": "/edition-images/2026-11-03/trace-recall-limits.webp",
+      "image_width": 1440,
+      "image_height": 960,
+      "image_provenance": {
+        "kind": "generated-editorial",
+        "generator": "built-in-imagegen",
+        "prompt": "Use case: infographic-diagram\nAsset type: newspaper editorial infographic PNG\nPrimary request: Explain a LangWatch release-note change: bound retrieval of offloaded trace fields to protect a software worker process when a trace is large. Show exactly three elements: a stack of trace records, a bounded retrieval gate, and a server process represented by a simple box with gears. The worker is SOFTWARE, never a person.\nStyle: warm ivory newsprint, dark ink, restrained brick red, large elegant serif labels. Landscape 3:2, spacious, readable.\nText (verbatim): Bound trace-field retrieval | Large trace | Bounded field retrieval | Software worker | Conceptual view\nConstraints: no people, no human worker, no laptop user, no invented metrics or thresholds, no claim of complete trace capture, no architecture details beyond the conceptual three-step diagram, no logos, no watermark, no footer.",
+        "based_on": [
+          "https://github.com/langwatch/langwatch/releases/tag/langwatch%40v3.22.0"
+        ],
+        "reviewed": true,
+        "sha256": "af6d7aa18376fe740b5445a4f8bae353c9bf82cc2ecd34f3377bc434acd6d050",
+        "optimization": {
+          "format": "webp",
+          "quality": 82,
+          "max_width": 1440,
+          "source_sha256": "0456c0b6fdfb4f95556d90f3cce9754bc27f64a89a2b7afef1f75d478e960167"
+        }
+      },
+      "source": "github",
+      "interest_score": 8,
+      "score_reason": "Direct operational relevance to trace investigation and worker reliability, with release-note evidence limits stated.",
+      "dedupe_key": "release:langwatch/langwatch:langwatch@v3.22.0:trace-read-fixes",
+      "source_evidence": {
+        "url": "https://github.com/langwatch/langwatch/releases/tag/langwatch%40v3.22.0",
+        "publication_date": "2026-11-02",
+        "raw_date": "2026-11-02T13:46:28Z",
+        "method": "Official GitHub release API published_at with draft:false and prerelease:false; trace entries reviewed and same-announcement packaging releases excluded."
+      }
+    }
+  ],
+  "research": {
+    "status": "complete",
+    "completed_sources": [
+      "hn",
+      "news",
+      "github"
+    ],
+    "checked_urls": [
+      "https://arize.com/blog/",
+      "https://langfuse.com/blog",
+      "https://www.langchain.com/blog",
+      "https://www.braintrust.dev/blog",
+      "https://opentelemetry.io/blog/",
+      "https://www.elastic.co/observability-labs/blog",
+      "https://www.datadoghq.com/blog/",
+      "https://www.honeycomb.io/blog/",
+      "https://www.digitalocean.com/blog",
+      "https://www.splunk.com/en_us/blog/observability.html",
+      "https://www.dynatrace.com/news/",
+      "https://langfuse.com/changelog",
+      "https://arize.com/blog/phoenix-automatic-model-pricing-updates/",
+      "https://www.langchain.com/blog/context-engineering-challenges-late-2026"
+    ],
+    "excluded": [
+      {
+        "url": "https://pubmed.ncbi.nlm.nih.gov/40977447/",
+        "reason": "Psychological correlates of AI use, not operational evaluation or observability of AI systems."
+      },
+      {
+        "url": "https://momentic.ai/",
+        "reason": "Agents performing general application UI testing; no concrete AI-system observability change selected."
+      },
+      {
+        "url": "https://news.ycombinator.com/item?id=50344065",
+        "reason": "Workplace discussion outside the beat."
+      },
+      {
+        "url": "https://www.paidintoken.com/ai/hardware",
+        "reason": "Undated pricing calculator landing page; HN submission is not original-publication evidence."
+      },
+      {
+        "url": "https://www.nytimes.com/2026/11/02/technology/anthropic-ai-computing-power.html",
+        "reason": "General computing-capacity business news outside AI observability."
+      },
+      {
+        "url": "https://huggingface.co/coral-bricks-ai/qwen-swe-drafter",
+        "reason": "Model drafter training announcement, not instrumentation or evaluation workflow coverage."
+      },
+      {
+        "url": "https://developers.google.com/search/blog/2026/10/ai-training-control",
+        "reason": "AI training web controls outside the beat; URL also identifies an earlier publication month."
+      },
+      {
+        "url": "https://coywolf.com/news/seo/google-openai-microsoft-and-anthropic-back-a-shared-robotstxt-ai-training-signal/",
+        "reason": "Cross-post about training crawler policy outside the beat."
+      },
+      {
+        "url": "https://snusrate.com/rankings",
+        "reason": "Consumer tracking site outside the beat."
+      },
+      {
+        "url": "https://archdocs.io",
+        "reason": "Relevant work-log concept reviewed, but not selected: verification roadmap is mostly prospective and concrete current feature is GitHub check tracking; prioritize direct telemetry/evaluation changes."
+      },
+      {
+        "url": "https://github.com/KingPin/Garrul",
+        "reason": "Website comments service outside the beat."
+      },
+      {
+        "url": "https://news.ycombinator.com/item?id=50340088",
+        "reason": "Input-interface announcement outside the beat."
+      },
+      {
+        "url": "https://hangingcontext.com/",
+        "reason": "Agent news site outside the beat."
+      },
+      {
+        "url": "https://github.com/Duecki1/CalibRaw",
+        "reason": "Photo editor outside the beat."
+      },
+      {
+        "url": "https://stephenjgallagher.substack.com/p/ai-can-draw-blueprints-now",
+        "reason": "Model drawing demonstration outside the beat."
+      },
+      {
+        "url": "https://mindmademany.com/",
+        "reason": "Agent organization platform not selected without a concrete observability change."
+      },
+      {
+        "url": "https://news.ycombinator.com/item?id=50332805",
+        "reason": "Military technology discussion outside the beat."
+      },
+      {
+        "url": "https://www.langchain.com/blog/context-engineering-challenges-late-2026",
+        "reason": "Primary article reviewed: broad open context-engineering questions, without a concrete tracing/evaluation implementation; not selected."
+      },
+      {
+        "url": "https://opentelemetry.io/blog/",
+        "reason": "New Keycloak project-maintainer interview is generic observability with no concrete AI operating relevance established."
+      },
+      {
+        "url": "https://www.dynatrace.com/news/",
+        "reason": "New community platform and SIEM/security partnership not selected for the AI-observability-only beat; older AI ingest article excluded by date and historical coverage."
+      }
+    ],
+    "note": "Scoped sweep, not exhaustive web coverage. Used supplied discovery artifact to honor write-only run-directory constraint; did not rerun fetch:sources because it overwrites the external discovery path. Reviewed all 20 historical issue files, 113 stories, URLs, original-event keys and summaries; excluded tracking variants/cross-posts and repeated release content. All 8 GitHub release candidates verified with official API published_at and stable flags. All 19 HN candidates triaged; retained original first-party posts checked with official HN API. Independently visited all 11 configured News surfaces, Langfuse changelog and dated candidate articles; focused exact-date searches supplemented discovery. Honeycomb web timeout recovered via direct HTTP 200. Splunk listing returned a No results shell, supplemented by exact-date site search with no eligible candidate; Datadog shell supplemented with exact-date site search. These are discovery limitations, not proof that publishers had no new items.",
+    "source_counts": {
+      "hn": 2,
+      "news": 1,
+      "github": 2
+    },
+    "discovery": {
+      "artifact": ".cache/source-candidates/2026-11-02.json",
+      "fetched_at": "2026-11-03T00:57:54.828Z",
+      "hn_candidates": 19,
+      "github_candidates": 8,
+      "github_checks": [
+        {
+          "repository": "langfuse/langfuse",
+          "releases_checked": 100,
+          "coverage": "latest 100 releases; not a global GitHub search"
+        },
+        {
+          "repository": "Arize-ai/phoenix",
+          "releases_checked": 100,
+          "coverage": "latest 100 releases; not a global GitHub search"
+        },
+        {
+          "repository": "Arize-ai/openinference",
+          "releases_checked": 100,
+          "coverage": "latest 100 releases; not a global GitHub search"
+        },
+        {
+          "repository": "langchain-ai/langsmith-sdk",
+          "releases_checked": 100,
+          "coverage": "latest 100 releases; not a global GitHub search"
+        },
+        {
+          "repository": "braintrustdata/braintrust-sdk",
+          "releases_checked": 100,
+          "coverage": "latest 100 releases; not a global GitHub search"
+        },
+        {
+          "repository": "wandb/weave",
+          "releases_checked": 100,
+          "coverage": "latest 100 releases; not a global GitHub search"
+        },
+        {
+          "repository": "langwatch/langwatch",
+          "releases_checked": 100,
+          "coverage": "latest 100 releases; not a global GitHub search"
+        },
+        {
+          "repository": "Helicone/helicone",
+          "releases_checked": 4,
+          "coverage": "latest 100 releases; not a global GitHub search"
+        }
+      ]
+    },
+    "editorial_review": {
+      "independent_read_order": [
+        "dataset-label-helpers",
+        "telephone-evaluations",
+        "trace-recall-limits",
+        "model-price-catalog",
+        "native-tool-errors"
+      ],
+      "standalone_context": true,
+      "source_supported": true,
+      "takeaways_separate": true,
+      "brief_reasons_reviewed": true,
+      "topic_order_reviewed": true
+    },
+    "evidence_files": [
+      "requests.jsonl",
+      "history-index.json",
+      "generation-manifest.json",
+      "image-review.json",
+      "validation.json"
+    ]
+  }
+}
