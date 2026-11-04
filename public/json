@@ -1,230 +1,406 @@
 {
-  "date": "2026-11-03",
-  "story_window": "2026-11-02",
-  "dek": "Clearer agent error records, model-price updates, information-retention experiments and trace-read reliability.",
+  "date": "2026-11-04",
+  "story_window": "2026-11-03",
+  "dek": "Verified AI observability news on trace retrieval, retained agent evidence, evaluation provenance, cloud boundaries and operational oversight.",
   "stories": [
     {
-      "title": "Nomos keeps synthetic warnings out of native tool errors",
-      "url": "https://news.ycombinator.com/item?id=50337394",
-      "publisher": "Mark Gantlett · Show HN",
-      "published": "2026-11-02",
-      "category_key": "agents",
-      "summary": "The coding-agent harness author reports that injected hook warnings obscured permission failures, and describes moving enforcement ahead of tool execution.",
+      "title": "Modelpeers monitors provider pages for changes that can break AI applications",
+      "url": "https://news.ycombinator.com/item?id=50359805",
+      "publisher": "Modelpeers · first-party Show HN",
+      "published": "2026-11-03",
+      "category_key": "observability",
+      "summary": "A developer describes a monitored feed of model retirements, API changes and pricing updates, with model checks before publication.",
       "body": [
-        "Nomos is a local harness that sits between a software repository and a coding agent. Its developer describes isolating tasks in Git worktrees and checking proposed changes before merging them. The first-party announcement also reports a narrower observability lesson: adding helpful warnings to tool results can make the underlying failure harder for an agent to interpret.",
-        "The author says an early hook, a handler that runs around tool use, injected process-failure and refusal warnings after operations completed. In a public benchmark, that synthetic text degraded attribution of native operating-system permission errors. The post reports a recovery after changing the hooks, but provides an author-run result rather than independent validation.",
-        "The revised approach first applies path guards before a tool runs. After execution, it keeps the hook silent on native result channels, preserving the original error evidence. A separate circuit breaker stops repeated identical failures. The broader harness also returns file-and-line fixes from verification gates. Those controls are distinct from the quality of the error record: the announcement does not establish that every agent shortcut is prevented."
+        "Modelpeers is a change-monitoring feed for AI models and agents. In a first-party launch post, its creator describes building it after a model retirement left a product feature unavailable and an API parameter change caused errors. The service lets users follow the models and agents they depend on, with an optional digest of relevant changes.",
+        "The monitoring process starts by downloading provider pages every few hours, including changelogs, deprecation notices, status pages and pricing information. It hashes those pages to detect changes. When a page changes, it extracts the difference and asks two models to validate it. Changes that pass that check are added to the feed. This is the developer’s description of the process, rather than an independently measured detection guarantee.",
+        "The useful operational distinction is between following a dependency and observing a running application. The post describes watching external changes that may require action; it does not demonstrate that every breaking change is found or that affected requests are automatically traced. Model validation is part of its publishing workflow, with no accuracy benchmark supplied in the announcement."
       ],
       "format": "full",
-      "takeaway": "For coding-agent harness authors: test whether hook messages preserve native failure evidence, separately from whether enforcement blocks an action.",
-      "image": "/edition-images/2026-11-03/native-tool-errors.webp",
+      "takeaway": "For AI application owners: a dependency-change feed can complement runtime monitoring; confirm important notices against the linked provider source.",
+      "image": "/edition-images/2026-11-04/model-change-monitoring.webp",
       "image_width": 1440,
       "image_height": 960,
       "image_provenance": {
         "kind": "generated-editorial",
         "generator": "built-in-imagegen",
-        "prompt": "Use case: infographic-diagram\nAsset type: newspaper editorial infographic PNG\nPrimary request: Explain the Nomos author’s reported lesson: synthetic hook warnings mixed into tool results can obscure native permission errors; keep the native error channel clear and enforce path guards before tool use. This is an author-reported design lesson, not independently verified.\nStyle: warm ivory newsprint, dark ink, restrained brick red, elegant serif title and large readable labels. Landscape 3:2, generous spacing.\nText (verbatim): Keep native tool errors clear | Author-reported design lesson | Before tool use | Enforce path guards | Tool result | Preserve native errors\nComposition: two separate simple stages with no claim of guaranteed security or measured improvement.\nConstraints: no invented metrics, no screenshots, no logos, no watermark, no footer.",
+        "prompt": "Use case: infographic-diagram. Asset type: standalone newspaper editorial infographic PNG. Create a landscape 3:2 illustration with warm ivory paper, dark charcoal ink, muted teal and ochre accents, fine engraved linework, generous spacing and a serif headline. One clear idea, readable at article width. Title exactly: \"Model changes to monitor\". Diagram labels and layout: Provider pages → Detect changes → Two-model check → Followed feed. Source-supported facts: Provider pages contain changelogs, deprecations, status and pricing. Modelpeers downloads and hashes pages every few hours, extracts changes, validates with two models, then posts accepted changes. Source: https://news.ycombinator.com/item?id=50359805. Use short plain-language labels and minimal text. No invented measurements, unsupported architecture, fake screenshots or unrelated logos. No watermark or footer. No AI-generated label. Keep source claims and conceptual relationships clear.",
         "based_on": [
-          "https://news.ycombinator.com/item?id=50337394"
+          "https://news.ycombinator.com/item?id=50359805"
         ],
         "reviewed": true,
-        "sha256": "a8430892621a605b829ee7740614c724dfcd847235839b48c233c73965fc3565",
+        "sha256": "1e715267a47f2fac0f97b4ff0c99e4e0b8764c24d1fdd01c659f8cecd11ab86b",
         "optimization": {
           "format": "webp",
           "quality": 82,
           "max_width": 1440,
-          "source_sha256": "0097f2b3bcf670efd6c03fdb4c590cc6b90632ef25d48d9e9cf648d3622f5c1d"
-        }
-      },
-      "source": "hn",
-      "interest_score": 8,
-      "hn_id": "50337394",
-      "comments": "https://news.ycombinator.com/item?id=50337394",
-      "score_reason": "A concrete first-party implementation lesson about agent error attribution, with explicit limits on author-reported evaluation evidence.",
-      "source_evidence": {
-        "url": "https://news.ycombinator.com/item?id=50337394",
-        "publication_date": "2026-11-02",
-        "raw_date": "2026-11-02T14:35:12.000Z",
-        "method": "Original first-party Show HN announcement text and timestamp verified through official HN Firebase API; not a resurfaced linked article."
-      },
-      "dedupe_key": "hn-original:50337394"
-    },
-    {
-      "title": "EchoChain measures information changes across repeated model exchanges",
-      "url": "https://news.ycombinator.com/item?id=50331840",
-      "publisher": "smusali · Show HN",
-      "published": "2026-11-02",
-      "category_key": "evals",
-      "summary": "A first-party announcement describes a command-line experiment that tracks factual claims and semantic similarity as models repeatedly transform answers into questions.",
-      "body": [
-        "EchoChain is an open-source Python command-line tool for exploring how information changes when language models repeatedly exchange responses. Its author describes an AI version of telephone: a model converts an answer into a question, another answer follows, and the cycle repeats. The concern is whether factual details survive those transformations.",
-        "The announcement describes multi-model testing and model rotation, together with tracking factual claims, calculating semantic similarity and reporting fidelity scores. These are ways to examine changes across the sequence, rather than judging only its final answer. The author also lists reproducibility, statistical tests and visualizations as supported features. The post supplies no numerical comparison establishing which model retains information best.",
-        "The tool currently routes calls through OpenRouter and requires an API key for that service. The author connects the experiment to multi-agent systems in which generated information passes between agents without human validation. That is the motivation for the experiment, not evidence that a particular production system loses information at a measured rate. The announcement invites feedback on agent-building and evaluation frameworks."
-      ],
-      "format": "full",
-      "takeaway": "For multi-agent evaluation teams: consider testing information retention at each handoff, while checking the tool’s scoring definitions before comparing models.",
-      "image": "/edition-images/2026-11-03/telephone-evaluations.webp",
-      "image_width": 1440,
-      "image_height": 960,
-      "image_provenance": {
-        "kind": "generated-editorial",
-        "generator": "built-in-imagegen",
-        "prompt": "Use case: infographic-diagram\nAsset type: standalone newspaper editorial infographic PNG\nPrimary request: Explain the EchoChain author’s described experiment: answer becomes a question, then a new answer, repeating. Track factual claims and semantic similarity across exchanges. Do not depict any measured loss or result.\nStyle: warm ivory newsprint, dark ink, restrained brick-red accent, elegant serif title, large clear labels, generous space. Landscape 3:2. Simple connected elements, readable at article width.\nText (verbatim): Follow information through model exchanges | Answer | New question | Next answer | Track factual claims and similarity\nConstraints: only the stated source-supported mechanism; no invented metrics, no logos, no screenshots, no watermark, no footer.",
-        "based_on": [
-          "https://news.ycombinator.com/item?id=50331840"
-        ],
-        "reviewed": true,
-        "sha256": "cb01f92e5a354747dcd64652bd9b3988becb0a035b77aae0c5f9fea917fb2d25",
-        "optimization": {
-          "format": "webp",
-          "quality": 82,
-          "max_width": 1440,
-          "source_sha256": "b77ea90d3a1af25bf3531c3e645f223cc7a98d8c62b63e3325fc27f5c40dceeb"
+          "source_sha256": "7e869d49227532cc676da0087e9e2aa53c547d51790ee7167e9826b6f5002cfd"
         }
       },
       "source": "hn",
       "interest_score": 7,
-      "hn_id": "50331840",
-      "comments": "https://news.ycombinator.com/item?id=50331840",
-      "score_reason": "Relevant exploratory evaluation tooling, supported by a first-party announcement but without independently checked results or metric definitions.",
+      "hn_id": "50359805",
+      "comments": "https://news.ycombinator.com/item?id=50359805",
+      "dedupe_key": "hn-original:50359805",
+      "score_reason": "Direct operational dependency monitoring, with developer-reported behavior and no measured detection coverage.",
       "source_evidence": {
-        "url": "https://news.ycombinator.com/item?id=50331840",
-        "publication_date": "2026-11-02",
-        "raw_date": "2026-11-02T01:15:44.000Z",
-        "method": "Original first-party Show HN announcement text and timestamp verified through official HN Firebase API; not a resurfaced linked article."
-      },
-      "dedupe_key": "hn-original:50331840"
-    },
-    {
-      "title": "Phoenix adds typed helpers for reusable dataset labels",
-      "url": "https://github.com/Arize-ai/phoenix/releases/tag/%40arizeai/phoenix-client%407.18.0",
-      "publisher": "Arize Phoenix · GitHub",
-      "published": "2026-11-02",
-      "category_key": "evals",
-      "summary": "The JavaScript client can manage global labels and assign or replace labels on datasets selected by name or identifier.",
-      "body": [
-        "Phoenix’s JavaScript client provides programmatic access to datasets used in AI evaluation workflows. Its release adds typed helpers for dataset labels within the existing datasets scope, allowing callers to manage reusable global labels rather than handling only individual dataset assignments.",
-        "Callers can first manage the shared label resources and list them using cursor pagination, which retrieves successive pages through a continuation marker. They can then assign or replace labels on a dataset selected by name or GlobalID. The compact release note documents those operations, without describing automatic labeling, label-based access controls or measured workflow improvements."
-      ],
-      "format": "brief",
-      "brief_reason": "The primary release contains one compact feature entry specifying label resources, pagination and assignment operations, without further implementation evidence.",
-      "takeaway": "For teams organizing Phoenix evaluation datasets: check whether shared labels fit existing naming conventions before automating assignment or replacement.",
-      "image": "/edition-images/2026-11-03/dataset-label-helpers.webp",
-      "image_width": 1440,
-      "image_height": 960,
-      "image_provenance": {
-        "kind": "generated-editorial",
-        "generator": "built-in-imagegen",
-        "prompt": "Use case: infographic-diagram\nAsset type: standalone newspaper editorial infographic PNG\nPrimary request: Explain the Phoenix client release: manage reusable global labels; assign or replace labels on datasets selected by name or GlobalID. Do not suggest authorization, auto-labeling, or effects on evaluation scores.\nStyle: warm ivory newsprint, dark ink, restrained brick-red accent, elegant serif title, large clear labels, generous space. Landscape 3:2. Simple connected elements, readable at article width.\nText (verbatim): Reuse labels across evaluation datasets | Reusable labels | Dataset by name or GlobalID | Assign or replace labels\nConstraints: only the stated source-supported mechanism; no invented metrics, no logos, no screenshots, no watermark, no footer.",
-        "based_on": [
-          "https://github.com/Arize-ai/phoenix/releases/tag/%40arizeai/phoenix-client%407.18.0"
-        ],
-        "reviewed": true,
-        "sha256": "ad00fc3de738387164429a8e3d46f4ff68a748794226ce60c2c62e80e87c891e",
-        "optimization": {
-          "format": "webp",
-          "quality": 82,
-          "max_width": 1440,
-          "source_sha256": "fd7e921edb8e4b638503f2ac69f00a98cd5179d3946e134c3ace47b2aeeb6332"
-        }
-      },
-      "source": "github",
-      "interest_score": 7,
-      "score_reason": "Directly relevant but narrow evaluation-dataset management improvement.",
-      "dedupe_key": "release:Arize-ai/phoenix:@arizeai/phoenix-client@7.18.0",
-      "source_evidence": {
-        "url": "https://github.com/Arize-ai/phoenix/releases/tag/%40arizeai/phoenix-client%407.18.0",
-        "publication_date": "2026-11-02",
-        "raw_date": "2026-11-02T18:12:53Z",
-        "method": "Official GitHub release API published_at with draft:false and prerelease:false; original release body reviewed."
+        "url": "https://news.ycombinator.com/item?id=50359805",
+        "publication_date": "2026-11-03",
+        "raw_date": "2026-11-03T23:45:40Z",
+        "method": "Original first-party Show HN text and official HN API item time, converted from Unix seconds; product page also inspected."
       }
     },
     {
-      "title": "Phoenix refreshes model prices between server upgrades",
-      "url": "https://arize.com/blog/phoenix-automatic-model-pricing-updates/",
-      "publisher": "Arize AI",
-      "published": "2026-11-02",
+      "title": "Langfuse warns that an empty observation page may still have more results",
+      "url": "https://langfuse.com/changelog/2026-11-03-observations-api-continuation",
+      "publisher": "Langfuse",
+      "published": "2026-11-03",
       "category_key": "observability",
-      "summary": "Automatic catalog downloads update built-in token rates for new spans while preserving custom rates and previously recorded costs.",
+      "summary": "Clients must follow the continuation cursor rather than stop on an empty page when retrieving observation records.",
       "body": [
-        "Arize Phoenix is an open-source AI observability tool that calculates model-call costs from recorded token usage and model prices. Its built-in pricing catalog previously changed with server releases. A missing or outdated rate therefore required an upgrade or custom configuration. Automatic catalog updates let the server receive revised prices between upgrades.",
-        "Shortly after startup, and then about daily, the server downloads a catalog published in the Phoenix GitHub repository from LiteLLM pricing data. It compares catalog generation dates and saves newer model entries and prices in one database transaction. Deployments sharing PostgreSQL use a database lock so only one server applies an update at a time. A saved catalog record prevents an older bundled catalog from overwriting downloaded prices after restart.",
-        "Newly received model-call spans, records of individual operations, use updated rates after the pricing cache refreshes. Existing trace costs stay unchanged, and custom model prices take precedence. Failed downloads leave existing prices in use and produce a log entry. Automatic downloads are enabled by default; operators can disable them explicitly or through the setting that disallows external resources. The Models settings page shows the catalog generation date, not the last update-check time."
+        "Langfuse is an AI observability platform whose Observations API retrieves records of application operations. Its reliability update lets expensive queries continue across several requests instead of requiring all progress within one request. That changes an assumption that some client pagination loops may make: an empty response page does not necessarily mean the query is finished.",
+        "The client first requests observations with the desired filters and page limit. It processes whatever records arrive, then reads meta.cursor from the response. If that cursor is present, the client sends another request using it, even if the previous page contained no observations. The loop finishes only when the cursor is absent. A short page is also insufficient evidence that all results have been returned.",
+        "Langfuse says some documentation examples incorrectly stopped when a page was empty and asks users who copied them to update their loops. The corrected examples cover migration, evaluation pipelines, dataset preparation, analytics and trace deletion. The announcement addresses a small share of queries that time out; it does not claim a measured speed improvement for every query."
       ],
       "format": "full",
-      "takeaway": "For Phoenix operators: verify recorded model and token fields against a known call, and check custom rates before relying on calculated costs.",
-      "image": "/edition-images/2026-11-03/model-price-catalog.webp",
+      "takeaway": "For teams exporting or evaluating Langfuse records: audit pagination loops for an empty-page exit condition that can silently truncate results.",
+      "image": "/edition-images/2026-11-04/observation-query-continuation.webp",
       "image_width": 1440,
       "image_height": 960,
       "image_provenance": {
         "kind": "generated-editorial",
         "generator": "built-in-imagegen",
-        "prompt": "Use case: infographic-diagram\nAsset type: standalone newspaper editorial infographic PNG\nPrimary request: Explain only this supported sequence: Phoenix checks a published pricing catalog, applies it only if newer, then updated prices apply to new spans after cache refresh. Existing recorded costs remain unchanged. Custom prices keep precedence.\nStyle: warm ivory newsprint, dark ink, restrained brick-red accent, elegant serif title, large clear labels, generous space. Landscape 3:2. Simple connected elements, readable at article width.\nText (verbatim): Phoenix refreshes built-in prices | Fresh catalog | Newer? | Save prices | New spans use refreshed rates | Existing costs stay unchanged\nConstraints: only the stated source-supported mechanism; no invented metrics, no logos, no screenshots, no watermark, no footer.",
+        "prompt": "Use case: infographic-diagram. Asset type: standalone newspaper editorial infographic PNG. Create a landscape 3:2 illustration with warm ivory paper, dark charcoal ink, muted teal and ochre accents, fine engraved linework, generous spacing and a serif headline. One clear idea, readable at article width. Title exactly: \"An empty page can still continue\". Diagram labels and layout: Read page → Cursor present? → Request next page. Source-supported facts: Langfuse observation queries can return an empty page with a continuation cursor. Diagram decision: Cursor present? YES arrow to Request next page and loop to Read page; NO arrow to Finished. Empty page is not an exit condition. Use exact field label meta.cursor. Source: https://langfuse.com/changelog/2026-11-03-observations-api-continuation. Use short plain-language labels and minimal text. No invented measurements, unsupported architecture, fake screenshots or unrelated logos. No watermark or footer. No AI-generated label. Keep source claims and conceptual relationships clear.",
         "based_on": [
-          "https://arize.com/blog/phoenix-automatic-model-pricing-updates/"
+          "https://langfuse.com/changelog/2026-11-03-observations-api-continuation"
         ],
         "reviewed": true,
-        "sha256": "4555cec47f350335c0809db07f2c43e7efac71375b8a7f183051a28c31d3168d",
+        "sha256": "ca300b7691f5f264f9a9f16c96acad33d28d241b0b9339180c18a350e74bd32e",
         "optimization": {
           "format": "webp",
           "quality": 82,
           "max_width": 1440,
-          "source_sha256": "7f3e08c451f766e370daaa089ef117228e6cb1e3182e0f99f6c3ede2ba5361c0"
+          "source_sha256": "41265d9aa79ffb41fb98bd4ab9c6946e661e38480b3853997bda2482375ee144"
+        }
+      },
+      "source": "news",
+      "interest_score": 9,
+      "dedupe_key": "article:langfuse.com/changelog/2026-11-03-observations-api-continuation",
+      "score_reason": "A concrete completeness trap in trace retrieval can silently affect exports, evaluations and deletion workflows.",
+      "source_evidence": {
+        "url": "https://langfuse.com/changelog/2026-11-03-observations-api-continuation",
+        "publication_date": "2026-11-03",
+        "raw_date": "2026-11-03",
+        "method": "Primary dated changelog entry visibly states November 3, 2026; ISO-normalized publication label."
+      }
+    },
+    {
+      "title": "Braintrust argues for keeping agent history searchable and reusable in evaluations",
+      "url": "https://www.braintrust.dev/blog/trace-lake",
+      "publisher": "Braintrust",
+      "published": "2026-11-03",
+      "category_key": "observability",
+      "summary": "The Trace Lake proposal joins long-lived execution records, fast queries and a path from production examples to repeatable tests.",
+      "body": [
+        "Braintrust is an AI evaluation and observability platform. Its Trace Lake article argues that agent execution records need to support more than opening a single slow request. Teams also need to search past decisions, outputs and tool interactions when a new failure pattern becomes apparent. Discarding those records removes evidence that a later investigation may need.",
+        "The proposed approach first makes incoming traces quickly searchable through full-text queries and SQL. Next, object storage keeps growing execution history without requiring every query server to retain a complete local copy. The article also identifies keeping sensitive records inside a customer’s cloud as a requirement for some teams. Braintrust presents its Brainstore database as an implementation for these workloads.",
+        "Finally, useful production examples should become evaluation cases with enough context to reproduce the behavior. That context may include application state or the resources used by an agent. Continuous analysis then looks for recurring issues across incoming traces. These are architectural requirements and vendor descriptions, rather than a new independent benchmark proving that every deployment meets the article’s performance targets."
+      ],
+      "format": "full",
+      "takeaway": "For observability teams: evaluate retention, search and reproducibility together before treating a trace store as a source of regression tests.",
+      "image": "/edition-images/2026-11-04/trace-lake.webp",
+      "image_width": 1440,
+      "image_height": 960,
+      "image_provenance": {
+        "kind": "generated-editorial",
+        "generator": "built-in-imagegen",
+        "prompt": "Use case: infographic-diagram. Asset type: standalone newspaper editorial infographic PNG. Create a landscape 3:2 illustration with warm ivory paper, dark charcoal ink, muted teal and ochre accents, fine engraved linework, generous spacing and a serif headline. One clear idea, readable at article width. Title exactly: \"Keep agent history useful\". Diagram labels and layout: Retain traces → Search behavior → Reproduce context → Build evaluations. Source-supported facts: Braintrust proposes retaining execution history in object storage, full-text and SQL queries, preserving reproduction context, and converting production examples into evaluation cases. This is a conceptual workflow, not a performance benchmark. Source: https://www.braintrust.dev/blog/trace-lake. Use short plain-language labels and minimal text. No invented measurements, unsupported architecture, fake screenshots or unrelated logos. No watermark or footer. No AI-generated label. Keep source claims and conceptual relationships clear.",
+        "based_on": [
+          "https://www.braintrust.dev/blog/trace-lake"
+        ],
+        "reviewed": true,
+        "sha256": "072de4b7d15a21b2fbcd4ef6a161f6a71c7261f203cab23ba702c3cfd462ba49",
+        "optimization": {
+          "format": "webp",
+          "quality": 82,
+          "max_width": 1440,
+          "source_sha256": "6c07a2c7f5f7e334f1619ac0f85de007f3cee8ca8a798ce990f54b55f20a332a"
         }
       },
       "source": "news",
       "interest_score": 8,
-      "score_reason": "Concrete cost-accounting behavior with update consistency, failure handling and deployment controls documented by the publisher.",
-      "dedupe_key": "article:arize.com/blog/phoenix-automatic-model-pricing-updates",
+      "dedupe_key": "article:www.braintrust.dev/blog/trace-lake",
+      "score_reason": "Concrete architecture guidance for trace retention and conversion of production evidence into evaluations.",
       "source_evidence": {
-        "url": "https://arize.com/blog/phoenix-automatic-model-pricing-updates/",
-        "publication_date": "2026-11-02",
-        "raw_date": "2026-11-02T15:00:40+00:00",
-        "method": "Primary HTML article:published_time corroborated by JSON-LD datePublished (same instant with timezone offset) and publisher publishDate. dateModified not used."
+        "url": "https://www.braintrust.dev/blog/trace-lake",
+        "publication_date": "2026-11-03",
+        "raw_date": "2026-11-03",
+        "method": "Visible article date and article:published_time both say 3 November 2026; normalized to ISO date, not dateModified."
       }
     },
     {
-      "title": "LangWatch bounds trace-field retrieval to protect workers",
-      "url": "https://github.com/langwatch/langwatch/releases/tag/langwatch%40v3.22.0",
-      "publisher": "LangWatch · GitHub",
-      "published": "2026-11-02",
+      "title": "LangSmith expands managed deployments inside customers’ cloud accounts",
+      "url": "https://www.langchain.com/blog/langsmith-byoc-aws-gc-azure",
+      "publisher": "LangChain",
+      "published": "2026-11-03",
       "category_key": "observability",
-      "summary": "The release notes list a limit on retrieving offloaded trace fields, alongside a fix that keeps span attributes from breaking reads.",
+      "summary": "Bring Your Own Cloud adds Azure and Google Cloud beta options alongside generally available AWS deployments, with separate control and data planes.",
       "body": [
-        "LangWatch is an AI observability and evaluation platform whose release notes include fixes to reading trace data. One entry bounds recall of offloaded fields so that large traces cannot kill the worker handling them. Offloaded-field recall means retrieving trace content that has been stored separately.",
-        "A second entry says a span’s own attributes no longer break its read through a request-parameter name. A span is the record of one operation within a trace. These notes identify two read-path corrections, but do not state the retrieval limit, affected payload sizes or measured memory savings. They are selected trace-reliability changes from a broader platform release."
+        "LangSmith is an agent engineering platform for debugging runs, evaluating changes and deploying agents. Its Bring Your Own Cloud offering lets LangChain operate the service while sensitive application data stays in the customer’s cloud account. The announcement expands that deployment model to Azure and Google Cloud in beta, alongside generally available AWS support.",
+        "The arrangement separates two responsibilities. LangChain operates a control plane containing authentication, organization configuration, billing metadata, hashed API keys and static interface assets. The customer owns a data plane holding traces, prompts, datasets, experiments, deployments and workspace secrets. An organization can have several data planes, separated by account and region, with workspaces assigned to each.",
+        "Teams moving from self-hosting use an open-source tool for workspace resources such as datasets, experiments and prompts. Traces, runs and feedback require a separate migration performed by LangChain; the announcement says trace migration is available on AWS. Google Cloud deployments initially use the US control plane, and Azure sandbox support remains planned. Those limits matter when assessing data boundaries and migration readiness."
       ],
-      "format": "brief",
-      "brief_reason": "Two primary release entries identify trace-read corrections but omit bounds, payload thresholds and measured outcomes; a longer account would require unsupported mechanism details.",
-      "takeaway": "For LangWatch operators handling large traces: check representative trace reads after upgrading and verify that expected fields remain available.",
-      "image": "/edition-images/2026-11-03/trace-recall-limits.webp",
+      "format": "full",
+      "takeaway": "For platform and security teams: map control-plane metadata separately from trace content, and confirm migration support for the chosen cloud.",
+      "image": "/edition-images/2026-11-04/cloud-data-boundaries.webp",
       "image_width": 1440,
       "image_height": 960,
       "image_provenance": {
         "kind": "generated-editorial",
         "generator": "built-in-imagegen",
-        "prompt": "Use case: infographic-diagram\nAsset type: newspaper editorial infographic PNG\nPrimary request: Explain a LangWatch release-note change: bound retrieval of offloaded trace fields to protect a software worker process when a trace is large. Show exactly three elements: a stack of trace records, a bounded retrieval gate, and a server process represented by a simple box with gears. The worker is SOFTWARE, never a person.\nStyle: warm ivory newsprint, dark ink, restrained brick red, large elegant serif labels. Landscape 3:2, spacious, readable.\nText (verbatim): Bound trace-field retrieval | Large trace | Bounded field retrieval | Software worker | Conceptual view\nConstraints: no people, no human worker, no laptop user, no invented metrics or thresholds, no claim of complete trace capture, no architecture details beyond the conceptual three-step diagram, no logos, no watermark, no footer.",
+        "prompt": "Use case: infographic-diagram. Asset type: standalone newspaper editorial infographic PNG. Create a landscape 3:2 illustration with warm ivory paper, dark charcoal ink, muted teal and ochre accents, fine engraved linework, generous spacing and a serif headline. One clear idea, readable at article width. Title exactly: \"Where LangSmith data lives\". Diagram labels and layout: LangChain control plane | Customer cloud data plane. Source-supported facts: Two distinct boxes. LangChain control plane: Authentication; Configuration; Billing metadata. Customer cloud data plane: Traces and prompts; Datasets and experiments; Workspace secrets. Below: AWS: GA. Azure: Beta. Google Cloud: Beta. No arrow implying trace content is sent to the control plane. Source: https://www.langchain.com/blog/langsmith-byoc-aws-gc-azure. Use short plain-language labels and minimal text. No invented measurements, unsupported architecture, fake screenshots or unrelated logos. No watermark or footer. No AI-generated label. Keep source claims and conceptual relationships clear.",
         "based_on": [
-          "https://github.com/langwatch/langwatch/releases/tag/langwatch%40v3.22.0"
+          "https://www.langchain.com/blog/langsmith-byoc-aws-gc-azure"
         ],
         "reviewed": true,
-        "sha256": "af6d7aa18376fe740b5445a4f8bae353c9bf82cc2ecd34f3377bc434acd6d050",
+        "sha256": "c306577e3a0eb3548ca617f40e3a0061a61154f81c3990be2441b8387577e863",
         "optimization": {
           "format": "webp",
           "quality": 82,
           "max_width": 1440,
-          "source_sha256": "0456c0b6fdfb4f95556d90f3cce9754bc27f64a89a2b7afef1f75d478e960167"
+          "source_sha256": "409840fc2d8da42ce10bddb91f4940fbde45a28f011636591982a3517546ba1f"
+        }
+      },
+      "source": "news",
+      "interest_score": 8,
+      "dedupe_key": "article:www.langchain.com/blog/langsmith-byoc-aws-gc-azure",
+      "score_reason": "Meaningful deployment and migration details affecting sensitive trace storage and operational ownership.",
+      "source_evidence": {
+        "url": "https://www.langchain.com/blog/langsmith-byoc-aws-gc-azure",
+        "publication_date": "2026-11-03",
+        "raw_date": "2026-11-03T22:06:00.000Z",
+        "method": "Primary Article JSON-LD datePublished, corroborated by visible November 3 publication label; dateModified ignored."
+      }
+    },
+    {
+      "title": "Langfuse links managed agent skills to the versions loaded in traces",
+      "url": "https://langfuse.com/changelog/2026-11-03-skill-management",
+      "publisher": "Langfuse",
+      "published": "2026-11-03",
+      "category_key": "agents",
+      "summary": "The skill-management beta adds shared storage and version links, with usage counts and recorded file loads.",
+      "body": [
+        "Langfuse is an AI observability platform that records agent operations. Its skill-management beta gives teams a shared place to store and revise skills, the reusable instructions agents can load. With skill tracing configured, generation records show reported skills and link to their versions. Successful skill-loading tool calls expose the version and file paths through the preview. A skill’s Usage tab combines counts, file loads and linked observations. API, command-line, Model Context Protocol and SDK access are supported; the announcement does not claim that a loaded skill guarantees correct behavior."
+      ],
+      "format": "brief",
+      "brief_reason": "The primary changelog is a short beta announcement covering storage, access methods and trace links; no outcome evidence or deeper implementation is supplied.",
+      "takeaway": "For teams changing agent instructions: inspect version and file-load evidence when investigating behavior after a skill edit.",
+      "image": "/edition-images/2026-11-04/skill-version-links.webp",
+      "image_width": 1440,
+      "image_height": 960,
+      "image_provenance": {
+        "kind": "generated-editorial",
+        "generator": "built-in-imagegen",
+        "prompt": "Use case: infographic-diagram. Asset type: standalone newspaper editorial infographic PNG. Create a landscape 3:2 illustration with warm ivory paper, dark charcoal ink, muted teal and ochre accents, fine engraved linework, generous spacing and a serif headline. One clear idea, readable at article width. Title exactly: \"Connect skills to loaded versions\". Diagram labels and layout: Managed skill → Version link → Recorded file loads. Source-supported facts: Langfuse skill-management beta. Central skill storage and revisions. With tracing configured, generation records link reported skills to versions; successful loading tool calls show file paths; Usage tab combines counts, file loads and linked observations. Label Beta. Source: https://langfuse.com/changelog/2026-11-03-skill-management. Use short plain-language labels and minimal text. No invented measurements, unsupported architecture, fake screenshots or unrelated logos. No watermark or footer. No AI-generated label. Keep source claims and conceptual relationships clear. Strict correction: do not draw or write any invented filenames, file extensions, paths, version numbers or code. Use only these diagram labels: Managed skill; Stored revisions; Version link; Recorded file loads; Usage tab; Counts and linked observations; Tracing when configured; Beta. Do not print the source URL. No extra descriptive text.",
+        "based_on": [
+          "https://langfuse.com/changelog/2026-11-03-skill-management"
+        ],
+        "reviewed": true,
+        "sha256": "308cbc5aea980d38fc4d7e7d9d1e40efc8b885ab36419b1017f0992420423ea9",
+        "optimization": {
+          "format": "webp",
+          "quality": 82,
+          "max_width": 1440,
+          "source_sha256": "e119a67b5484f762be9ae89ea15f34c0d1bd56807d505fc8b7d85e86ac2e453f"
+        }
+      },
+      "source": "news",
+      "interest_score": 7,
+      "dedupe_key": "article:langfuse.com/changelog/2026-11-03-skill-management",
+      "score_reason": "Narrow beta adds shared skill management and trace-to-version navigation; earlier skill instrumentation is not treated as a new invention.",
+      "source_evidence": {
+        "url": "https://langfuse.com/changelog/2026-11-03-skill-management",
+        "publication_date": "2026-11-03",
+        "raw_date": "2026-11-03",
+        "method": "Primary dated changelog entry visibly states November 3, 2026; ISO-normalized publication label."
+      }
+    },
+    {
+      "title": "LangWatch adds dataset history and pins test runs to dataset versions",
+      "url": "https://github.com/langwatch/langwatch/releases/tag/langwatch%40v3.23.0",
+      "publisher": "LangWatch · GitHub release",
+      "published": "2026-11-03",
+      "category_key": "evals",
+      "summary": "The release adds dataset comparison and restoration, agent and evaluator versioning, and more native coding-agent telemetry.",
+      "body": [
+        "LangWatch is an AI observability and evaluation platform. Its release adds dataset version history with automatic saving, comparison, restoration, retention and run pinning. The linked implementation explains the problem: edits previously left teams without a way to recover earlier dataset contents or identify which rows an experiment used. A version is an immutable snapshot of the dataset’s columns and rows.",
+        "First, edits can produce an automatic saved version after activity settles. Teams can then compare a version with current contents or restore it as a new version without rewriting history. When an experiment starts, it records the dataset version it read; pinning selects a particular version instead of the latest. Agent and evaluator versioning also gain deployment labels. These changes make evaluation inputs more explicit, without independently proving complete reproducibility.",
+        "For teams collecting coding-agent activity, the release adds capture of Grok CLI sessions through native OpenTelemetry and recognizes pi as a natively instrumented agent. OpenTelemetry is a standard way to emit operational records. Separate evaluation changes expand the supported decision-model providers and make Instant Evals use the saved model and the project’s own key. These are release-note claims; the notes do not establish identical trace coverage across every supported agent."
+      ],
+      "format": "full",
+      "takeaway": "For evaluation owners: verify the dataset, agent and evaluator versions associated with a run before comparing it with another result.",
+      "image": "/edition-images/2026-11-04/dataset-history.webp",
+      "image_width": 1440,
+      "image_height": 960,
+      "image_provenance": {
+        "kind": "generated-editorial",
+        "generator": "built-in-imagegen",
+        "prompt": "Use case: infographic-diagram. Create a standalone PNG editorial newspaper infographic, landscape 3:2, warm ivory, charcoal ink, restrained teal and ochre, fine linework and serif title. Source: https://github.com/langwatch/langwatch/releases/tag/langwatch%40v3.23.0 and https://github.com/langwatch/langwatch/pull/9121. Explain one dataset history workflow with exactly these short texts: Title \"Know which dataset a run used\"; labels \"Edit dataset\", \"Save snapshot\", \"Choose saved version\", \"Run evaluation\"; small supporting labels \"Compare\", \"Restore as a new version\", \"Run records dataset version\"; top small label \"LangWatch dataset history\". Four elements connected left to right. Snapshot means immutable dataset rows and columns. A saved experiment can pin a particular dataset version instead of latest. Show an optional branch from saved snapshot to comparison and restoration. Do not invent version numbers, code, file paths, metrics or a claim of guaranteed reproducibility. Do not print source URLs. No watermark, no footer, no AI-generated label. No extra text.",
+        "based_on": [
+          "https://github.com/langwatch/langwatch/releases/tag/langwatch%40v3.23.0"
+        ],
+        "reviewed": true,
+        "sha256": "f30e24e410a29c4688902f3bbf9418b82092a32d56e8cd1407db41e7623a0d7a",
+        "optimization": {
+          "format": "webp",
+          "quality": 82,
+          "max_width": 1440,
+          "source_sha256": "55d0bf492e9d770ef47cc0b590da9bc36d017a03a226cecf001f8a3b08780b58"
         }
       },
       "source": "github",
       "interest_score": 8,
-      "score_reason": "Direct operational relevance to trace investigation and worker reliability, with release-note evidence limits stated.",
-      "dedupe_key": "release:langwatch/langwatch:langwatch@v3.22.0:trace-read-fixes",
+      "dedupe_key": "release:github.com/langwatch/langwatch/releases/tag/langwatch%40v3.23.0",
+      "score_reason": "Concrete dataset and evaluator provenance changes plus native agent telemetry, consolidated across duplicate release channels.",
       "source_evidence": {
-        "url": "https://github.com/langwatch/langwatch/releases/tag/langwatch%40v3.22.0",
-        "publication_date": "2026-11-02",
-        "raw_date": "2026-11-02T13:46:28Z",
-        "method": "Official GitHub release API published_at with draft:false and prerelease:false; trace entries reviewed and same-announcement packaging releases excluded."
+        "url": "https://github.com/langwatch/langwatch/releases/tag/langwatch%40v3.23.0",
+        "publication_date": "2026-11-03",
+        "raw_date": "2026-11-03T18:18:33Z",
+        "method": "Official GitHub release API published_at; draft=false and prerelease=false. SDK release repeats shared commits and is not counted separately.",
+        "supporting_urls": [
+          "https://github.com/langwatch/langwatch/pull/9121"
+        ]
+      }
+    },
+    {
+      "title": "Elastic tests whether its investigation agent checks evidence before grouping alerts",
+      "url": "https://www.elastic.co/observability-labs/blog/automated-root-cause-analysis-significant-events",
+      "publisher": "Elastic Observability Labs",
+      "published": "2026-11-03",
+      "category_key": "evals",
+      "summary": "A discovery-agent walkthrough pairs required tool checks with incident-level evaluations, while separating model judgments from code-controlled alert state.",
+      "body": [
+        "Elastic Significant Events uses an investigation agent to check log evidence and group related alerts. Its walkthrough follows two rules detecting the same payment failure. The operational problem is that two firing rules can produce duplicate noise without establishing whether their shared explanation is supported by current logs.",
+        "First, code detects changes in rule behavior and selects which detections reach the agent. The agent then reruns each rule’s original query, which it cannot rewrite to fit a hypothesis. It measures the returned evidence and groups signals that describe one incident. Code checks the proposed alert before storage and derives its lifecycle state, while the model judges the explanation and severity.",
+        "The evaluation suite replays failure scenarios and checks grouping, affected entities, severity, status and required tool calls. Further checks examine whether successive cycles keep one incident and stable topology; model-based judges review the narrative and calibration. The reported run covers seven scenarios without a variance estimate. Elastic explicitly treats it as a smoke test rather than a benchmark, and warns that the evaluated model may differ from the production configuration."
+      ],
+      "format": "full",
+      "takeaway": "For teams evaluating investigation agents: test required evidence-gathering actions and repeated incident updates alongside the final explanation.",
+      "image": "/edition-images/2026-11-04/investigation-agent-evaluations.webp",
+      "image_width": 1440,
+      "image_height": 960,
+      "image_provenance": {
+        "kind": "generated-editorial",
+        "generator": "built-in-imagegen",
+        "prompt": "Use case: infographic-diagram. Standalone newspaper infographic PNG, landscape 3:2. Warm ivory paper, dark charcoal ink, restrained teal and ochre, fine engraved linework, large serif title and generous spacing. Explain testing an AI incident investigation agent. Title exactly \"Test the investigation, not just the answer\". Three elements connected left to right with labels \"Replay failure scenarios\", \"Check required tool calls\", \"Score the incident\". Supporting text \"Grouping, entities, severity and status\". A smaller bottom callout exactly \"Seven scenarios, one run: a smoke test, not a benchmark\". Source-supported facts: Elastic Significant Events evaluation suite replays failures; code evaluators check grouping, affected entities, severity, status and required confirmation queries, knowledge lookup and existing-alert search. Model judges review narrative and calibration. Reported run had seven scenarios, no variance estimate, evaluated model may differ from production. Source https://www.elastic.co/observability-labs/blog/automated-root-cause-analysis-significant-events. Use only short supplied labels. No invented metrics, score charts, code, paths or fake screenshots. Do not print URLs. No watermark. No footer. No AI-generated label.",
+        "based_on": [
+          "https://www.elastic.co/observability-labs/blog/automated-root-cause-analysis-significant-events"
+        ],
+        "reviewed": true,
+        "sha256": "abc0ac24885a1b48a8ecd738315a5d89243b688a4d8b08282cdc24fc2ffff7e6",
+        "optimization": {
+          "format": "webp",
+          "quality": 78,
+          "max_width": 1440,
+          "source_sha256": "26db0f3bf73dc215f7de3139d9642dc9f5f6b72b755958251b5cfbf94754d5bc"
+        }
+      },
+      "source": "news",
+      "interest_score": 8,
+      "dedupe_key": "article:www.elastic.co/observability-labs/blog/automated-root-cause-analysis-significant-events",
+      "score_reason": "Reproducible evaluation structure and explicit evidence limits for an operational AI agent, distinct from earlier rule-generation coverage.",
+      "source_evidence": {
+        "url": "https://www.elastic.co/observability-labs/blog/automated-root-cause-analysis-significant-events",
+        "publication_date": "2026-11-03",
+        "raw_date": "2026-11-03T00:00:00.000Z",
+        "method": "Primary article time datetime and visible November 03 publication label agree; related article dates ignored."
+      }
+    },
+    {
+      "title": "Honeycomb previews agent checks that link findings to production evidence",
+      "url": "https://www.honeycomb.io/blog/honeycomb-team-agents-ai-sre-done-right",
+      "publisher": "Honeycomb",
+      "published": "2026-11-03",
+      "category_key": "agents",
+      "summary": "Team Agents can be assigned recurring investigation goals, including comparing evaluation scores with live agent traces after changes.",
+      "body": [
+        "Honeycomb is an observability platform that uses production telemetry to investigate software behavior. Its Team Agents preview describes background assistants that work on goals set by a team. One proposed goal directly concerns AI operations: compare Braintrust evaluation scores with live conversation traces after a prompt or model change.",
+        "The workflow starts with a goal and a trigger, such as a deployment, alert or schedule. The agent investigates telemetry and can use connectors based on the Model Context Protocol to access supporting information such as deployments, documentation and costs. Honeycomb says findings link to the query, trace or deployment behind them, and numerical statements distinguish measured, derived, estimated and unset values.",
+        "Teams then choose how much action to permit for each goal and tool. The described modes range from observation and recommendations to preparing changes for human approval or operating within defined boundaries. Each agent has its own identity, permissions and recorded actions. The post presents a preview with general availability planned, rather than evidence that these workflows have already improved agent quality in production."
+      ],
+      "format": "full",
+      "takeaway": "For teams checking AI releases: test whether each finding reaches the underlying trace and whether action permissions match the investigation’s risk.",
+      "image": "/edition-images/2026-11-04/evidence-linked-agent-checks.webp",
+      "image_width": 1440,
+      "image_height": 960,
+      "image_provenance": {
+        "kind": "generated-editorial",
+        "generator": "built-in-imagegen",
+        "prompt": "Use case: infographic-diagram. Asset type: standalone newspaper editorial infographic PNG. Create a landscape 3:2 illustration with warm ivory paper, dark charcoal ink, muted teal and ochre accents, fine engraved linework, generous spacing and a serif headline. One clear idea, readable at article width. Title exactly: \"Agent checks with evidence\". Diagram labels and layout: Set goal → Investigate traces → Link findings → Review actions. Source-supported facts: Honeycomb previews Team Agents. A supported goal compares evaluation scores with live conversation traces after changes. Goals run on deployments, alerts or schedules. Findings link to underlying evidence. Action permissions are chosen per goal and tool. Label Preview. Source: https://www.honeycomb.io/blog/honeycomb-team-agents-ai-sre-done-right. Use short plain-language labels and minimal text. No invented measurements, unsupported architecture, fake screenshots or unrelated logos. No watermark or footer. No AI-generated label. Keep source claims and conceptual relationships clear.",
+        "based_on": [
+          "https://www.honeycomb.io/blog/honeycomb-team-agents-ai-sre-done-right"
+        ],
+        "reviewed": true,
+        "sha256": "6cc2028af1c7162e0b69453cc1edb8c8efabe2883e85f48cc9ab6f037bfa91fb",
+        "optimization": {
+          "format": "webp",
+          "quality": 82,
+          "max_width": 1440,
+          "source_sha256": "39f2be75514b85ed1a86a80562b4445335c56c6432f544ca787e8008f0d661d0"
+        }
+      },
+      "source": "news",
+      "interest_score": 7,
+      "dedupe_key": "article:www.honeycomb.io/blog/honeycomb-team-agents-ai-sre-done-right",
+      "score_reason": "Relevant evidence-linked agent-quality workflow, but announced as a preview without independent outcome measurements.",
+      "source_evidence": {
+        "url": "https://www.honeycomb.io/blog/honeycomb-team-agents-ai-sre-done-right",
+        "publication_date": "2026-11-03",
+        "raw_date": "2026-11-03T13:58:00.000Z",
+        "method": "Primary article:published_time and Article JSON-LD datePublished agree; modification timestamps excluded."
+      }
+    },
+    {
+      "title": "CrowdStrike plans to bring Fiddler’s agent evaluations and traces into Falcon",
+      "url": "https://www.crowdstrike.com/en-us/press-releases/crowdstrike-to-acquire-fiddler-to-deliver-agent-observability/",
+      "publisher": "CrowdStrike",
+      "published": "2026-11-03",
+      "category_key": "observability",
+      "summary": "A definitive acquisition agreement proposes joining agent behavior evidence with security telemetry; closing and integration remain pending.",
+      "body": [
+        "Fiddler AI provides agent observability and explainability, helping teams examine agent behavior. CrowdStrike has signed a definitive agreement to acquire it and plans to offer its capabilities through the Falcon security platform. The announcement separates securing agents against attack from checking whether an agent behaved as intended while using valid credentials and approved tools.",
+        "The proposed integration starts with evaluation before deployment, checking accuracy, task completion and policy compliance across prompts, models and configurations. In production, it would trace decisions and tool calls across agent hierarchies, then look for behavioral drift, hallucinations and unintended actions. CrowdStrike also describes combining those records with identity, cloud and runtime telemetry to investigate behavior in its security context.",
+        "The source lists OpenTelemetry instrumentation and several supported agent frameworks, alongside token and spending visibility. These are the company’s planned product capabilities, not independent proof of accountability or improved safety. The acquisition remains subject to closing conditions, and Falcon Observe is described as a forthcoming offering. Teams should distinguish the signed agreement from completed ownership and from an already integrated deployment."
+      ],
+      "format": "full",
+      "takeaway": "For agent-platform owners: watch how trace access, evaluation workflows and security context are integrated after closing rather than assuming immediate availability.",
+      "image": "/edition-images/2026-11-04/fiddler-acquisition.webp",
+      "image_width": 1440,
+      "image_height": 960,
+      "image_provenance": {
+        "kind": "generated-editorial",
+        "generator": "built-in-imagegen",
+        "prompt": "Use case: infographic-diagram. Asset type: standalone newspaper editorial infographic PNG. Create a landscape 3:2 illustration with warm ivory paper, dark charcoal ink, muted teal and ochre accents, fine engraved linework, generous spacing and a serif headline. One clear idea, readable at article width. Title exactly: \"Planned agent visibility in Falcon\". Diagram labels and layout: Evaluate before deployment → Trace behavior → Correlate security context. Source-supported facts: CrowdStrike has signed an agreement to acquire Fiddler. Planned Falcon integration covers pre-deployment evaluations, agent decisions and tool calls, behavioral accountability and correlation with security telemetry. Clearly label Proposed integration and Acquisition pending. No claim the deal has closed. Source: https://www.crowdstrike.com/en-us/press-releases/crowdstrike-to-acquire-fiddler-to-deliver-agent-observability/. Use short plain-language labels and minimal text. No invented measurements, unsupported architecture, fake screenshots or unrelated logos. No watermark or footer. No AI-generated label. Keep source claims and conceptual relationships clear.",
+        "based_on": [
+          "https://www.crowdstrike.com/en-us/press-releases/crowdstrike-to-acquire-fiddler-to-deliver-agent-observability/"
+        ],
+        "reviewed": true,
+        "sha256": "642871916ce2937d5ca94ed007f3a8de5bf5da24db0ed91acc092fae5a7d590d",
+        "optimization": {
+          "format": "webp",
+          "quality": 78,
+          "max_width": 1440,
+          "source_sha256": "1f629be24c59cef5b21ca8fd8a0255a94c2074862614ff01a318640a682bb7a1"
+        }
+      },
+      "source": "news",
+      "interest_score": 8,
+      "dedupe_key": "article:www.crowdstrike.com/en-us/press-releases/crowdstrike-to-acquire-fiddler-to-deliver-agent-observability",
+      "score_reason": "Major proposed acquisition directly affecting agent evaluation and observability; integration and closing remain future claims.",
+      "source_evidence": {
+        "url": "https://www.crowdstrike.com/en-us/press-releases/crowdstrike-to-acquire-fiddler-to-deliver-agent-observability/",
+        "publication_date": "2026-11-03",
+        "raw_date": "2026-11-03",
+        "method": "Original company press-release dateline states November 3, 2026, corroborated by investor-relations release; updated_time not used."
       }
     }
   ],
@@ -248,152 +424,226 @@
       "https://www.splunk.com/en_us/blog/observability.html",
       "https://www.dynatrace.com/news/",
       "https://langfuse.com/changelog",
-      "https://arize.com/blog/phoenix-automatic-model-pricing-updates/",
-      "https://www.langchain.com/blog/context-engineering-challenges-late-2026"
+      "https://www.braintrust.dev/blog/trace-lake",
+      "https://www.langchain.com/blog/langsmith-byoc-aws-gc-azure",
+      "https://www.honeycomb.io/blog/honeycomb-team-agents-ai-sre-done-right",
+      "https://langfuse.com/changelog/2026-11-03-observations-api-continuation",
+      "https://langfuse.com/changelog/2026-11-03-skill-management",
+      "https://www.crowdstrike.com/en-us/press-releases/crowdstrike-to-acquire-fiddler-to-deliver-agent-observability/",
+      "https://www.elastic.co/observability-labs/blog/automated-root-cause-analysis-significant-events",
+      "https://archytas-ai.com/blog/this-is-fine",
+      "https://modelpeers.com",
+      "https://www.datadoghq.com/blog/ai/introducing-scout-sre-specialized-model-bits-ai/"
     ],
     "excluded": [
       {
-        "url": "https://pubmed.ncbi.nlm.nih.gov/40977447/",
-        "reason": "Psychological correlates of AI use, not operational evaluation or observability of AI systems."
+        "url": "https://github.com/finic-ai/kairos",
+        "hn_id": "50358314",
+        "reason": "Fraud decisioning product launch, rather than observability or evaluation of AI application behavior."
       },
       {
-        "url": "https://momentic.ai/",
-        "reason": "Agents performing general application UI testing; no concrete AI-system observability change selected."
+        "url": "https://facerater.net/",
+        "hn_id": "50357597",
+        "reason": "Consumer face analysis; outside AI observability beat."
       },
       {
-        "url": "https://news.ycombinator.com/item?id=50344065",
-        "reason": "Workplace discussion outside the beat."
+        "url": "https://www.hpcwire.com/2026/10/12/the-missing-operational-layer-in-large-scale-ai-training/",
+        "hn_id": "50352365",
+        "reason": "Linked primary article URL is dated October 12, outside frozen window; HN submission time is not publication proof."
       },
       {
-        "url": "https://www.paidintoken.com/ai/hardware",
-        "reason": "Undated pricing calculator landing page; HN submission is not original-publication evidence."
+        "url": "https://remene.si",
+        "hn_id": "50351830",
+        "reason": "Consumer MRI explanation tool; outside AI observability beat."
       },
       {
-        "url": "https://www.nytimes.com/2026/11/02/technology/anthropic-ai-computing-power.html",
-        "reason": "General computing-capacity business news outside AI observability."
+        "url": "https://github.com/glocker-app/glocker",
+        "hn_id": "50349646",
+        "reason": "Linux productivity blocker and usage tracker; outside AI observability beat."
       },
       {
-        "url": "https://huggingface.co/coral-bricks-ai/qwen-swe-drafter",
-        "reason": "Model drafter training announcement, not instrumentation or evaluation workflow coverage."
+        "url": "https://archytas-ai.com/blog/this-is-fine",
+        "hn_id": "50348472",
+        "reason": "Primary page explicitly published October 31; HN resurfacing on November 3 does not qualify."
       },
       {
-        "url": "https://developers.google.com/search/blog/2026/10/ai-training-control",
-        "reason": "AI training web controls outside the beat; URL also identifies an earlier publication month."
+        "url": "https://github.com/langfuse/langfuse/releases/tag/v4.74.0",
+        "reason": "Incremental rate limits, support-read audit logging and project transfer verified; editorial selection prioritizes deeper dated workflow reports. Not a separate story."
       },
       {
-        "url": "https://coywolf.com/news/seo/google-openai-microsoft-and-anthropic-back-a-shared-robotstxt-ai-training-signal/",
-        "reason": "Cross-post about training crawler policy outside the beat."
+        "url": "https://github.com/langfuse/langfuse/releases/tag/v4.73.0",
+        "reason": "API continuation and skill-management subjects covered through deeper dated primary changelog entries; other incremental gateway and maintenance changes not selected for this edition."
       },
       {
-        "url": "https://snusrate.com/rankings",
-        "reason": "Consumer tracking site outside the beat."
+        "url": "https://github.com/langfuse/langfuse/releases/tag/v3.227.0",
+        "reason": "Backport of opt-in trace export field groups also present in same-day platform release; no independent event."
       },
       {
-        "url": "https://archdocs.io",
-        "reason": "Relevant work-log concept reviewed, but not selected: verification roadmap is mostly prospective and concrete current feature is GitHub check tracking; prioritize direct telemetry/evaluation changes."
+        "url": "https://github.com/langfuse/langfuse/releases/tag/v3.226.0",
+        "reason": "Backport of project-transfer feature in same-day platform release; no independent event."
       },
       {
-        "url": "https://github.com/KingPin/Garrul",
-        "reason": "Website comments service outside the beat."
+        "url": "https://github.com/langwatch/langwatch/releases/tag/v3.23.0",
+        "reason": "Packaging-only monobinary/archive release for same platform event; no separate story."
       },
       {
-        "url": "https://news.ycombinator.com/item?id=50340088",
-        "reason": "Input-interface announcement outside the beat."
+        "url": "https://github.com/langwatch/langwatch/releases/tag/typescript-sdk%40v2.2.0",
+        "reason": "Same versioning and dataset-history commits as retained LangWatch platform release; merged into one story."
       },
       {
-        "url": "https://hangingcontext.com/",
-        "reason": "Agent news site outside the beat."
+        "url": "https://www.datadoghq.com/blog/ai/introducing-scout-sre-specialized-model-bits-ai/",
+        "reason": "Primary visible publication October 15; featured placement does not make it November 3 news."
       },
       {
-        "url": "https://github.com/Duecki1/CalibRaw",
-        "reason": "Photo editor outside the beat."
+        "url": "https://arize.com/blog/phoenix-automatic-model-pricing-updates/",
+        "reason": "Already covered in November 3 edition; excluded across history even though featured listing shows November."
       },
       {
-        "url": "https://stephenjgallagher.substack.com/p/ai-can-draw-blueprints-now",
-        "reason": "Model drawing demonstration outside the beat."
-      },
-      {
-        "url": "https://mindmademany.com/",
-        "reason": "Agent organization platform not selected without a concrete observability change."
-      },
-      {
-        "url": "https://news.ycombinator.com/item?id=50332805",
-        "reason": "Military technology discussion outside the beat."
-      },
-      {
-        "url": "https://www.langchain.com/blog/context-engineering-challenges-late-2026",
-        "reason": "Primary article reviewed: broad open context-engineering questions, without a concrete tracing/evaluation implementation; not selected."
-      },
-      {
-        "url": "https://opentelemetry.io/blog/",
-        "reason": "New Keycloak project-maintainer interview is generic observability with no concrete AI operating relevance established."
-      },
-      {
-        "url": "https://www.dynatrace.com/news/",
-        "reason": "New community platform and SIEM/security partnership not selected for the AI-observability-only beat; older AI ingest article excluded by date and historical coverage."
+        "url": "https://ir.crowdstrike.com/news-releases/news-release-details/crowdstrike-delivers-ai-security-and-safety-enterprise/",
+        "reason": "Overlaps Fiddler acquisition announcement; no separate cross-post or security-only story."
       }
     ],
-    "note": "Scoped sweep, not exhaustive web coverage. Used supplied discovery artifact to honor write-only run-directory constraint; did not rerun fetch:sources because it overwrites the external discovery path. Reviewed all 20 historical issue files, 113 stories, URLs, original-event keys and summaries; excluded tracking variants/cross-posts and repeated release content. All 8 GitHub release candidates verified with official API published_at and stable flags. All 19 HN candidates triaged; retained original first-party posts checked with official HN API. Independently visited all 11 configured News surfaces, Langfuse changelog and dated candidate articles; focused exact-date searches supplemented discovery. Honeycomb web timeout recovered via direct HTTP 200. Splunk listing returned a No results shell, supplemented by exact-date site search with no eligible candidate; Datadog shell supplemented with exact-date site search. These are discovery limitations, not proof that publishers had no new items.",
     "source_counts": {
-      "hn": 2,
-      "news": 1,
-      "github": 2
+      "hn": 1,
+      "news": 7,
+      "github": 1
     },
     "discovery": {
-      "artifact": ".cache/source-candidates/2026-11-02.json",
-      "fetched_at": "2026-11-03T00:57:54.828Z",
-      "hn_candidates": 19,
-      "github_candidates": 8,
+      "artifact": ".cache/source-candidates/2026-11-03.json",
+      "fetched_at": "2026-11-04T00:51:18.798Z",
+      "hn_candidates": 7,
+      "github_candidates": 7,
+      "rechecked": "discovery-recheck.json",
       "github_checks": [
         {
-          "repository": "langfuse/langfuse",
+          "source": "github",
+          "key": "langfuse/langfuse",
+          "url": "https://api.github.com/repos/langfuse/langfuse/releases?per_page=100",
+          "status": 200,
           "releases_checked": 100,
-          "coverage": "latest 100 releases; not a global GitHub search"
+          "eligible": [
+            {
+              "html_url": "https://github.com/langfuse/langfuse/releases/tag/v4.74.0",
+              "published_at": "2026-11-03T13:49:10Z",
+              "draft": false,
+              "prerelease": false,
+              "tag_name": "v4.74.0"
+            },
+            {
+              "html_url": "https://github.com/langfuse/langfuse/releases/tag/v4.73.0",
+              "published_at": "2026-11-03T11:35:53Z",
+              "draft": false,
+              "prerelease": false,
+              "tag_name": "v4.73.0"
+            },
+            {
+              "html_url": "https://github.com/langfuse/langfuse/releases/tag/v3.227.0",
+              "published_at": "2026-11-03T16:18:08Z",
+              "draft": false,
+              "prerelease": false,
+              "tag_name": "v3.227.0"
+            },
+            {
+              "html_url": "https://github.com/langfuse/langfuse/releases/tag/v3.226.0",
+              "published_at": "2026-11-03T13:07:56Z",
+              "draft": false,
+              "prerelease": false,
+              "tag_name": "v3.226.0"
+            }
+          ]
         },
         {
-          "repository": "Arize-ai/phoenix",
+          "source": "github",
+          "key": "Arize-ai/phoenix",
+          "url": "https://api.github.com/repos/Arize-ai/phoenix/releases?per_page=100",
+          "status": 200,
           "releases_checked": 100,
-          "coverage": "latest 100 releases; not a global GitHub search"
+          "eligible": []
         },
         {
-          "repository": "Arize-ai/openinference",
+          "source": "github",
+          "key": "Arize-ai/openinference",
+          "url": "https://api.github.com/repos/Arize-ai/openinference/releases?per_page=100",
+          "status": 200,
           "releases_checked": 100,
-          "coverage": "latest 100 releases; not a global GitHub search"
+          "eligible": []
         },
         {
-          "repository": "langchain-ai/langsmith-sdk",
+          "source": "github",
+          "key": "langchain-ai/langsmith-sdk",
+          "url": "https://api.github.com/repos/langchain-ai/langsmith-sdk/releases?per_page=100",
+          "status": 200,
           "releases_checked": 100,
-          "coverage": "latest 100 releases; not a global GitHub search"
+          "eligible": []
         },
         {
-          "repository": "braintrustdata/braintrust-sdk",
+          "source": "github",
+          "key": "braintrustdata/braintrust-sdk",
+          "url": "https://api.github.com/repos/braintrustdata/braintrust-sdk/releases?per_page=100",
+          "status": 200,
           "releases_checked": 100,
-          "coverage": "latest 100 releases; not a global GitHub search"
+          "eligible": []
         },
         {
-          "repository": "wandb/weave",
+          "source": "github",
+          "key": "wandb/weave",
+          "url": "https://api.github.com/repos/wandb/weave/releases?per_page=100",
+          "status": 200,
           "releases_checked": 100,
-          "coverage": "latest 100 releases; not a global GitHub search"
+          "eligible": []
         },
         {
-          "repository": "langwatch/langwatch",
+          "source": "github",
+          "key": "langwatch/langwatch",
+          "url": "https://api.github.com/repos/langwatch/langwatch/releases?per_page=100",
+          "status": 200,
           "releases_checked": 100,
-          "coverage": "latest 100 releases; not a global GitHub search"
+          "eligible": [
+            {
+              "html_url": "https://github.com/langwatch/langwatch/releases/tag/v3.23.0",
+              "published_at": "2026-11-03T18:25:40Z",
+              "draft": false,
+              "prerelease": false,
+              "tag_name": "v3.23.0"
+            },
+            {
+              "html_url": "https://github.com/langwatch/langwatch/releases/tag/typescript-sdk%40v2.2.0",
+              "published_at": "2026-11-03T18:14:08Z",
+              "draft": false,
+              "prerelease": false,
+              "tag_name": "typescript-sdk@v2.2.0"
+            },
+            {
+              "html_url": "https://github.com/langwatch/langwatch/releases/tag/langwatch%40v3.23.0",
+              "published_at": "2026-11-03T18:18:33Z",
+              "draft": false,
+              "prerelease": false,
+              "tag_name": "langwatch@v3.23.0"
+            }
+          ]
         },
         {
-          "repository": "Helicone/helicone",
+          "source": "github",
+          "key": "Helicone/helicone",
+          "url": "https://api.github.com/repos/Helicone/helicone/releases?per_page=100",
+          "status": 200,
           "releases_checked": 4,
-          "coverage": "latest 100 releases; not a global GitHub search"
+          "eligible": []
         }
       ]
     },
+    "note": "Scoped primary-source sweep, not exhaustive web coverage. Read all 21 historical issues containing 118 stories and reviewed canonical URLs, event keys, headlines, summaries and potentially overlapping bodies. Supplied discovery artifact preserved: fetch:sources was not rerun because it overwrites a path outside this invocation’s permitted writes; equivalent read-only HN queries and all eight GitHub watchlist requests completed successfully, with all candidate HN items and stable release publication timestamps verified. All 11 configured News surfaces visited with HTTP 200; dated articles and Langfuse changelog checked separately. Datadog latest section and Splunk listing were limited shells, supplemented by focused exact-date web searches and primary-page checks; no claim these publishers had no new stories. Initial guessed article slugs failed in web lookup, then exact links were obtained from official listings and fetched successfully. Publication labels normalized to ISO only when needed; dateModified and resurfacing times never used.",
     "editorial_review": {
       "independent_read_order": [
-        "dataset-label-helpers",
-        "telephone-evaluations",
-        "trace-recall-limits",
-        "model-price-catalog",
-        "native-tool-errors"
+        "fiddler-acquisition",
+        "skill-version-links",
+        "trace-lake",
+        "investigation-agent-evaluations",
+        "cloud-data-boundaries",
+        "observation-query-continuation",
+        "model-change-monitoring",
+        "dataset-history",
+        "evidence-linked-agent-checks"
       ],
       "standalone_context": true,
       "source_supported": true,
@@ -402,11 +652,12 @@
       "topic_order_reviewed": true
     },
     "evidence_files": [
-      "requests.jsonl",
-      "history-index.json",
+      "history-review.json",
+      "discovery-recheck.json",
       "generation-manifest.json",
       "image-review.json",
-      "validation.json"
+      "validation.json",
+      "research-log.json"
     ]
   },
   "name": "Tidy Traces — AI Observability Daily",

@@ -1,85 +1,149 @@
-# AI Observability Daily — 2026-11-03
+# AI Observability Daily — 2026-11-04
 
 By Soumendra Kumar Sahoo
 
 Canonical: https://tidytraces.com/
-Coverage window: 2026-11-02
+Coverage window: 2026-11-03
 
-## Nomos keeps synthetic warnings out of native tool errors
+## Modelpeers monitors provider pages for changes that can break AI applications
 
-Source: Mark Gantlett · Show HN — https://news.ycombinator.com/item?id=50337394
-Published: 2026-11-02
+Source: Modelpeers · first-party Show HN — https://news.ycombinator.com/item?id=50359805
+Published: 2026-11-03
 Channel: hn
 
-Nomos is a local harness that sits between a software repository and a coding agent. Its developer describes isolating tasks in Git worktrees and checking proposed changes before merging them. The first-party announcement also reports a narrower observability lesson: adding helpful warnings to tool results can make the underlying failure harder for an agent to interpret.
+Modelpeers is a change-monitoring feed for AI models and agents. In a first-party launch post, its creator describes building it after a model retirement left a product feature unavailable and an API parameter change caused errors. The service lets users follow the models and agents they depend on, with an optional digest of relevant changes.
 
-The author says an early hook, a handler that runs around tool use, injected process-failure and refusal warnings after operations completed. In a public benchmark, that synthetic text degraded attribution of native operating-system permission errors. The post reports a recovery after changing the hooks, but provides an author-run result rather than independent validation.
+The monitoring process starts by downloading provider pages every few hours, including changelogs, deprecation notices, status pages and pricing information. It hashes those pages to detect changes. When a page changes, it extracts the difference and asks two models to validate it. Changes that pass that check are added to the feed. This is the developer’s description of the process, rather than an independently measured detection guarantee.
 
-The revised approach first applies path guards before a tool runs. After execution, it keeps the hook silent on native result channels, preserving the original error evidence. A separate circuit breaker stops repeated identical failures. The broader harness also returns file-and-line fixes from verification gates. Those controls are distinct from the quality of the error record: the announcement does not establish that every agent shortcut is prevented.
+The useful operational distinction is between following a dependency and observing a running application. The post describes watching external changes that may require action; it does not demonstrate that every breaking change is found or that affected requests are automatically traced. Model validation is part of its publishing workflow, with no accuracy benchmark supplied in the announcement.
 
-Why it matters: For coding-agent harness authors: test whether hook messages preserve native failure evidence, separately from whether enforcement blocks an action.
+Why it matters: For AI application owners: a dependency-change feed can complement runtime monitoring; confirm important notices against the linked provider source.
 
-![Nomos keeps synthetic warnings out of native tool errors](/edition-images/2026-11-03/native-tool-errors.webp)
+![Modelpeers monitors provider pages for changes that can break AI applications](/edition-images/2026-11-04/model-change-monitoring.webp)
 
-## EchoChain measures information changes across repeated model exchanges
+## Langfuse warns that an empty observation page may still have more results
 
-Source: smusali · Show HN — https://news.ycombinator.com/item?id=50331840
-Published: 2026-11-02
-Channel: hn
-
-EchoChain is an open-source Python command-line tool for exploring how information changes when language models repeatedly exchange responses. Its author describes an AI version of telephone: a model converts an answer into a question, another answer follows, and the cycle repeats. The concern is whether factual details survive those transformations.
-
-The announcement describes multi-model testing and model rotation, together with tracking factual claims, calculating semantic similarity and reporting fidelity scores. These are ways to examine changes across the sequence, rather than judging only its final answer. The author also lists reproducibility, statistical tests and visualizations as supported features. The post supplies no numerical comparison establishing which model retains information best.
-
-The tool currently routes calls through OpenRouter and requires an API key for that service. The author connects the experiment to multi-agent systems in which generated information passes between agents without human validation. That is the motivation for the experiment, not evidence that a particular production system loses information at a measured rate. The announcement invites feedback on agent-building and evaluation frameworks.
-
-Why it matters: For multi-agent evaluation teams: consider testing information retention at each handoff, while checking the tool’s scoring definitions before comparing models.
-
-![EchoChain measures information changes across repeated model exchanges](/edition-images/2026-11-03/telephone-evaluations.webp)
-
-## Phoenix adds typed helpers for reusable dataset labels
-
-Source: Arize Phoenix · GitHub — https://github.com/Arize-ai/phoenix/releases/tag/%40arizeai/phoenix-client%407.18.0
-Published: 2026-11-02
-Channel: github
-
-Phoenix’s JavaScript client provides programmatic access to datasets used in AI evaluation workflows. Its release adds typed helpers for dataset labels within the existing datasets scope, allowing callers to manage reusable global labels rather than handling only individual dataset assignments.
-
-Callers can first manage the shared label resources and list them using cursor pagination, which retrieves successive pages through a continuation marker. They can then assign or replace labels on a dataset selected by name or GlobalID. The compact release note documents those operations, without describing automatic labeling, label-based access controls or measured workflow improvements.
-
-Why it matters: For teams organizing Phoenix evaluation datasets: check whether shared labels fit existing naming conventions before automating assignment or replacement.
-
-![Phoenix adds typed helpers for reusable dataset labels](/edition-images/2026-11-03/dataset-label-helpers.webp)
-
-## Phoenix refreshes model prices between server upgrades
-
-Source: Arize AI — https://arize.com/blog/phoenix-automatic-model-pricing-updates/
-Published: 2026-11-02
+Source: Langfuse — https://langfuse.com/changelog/2026-11-03-observations-api-continuation
+Published: 2026-11-03
 Channel: news
 
-Arize Phoenix is an open-source AI observability tool that calculates model-call costs from recorded token usage and model prices. Its built-in pricing catalog previously changed with server releases. A missing or outdated rate therefore required an upgrade or custom configuration. Automatic catalog updates let the server receive revised prices between upgrades.
+Langfuse is an AI observability platform whose Observations API retrieves records of application operations. Its reliability update lets expensive queries continue across several requests instead of requiring all progress within one request. That changes an assumption that some client pagination loops may make: an empty response page does not necessarily mean the query is finished.
 
-Shortly after startup, and then about daily, the server downloads a catalog published in the Phoenix GitHub repository from LiteLLM pricing data. It compares catalog generation dates and saves newer model entries and prices in one database transaction. Deployments sharing PostgreSQL use a database lock so only one server applies an update at a time. A saved catalog record prevents an older bundled catalog from overwriting downloaded prices after restart.
+The client first requests observations with the desired filters and page limit. It processes whatever records arrive, then reads meta.cursor from the response. If that cursor is present, the client sends another request using it, even if the previous page contained no observations. The loop finishes only when the cursor is absent. A short page is also insufficient evidence that all results have been returned.
 
-Newly received model-call spans, records of individual operations, use updated rates after the pricing cache refreshes. Existing trace costs stay unchanged, and custom model prices take precedence. Failed downloads leave existing prices in use and produce a log entry. Automatic downloads are enabled by default; operators can disable them explicitly or through the setting that disallows external resources. The Models settings page shows the catalog generation date, not the last update-check time.
+Langfuse says some documentation examples incorrectly stopped when a page was empty and asks users who copied them to update their loops. The corrected examples cover migration, evaluation pipelines, dataset preparation, analytics and trace deletion. The announcement addresses a small share of queries that time out; it does not claim a measured speed improvement for every query.
 
-Why it matters: For Phoenix operators: verify recorded model and token fields against a known call, and check custom rates before relying on calculated costs.
+Why it matters: For teams exporting or evaluating Langfuse records: audit pagination loops for an empty-page exit condition that can silently truncate results.
 
-![Phoenix refreshes model prices between server upgrades](/edition-images/2026-11-03/model-price-catalog.webp)
+![Langfuse warns that an empty observation page may still have more results](/edition-images/2026-11-04/observation-query-continuation.webp)
 
-## LangWatch bounds trace-field retrieval to protect workers
+## Braintrust argues for keeping agent history searchable and reusable in evaluations
 
-Source: LangWatch · GitHub — https://github.com/langwatch/langwatch/releases/tag/langwatch%40v3.22.0
-Published: 2026-11-02
+Source: Braintrust — https://www.braintrust.dev/blog/trace-lake
+Published: 2026-11-03
+Channel: news
+
+Braintrust is an AI evaluation and observability platform. Its Trace Lake article argues that agent execution records need to support more than opening a single slow request. Teams also need to search past decisions, outputs and tool interactions when a new failure pattern becomes apparent. Discarding those records removes evidence that a later investigation may need.
+
+The proposed approach first makes incoming traces quickly searchable through full-text queries and SQL. Next, object storage keeps growing execution history without requiring every query server to retain a complete local copy. The article also identifies keeping sensitive records inside a customer’s cloud as a requirement for some teams. Braintrust presents its Brainstore database as an implementation for these workloads.
+
+Finally, useful production examples should become evaluation cases with enough context to reproduce the behavior. That context may include application state or the resources used by an agent. Continuous analysis then looks for recurring issues across incoming traces. These are architectural requirements and vendor descriptions, rather than a new independent benchmark proving that every deployment meets the article’s performance targets.
+
+Why it matters: For observability teams: evaluate retention, search and reproducibility together before treating a trace store as a source of regression tests.
+
+![Braintrust argues for keeping agent history searchable and reusable in evaluations](/edition-images/2026-11-04/trace-lake.webp)
+
+## LangSmith expands managed deployments inside customers’ cloud accounts
+
+Source: LangChain — https://www.langchain.com/blog/langsmith-byoc-aws-gc-azure
+Published: 2026-11-03
+Channel: news
+
+LangSmith is an agent engineering platform for debugging runs, evaluating changes and deploying agents. Its Bring Your Own Cloud offering lets LangChain operate the service while sensitive application data stays in the customer’s cloud account. The announcement expands that deployment model to Azure and Google Cloud in beta, alongside generally available AWS support.
+
+The arrangement separates two responsibilities. LangChain operates a control plane containing authentication, organization configuration, billing metadata, hashed API keys and static interface assets. The customer owns a data plane holding traces, prompts, datasets, experiments, deployments and workspace secrets. An organization can have several data planes, separated by account and region, with workspaces assigned to each.
+
+Teams moving from self-hosting use an open-source tool for workspace resources such as datasets, experiments and prompts. Traces, runs and feedback require a separate migration performed by LangChain; the announcement says trace migration is available on AWS. Google Cloud deployments initially use the US control plane, and Azure sandbox support remains planned. Those limits matter when assessing data boundaries and migration readiness.
+
+Why it matters: For platform and security teams: map control-plane metadata separately from trace content, and confirm migration support for the chosen cloud.
+
+![LangSmith expands managed deployments inside customers’ cloud accounts](/edition-images/2026-11-04/cloud-data-boundaries.webp)
+
+## Langfuse links managed agent skills to the versions loaded in traces
+
+Source: Langfuse — https://langfuse.com/changelog/2026-11-03-skill-management
+Published: 2026-11-03
+Channel: news
+
+Langfuse is an AI observability platform that records agent operations. Its skill-management beta gives teams a shared place to store and revise skills, the reusable instructions agents can load. With skill tracing configured, generation records show reported skills and link to their versions. Successful skill-loading tool calls expose the version and file paths through the preview. A skill’s Usage tab combines counts, file loads and linked observations. API, command-line, Model Context Protocol and SDK access are supported; the announcement does not claim that a loaded skill guarantees correct behavior.
+
+Why it matters: For teams changing agent instructions: inspect version and file-load evidence when investigating behavior after a skill edit.
+
+![Langfuse links managed agent skills to the versions loaded in traces](/edition-images/2026-11-04/skill-version-links.webp)
+
+## LangWatch adds dataset history and pins test runs to dataset versions
+
+Source: LangWatch · GitHub release — https://github.com/langwatch/langwatch/releases/tag/langwatch%40v3.23.0
+Published: 2026-11-03
 Channel: github
 
-LangWatch is an AI observability and evaluation platform whose release notes include fixes to reading trace data. One entry bounds recall of offloaded fields so that large traces cannot kill the worker handling them. Offloaded-field recall means retrieving trace content that has been stored separately.
+LangWatch is an AI observability and evaluation platform. Its release adds dataset version history with automatic saving, comparison, restoration, retention and run pinning. The linked implementation explains the problem: edits previously left teams without a way to recover earlier dataset contents or identify which rows an experiment used. A version is an immutable snapshot of the dataset’s columns and rows.
 
-A second entry says a span’s own attributes no longer break its read through a request-parameter name. A span is the record of one operation within a trace. These notes identify two read-path corrections, but do not state the retrieval limit, affected payload sizes or measured memory savings. They are selected trace-reliability changes from a broader platform release.
+First, edits can produce an automatic saved version after activity settles. Teams can then compare a version with current contents or restore it as a new version without rewriting history. When an experiment starts, it records the dataset version it read; pinning selects a particular version instead of the latest. Agent and evaluator versioning also gain deployment labels. These changes make evaluation inputs more explicit, without independently proving complete reproducibility.
 
-Why it matters: For LangWatch operators handling large traces: check representative trace reads after upgrading and verify that expected fields remain available.
+For teams collecting coding-agent activity, the release adds capture of Grok CLI sessions through native OpenTelemetry and recognizes pi as a natively instrumented agent. OpenTelemetry is a standard way to emit operational records. Separate evaluation changes expand the supported decision-model providers and make Instant Evals use the saved model and the project’s own key. These are release-note claims; the notes do not establish identical trace coverage across every supported agent.
 
-![LangWatch bounds trace-field retrieval to protect workers](/edition-images/2026-11-03/trace-recall-limits.webp)
+Why it matters: For evaluation owners: verify the dataset, agent and evaluator versions associated with a run before comparing it with another result.
+
+![LangWatch adds dataset history and pins test runs to dataset versions](/edition-images/2026-11-04/dataset-history.webp)
+
+## Elastic tests whether its investigation agent checks evidence before grouping alerts
+
+Source: Elastic Observability Labs — https://www.elastic.co/observability-labs/blog/automated-root-cause-analysis-significant-events
+Published: 2026-11-03
+Channel: news
+
+Elastic Significant Events uses an investigation agent to check log evidence and group related alerts. Its walkthrough follows two rules detecting the same payment failure. The operational problem is that two firing rules can produce duplicate noise without establishing whether their shared explanation is supported by current logs.
+
+First, code detects changes in rule behavior and selects which detections reach the agent. The agent then reruns each rule’s original query, which it cannot rewrite to fit a hypothesis. It measures the returned evidence and groups signals that describe one incident. Code checks the proposed alert before storage and derives its lifecycle state, while the model judges the explanation and severity.
+
+The evaluation suite replays failure scenarios and checks grouping, affected entities, severity, status and required tool calls. Further checks examine whether successive cycles keep one incident and stable topology; model-based judges review the narrative and calibration. The reported run covers seven scenarios without a variance estimate. Elastic explicitly treats it as a smoke test rather than a benchmark, and warns that the evaluated model may differ from the production configuration.
+
+Why it matters: For teams evaluating investigation agents: test required evidence-gathering actions and repeated incident updates alongside the final explanation.
+
+![Elastic tests whether its investigation agent checks evidence before grouping alerts](/edition-images/2026-11-04/investigation-agent-evaluations.webp)
+
+## Honeycomb previews agent checks that link findings to production evidence
+
+Source: Honeycomb — https://www.honeycomb.io/blog/honeycomb-team-agents-ai-sre-done-right
+Published: 2026-11-03
+Channel: news
+
+Honeycomb is an observability platform that uses production telemetry to investigate software behavior. Its Team Agents preview describes background assistants that work on goals set by a team. One proposed goal directly concerns AI operations: compare Braintrust evaluation scores with live conversation traces after a prompt or model change.
+
+The workflow starts with a goal and a trigger, such as a deployment, alert or schedule. The agent investigates telemetry and can use connectors based on the Model Context Protocol to access supporting information such as deployments, documentation and costs. Honeycomb says findings link to the query, trace or deployment behind them, and numerical statements distinguish measured, derived, estimated and unset values.
+
+Teams then choose how much action to permit for each goal and tool. The described modes range from observation and recommendations to preparing changes for human approval or operating within defined boundaries. Each agent has its own identity, permissions and recorded actions. The post presents a preview with general availability planned, rather than evidence that these workflows have already improved agent quality in production.
+
+Why it matters: For teams checking AI releases: test whether each finding reaches the underlying trace and whether action permissions match the investigation’s risk.
+
+![Honeycomb previews agent checks that link findings to production evidence](/edition-images/2026-11-04/evidence-linked-agent-checks.webp)
+
+## CrowdStrike plans to bring Fiddler’s agent evaluations and traces into Falcon
+
+Source: CrowdStrike — https://www.crowdstrike.com/en-us/press-releases/crowdstrike-to-acquire-fiddler-to-deliver-agent-observability/
+Published: 2026-11-03
+Channel: news
+
+Fiddler AI provides agent observability and explainability, helping teams examine agent behavior. CrowdStrike has signed a definitive agreement to acquire it and plans to offer its capabilities through the Falcon security platform. The announcement separates securing agents against attack from checking whether an agent behaved as intended while using valid credentials and approved tools.
+
+The proposed integration starts with evaluation before deployment, checking accuracy, task completion and policy compliance across prompts, models and configurations. In production, it would trace decisions and tool calls across agent hierarchies, then look for behavioral drift, hallucinations and unintended actions. CrowdStrike also describes combining those records with identity, cloud and runtime telemetry to investigate behavior in its security context.
+
+The source lists OpenTelemetry instrumentation and several supported agent frameworks, alongside token and spending visibility. These are the company’s planned product capabilities, not independent proof of accountability or improved safety. The acquisition remains subject to closing conditions, and Falcon Observe is described as a forthcoming offering. Teams should distinguish the signed agreement from completed ownership and from an already integrated deployment.
+
+Why it matters: For agent-platform owners: watch how trace access, evaluation workflows and security context are integrated after closing rather than assuming immediate availability.
+
+![CrowdStrike plans to bring Fiddler’s agent evaluations and traces into Falcon](/edition-images/2026-11-04/fiddler-acquisition.webp)
 
 ---
 
