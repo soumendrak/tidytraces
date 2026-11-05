@@ -1,0 +1,586 @@
+{
+  "date": "2026-11-05",
+  "story_window": "2026-11-04",
+  "dek": "Agent evaluation loops, gateway cost attribution, and fixes that preserve failed-task and partial-stream evidence.",
+  "stories": [
+    {
+      "title": "Gauge tests documentation changes against recorded coding-agent sessions",
+      "url": "https://news.ycombinator.com/item?id=50371090",
+      "publisher": "Gauge · Evan, first-party Show HN",
+      "published": "2026-11-04",
+      "category_key": "evals",
+      "summary": "Gauge opens its command-line tool for testing how coding agents use documentation, then comparing proposed fixes against the same tasks.",
+      "body": [
+        "Gauge is a command-line tool for measuring how coding agents use a software product. Its developer announced an open-source release that runs tasks, records session transcripts and tests changes to documentation or other agent-facing material. The problem is practical: an agent may misunderstand a product limitation or repeat a workaround because of the pages it reads.",
+        "First, a team defines tasks that require the documentation and runs agents against them. Reviewers then examine the transcripts for friction or failures. Next, they create documentation variants and rerun the tasks with those variants substituted at the same hostname. The developer recommends paired experiments that change only the content and measure the resulting behavior.",
+        "The local backend uses Docker containers and a separate network gateway based on mitmproxy for each session. The gateway substitutes documentation and replaces credentials with placeholders. Local execution needs no Gauge account, although model inference remains remote. The announcement describes internal examples of correcting agent misconceptions; those reports are developer claims, rather than independent evidence that the loop improves every product."
+      ],
+      "format": "full",
+      "takeaway": "For developer-tool teams: use repeatable tasks and transcript evidence to check whether a documentation fix changes agent behavior.",
+      "image": "/edition-images/2026-11-05/gauge-agent-tests.webp",
+      "image_width": 1440,
+      "image_height": 960,
+      "image_provenance": {
+        "kind": "generated-editorial",
+        "generator": "built-in-imagegen",
+        "prompt": "Use case: infographic-diagram. Asset type: standalone newspaper editorial infographic PNG. Landscape 3:2, warm ivory newsprint, dark ink, muted brick red accents, engraved linework, generous white space, bold serif title and large readable labels. Explain one idea from Gauge's first-party announcement https://news.ycombinator.com/item?id=50371090. Title exactly: 'Test the docs an agent reads'. Four connected elements left to right labeled 'Define a task', 'Record the session', 'Change the docs', 'Run the task again'. Last element has a curved return arrow to Record the session, to show repeated measurement. Use simple task card, transcript, edited page and replay symbols. Facts: Gauge runs coding-agent tasks, analyzes transcripts for friction, swaps documentation variants and reruns tasks. No invented numbers or performance claims, no fake screenshots, no unrelated logos. No watermark or footer. Render only the specified short labels and title.",
+        "based_on": [
+          "https://news.ycombinator.com/item?id=50371090"
+        ],
+        "reviewed": true,
+        "sha256": "52230be0bfda3f5cc49058865b46db0c54556332509f5b1fa350dd0f21656bf9",
+        "optimization": {
+          "format": "webp",
+          "quality": 82,
+          "max_width": 1440,
+          "source_sha256": "2eaa14e686a4c5973daa9d248923c03babf693e826043a26ffa1b5063b736ccb"
+        }
+      },
+      "source": "hn",
+      "interest_score": 8,
+      "hn_id": "50371090",
+      "comments": "https://news.ycombinator.com/item?id=50371090",
+      "score_reason": "Concrete agent-evaluation workflow with execution evidence and controlled content comparisons.",
+      "dedupe_key": "hn-original:50371090",
+      "source_evidence": {
+        "url": "https://news.ycombinator.com/item?id=50371090",
+        "publication_date": "2026-11-04",
+        "raw_date": "2026-11-04T20:31:30Z",
+        "method": "Official HN API item timestamp and first-person announcement by Evan from Gauge; original Show HN post is the primary publication, not a date assigned to the repository."
+      }
+    },
+    {
+      "title": "Langfuse describes an evidence-first path from agent tests to production",
+      "url": "https://langfuse.com/blog/2026-11-04-regulated-industries-ai-agents-production",
+      "publisher": "Langfuse",
+      "published": "2026-11-04",
+      "category_key": "evals",
+      "summary": "The guide starts with offline traces, expert-reviewed examples and repeatable evaluations before extending monitoring to live traffic.",
+      "body": [
+        "Langfuse is an observability and evaluation platform for AI applications. Its new guide describes how regulated teams can collect evidence before allowing an agent to act in production. It addresses the tension between reviewing every answer manually and letting an insufficiently tested system handle consequential work.",
+        "The proposed workflow begins with tracing: record prompts, models, tool calls, retrieved context and human approvals, while masking sensitive fields before storage. Teams then run synthetic, historical or shadow examples. Domain experts inspect the resulting traces, identify the first failure and group recurring problems into categories. Those failures and the organization’s requirements become evaluation criteria, using code checks where possible and model judges when judgment is needed.",
+        "Experts next build expected outcomes and resolve disagreements in their labels. Teams compare experiments against a baseline and may reserve a held-out dataset to check overfitting. After launch, selected evaluations and user feedback monitor live behavior; interesting traces become new test cases. The guide recommends reducing human review only as evidence supports it. This is a vendor-authored workflow, not a guarantee of regulatory compliance or measured deployment success."
+      ],
+      "format": "full",
+      "takeaway": "For teams introducing agents into reviewed workflows: agree on failure criteria and expected outcomes before expanding autonomous handling.",
+      "image": "/edition-images/2026-11-05/regulated-evaluation-loop.webp",
+      "image_width": 1440,
+      "image_height": 960,
+      "image_provenance": {
+        "kind": "generated-editorial",
+        "generator": "built-in-imagegen",
+        "prompt": "Use case: infographic-diagram. Standalone PNG landscape 3:2 newspaper editorial infographic. Warm ivory newsprint, dark engraved ink, restrained ochre accents, bold serif title, spacious composition, very readable short labels. Source https://langfuse.com/blog/2026-11-04-regulated-industries-ai-agents-production. Title exactly 'Build evidence before launch'. Main left-to-right sequence with four simple illustrated elements labeled 'Trace test runs', 'Review failures', 'Compare evaluations', 'Monitor live behavior'. A thin return arrow from Monitor live behavior to Trace test runs shows feedback. Small label below first three stages: 'Before launch'. Small label below final stage: 'After launch'. Facts: guide recommends tracing offline examples, expert error analysis, datasets and experiment comparisons before deploying, then monitoring and converting interesting live traces into test cases. Do not imply guaranteed compliance or automatic approval. No invented metrics, no fake screenshot, no logo, no watermark or footer.",
+        "based_on": [
+          "https://langfuse.com/blog/2026-11-04-regulated-industries-ai-agents-production"
+        ],
+        "reviewed": true,
+        "sha256": "3b0899291c4c4f69f67246c272add514e42d23d8d234cc750c1caea1914fbf92",
+        "optimization": {
+          "format": "webp",
+          "quality": 78,
+          "max_width": 1440,
+          "source_sha256": "93e0c6f371014869d4f1076e92c242e5745038554737f45b39cb5eb113ab41b7"
+        }
+      },
+      "source": "news",
+      "interest_score": 8,
+      "score_reason": "Detailed source-backed workflow connecting trace evidence, expert agreement, offline tests and production monitoring.",
+      "dedupe_key": "article:langfuse.com/blog/2026-11-04-regulated-industries-ai-agents-production",
+      "source_evidence": {
+        "url": "https://langfuse.com/blog/2026-11-04-regulated-industries-ai-agents-production",
+        "publication_date": "2026-11-04",
+        "raw_date": "2026-11-04",
+        "method": "Original publisher visible publication label, normalized to ISO; modification and index dates excluded."
+      }
+    },
+    {
+      "title": "BotGauge links adversarial agent tests to traces and release evaluations",
+      "url": "https://www.accessnewswire.com/newsroom/en/business-and-professional-services/botgauge-launches-ai-agent-red-teaming-platform-with-200-attack-1246528",
+      "publisher": "BotGauge · company announcement via ACCESS Newswire",
+      "published": "2026-11-04",
+      "category_key": "evals",
+      "summary": "The company’s launch connects simulated attacks, execution records and repeatable evaluations in one workflow.",
+      "body": [
+        "BotGauge AI is an agent testing and monitoring platform that brings red teaming, tracing and evaluations together. Its launch announcement describes a feedback loop for failures that can appear when a model, prompt or tool changes. Red teaming means deliberately probing a system with adversarial scenarios rather than checking only expected requests.",
+        "First, teams run attack scenarios against an agent. BotGauge says the platform includes more than 200 strategies covering prompt injection, policy bypass, tool misuse and manipulation across multiple conversation turns, with support for custom business scenarios. When a test exposes a failure, the tracing layer records the prompts, responses, context, tool calls and execution path behind it.",
+        "The finding then becomes an evaluation for subsequent releases. Model-based evaluators assess goal completion, accuracy and adherence to policy so teams can track behavior as their system changes. The company says a lightweight software development kit connects existing model providers and agent frameworks. These are launch claims: the announcement provides no independent comparison of attack coverage, detection accuracy or the ability to prevent recurring failures."
+      ],
+      "format": "full",
+      "takeaway": "For agent-testing teams: check whether a discovered failure can be replayed with its original execution evidence before relying on a regression score.",
+      "image": "/edition-images/2026-11-05/botgauge-regression-loop.webp",
+      "image_width": 1440,
+      "image_height": 960,
+      "image_provenance": {
+        "kind": "generated-editorial",
+        "generator": "built-in-imagegen",
+        "prompt": "Use case: infographic-diagram. Standalone PNG landscape 3:2 newspaper editorial infographic. Warm ivory paper, dark engraved ink, restrained rust and teal, strong serif headline, generous spacing, short large labels readable at article width. Title exactly 'Turn attack findings into tests'. Three connected illustrated elements labeled 'Probe the agent', 'Inspect the trace', 'Repeat the evaluation'. Use a branching hostile-message arrow, a magnifying glass over a sequence of tool-call records, and a test checklist with replay arrow. Add small subheading 'BotGauge launch workflow'. Source-supported facts from company-issued announcement https://www.accessnewswire.com/newsroom/en/business-and-professional-services/botgauge-launches-ai-agent-red-teaming-platform-with-200-attack-1246528 : adversarial tests expose failures, traces show prompts, context and tool calls, findings become evaluations on future releases. Do not imply all attacks are caught or guaranteed prevention. No measurements, fake screenshots or logos. No watermark or footer.",
+        "based_on": [
+          "https://www.accessnewswire.com/newsroom/en/business-and-professional-services/botgauge-launches-ai-agent-red-teaming-platform-with-200-attack-1246528"
+        ],
+        "reviewed": true,
+        "sha256": "ccc5662cddfb6b3e4073bc117c6d5c4cc00d1b9af7ede80efc4a769fea3cffea",
+        "optimization": {
+          "format": "webp",
+          "quality": 78,
+          "max_width": 1440,
+          "source_sha256": "0ac6644b55b370348c47584b68603ae91942ce77b53d43f9c768e89e4dd4ed9b"
+        }
+      },
+      "source": "news",
+      "interest_score": 7,
+      "score_reason": "Relevant attack-to-trace-to-evaluation workflow, supported by a company launch announcement without independent effectiveness measurements.",
+      "dedupe_key": "article:www.accessnewswire.com/newsroom/en/business-and-professional-services/botgauge-launches-ai-agent-red-teaming-platform-with-200-attack-1246528",
+      "source_evidence": {
+        "url": "https://www.accessnewswire.com/newsroom/en/business-and-professional-services/botgauge-launches-ai-agent-red-teaming-platform-with-200-attack-1246528",
+        "publication_date": "2026-11-04",
+        "raw_date": "2026-11-04T14:00:00-05:00",
+        "method": "Company-issued press release visible dateline November 4 and article:published_time metadata agree; checked by HTTP with browser User-Agent."
+      }
+    },
+    {
+      "title": "Phoenix preserves failed-task status in experiment traces",
+      "url": "https://github.com/Arize-ai/phoenix/releases/tag/%40arizeai/phoenix-client%407.18.1",
+      "publisher": "Arize AI · Phoenix GitHub release",
+      "published": "2026-11-04",
+      "category_key": "evals",
+      "summary": "A client patch retains error status on failed experiment tasks and preserves instructions during prompt conversion.",
+      "body": [
+        "Phoenix is an AI observability and evaluation platform whose client records experiment tasks as trace spans, records of individual operations. A client patch fixes those records so failed tasks retain their error status. The same patch preserves system and developer instructions when converting prompts to Anthropic, while omitting empty text blocks from the system array. These are narrow correctness fixes: the release note does not describe a broader evaluation redesign or quantify the impact on earlier experiments."
+      ],
+      "format": "brief",
+      "brief_reason": "The primary client release contains only two short correctness notes; a full-length story would require unsupported implementation detail.",
+      "takeaway": "For Phoenix experiment users: verify a deliberately failing task remains marked as failed, and inspect converted instructions when comparing model behavior.",
+      "image": "/edition-images/2026-11-05/phoenix-failed-task-status.webp",
+      "image_width": 1440,
+      "image_height": 960,
+      "image_provenance": {
+        "kind": "generated-editorial",
+        "generator": "built-in-imagegen",
+        "prompt": "Use case: infographic-diagram. Standalone PNG landscape 3:2 newspaper editorial infographic. Warm ivory newsprint with dark engraved ink, restrained brick-red accent. Bold serif title, very large minimal labels, generous spacing. Title exactly 'Keep a failed task marked failed'. Simple left-to-right conceptual path: 'Experiment task' → 'Task fails' → 'Trace span: error'. Illustrate an experiment checklist, a broken task gear and a trace record with an error cross. Small subtitle 'Phoenix client fix'. Source-supported facts https://github.com/Arize-ai/phoenix/releases/tag/%40arizeai/phoenix-client%407.18.1 : preserve the error status of failed experiment task spans. A span is one operation record. The graphic should illustrate only this status-preservation change. Do not imply retries, automatic repair or measured outcomes. No version or dates, no fake screenshots, no logos, no watermark or footer.",
+        "based_on": [
+          "https://github.com/Arize-ai/phoenix/releases/tag/%40arizeai/phoenix-client%407.18.1"
+        ],
+        "reviewed": true,
+        "sha256": "34fef7289e2c8a64eaf0d5883db2700879cfd4c6ebf97ba5fc43b4951cc4eb80",
+        "optimization": {
+          "format": "webp",
+          "quality": 82,
+          "max_width": 1440,
+          "source_sha256": "861466b0cf08e02cad6ba0cc45d96cfa1f8868f023ab5030c4678794b007484e"
+        }
+      },
+      "source": "github",
+      "interest_score": 7,
+      "score_reason": "Narrow but direct experiment-evidence and prompt-fidelity corrections.",
+      "dedupe_key": "release:Arize-ai/phoenix:@arizeai/phoenix-client@7.18.1",
+      "source_evidence": {
+        "url": "https://github.com/Arize-ai/phoenix/releases/tag/%40arizeai/phoenix-client%407.18.1",
+        "publication_date": "2026-11-04",
+        "raw_date": "2026-11-04T21:30:58Z",
+        "method": "Official GitHub releases API published_at; draft=false and prerelease=false; release notes read directly."
+      }
+    },
+    {
+      "title": "Langfuse’s gateway beta links model spending to individual keys",
+      "url": "https://langfuse.com/changelog/2026-11-04-ai-gateway-public-beta",
+      "publisher": "Langfuse",
+      "published": "2026-11-04",
+      "category_key": "observability",
+      "summary": "The gateway forwards native model requests and records usage, with separate capture modes for full content or usage alone.",
+      "body": [
+        "Langfuse is an AI observability platform that records model calls and their costs. Its AI Gateway public beta adds a forwarding service for OpenAI and Anthropic requests, aimed at teams that want individual access keys and spending visibility without sharing provider credentials or adding tracing code.",
+        "An administrator first stores provider credentials, enables allowed models and chooses the project that receives traces. Teammates then create gateway keys and change their client’s base URL and key. The gateway preserves the native request format, including streaming, rather than translating between provider APIs. User keys stop working when their owner loses access; service account keys support shared workloads.",
+        "On Langfuse Cloud, each request becomes a recorded generation. Organizations choose full input and output capture or usage-only capture without prompts and responses. Analytics separates cost, requests and tokens by user, key and model, while gateway-role members see their own usage. Missing model prices produce an alert. Provider processing still follows the customer’s provider agreement, and recorded generations are billable observations. During beta, routes, headers and behavior may change."
+      ],
+      "format": "full",
+      "takeaway": "For teams sharing model access: test key attribution, capture settings and missing-price handling before treating gateway totals as complete spending evidence.",
+      "image": "/edition-images/2026-11-05/gateway-cost-visibility.webp",
+      "image_width": 1440,
+      "image_height": 960,
+      "image_provenance": {
+        "kind": "generated-editorial",
+        "generator": "built-in-imagegen",
+        "prompt": "Use case: infographic-diagram. Standalone PNG newspaper graphic, landscape 3:2. Warm ivory paper, dark engraved ink, muted teal accents, large serif headline, generous space, minimal labels readable in a newspaper column. Title: 'See spending by gateway key'. Main diagram: 'App or coding agent' → 'Langfuse Gateway' → 'Model provider'. Under gateway a downward branch leads to a ledger labeled 'Usage and cost by key'. Two small selectable-looking cards beside the ledger labeled 'Full capture' and 'Usage only'. Facts supported by https://langfuse.com/changelog/2026-11-04-ai-gateway-public-beta: gateway forwards native OpenAI and Anthropic requests using stored provider credentials, captures calls with per-key usage and cost, organization chooses full content or usage-only without prompts and outputs. Clearly show 'Public beta' as a small status next to title. Do not imply usage only lacks token data. No invented metrics, no fake screenshot, no unrelated logo, no watermark, no footer. Render only those short labels.",
+        "based_on": [
+          "https://langfuse.com/changelog/2026-11-04-ai-gateway-public-beta"
+        ],
+        "reviewed": true,
+        "sha256": "33d39d1b9ec9eb710350a003707e6af35812d576b4ec5f70657ba6f21a5d25b3",
+        "optimization": {
+          "format": "webp",
+          "quality": 82,
+          "max_width": 1440,
+          "source_sha256": "1e258dc742b6067c97db0b3b7539b58a37b17959854bb3484efb98d5c7c511fc"
+        }
+      },
+      "source": "news",
+      "interest_score": 8,
+      "score_reason": "Direct new model-call visibility with key-level attribution and explicit privacy and pricing limits.",
+      "dedupe_key": "article:langfuse.com/changelog/2026-11-04-ai-gateway-public-beta",
+      "source_evidence": {
+        "url": "https://langfuse.com/changelog/2026-11-04-ai-gateway-public-beta",
+        "publication_date": "2026-11-04",
+        "raw_date": "2026-11-04",
+        "method": "Original publisher visible publication label, normalized to ISO; modification and index dates excluded."
+      }
+    },
+    {
+      "title": "OpenInference keeps output and token counts when model streams fail",
+      "url": "https://github.com/Arize-ai/openinference/releases/tag/%40arizeai/openinference-instrumentation-openai%404.4.3",
+      "publisher": "Arize AI · OpenInference GitHub release",
+      "published": "2026-11-04",
+      "category_key": "observability",
+      "summary": "The JavaScript OpenAI integration records terminal incomplete and failed Responses events, preserving evidence previously missing from those spans.",
+      "body": [
+        "OpenInference provides instrumentation that records AI model activity in traces. Its JavaScript OpenAI integration now retains output and token counts from Responses streams that end incomplete or failed. A span is the trace record for one operation; previously, these streams left an error-marked span without the output or usage that could explain what happened.",
+        "The change expands which final stream events the integration keeps. It previously retained only the completed event. It now also records the response carried by incomplete and failed events, so their output and token information remain available. The release gives reaching the output-token limit as an example of an incomplete response.",
+        "Status handling still distinguishes the two cases. A failed response remains an error, while an incomplete response is recorded like a completed one. Consequently, the presence of recorded output does not mean a model finished its requested work. The release documents a telemetry correction, without claiming that it prevents model failures or changes the provider’s response."
+      ],
+      "format": "full",
+      "takeaway": "For teams reviewing streaming costs or failures: test incomplete and failed responses separately, and check response state alongside span status.",
+      "image": "/edition-images/2026-11-05/openai-partial-streams.webp",
+      "image_width": 1440,
+      "image_height": 960,
+      "image_provenance": {
+        "kind": "generated-editorial",
+        "generator": "built-in-imagegen",
+        "prompt": "Use case: infographic-diagram. Generate a SIMPLE, spacious newspaper infographic PNG, landscape 3:2. Flat solid warm ivory background, NO paper grain or texture. Thin dark ink line art and flat muted red accents. No dense shading, crosshatching, ornamental borders, gradients or decorative detail. Fewer than 45 words total. Large legible serif title: 'Keep evidence from partial streams'. Two spacious rows of rounded outline boxes with plain arrows. Top row: 'Incomplete response' → 'Output + token counts' → 'Recorded like completed'. Bottom row: 'Failed response' → 'Output + token counts' → 'Error status retained'. One small note: 'Recorded output does not prove task completion'. Tiny category above title 'OpenInference'. This diagram explains the JavaScript OpenAI integration fix from https://github.com/Arize-ai/openinference/releases/tag/%40arizeai/openinference-instrumentation-openai%404.4.3: output and usage are retained for incomplete and failed terminal stream events; failed remains error, incomplete recorded like completed. No other text, no logo, no footer, no watermark, no unsupported metrics or claims. Make the layout clean and sparse so it compresses efficiently.",
+        "based_on": [
+          "https://github.com/Arize-ai/openinference/releases/tag/%40arizeai/openinference-instrumentation-openai%404.4.3"
+        ],
+        "reviewed": true,
+        "sha256": "6070dc72e2385389a7d355a6392dad00859e7ccbfe347d9cbffb9d11f1988b4d",
+        "optimization": {
+          "format": "webp",
+          "quality": 82,
+          "max_width": 1440,
+          "source_sha256": "d3eea1b850593c9e44318face253645f1bf1782c46a745c4f0a58b232afcc69b"
+        }
+      },
+      "source": "github",
+      "interest_score": 8,
+      "score_reason": "Concrete correction to missing output and usage evidence on unsuccessful model streams.",
+      "dedupe_key": "release:Arize-ai/openinference:@arizeai/openinference-instrumentation-openai@4.4.3",
+      "source_evidence": {
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/%40arizeai/openinference-instrumentation-openai%404.4.3",
+        "publication_date": "2026-11-04",
+        "raw_date": "2026-11-04T17:23:47Z",
+        "method": "Official GitHub releases API published_at; draft=false and prerelease=false; release notes read directly."
+      }
+    }
+  ],
+  "research": {
+    "status": "complete",
+    "completed_sources": [
+      "hn",
+      "news",
+      "github"
+    ],
+    "checked_urls": [
+      "https://arize.com/blog/",
+      "https://langfuse.com/blog",
+      "https://www.langchain.com/blog",
+      "https://www.braintrust.dev/blog",
+      "https://opentelemetry.io/blog/",
+      "https://www.elastic.co/observability-labs/blog",
+      "https://www.datadoghq.com/blog/",
+      "https://www.honeycomb.io/blog/",
+      "https://www.digitalocean.com/blog",
+      "https://www.splunk.com/en_us/blog/observability.html",
+      "https://www.dynatrace.com/news/",
+      "https://langfuse.com/changelog",
+      "https://langfuse.com/changelog/2026-11-04-ai-gateway-public-beta",
+      "https://langfuse.com/blog/2026-11-04-regulated-industries-ai-agents-production",
+      "https://www.askhandle.com/blog/how-to-evaluate-an-ai-agent-before-and-after-launch",
+      "https://www.accessnewswire.com/newsroom/en/business-and-professional-services/botgauge-launches-ai-agent-red-teaming-platform-with-200-attack-1246528",
+      "https://www.honeycomb.io/blog/good-agents-need-good-managers-innovation-week"
+    ],
+    "excluded": [
+      {
+        "url": "https://retractionwatch.com/2026/10/30/scientific-reports-pubmed-on-hold-national-library-medicine-evaluation/",
+        "hn_id": "50371411",
+        "reason": "Journal indexing article originally dated October 30 and outside AI observability beat."
+      },
+      {
+        "url": "https://news.ycombinator.com/item?id=50372412",
+        "hn_id": "50372412",
+        "reason": "Custom chess model discussion; not AI observability."
+      },
+      {
+        "url": "https://runanywhere.ai/blog/glm-5-3-flash-trainium2-nki-megakernels",
+        "hn_id": "50372064",
+        "reason": "Model-serving kernel optimization rather than tracing or evaluations; not selected for this observability edition."
+      },
+      {
+        "url": "https://getchronosphere.com/",
+        "hn_id": "50372029",
+        "reason": "Pull-request reading tool, not agent observability; unrelated to the observability vendor with a similar name."
+      },
+      {
+        "url": "https://zenodo.org/records/23918639/files/RoundSquare.lean?download=1",
+        "hn_id": "50371709",
+        "reason": "Mathematical proof announcement; outside beat."
+      },
+      {
+        "url": "https://atlas.insanearts.io/",
+        "hn_id": "50369542",
+        "reason": "Mac automation environment; no substantive observability/evaluation change selected."
+      },
+      {
+        "url": "https://news.ycombinator.com/item?id=50368804",
+        "hn_id": "50368804",
+        "reason": "Media management and editing; outside beat."
+      },
+      {
+        "url": "https://www.linum.ai/field-notes/pjit-21k",
+        "hn_id": "50368208",
+        "reason": "Text-to-image model training launch; outside beat."
+      },
+      {
+        "url": "https://news.ycombinator.com/item?id=50367831",
+        "hn_id": "50367831",
+        "reason": "General AI discussion; no original observability report."
+      },
+      {
+        "url": "https://github.com/alex0ptr/aigude",
+        "hn_id": "50366425",
+        "reason": "Feed-to-podcast consumer tool; outside beat."
+      },
+      {
+        "url": "https://news.ycombinator.com/item?id=50366147",
+        "hn_id": "50366147",
+        "reason": "General model math discussion; not an operational evaluation report."
+      },
+      {
+        "url": "https://trakis.io/research/block-training-keep-answers",
+        "hn_id": "50365123",
+        "reason": "Website crawler-permission census; not visibility into AI application behavior."
+      },
+      {
+        "url": "https://www.glow.io/blogs/mcphantom-ai-coding-agents-are-installing-vulnerable-deprecated-mcp-servers-from-training-data",
+        "hn_id": "50363833",
+        "reason": "Primary Glow page has conflicting November 2 and November 3 labels; neither is November 4. HN resurfacing excluded."
+      },
+      {
+        "url": "https://news.ycombinator.com/item?id=50363461",
+        "hn_id": "50363461",
+        "reason": "Consumer account training-policy discussion; no verified original observability change."
+      },
+      {
+        "url": "https://tickertown.ai",
+        "hn_id": "50361263",
+        "reason": "Stock-market simulation; outside beat."
+      },
+      {
+        "url": "https://github.com/langfuse/langfuse/releases/tag/v4.75.0",
+        "reason": "Gateway launch covered through its deeper same-day changelog. Skill-resource tracing overlaps prior skill-management coverage; other incremental ingestion, gateway and UI maintenance changes not selected as independent stories."
+      },
+      {
+        "url": "https://github.com/Arize-ai/phoenix/releases/tag/%40arizeai/phoenix-cli%401.19.2",
+        "reason": "Dependency-only wrapper release for the client fixes retained in this edition; same underlying event."
+      },
+      {
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-vertexai-v0.1.32",
+        "reason": "Incremental instrumentation dependency refresh; no distinct story selected. Other substantive integration-specific fixes reviewed in discovery evidence but narrower than retained coverage."
+      },
+      {
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-typesafe-v0.1.8",
+        "reason": "Incremental instrumentation dependency refresh; no distinct story selected. Other substantive integration-specific fixes reviewed in discovery evidence but narrower than retained coverage."
+      },
+      {
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-together-v0.1.16",
+        "reason": "Incremental instrumentation dependency refresh; no distinct story selected. Other substantive integration-specific fixes reviewed in discovery evidence but narrower than retained coverage."
+      },
+      {
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-strands-agents-v0.1.15",
+        "reason": "Incremental instrumentation dependency refresh; no distinct story selected. Other substantive integration-specific fixes reviewed in discovery evidence but narrower than retained coverage."
+      },
+      {
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-smolagents-v0.1.46",
+        "reason": "Incremental instrumentation dependency refresh; no distinct story selected. Other substantive integration-specific fixes reviewed in discovery evidence but narrower than retained coverage."
+      },
+      {
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-pydantic-ai-v0.1.33",
+        "reason": "Incremental instrumentation dependency refresh; no distinct story selected. Other substantive integration-specific fixes reviewed in discovery evidence but narrower than retained coverage."
+      },
+      {
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-portkey-v0.1.25",
+        "reason": "Incremental instrumentation dependency refresh; no distinct story selected. Other substantive integration-specific fixes reviewed in discovery evidence but narrower than retained coverage."
+      },
+      {
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-pipecat-v2.0.10",
+        "reason": "Incremental instrumentation dependency refresh; no distinct story selected. Other substantive integration-specific fixes reviewed in discovery evidence but narrower than retained coverage."
+      },
+      {
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-openllmetry-v0.1.26",
+        "reason": "Incremental instrumentation dependency refresh; no distinct story selected. Other substantive integration-specific fixes reviewed in discovery evidence but narrower than retained coverage."
+      },
+      {
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-openlit-v0.1.21",
+        "reason": "Incremental instrumentation dependency refresh; no distinct story selected. Other substantive integration-specific fixes reviewed in discovery evidence but narrower than retained coverage."
+      },
+      {
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-openai-agents-v2.7.1",
+        "reason": "Incremental instrumentation dependency refresh; no distinct story selected. Other substantive integration-specific fixes reviewed in discovery evidence but narrower than retained coverage."
+      },
+      {
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-ollama-v0.1.16",
+        "reason": "Incremental instrumentation dependency refresh; no distinct story selected. Other substantive integration-specific fixes reviewed in discovery evidence but narrower than retained coverage."
+      },
+      {
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-mistralai-v2.3.1",
+        "reason": "Incremental instrumentation dependency refresh; no distinct story selected. Other substantive integration-specific fixes reviewed in discovery evidence but narrower than retained coverage."
+      },
+      {
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-mcp-v2.1.1",
+        "reason": "Incremental instrumentation dependency refresh; no distinct story selected. Other substantive integration-specific fixes reviewed in discovery evidence but narrower than retained coverage."
+      },
+      {
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-llama-index-v4.7.1",
+        "reason": "Incremental instrumentation dependency refresh; no distinct story selected. Other substantive integration-specific fixes reviewed in discovery evidence but narrower than retained coverage."
+      },
+      {
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-litellm-v0.1.53",
+        "reason": "Incremental instrumentation dependency refresh; no distinct story selected. Other substantive integration-specific fixes reviewed in discovery evidence but narrower than retained coverage."
+      },
+      {
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-langchain-v0.1.82",
+        "reason": "Incremental instrumentation dependency refresh; no distinct story selected. Other substantive integration-specific fixes reviewed in discovery evidence but narrower than retained coverage."
+      },
+      {
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-instructor-v0.1.31",
+        "reason": "Incremental instrumentation dependency refresh; no distinct story selected. Other substantive integration-specific fixes reviewed in discovery evidence but narrower than retained coverage."
+      },
+      {
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-haystack-v0.1.49",
+        "reason": "Incremental instrumentation dependency refresh; no distinct story selected. Other substantive integration-specific fixes reviewed in discovery evidence but narrower than retained coverage."
+      },
+      {
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-guardrails-v0.1.29",
+        "reason": "Incremental instrumentation dependency refresh; no distinct story selected. Other substantive integration-specific fixes reviewed in discovery evidence but narrower than retained coverage."
+      },
+      {
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-groq-v0.1.36",
+        "reason": "Incremental instrumentation dependency refresh; no distinct story selected. Other substantive integration-specific fixes reviewed in discovery evidence but narrower than retained coverage."
+      },
+      {
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-google-genai-v1.5.1",
+        "reason": "Incremental instrumentation dependency refresh; no distinct story selected. Other substantive integration-specific fixes reviewed in discovery evidence but narrower than retained coverage."
+      },
+      {
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-google-adk-v1.1.1",
+        "reason": "Incremental instrumentation dependency refresh; no distinct story selected. Other substantive integration-specific fixes reviewed in discovery evidence but narrower than retained coverage."
+      },
+      {
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-dspy-v0.1.50",
+        "reason": "Incremental instrumentation dependency refresh; no distinct story selected. Other substantive integration-specific fixes reviewed in discovery evidence but narrower than retained coverage."
+      },
+      {
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-crewai-v1.1.23",
+        "reason": "Incremental instrumentation dependency refresh; no distinct story selected. Other substantive integration-specific fixes reviewed in discovery evidence but narrower than retained coverage."
+      },
+      {
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-cohere-v0.1.18",
+        "reason": "Incremental instrumentation dependency refresh; no distinct story selected. Other substantive integration-specific fixes reviewed in discovery evidence but narrower than retained coverage."
+      },
+      {
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-claude-agent-sdk-v0.1.25",
+        "reason": "Incremental instrumentation dependency refresh; no distinct story selected. Other substantive integration-specific fixes reviewed in discovery evidence but narrower than retained coverage."
+      },
+      {
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-beeai-v0.1.32",
+        "reason": "Incremental instrumentation dependency refresh; no distinct story selected. Other substantive integration-specific fixes reviewed in discovery evidence but narrower than retained coverage."
+      },
+      {
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-bedrock-v0.1.63",
+        "reason": "Incremental instrumentation dependency refresh; no distinct story selected. Other substantive integration-specific fixes reviewed in discovery evidence but narrower than retained coverage."
+      },
+      {
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-autogen-agentchat-v0.1.25",
+        "reason": "Incremental instrumentation dependency refresh; no distinct story selected. Other substantive integration-specific fixes reviewed in discovery evidence but narrower than retained coverage."
+      },
+      {
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-agno-v1.1.1",
+        "reason": "Incremental instrumentation dependency refresh; no distinct story selected. Other substantive integration-specific fixes reviewed in discovery evidence but narrower than retained coverage."
+      },
+      {
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-agentspec-v0.1.17",
+        "reason": "Incremental instrumentation dependency refresh; no distinct story selected. Other substantive integration-specific fixes reviewed in discovery evidence but narrower than retained coverage."
+      },
+      {
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-agent-framework-v0.1.16",
+        "reason": "Incremental instrumentation dependency refresh; no distinct story selected. Other substantive integration-specific fixes reviewed in discovery evidence but narrower than retained coverage."
+      },
+      {
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-ag2-v0.1.15",
+        "reason": "Incremental instrumentation dependency refresh; no distinct story selected. Other substantive integration-specific fixes reviewed in discovery evidence but narrower than retained coverage."
+      },
+      {
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/go/openinference-instrumentation-openai-go/v0.1.2",
+        "reason": "Parallel implementation of unsuccessful Responses stream capture; consolidated editorially around the more explicit JavaScript release rather than repeating the mechanism."
+      },
+      {
+        "url": "https://arize.com/blog/phoenix-automatic-model-pricing-updates/",
+        "reason": "Already covered in historical issue; featured listing is not a new event."
+      },
+      {
+        "url": "https://www.honeycomb.io/blog/good-agents-need-good-managers-innovation-week",
+        "reason": "Dated recap reviewed; predominantly revisits Team Agents, fleet visibility and tracing announcements already covered. No separate launch story."
+      },
+      {
+        "url": "https://www.askhandle.com/blog/how-to-evaluate-an-ai-agent-before-and-after-launch",
+        "reason": "Dated primary page verified via HTTP after web tool failed. Broad evaluation guidance not selected alongside the more concrete retained workflows."
+      },
+      {
+        "url": "https://www.langchain.com/blog/langsmith-byoc-aws-gc-azure",
+        "reason": "November 3 publication and already covered; outside window."
+      },
+      {
+        "url": "https://www.datadoghq.com/events-webinars/",
+        "reason": "Event dates do not establish original publication dates; no event listing retained."
+      }
+    ],
+    "source_counts": {
+      "hn": 1,
+      "news": 3,
+      "github": 2
+    },
+    "discovery": {
+      "artifact": ".cache/source-candidates/2026-11-04.json",
+      "fetched_at": "2026-11-05T00:54:23.139Z",
+      "hn_candidates": 16,
+      "github_candidates": 39,
+      "recheck": "discovery-recheck.json",
+      "hn_queries": 5,
+      "github_repositories": 8
+    },
+    "note": "Scoped primary-source sweep, not exhaustive web coverage. All 22 existing issues and 127 stories loaded, with primary URLs, event keys, headlines and potentially overlapping content checked. Supplied discovery preserved: fetch:sources would overwrite a path outside authorized run writes, so equivalent read-only HN queries and eight GitHub watchlist checks were performed and logged under this run. All query pages fit a single response; official HN API items verified. All 11 configured News surfaces returned HTTP 200. Splunk listing is a limited shell, supplemented by exact-date search; Datadog searches found events and financial results rather than an eligible original technical story. Transient web failures for Elastic, AskHandle, ACCESS Newswire and HN recovered via direct HTTP/API; Langfuse changelog succeeded in web tool after a direct SSL error. No failed critical source remains. Glow dates excluded rather than using HN submission time. Langfuse gateway beta is a distinct launch/workflow announcement from earlier incremental gateway changes. Original PNGs preserved; one oversized WebP conversion attempt required simpler built-in regeneration, not an alternate image service.",
+    "editorial_review": {
+      "independent_read_order": [
+        "openai-partial-streams",
+        "regulated-evaluation-loop",
+        "phoenix-failed-task-status",
+        "gauge-agent-tests",
+        "botgauge-regression-loop",
+        "gateway-cost-visibility"
+      ],
+      "standalone_context": true,
+      "source_supported": true,
+      "takeaways_separate": true,
+      "brief_reasons_reviewed": true,
+      "topic_order_reviewed": true,
+      "notes": "Each story introduces its own product, states the supported problem and mechanism, and retains evidence limits. No dates or versions in narrative. Phoenix brief stays within its two release notes. Source tabs remain separate classifications; evaluation stories grouped. No regulatory guidance claims or guaranteed outcomes."
+    },
+    "evidence_files": [
+      "history-review.json",
+      "discovery-recheck.json",
+      "news-checks.json",
+      "primary-date-labels.json",
+      "botgauge-date-evidence.json",
+      "honeycomb-date-evidence.json",
+      "generation-manifest.json",
+      "image-review.json",
+      "validation.json"
+    ]
+  }
+}

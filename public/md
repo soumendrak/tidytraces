@@ -1,149 +1,101 @@
-# AI Observability Daily — 2026-11-04
+# AI Observability Daily — 2026-11-05
 
 By Soumendra Kumar Sahoo
 
 Canonical: https://tidytraces.com/
-Coverage window: 2026-11-03
+Coverage window: 2026-11-04
 
-## Modelpeers monitors provider pages for changes that can break AI applications
+## Gauge tests documentation changes against recorded coding-agent sessions
 
-Source: Modelpeers · first-party Show HN — https://news.ycombinator.com/item?id=50359805
-Published: 2026-11-03
+Source: Gauge · Evan, first-party Show HN — https://news.ycombinator.com/item?id=50371090
+Published: 2026-11-04
 Channel: hn
 
-Modelpeers is a change-monitoring feed for AI models and agents. In a first-party launch post, its creator describes building it after a model retirement left a product feature unavailable and an API parameter change caused errors. The service lets users follow the models and agents they depend on, with an optional digest of relevant changes.
+Gauge is a command-line tool for measuring how coding agents use a software product. Its developer announced an open-source release that runs tasks, records session transcripts and tests changes to documentation or other agent-facing material. The problem is practical: an agent may misunderstand a product limitation or repeat a workaround because of the pages it reads.
 
-The monitoring process starts by downloading provider pages every few hours, including changelogs, deprecation notices, status pages and pricing information. It hashes those pages to detect changes. When a page changes, it extracts the difference and asks two models to validate it. Changes that pass that check are added to the feed. This is the developer’s description of the process, rather than an independently measured detection guarantee.
+First, a team defines tasks that require the documentation and runs agents against them. Reviewers then examine the transcripts for friction or failures. Next, they create documentation variants and rerun the tasks with those variants substituted at the same hostname. The developer recommends paired experiments that change only the content and measure the resulting behavior.
 
-The useful operational distinction is between following a dependency and observing a running application. The post describes watching external changes that may require action; it does not demonstrate that every breaking change is found or that affected requests are automatically traced. Model validation is part of its publishing workflow, with no accuracy benchmark supplied in the announcement.
+The local backend uses Docker containers and a separate network gateway based on mitmproxy for each session. The gateway substitutes documentation and replaces credentials with placeholders. Local execution needs no Gauge account, although model inference remains remote. The announcement describes internal examples of correcting agent misconceptions; those reports are developer claims, rather than independent evidence that the loop improves every product.
 
-Why it matters: For AI application owners: a dependency-change feed can complement runtime monitoring; confirm important notices against the linked provider source.
+Why it matters: For developer-tool teams: use repeatable tasks and transcript evidence to check whether a documentation fix changes agent behavior.
 
-![Modelpeers monitors provider pages for changes that can break AI applications](/edition-images/2026-11-04/model-change-monitoring.webp)
+![Gauge tests documentation changes against recorded coding-agent sessions](/edition-images/2026-11-05/gauge-agent-tests.webp)
 
-## Langfuse warns that an empty observation page may still have more results
+## Langfuse describes an evidence-first path from agent tests to production
 
-Source: Langfuse — https://langfuse.com/changelog/2026-11-03-observations-api-continuation
-Published: 2026-11-03
+Source: Langfuse — https://langfuse.com/blog/2026-11-04-regulated-industries-ai-agents-production
+Published: 2026-11-04
 Channel: news
 
-Langfuse is an AI observability platform whose Observations API retrieves records of application operations. Its reliability update lets expensive queries continue across several requests instead of requiring all progress within one request. That changes an assumption that some client pagination loops may make: an empty response page does not necessarily mean the query is finished.
+Langfuse is an observability and evaluation platform for AI applications. Its new guide describes how regulated teams can collect evidence before allowing an agent to act in production. It addresses the tension between reviewing every answer manually and letting an insufficiently tested system handle consequential work.
 
-The client first requests observations with the desired filters and page limit. It processes whatever records arrive, then reads meta.cursor from the response. If that cursor is present, the client sends another request using it, even if the previous page contained no observations. The loop finishes only when the cursor is absent. A short page is also insufficient evidence that all results have been returned.
+The proposed workflow begins with tracing: record prompts, models, tool calls, retrieved context and human approvals, while masking sensitive fields before storage. Teams then run synthetic, historical or shadow examples. Domain experts inspect the resulting traces, identify the first failure and group recurring problems into categories. Those failures and the organization’s requirements become evaluation criteria, using code checks where possible and model judges when judgment is needed.
 
-Langfuse says some documentation examples incorrectly stopped when a page was empty and asks users who copied them to update their loops. The corrected examples cover migration, evaluation pipelines, dataset preparation, analytics and trace deletion. The announcement addresses a small share of queries that time out; it does not claim a measured speed improvement for every query.
+Experts next build expected outcomes and resolve disagreements in their labels. Teams compare experiments against a baseline and may reserve a held-out dataset to check overfitting. After launch, selected evaluations and user feedback monitor live behavior; interesting traces become new test cases. The guide recommends reducing human review only as evidence supports it. This is a vendor-authored workflow, not a guarantee of regulatory compliance or measured deployment success.
 
-Why it matters: For teams exporting or evaluating Langfuse records: audit pagination loops for an empty-page exit condition that can silently truncate results.
+Why it matters: For teams introducing agents into reviewed workflows: agree on failure criteria and expected outcomes before expanding autonomous handling.
 
-![Langfuse warns that an empty observation page may still have more results](/edition-images/2026-11-04/observation-query-continuation.webp)
+![Langfuse describes an evidence-first path from agent tests to production](/edition-images/2026-11-05/regulated-evaluation-loop.webp)
 
-## Braintrust argues for keeping agent history searchable and reusable in evaluations
+## BotGauge links adversarial agent tests to traces and release evaluations
 
-Source: Braintrust — https://www.braintrust.dev/blog/trace-lake
-Published: 2026-11-03
+Source: BotGauge · company announcement via ACCESS Newswire — https://www.accessnewswire.com/newsroom/en/business-and-professional-services/botgauge-launches-ai-agent-red-teaming-platform-with-200-attack-1246528
+Published: 2026-11-04
 Channel: news
 
-Braintrust is an AI evaluation and observability platform. Its Trace Lake article argues that agent execution records need to support more than opening a single slow request. Teams also need to search past decisions, outputs and tool interactions when a new failure pattern becomes apparent. Discarding those records removes evidence that a later investigation may need.
+BotGauge AI is an agent testing and monitoring platform that brings red teaming, tracing and evaluations together. Its launch announcement describes a feedback loop for failures that can appear when a model, prompt or tool changes. Red teaming means deliberately probing a system with adversarial scenarios rather than checking only expected requests.
 
-The proposed approach first makes incoming traces quickly searchable through full-text queries and SQL. Next, object storage keeps growing execution history without requiring every query server to retain a complete local copy. The article also identifies keeping sensitive records inside a customer’s cloud as a requirement for some teams. Braintrust presents its Brainstore database as an implementation for these workloads.
+First, teams run attack scenarios against an agent. BotGauge says the platform includes more than 200 strategies covering prompt injection, policy bypass, tool misuse and manipulation across multiple conversation turns, with support for custom business scenarios. When a test exposes a failure, the tracing layer records the prompts, responses, context, tool calls and execution path behind it.
 
-Finally, useful production examples should become evaluation cases with enough context to reproduce the behavior. That context may include application state or the resources used by an agent. Continuous analysis then looks for recurring issues across incoming traces. These are architectural requirements and vendor descriptions, rather than a new independent benchmark proving that every deployment meets the article’s performance targets.
+The finding then becomes an evaluation for subsequent releases. Model-based evaluators assess goal completion, accuracy and adherence to policy so teams can track behavior as their system changes. The company says a lightweight software development kit connects existing model providers and agent frameworks. These are launch claims: the announcement provides no independent comparison of attack coverage, detection accuracy or the ability to prevent recurring failures.
 
-Why it matters: For observability teams: evaluate retention, search and reproducibility together before treating a trace store as a source of regression tests.
+Why it matters: For agent-testing teams: check whether a discovered failure can be replayed with its original execution evidence before relying on a regression score.
 
-![Braintrust argues for keeping agent history searchable and reusable in evaluations](/edition-images/2026-11-04/trace-lake.webp)
+![BotGauge links adversarial agent tests to traces and release evaluations](/edition-images/2026-11-05/botgauge-regression-loop.webp)
 
-## LangSmith expands managed deployments inside customers’ cloud accounts
+## Phoenix preserves failed-task status in experiment traces
 
-Source: LangChain — https://www.langchain.com/blog/langsmith-byoc-aws-gc-azure
-Published: 2026-11-03
-Channel: news
-
-LangSmith is an agent engineering platform for debugging runs, evaluating changes and deploying agents. Its Bring Your Own Cloud offering lets LangChain operate the service while sensitive application data stays in the customer’s cloud account. The announcement expands that deployment model to Azure and Google Cloud in beta, alongside generally available AWS support.
-
-The arrangement separates two responsibilities. LangChain operates a control plane containing authentication, organization configuration, billing metadata, hashed API keys and static interface assets. The customer owns a data plane holding traces, prompts, datasets, experiments, deployments and workspace secrets. An organization can have several data planes, separated by account and region, with workspaces assigned to each.
-
-Teams moving from self-hosting use an open-source tool for workspace resources such as datasets, experiments and prompts. Traces, runs and feedback require a separate migration performed by LangChain; the announcement says trace migration is available on AWS. Google Cloud deployments initially use the US control plane, and Azure sandbox support remains planned. Those limits matter when assessing data boundaries and migration readiness.
-
-Why it matters: For platform and security teams: map control-plane metadata separately from trace content, and confirm migration support for the chosen cloud.
-
-![LangSmith expands managed deployments inside customers’ cloud accounts](/edition-images/2026-11-04/cloud-data-boundaries.webp)
-
-## Langfuse links managed agent skills to the versions loaded in traces
-
-Source: Langfuse — https://langfuse.com/changelog/2026-11-03-skill-management
-Published: 2026-11-03
-Channel: news
-
-Langfuse is an AI observability platform that records agent operations. Its skill-management beta gives teams a shared place to store and revise skills, the reusable instructions agents can load. With skill tracing configured, generation records show reported skills and link to their versions. Successful skill-loading tool calls expose the version and file paths through the preview. A skill’s Usage tab combines counts, file loads and linked observations. API, command-line, Model Context Protocol and SDK access are supported; the announcement does not claim that a loaded skill guarantees correct behavior.
-
-Why it matters: For teams changing agent instructions: inspect version and file-load evidence when investigating behavior after a skill edit.
-
-![Langfuse links managed agent skills to the versions loaded in traces](/edition-images/2026-11-04/skill-version-links.webp)
-
-## LangWatch adds dataset history and pins test runs to dataset versions
-
-Source: LangWatch · GitHub release — https://github.com/langwatch/langwatch/releases/tag/langwatch%40v3.23.0
-Published: 2026-11-03
+Source: Arize AI · Phoenix GitHub release — https://github.com/Arize-ai/phoenix/releases/tag/%40arizeai/phoenix-client%407.18.1
+Published: 2026-11-04
 Channel: github
 
-LangWatch is an AI observability and evaluation platform. Its release adds dataset version history with automatic saving, comparison, restoration, retention and run pinning. The linked implementation explains the problem: edits previously left teams without a way to recover earlier dataset contents or identify which rows an experiment used. A version is an immutable snapshot of the dataset’s columns and rows.
+Phoenix is an AI observability and evaluation platform whose client records experiment tasks as trace spans, records of individual operations. A client patch fixes those records so failed tasks retain their error status. The same patch preserves system and developer instructions when converting prompts to Anthropic, while omitting empty text blocks from the system array. These are narrow correctness fixes: the release note does not describe a broader evaluation redesign or quantify the impact on earlier experiments.
 
-First, edits can produce an automatic saved version after activity settles. Teams can then compare a version with current contents or restore it as a new version without rewriting history. When an experiment starts, it records the dataset version it read; pinning selects a particular version instead of the latest. Agent and evaluator versioning also gain deployment labels. These changes make evaluation inputs more explicit, without independently proving complete reproducibility.
+Why it matters: For Phoenix experiment users: verify a deliberately failing task remains marked as failed, and inspect converted instructions when comparing model behavior.
 
-For teams collecting coding-agent activity, the release adds capture of Grok CLI sessions through native OpenTelemetry and recognizes pi as a natively instrumented agent. OpenTelemetry is a standard way to emit operational records. Separate evaluation changes expand the supported decision-model providers and make Instant Evals use the saved model and the project’s own key. These are release-note claims; the notes do not establish identical trace coverage across every supported agent.
+![Phoenix preserves failed-task status in experiment traces](/edition-images/2026-11-05/phoenix-failed-task-status.webp)
 
-Why it matters: For evaluation owners: verify the dataset, agent and evaluator versions associated with a run before comparing it with another result.
+## Langfuse’s gateway beta links model spending to individual keys
 
-![LangWatch adds dataset history and pins test runs to dataset versions](/edition-images/2026-11-04/dataset-history.webp)
-
-## Elastic tests whether its investigation agent checks evidence before grouping alerts
-
-Source: Elastic Observability Labs — https://www.elastic.co/observability-labs/blog/automated-root-cause-analysis-significant-events
-Published: 2026-11-03
+Source: Langfuse — https://langfuse.com/changelog/2026-11-04-ai-gateway-public-beta
+Published: 2026-11-04
 Channel: news
 
-Elastic Significant Events uses an investigation agent to check log evidence and group related alerts. Its walkthrough follows two rules detecting the same payment failure. The operational problem is that two firing rules can produce duplicate noise without establishing whether their shared explanation is supported by current logs.
+Langfuse is an AI observability platform that records model calls and their costs. Its AI Gateway public beta adds a forwarding service for OpenAI and Anthropic requests, aimed at teams that want individual access keys and spending visibility without sharing provider credentials or adding tracing code.
 
-First, code detects changes in rule behavior and selects which detections reach the agent. The agent then reruns each rule’s original query, which it cannot rewrite to fit a hypothesis. It measures the returned evidence and groups signals that describe one incident. Code checks the proposed alert before storage and derives its lifecycle state, while the model judges the explanation and severity.
+An administrator first stores provider credentials, enables allowed models and chooses the project that receives traces. Teammates then create gateway keys and change their client’s base URL and key. The gateway preserves the native request format, including streaming, rather than translating between provider APIs. User keys stop working when their owner loses access; service account keys support shared workloads.
 
-The evaluation suite replays failure scenarios and checks grouping, affected entities, severity, status and required tool calls. Further checks examine whether successive cycles keep one incident and stable topology; model-based judges review the narrative and calibration. The reported run covers seven scenarios without a variance estimate. Elastic explicitly treats it as a smoke test rather than a benchmark, and warns that the evaluated model may differ from the production configuration.
+On Langfuse Cloud, each request becomes a recorded generation. Organizations choose full input and output capture or usage-only capture without prompts and responses. Analytics separates cost, requests and tokens by user, key and model, while gateway-role members see their own usage. Missing model prices produce an alert. Provider processing still follows the customer’s provider agreement, and recorded generations are billable observations. During beta, routes, headers and behavior may change.
 
-Why it matters: For teams evaluating investigation agents: test required evidence-gathering actions and repeated incident updates alongside the final explanation.
+Why it matters: For teams sharing model access: test key attribution, capture settings and missing-price handling before treating gateway totals as complete spending evidence.
 
-![Elastic tests whether its investigation agent checks evidence before grouping alerts](/edition-images/2026-11-04/investigation-agent-evaluations.webp)
+![Langfuse’s gateway beta links model spending to individual keys](/edition-images/2026-11-05/gateway-cost-visibility.webp)
 
-## Honeycomb previews agent checks that link findings to production evidence
+## OpenInference keeps output and token counts when model streams fail
 
-Source: Honeycomb — https://www.honeycomb.io/blog/honeycomb-team-agents-ai-sre-done-right
-Published: 2026-11-03
-Channel: news
+Source: Arize AI · OpenInference GitHub release — https://github.com/Arize-ai/openinference/releases/tag/%40arizeai/openinference-instrumentation-openai%404.4.3
+Published: 2026-11-04
+Channel: github
 
-Honeycomb is an observability platform that uses production telemetry to investigate software behavior. Its Team Agents preview describes background assistants that work on goals set by a team. One proposed goal directly concerns AI operations: compare Braintrust evaluation scores with live conversation traces after a prompt or model change.
+OpenInference provides instrumentation that records AI model activity in traces. Its JavaScript OpenAI integration now retains output and token counts from Responses streams that end incomplete or failed. A span is the trace record for one operation; previously, these streams left an error-marked span without the output or usage that could explain what happened.
 
-The workflow starts with a goal and a trigger, such as a deployment, alert or schedule. The agent investigates telemetry and can use connectors based on the Model Context Protocol to access supporting information such as deployments, documentation and costs. Honeycomb says findings link to the query, trace or deployment behind them, and numerical statements distinguish measured, derived, estimated and unset values.
+The change expands which final stream events the integration keeps. It previously retained only the completed event. It now also records the response carried by incomplete and failed events, so their output and token information remain available. The release gives reaching the output-token limit as an example of an incomplete response.
 
-Teams then choose how much action to permit for each goal and tool. The described modes range from observation and recommendations to preparing changes for human approval or operating within defined boundaries. Each agent has its own identity, permissions and recorded actions. The post presents a preview with general availability planned, rather than evidence that these workflows have already improved agent quality in production.
+Status handling still distinguishes the two cases. A failed response remains an error, while an incomplete response is recorded like a completed one. Consequently, the presence of recorded output does not mean a model finished its requested work. The release documents a telemetry correction, without claiming that it prevents model failures or changes the provider’s response.
 
-Why it matters: For teams checking AI releases: test whether each finding reaches the underlying trace and whether action permissions match the investigation’s risk.
+Why it matters: For teams reviewing streaming costs or failures: test incomplete and failed responses separately, and check response state alongside span status.
 
-![Honeycomb previews agent checks that link findings to production evidence](/edition-images/2026-11-04/evidence-linked-agent-checks.webp)
-
-## CrowdStrike plans to bring Fiddler’s agent evaluations and traces into Falcon
-
-Source: CrowdStrike — https://www.crowdstrike.com/en-us/press-releases/crowdstrike-to-acquire-fiddler-to-deliver-agent-observability/
-Published: 2026-11-03
-Channel: news
-
-Fiddler AI provides agent observability and explainability, helping teams examine agent behavior. CrowdStrike has signed a definitive agreement to acquire it and plans to offer its capabilities through the Falcon security platform. The announcement separates securing agents against attack from checking whether an agent behaved as intended while using valid credentials and approved tools.
-
-The proposed integration starts with evaluation before deployment, checking accuracy, task completion and policy compliance across prompts, models and configurations. In production, it would trace decisions and tool calls across agent hierarchies, then look for behavioral drift, hallucinations and unintended actions. CrowdStrike also describes combining those records with identity, cloud and runtime telemetry to investigate behavior in its security context.
-
-The source lists OpenTelemetry instrumentation and several supported agent frameworks, alongside token and spending visibility. These are the company’s planned product capabilities, not independent proof of accountability or improved safety. The acquisition remains subject to closing conditions, and Falcon Observe is described as a forthcoming offering. Teams should distinguish the signed agreement from completed ownership and from an already integrated deployment.
-
-Why it matters: For agent-platform owners: watch how trace access, evaluation workflows and security context are integrated after closing rather than assuming immediate availability.
-
-![CrowdStrike plans to bring Fiddler’s agent evaluations and traces into Falcon](/edition-images/2026-11-04/fiddler-acquisition.webp)
+![OpenInference keeps output and token counts when model streams fail](/edition-images/2026-11-05/openai-partial-streams.webp)
 
 ---
 
