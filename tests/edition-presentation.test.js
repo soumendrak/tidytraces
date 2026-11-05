@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { mkdtemp, readdir, readFile, rm, writeFile, cp } from 'node:fs/promises';
+import { mkdtemp, mkdir, readdir, readFile, rm, writeFile, cp, symlink } from 'node:fs/promises';
 import { PDFDocument, PDFDict, PDFName } from 'pdf-lib';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
@@ -17,6 +17,24 @@ import { assertEditionLayout } from './lib/edition-layout.js';
 // deploy. Rendering the real template here means any reversion fails `npm test`.
 
 const repo = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
+const emptyEditionDay = '2020-01-01';
+
+async function projectWithEmptyEdition(source) {
+  const root = await mkdtemp(path.join(tmpdir(), 'tidytraces-empty-fixture-'));
+  await cp(path.join(source, 'src'), path.join(root, 'src'), { recursive: true });
+  for (const name of ['astro.config.mjs', 'package.json', 'tsconfig.json']) {
+    await cp(path.join(source, name), path.join(root, name));
+  }
+  await mkdir(path.join(root, 'scripts'));
+  await symlink(path.join(source, 'scripts/lib'), path.join(root, 'scripts/lib'));
+  await symlink(path.join(source, 'public'), path.join(root, 'public'));
+  await symlink(path.join(source, 'node_modules'), path.join(root, 'node_modules'));
+  const dataDir = path.join(root, 'src/data/ai-observability');
+  if ((await readdir(dataDir)).includes(`${emptyEditionDay}.json`)) throw new Error(`empty edition fixture collides with ${emptyEditionDay}`);
+  await writeFile(path.join(dataDir, `${emptyEditionDay}.json`), JSON.stringify({ date: emptyEditionDay, story_window: '2019-12-31', dek: 'No qualifying stories.', stories: [] }));
+  return { root, dataDir };
+}
+
 const generated = { kind: 'generated-editorial', generator: 'built-in-imagegen', prompt: 'Trace flow', based_on: ['https://example.com/a'], reviewed: true, sha256: 'a'.repeat(64) };
 const credit = `<p class="masthead-subheader">${EDITION_MASTHEAD.credit} <a href="${EDITION_AUTHOR.url}" rel="author">${EDITION_AUTHOR.name}</a>.</p>`;
 const page = ({ masthead = credit, wrapper = '', disclosure = `<p id="ai-image-disclosure" class="visually-hidden ai-image-disclosure">${AI_IMAGE_DISCLOSURE}</p>` } = {}) =>
@@ -65,10 +83,11 @@ test('markdown export carries the byline up top and one AI disclosure at the end
 test('every built edition page has the top subheader credit and no visible per-image AI caption', async () => {
   const { build } = await import('astro');
   const outDir = await mkdtemp(path.join(tmpdir(), 'tidytraces-build-'));
+  const fixture = await projectWithEmptyEdition(repo);
   try {
-    await build({ root: repo, outDir, logLevel: 'error' });
+    await build({ root: fixture.root, outDir, logLevel: 'error', cacheDir: path.join(fixture.root, '.astro-cache') });
     const days = (await readdir(path.join(outDir, 'ai-observability'), { withFileTypes: true })).filter((entry) => entry.isDirectory()).map((entry) => entry.name);
-    const sources = (await readdir(path.join(repo, 'src/data/ai-observability'))).filter((name) => name.endsWith('.json')).map((name) => name.slice(0, -5));
+    const sources = (await readdir(fixture.dataDir)).filter((name) => name.endsWith('.json')).map((name) => name.slice(0, -5));
     assert.deepEqual(days.sort(), sources.sort(), 'every curated issue is rendered by the shared template');
     for (const file of ['index.html', ...days.map((day) => `ai-observability/${day}/index.html`)]) {
       const html = await readFile(path.join(outDir, file), 'utf8');
@@ -95,7 +114,7 @@ test('every built edition page has the top subheader credit and no visible per-i
     assert.match(css.join('\n'), /\}\.back-to-top\[[^\]]+\]\[hidden\]\{display:none\}/, 'the hidden rule stands alone so browsers without :has() still apply it');
 
     const latest = days.toSorted().at(-1);
-    const sourceEdition = async (day) => JSON.parse(await readFile(path.join(repo, 'src/data/ai-observability', `${day}.json`), 'utf8'));
+    const sourceEdition = async (day) => JSON.parse(await readFile(path.join(fixture.dataDir, `${day}.json`), 'utf8'));
     const storyCounts = await Promise.all(days.toSorted().map(async (day) => [day, (await sourceEdition(day)).stories.length]));
     const storied = storyCounts.findLast(([, count]) => count > 0)?.[0];
     assert.ok(storied, 'some edition has stories, so story behaviour is exercised');
@@ -123,12 +142,11 @@ test('every built edition page has the top subheader credit and no visible per-i
       await site.setViewport({ width: 390, height: 700 });
       await site.goto('https://tidytraces.test/', { waitUntil: 'load' });
       assert.deepEqual(await site.$eval('.back-to-top', (el) => [el.hidden, getComputedStyle(el).display]), [true, 'none'], 'hidden at the top');
-      if (latestIsEmpty) {
-        assert.equal(await site.$$eval('.story', (stories) => stories.length), 0, 'an empty latest edition renders no stories');
-        assert.match(await site.$eval('main', (el) => el.textContent), /No qualifying stories in this publication window\./, 'an empty latest edition says so');
-        await site.goto(storiedUrl, { waitUntil: 'load' });
-        assert.deepEqual(await site.$eval('.back-to-top', (el) => [el.hidden, getComputedStyle(el).display]), [true, 'none'], 'hidden at the top of the newest edition with stories');
-      }
+      await site.goto(`https://tidytraces.test/ai-observability/${emptyEditionDay}/`, { waitUntil: 'load' });
+      assert.equal(await site.$$eval('.story', (stories) => stories.length), 0, 'an empty edition renders no stories');
+      assert.match(await site.$eval('main', (el) => el.textContent), /No qualifying stories in this publication window\./, 'an empty edition says so');
+      await site.goto(storiedUrl, { waitUntil: 'load' });
+      if (latestIsEmpty) assert.deepEqual(await site.$eval('.back-to-top', (el) => [el.hidden, getComputedStyle(el).display]), [true, 'none'], 'hidden at the top of the newest edition with stories');
       await site.evaluate(() => window.scrollTo({ top: document.body.scrollHeight, behavior: 'instant' }));
       await site.waitForFunction(() => !document.querySelector('.back-to-top').hidden);
       await site.focus('.back-to-top');
@@ -248,6 +266,7 @@ test('every built edition page has the top subheader credit and no visible per-i
     assert.deepEqual(await readFile(path.join(outDir, 'pdf/latest.pdf')), latestPdf, 'failed generation leaves latest intact');
   } finally {
     await rm(outDir, { recursive: true, force: true });
+    await rm(fixture.root, { recursive: true, force: true });
   }
 });
 
