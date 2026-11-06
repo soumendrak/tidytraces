@@ -1,101 +1,89 @@
-# AI Observability Daily — 2026-11-05
+# AI Observability Daily — 2026-11-06
 
 By Soumendra Kumar Sahoo
 
 Canonical: https://tidytraces.com/
-Coverage window: 2026-11-04
+Coverage window: 2026-11-05
 
-## Gauge tests documentation changes against recorded coding-agent sessions
+## Braintrust compares MCP tool requests with the results agents received
 
-Source: Gauge · Evan, first-party Show HN — https://news.ycombinator.com/item?id=50371090
-Published: 2026-11-04
-Channel: hn
-
-Gauge is a command-line tool for measuring how coding agents use a software product. Its developer announced an open-source release that runs tasks, records session transcripts and tests changes to documentation or other agent-facing material. The problem is practical: an agent may misunderstand a product limitation or repeat a workaround because of the pages it reads.
-
-First, a team defines tasks that require the documentation and runs agents against them. Reviewers then examine the transcripts for friction or failures. Next, they create documentation variants and rerun the tasks with those variants substituted at the same hostname. The developer recommends paired experiments that change only the content and measure the resulting behavior.
-
-The local backend uses Docker containers and a separate network gateway based on mitmproxy for each session. The gateway substitutes documentation and replaces credentials with placeholders. Local execution needs no Gauge account, although model inference remains remote. The announcement describes internal examples of correcting agent misconceptions; those reports are developer claims, rather than independent evidence that the loop improves every product.
-
-Why it matters: For developer-tool teams: use repeatable tasks and transcript evidence to check whether a documentation fix changes agent behavior.
-
-![Gauge tests documentation changes against recorded coding-agent sessions](/edition-images/2026-11-05/gauge-agent-tests.webp)
-
-## Langfuse describes an evidence-first path from agent tests to production
-
-Source: Langfuse — https://langfuse.com/blog/2026-11-04-regulated-industries-ai-agents-production
-Published: 2026-11-04
+Source: Braintrust — https://www.braintrust.dev/blog/mcp-tracing
+Published: 2026-11-05
 Channel: news
 
-Langfuse is an observability and evaluation platform for AI applications. Its new guide describes how regulated teams can collect evidence before allowing an agent to act in production. It addresses the tension between reviewing every answer manually and letting an insufficiently tested system handle consequential work.
+Braintrust is an AI observability and evaluation platform that records agent activity for inspection. Its new server tracing for Model Context Protocol, the interface agents use to call tools, addresses a visibility gap: a server operator may see a successful response without knowing that the tool returned the wrong data. The operator may also lack the agent’s full conversation.
 
-The proposed workflow begins with tracing: record prompts, models, tool calls, retrieved context and human approvals, while masking sensitive fields before storage. Teams then run synthetic, historical or shadow examples. Domain experts inspect the resulting traces, identify the first failure and group recurring problems into categories. Those failures and the organization’s requirements become evaluation criteria, using code checks where possible and model judges when judgment is needed.
+First, enable tracing with the Braintrust JavaScript or Python SDK; the announcement covers official MCP implementations and FastMCP. Each call records its inputs, results, timing and errors. Then open the call in Logs and compare the request with the response. The article illustrates this with a production-only query that incorrectly returns staging records.
 
-Experts next build expected outcomes and resolve disagreements in their labels. Teams compare experiments against a baseline and may reserve a held-out dataset to check overfitting. After launch, selected evaluations and user feedback monitor live behavior; interesting traces become new test cases. The guide recommends reducing human review only as evidence supports it. This is a vendor-authored workflow, not a guarantee of regulatory compliance or measured deployment success.
+Operators can optionally add telemetry.intent to the tool schema and a send_feedback tool to collect an agent’s stated purpose and reported difficulties. These additions are not prerequisites for tracing. Patterns can surface repeated behavior with supporting calls. After a repair, the article recommends repeating the request, adding a test and reviewing later traces for recurrence.
 
-Why it matters: For teams introducing agents into reviewed workflows: agree on failure criteria and expected outcomes before expanding autonomous handling.
+Why it matters: MCP server owners can investigate successful calls whose content was wrong. Treat agent-supplied intent and feedback as clues to check against recorded inputs and results.
 
-![Langfuse describes an evidence-first path from agent tests to production](/edition-images/2026-11-05/regulated-evaluation-loop.webp)
+![Braintrust compares MCP tool requests with the results agents received](/edition-images/2026-11-06/braintrust-mcp-requests.webp)
 
-## BotGauge links adversarial agent tests to traces and release evaluations
+## Elastic’s agent traces show a cheaper model can still answer more slowly
 
-Source: BotGauge · company announcement via ACCESS Newswire — https://www.accessnewswire.com/newsroom/en/business-and-professional-services/botgauge-launches-ai-agent-red-teaming-platform-with-200-attack-1246528
-Published: 2026-11-04
+Source: Elastic Observability Labs — https://www.elastic.co/observability-labs/blog/ai-agent-observability-opentelemetry
+Published: 2026-11-05
 Channel: news
 
-BotGauge AI is an agent testing and monitoring platform that brings red teaming, tracing and evaluations together. Its launch announcement describes a feedback loop for failures that can appear when a model, prompt or tool changes. Red teaming means deliberately probing a system with adversarial scenarios rather than checking only expected requests.
+Elastic Observability collects application telemetry for investigating behavior, latency and cost. Its walkthrough instruments a LangChain shopping assistant with OpenTelemetry’s generative-AI conventions, shared names for model and agent records. The problem is that total request time alone cannot identify which model call made the customer wait or consumed the budget.
 
-First, teams run attack scenarios against an agent. BotGauge says the platform includes more than 200 strategies covering prompt injection, policy bypass, tool misuse and manipulation across multiple conversation turns, with support for custom business scenarios. When a test exposes a failure, the tracing layer records the prompts, responses, context, tool calls and execution path behind it.
+First, the example connects agent, tool and model operations as spans, each recording one operation and its timing. A trace shows three model calls taking about 92% of one request. The application separately collects provider-reported model charges and puts their sum on the request’s root record; this excludes infrastructure and retrieval charges. Parent and child durations must not be added together.
 
-The finding then becomes an evaluation for subsequent releases. Model-based evaluators assess goal completion, accuracy and adherence to policy so teams can track behavior as their system changes. The company says a lightweight software development kit connects existing model providers and agent frameworks. These are launch claims: the announcement provides no independent comparison of attack coverage, detection accuracy or the ability to prevent recurring failures.
+Then the author replaces only the product-comparison model and tests five questions three times per model, checking answers as well as cost and latency. Model spend falls by 76% to 83% per question, but mean response time rises on four questions. This is a small sequential test, not a production guarantee. The article recommends broader evaluation and testing whether returning the tool’s answer directly can avoid the final model call.
 
-Why it matters: For agent-testing teams: check whether a discovered failure can be replayed with its original execution evidence before relying on a regression score.
+Why it matters: Measure answer quality, elapsed time and model charges together before adopting a cheaper model. Use traces to choose the next experiment, then repeat the same checks.
 
-![BotGauge links adversarial agent tests to traces and release evaluations](/edition-images/2026-11-05/botgauge-regression-loop.webp)
+![Elastic’s agent traces show a cheaper model can still answer more slowly](/edition-images/2026-11-06/elastic-cost-latency.webp)
 
-## Phoenix preserves failed-task status in experiment traces
+## Langfuse records more trace reads, exports and downloads in access audits
 
-Source: Arize AI · Phoenix GitHub release — https://github.com/Arize-ai/phoenix/releases/tag/%40arizeai/phoenix-client%407.18.1
-Published: 2026-11-04
+Source: Langfuse — https://github.com/langfuse/langfuse/releases/tag/v4.76.0
+Published: 2026-11-05
 Channel: github
 
-Phoenix is an AI observability and evaluation platform whose client records experiment tasks as trace spans, records of individual operations. A client patch fixes those records so failed tasks retain their error status. The same patch preserves system and developer instructions when converting prompts to Anthropic, while omitting empty text blocks from the system array. These are narrow correctness fixes: the release note does not describe a broader evaluation redesign or quantify the impact on earlier experiments.
+Langfuse is an AI observability platform for inspecting application traces and evaluation scores. Those records can contain sensitive application data, so reviewing who accessed them is a separate operational need from collecting them. The release expands audit access events for selected reads of trace, observation, session and score data, and for exports and downloads. An observation records an operation within a trace.
 
-Why it matters: For Phoenix experiment users: verify a deliberately failing task remains marked as failed, and inspect converted instructions when comparing model behavior.
+First, an organization must have Enterprise access-event recording enabled, either through its organization setting or instance enforcement. Covered reads declare the resource and action beside their handler. The implementation records validated request parameters before returning data; a staging-write failure prevents a successful read from releasing it. Selected refused reads also receive denied events.
 
-![Phoenix preserves failed-task status in experiment traces](/edition-images/2026-11-05/phoenix-failed-task-status.webp)
+Exports record before their jobs enter the queue, while covered downloads record before sending bytes. A failed audit write prevents those operations from proceeding. Coverage remains selective: aggregate-only reads and several other routes are excluded. Scheduled exports are outside the export change, batch-export row counts are unavailable at request time, and refused downloads are not recorded as denied. These boundaries come from the linked implementation notes.
 
-## Langfuse’s gateway beta links model spending to individual keys
+Why it matters: Teams using Langfuse access audits should test the specific read and export paths they depend on; the expanded coverage does not establish a complete record of every access.
 
-Source: Langfuse — https://langfuse.com/changelog/2026-11-04-ai-gateway-public-beta
-Published: 2026-11-04
-Channel: news
+![Langfuse records more trace reads, exports and downloads in access audits](/edition-images/2026-11-06/langfuse-access-audits.webp)
 
-Langfuse is an AI observability platform that records model calls and their costs. Its AI Gateway public beta adds a forwarding service for OpenAI and Anthropic requests, aimed at teams that want individual access keys and spending visibility without sharing provider credentials or adding tracing code.
+## OpenInference traces Gemini live interactions and their tool calls
 
-An administrator first stores provider credentials, enables allowed models and chooses the project that receives traces. Teammates then create gateway keys and change their client’s base URL and key. The gateway preserves the native request format, including streaming, rather than translating between provider APIs. User keys stop working when their owner loses access; service account keys support shared workloads.
-
-On Langfuse Cloud, each request becomes a recorded generation. Organizations choose full input and output capture or usage-only capture without prompts and responses. Analytics separates cost, requests and tokens by user, key and model, while gateway-role members see their own usage. Missing model prices produce an alert. Provider processing still follows the customer’s provider agreement, and recorded generations are billable observations. During beta, routes, headers and behavior may change.
-
-Why it matters: For teams sharing model access: test key attribution, capture settings and missing-price handling before treating gateway totals as complete spending evidence.
-
-![Langfuse’s gateway beta links model spending to individual keys](/edition-images/2026-11-05/gateway-cost-visibility.webp)
-
-## OpenInference keeps output and token counts when model streams fail
-
-Source: Arize AI · OpenInference GitHub release — https://github.com/Arize-ai/openinference/releases/tag/%40arizeai/openinference-instrumentation-openai%404.4.3
-Published: 2026-11-04
+Source: Arize AI / OpenInference — https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-google-genai-v1.6.0
+Published: 2026-11-05
 Channel: github
 
-OpenInference provides instrumentation that records AI model activity in traces. Its JavaScript OpenAI integration now retains output and token counts from Responses streams that end incomplete or failed. A span is the trace record for one operation; previously, these streams left an error-marked span without the output or usage that could explain what happened.
+OpenInference provides instrumentation that records AI application activity as traces. Its Google GenAI integration now covers live sessions, which exchange data through a persistent WebSocket connection. Previously, those sessions bypassed the methods the instrumentor wrapped and produced no spans. A span is a record of one operation within a trace.
 
-The change expands which final stream events the integration keeps. It previously retained only the completed event. It now also records the response carried by incomplete and failed events, so their output and token information remain available. The release gives reaching the output-token limit as an example of an incomplete response.
+The new implementation first creates an interaction record from user input until the model returns control. Within it, separate records follow model generations and tool calls. A tool request ends the current generation; another generation begins when the model continues. Session identifiers connect successive interactions. Cancelled tools receive a cancellation event, and nonblocking calls can outlast their starting interaction.
 
-Status handling still distinguishes the two cases. A failed response remains an error, while an incomplete response is recorded like a completed one. Consequently, the presence of recorded output does not mean a model finished its requested work. The release documents a telemetry correction, without claiming that it prevents model failures or changes the provider’s response.
+The implementation omits audio and video bytes but can record enabled transcriptions and remote media references. Images remain subject to masking settings, and the session-resumption handle is omitted. The contributor reports a real API smoke test with text and tool turns, but no real microphone or Vertex backend test. Tracing also wraps private SDK functions; their removal can reduce coverage, and streamed tool arguments may be incomplete.
 
-Why it matters: For teams reviewing streaming costs or failures: test incomplete and failed responses separately, and check response state alongside span status.
+Why it matters: Teams observing live Gemini applications gain interaction-level records, but should verify their media, backend and streaming paths rather than assume the reported text smoke test covers them.
 
-![OpenInference keeps output and token counts when model streams fail](/edition-images/2026-11-05/openai-partial-streams.webp)
+![OpenInference traces Gemini live interactions and their tool calls](/edition-images/2026-11-06/gemini-live-tracing.webp)
+
+## OpenInference removes duplicate Anthropic SDK spans from traced calls
+
+Source: Arize AI / OpenInference — https://github.com/Arize-ai/openinference/releases/tag/%40arizeai/openinference-instrumentation-anthropic%401.0.1
+Published: 2026-11-05
+Channel: github
+
+OpenInference is an instrumentation library that records AI model operations in traces. Its JavaScript Anthropic integration fixes duplicate records introduced when the Anthropic SDK began creating its own span for every API call. A span describes one operation within a trace. Instrumented calls consequently exported both an OpenInference model span and an SDK span for the same request.
+
+The release identifies message creation, message streaming and token counting as affected, across stable and beta interfaces. Streaming had an additional hierarchy problem: its SDK span was not beneath the OpenInference model span. The patch changes the context the integration hands to the SDK when a call is already traced.
+
+First, OpenInference supplies a non-recording span carrying the model span’s context. The SDK then retains that context without exporting a second record. The request continues to carry trace context, and HTTP instrumentation records sit beneath the model operation. Calls that OpenInference does not trace keep the SDK’s own spans. This is a targeted correction to record duplication and nesting; the release does not report a measured reduction in telemetry cost or changes to model behavior.
+
+Why it matters: JavaScript teams combining Anthropic’s SDK with OpenInference should inspect a streamed request after upgrading and confirm one model record with the expected HTTP children. The earlier Python fix is a separate integration.
+
+![OpenInference removes duplicate Anthropic SDK spans from traced calls](/edition-images/2026-11-06/anthropic-single-span.webp)
 
 ---
 
