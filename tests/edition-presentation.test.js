@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { mkdtemp, readdir, readFile, rm, writeFile, cp } from 'node:fs/promises';
+import { mkdtemp, mkdir, readdir, readFile, rm, writeFile, cp, symlink } from 'node:fs/promises';
 import { PDFDocument, PDFDict, PDFName } from 'pdf-lib';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
@@ -17,6 +17,24 @@ import { assertEditionLayout } from './lib/edition-layout.js';
 // deploy. Rendering the real template here means any reversion fails `npm test`.
 
 const repo = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
+const emptyEditionDay = '2020-01-01';
+
+async function projectWithEmptyEdition(source) {
+  const root = await mkdtemp(path.join(tmpdir(), 'tidytraces-empty-fixture-'));
+  await cp(path.join(source, 'src'), path.join(root, 'src'), { recursive: true });
+  for (const name of ['astro.config.mjs', 'package.json', 'tsconfig.json']) {
+    await cp(path.join(source, name), path.join(root, name));
+  }
+  await mkdir(path.join(root, 'scripts'));
+  await symlink(path.join(source, 'scripts/lib'), path.join(root, 'scripts/lib'));
+  await symlink(path.join(source, 'public'), path.join(root, 'public'));
+  await symlink(path.join(source, 'node_modules'), path.join(root, 'node_modules'));
+  const dataDir = path.join(root, 'src/data/ai-observability');
+  if ((await readdir(dataDir)).includes(`${emptyEditionDay}.json`)) throw new Error(`empty edition fixture collides with ${emptyEditionDay}`);
+  await writeFile(path.join(dataDir, `${emptyEditionDay}.json`), JSON.stringify({ date: emptyEditionDay, story_window: '2019-12-31', dek: 'No qualifying stories.', stories: [] }));
+  return { root, dataDir };
+}
+
 const generated = { kind: 'generated-editorial', generator: 'built-in-imagegen', prompt: 'Trace flow', based_on: ['https://example.com/a'], reviewed: true, sha256: 'a'.repeat(64) };
 const credit = `<p class="masthead-subheader">${EDITION_MASTHEAD.credit} <a href="${EDITION_AUTHOR.url}" rel="author">${EDITION_AUTHOR.name}</a>.</p>`;
 const page = ({ masthead = credit, wrapper = '', disclosure = `<p id="ai-image-disclosure" class="visually-hidden ai-image-disclosure">${AI_IMAGE_DISCLOSURE}</p>` } = {}) =>
@@ -65,10 +83,11 @@ test('markdown export carries the byline up top and one AI disclosure at the end
 test('every built edition page has the top subheader credit and no visible per-image AI caption', async () => {
   const { build } = await import('astro');
   const outDir = await mkdtemp(path.join(tmpdir(), 'tidytraces-build-'));
+  const fixture = await projectWithEmptyEdition(repo);
   try {
-    await build({ root: repo, outDir, logLevel: 'error' });
+    await build({ root: fixture.root, outDir, logLevel: 'error', cacheDir: path.join(fixture.root, '.astro-cache') });
     const days = (await readdir(path.join(outDir, 'ai-observability'), { withFileTypes: true })).filter((entry) => entry.isDirectory()).map((entry) => entry.name);
-    const sources = (await readdir(path.join(repo, 'src/data/ai-observability'))).filter((name) => name.endsWith('.json')).map((name) => name.slice(0, -5));
+    const sources = (await readdir(fixture.dataDir)).filter((name) => name.endsWith('.json')).map((name) => name.slice(0, -5));
     assert.deepEqual(days.sort(), sources.sort(), 'every curated issue is rendered by the shared template');
     for (const file of ['index.html', ...days.map((day) => `ai-observability/${day}/index.html`)]) {
       const html = await readFile(path.join(outDir, file), 'utf8');
@@ -95,6 +114,12 @@ test('every built edition page has the top subheader credit and no visible per-i
     assert.match(css.join('\n'), /\}\.back-to-top\[[^\]]+\]\[hidden\]\{display:none\}/, 'the hidden rule stands alone so browsers without :has() still apply it');
 
     const latest = days.toSorted().at(-1);
+    const sourceEdition = async (day) => JSON.parse(await readFile(path.join(fixture.dataDir, `${day}.json`), 'utf8'));
+    const storyCounts = await Promise.all(days.toSorted().map(async (day) => [day, (await sourceEdition(day)).stories.length]));
+    const storied = storyCounts.findLast(([, count]) => count > 0)?.[0];
+    assert.ok(storied, 'some edition has stories, so story behaviour is exercised');
+    const latestIsEmpty = storied !== latest;
+    const storiedUrl = latestIsEmpty ? `https://tidytraces.test/ai-observability/${storied}/` : 'https://tidytraces.test/';
     const { default: puppeteer } = await import('puppeteer');
     const browser = await puppeteer.launch({ headless: true, args: ['--no-sandbox', '--disable-setuid-sandbox'] });
     try {
@@ -117,6 +142,11 @@ test('every built edition page has the top subheader credit and no visible per-i
       await site.setViewport({ width: 390, height: 700 });
       await site.goto('https://tidytraces.test/', { waitUntil: 'load' });
       assert.deepEqual(await site.$eval('.back-to-top', (el) => [el.hidden, getComputedStyle(el).display]), [true, 'none'], 'hidden at the top');
+      await site.goto(`https://tidytraces.test/ai-observability/${emptyEditionDay}/`, { waitUntil: 'load' });
+      assert.equal(await site.$$eval('.story', (stories) => stories.length), 0, 'an empty edition renders no stories');
+      assert.match(await site.$eval('main', (el) => el.textContent), /No qualifying stories in this publication window\./, 'an empty edition says so');
+      await site.goto(storiedUrl, { waitUntil: 'load' });
+      if (latestIsEmpty) assert.deepEqual(await site.$eval('.back-to-top', (el) => [el.hidden, getComputedStyle(el).display]), [true, 'none'], 'hidden at the top of the newest edition with stories');
       await site.evaluate(() => window.scrollTo({ top: document.body.scrollHeight, behavior: 'instant' }));
       await site.waitForFunction(() => !document.querySelector('.back-to-top').hidden);
       await site.focus('.back-to-top');
@@ -127,10 +157,10 @@ test('every built edition page has the top subheader credit and no visible per-i
         const tip = el.querySelector('.why-tooltip');
         return [el.previousElementSibling?.textContent, el.querySelector('button').getAttribute('aria-expanded'), getComputedStyle(tip).visibility, tip.querySelector('strong')?.textContent];
       });
-      const takeaways = JSON.parse(await readFile(path.join(repo, 'src/data/ai-observability', `${latest}.json`), 'utf8')).stories.map((story) => `Why it matters ${story.takeaway}`);
+      const takeaways = JSON.parse(await readFile(path.join(repo, 'src/data/ai-observability', `${storied}.json`), 'utf8')).stories.map((story) => `Why it matters ${story.takeaway}`);
       assert.ok(takeaways.includes(await site.$eval('.story .why-tooltip', (el) => el.textContent.replace(/\s+/g, ' ').trim())), 'the popover carries the story takeaway');
       assert.deepEqual(await popover(site), ['Permalink', 'false', 'hidden', 'Why it matters'], 'the icon sits beside the permalink, closed');
-      await site.$eval('.story .why-info button', (el) => el.scrollIntoView());
+      await site.$eval('.story .why-info button', (el) => el.scrollIntoView({ behavior: 'instant' }));
       await site.click('.story .why-info button');
       assert.deepEqual((await popover(site)).slice(1, 3), ['true', 'visible'], 'click opens');
       await site.keyboard.press('Escape');
@@ -149,7 +179,7 @@ test('every built edition page has the top subheader credit and no visible per-i
         else request.abort();
       });
       await touch.setViewport({ width: 390, height: 700, isMobile: true, hasTouch: true });
-      await touch.goto('https://tidytraces.test/', { waitUntil: 'load' });
+      await touch.goto(storiedUrl, { waitUntil: 'load' });
       await touch.$eval('.story .why-info button', (el) => el.scrollIntoView({ behavior: 'instant' }));
       await touch.tap('.story .why-info button');
       assert.deepEqual((await popover(touch)).slice(1, 3), ['true', 'visible'], 'a tap opens on mobile');
@@ -169,40 +199,48 @@ test('every built edition page has the top subheader credit and no visible per-i
     assert.equal(latestPdf.subarray(0, 5).toString(), '%PDF-');
     assert.deepEqual(await readFile(path.join(outDir, 'pdf/latest.pdf')), latestPdf);
     assert.deepEqual(await readFile(path.join(outDir, 'latest.pdf')), latestPdf);
-    const pdf = await PDFDocument.load(latestPdf);
-    const links = [];
-    const fonts = pdf.context.enumerateIndirectObjects().flatMap(([, object]) => {
-      if (!(object instanceof PDFDict)) return [];
-      const descriptor = object.lookupMaybe(PDFName.of('FontDescriptor'), PDFDict);
-      if (!descriptor) return [];
-      // Chromium embeds variable fonts as Type 3 glyph programs rather than FontFile2.
-      const glyphs = object.lookupMaybe(PDFName.of('CharProcs'), PDFDict);
-      const embedded = descriptor.has(PDFName.of('FontFile2')) || descriptor.has(PDFName.of('FontFile3')) || Boolean(glyphs?.keys().length);
-      return [{ name: descriptor.lookup(PDFName.of('FontName')).toString(), embedded }];
-    });
-    for (const page of pdf.getPages()) {
-      for (const reference of page.node.Annots()?.asArray() || []) {
-        const action = pdf.context.lookup(reference, PDFDict).lookupMaybe(PDFName.of('A'), PDFDict);
-        const uri = action?.lookup(PDFName.of('URI'));
-        if (uri?.decodeText) links.push(uri.decodeText());
+    const pdfFacts = async (bytes) => {
+      const document = await PDFDocument.load(bytes);
+      const links = [];
+      const fonts = document.context.enumerateIndirectObjects().flatMap(([, object]) => {
+        if (!(object instanceof PDFDict)) return [];
+        const descriptor = object.lookupMaybe(PDFName.of('FontDescriptor'), PDFDict);
+        if (!descriptor) return [];
+        // Chromium embeds variable fonts as Type 3 glyph programs rather than FontFile2.
+        const glyphs = object.lookupMaybe(PDFName.of('CharProcs'), PDFDict);
+        const embedded = descriptor.has(PDFName.of('FontFile2')) || descriptor.has(PDFName.of('FontFile3')) || Boolean(glyphs?.keys().length);
+        return [{ name: descriptor.lookup(PDFName.of('FontName')).toString(), embedded }];
+      });
+      for (const page of document.getPages()) {
+        for (const reference of page.node.Annots()?.asArray() || []) {
+          const action = document.context.lookup(reference, PDFDict).lookupMaybe(PDFName.of('A'), PDFDict);
+          const uri = action?.lookup(PDFName.of('URI'));
+          if (uri?.decodeText) links.push(uri.decodeText());
+        }
       }
-    }
+      return { links, fonts };
+    };
+    const { links } = await pdfFacts(latestPdf);
     assert.ok(links.includes('https://tidytraces.com/archive/'));
     assert.ok(links.every((url) => !/localhost|127\.0\.0\.1|\[::1\]/.test(url)), 'actual PDF annotations never point at a local server');
+    if (latestIsEmpty) await generatePdfs({ outDir, day: storied });
+    const { fonts } = await pdfFacts(await readFile(path.join(outDir, 'pdf', `${storied}.pdf`)));
     assert.ok(fonts.some((font) => font.name.includes('Lora') && font.embedded), 'Lora is embedded in the real PDF');
     assert.ok(fonts.some((font) => font.name.includes('PTSerif') && font.embedded), 'PT Serif is embedded in the real PDF');
 
     const sourceRoot = path.join(outDir, 'source-fixture');
     await cp(path.join(repo, 'src/data/ai-observability'), path.join(sourceRoot, 'src/data/ai-observability'), { recursive: true });
-    const sourceFile = path.join(sourceRoot, 'src/data/ai-observability', `${latest}.json`);
-    const original = JSON.parse(await readFile(sourceFile, 'utf8'));
     for (const key of ['title', 'body', 'takeaway', 'image', 'dek']) {
-      const corrected = structuredClone(original);
+      const day = key === 'dek' ? latest : storied;
+      const sourceFile = path.join(sourceRoot, 'src/data/ai-observability', `${day}.json`);
+      const original = await readFile(sourceFile, 'utf8');
+      const corrected = JSON.parse(original);
       if (key === 'dek') corrected.dek += ' Editorial correction.';
       else if (key === 'body') corrected.stories[0].body[0] += ' Editorial correction.';
       else corrected.stories[0][key] += '-corrected';
       await writeFile(sourceFile, JSON.stringify(corrected));
-      await assert.rejects(generatePdfs({ root: sourceRoot, outDir }), /is stale/, `${key} corrections invalidate an old build even with the same story count`);
+      await assert.rejects(generatePdfs({ root: sourceRoot, outDir, day }), /is stale/, `${key} corrections invalidate an old build even with the same story count`);
+      await writeFile(sourceFile, original);
       assert.deepEqual(await readFile(path.join(outDir, 'pdf/latest.pdf')), latestPdf);
     }
     const historical = days.toSorted().at(-2);
@@ -211,8 +249,8 @@ test('every built edition page has the top subheader credit and no visible per-i
     assert.deepEqual(await readFile(path.join(outDir, 'pdf/latest.pdf')), latestPdf, 'historical exports preserve latest');
     await assert.rejects(generatePdfs({ outDir, day: '2000-01-01' }), /No AI observability issue/);
 
-    const latestPage = path.join(outDir, 'ai-observability', latest, 'index.html');
-    const html = await readFile(latestPage, 'utf8');
+    const storiedPage = path.join(outDir, 'ai-observability', storied, 'index.html');
+    const html = await readFile(storiedPage, 'utf8');
     const manifest = JSON.parse(await readFile(path.join(outDir, 'fonts/manifest.json'), 'utf8'));
     const missingFont = path.join(outDir, 'fonts', manifest.fonts.find((font) => font.family === 'Lora' && font.style === 'normal' && font.subset === 'latin').file);
     const fontBytes = await readFile(missingFont);
@@ -221,11 +259,14 @@ test('every built edition page has the top subheader credit and no visible per-i
       await assert.rejects(generatePdfs({ outDir }), /PDF font/);
       assert.deepEqual(await readFile(path.join(outDir, 'pdf/latest.pdf')), latestPdf, 'missing fonts never publish a fallback-font PDF');
     } finally { await writeFile(missingFont, fontBytes); }
-    await writeFile(latestPage, html.replace(/src="\/edition-images\/[^"]+"/, 'src="/missing-pdf-image.webp"'));
-    await assert.rejects(generatePdfs({ outDir }), /Unable to load PDF image/);
+    const brokenImage = html.replace(/src="\/edition-images\/[^"]+"/, 'src="/missing-pdf-image.webp"');
+    assert.notEqual(brokenImage, html, `${storied} has an edition image to break`);
+    await writeFile(storiedPage, brokenImage);
+    await assert.rejects(generatePdfs({ outDir, day: storied }), /Unable to load PDF image/);
     assert.deepEqual(await readFile(path.join(outDir, 'pdf/latest.pdf')), latestPdf, 'failed generation leaves latest intact');
   } finally {
     await rm(outDir, { recursive: true, force: true });
+    await rm(fixture.root, { recursive: true, force: true });
   }
 });
 
