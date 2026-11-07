@@ -1,227 +1,186 @@
 {
-  "date": "2026-11-06",
-  "story_window": "2026-11-05",
-  "dek": "Inspecting tool results, measuring model cost and latency, auditing telemetry access, and correcting live and duplicated trace records.",
+  "date": "2026-11-07",
+  "story_window": "2026-11-06",
+  "dek": "Agent usability tests, explicit missing token usage, role-based trace storage access, and telemetry configuration fixes.",
   "stories": [
     {
-      "title": "Braintrust compares MCP tool requests with the results agents received",
-      "url": "https://www.braintrust.dev/blog/mcp-tracing",
-      "publisher": "Braintrust",
-      "published": "2026-11-05",
-      "category_key": "observability",
-      "summary": "New MCP server tracing records inputs, outputs, timing and errors. Optional intent and feedback help explain requests even when the agent conversation is unavailable.",
+      "title": "AJX turns agent retries and mistakes into product usability feedback",
+      "url": "https://news.ycombinator.com/item?id=50399373",
+      "publisher": "Roy Osherove · Show HN",
+      "published": "2026-11-06",
+      "category_key": "agents",
+      "summary": "AJX runs an agent against a product, then examines its logs to suggest changes that could reduce mistakes, retries and token use.",
       "body": [
-        "Braintrust is an AI observability and evaluation platform that records agent activity for inspection. Its new server tracing for Model Context Protocol, the interface agents use to call tools, addresses a visibility gap: a server operator may see a successful response without knowing that the tool returned the wrong data. The operator may also lack the agent’s full conversation.",
-        "First, enable tracing with the Braintrust JavaScript or Python SDK; the announcement covers official MCP implementations and FastMCP. Each call records its inputs, results, timing and errors. Then open the call in Logs and compare the request with the response. The article illustrates this with a production-only query that incorrectly returns staging records.",
-        "Operators can optionally add telemetry.intent to the tool schema and a send_feedback tool to collect an agent’s stated purpose and reported difficulties. These additions are not prerequisites for tracing. Patterns can surface repeated behavior with supporting calls. After a repair, the article recommends repeating the request, adding a test and reviewing later traces for recurrence."
+        "AJX is a command-line tool and skill bundle for testing how easily an AI agent can use a product. Its creator, Roy Osherove, introduced it in a first-party Show HN announcement. The problem it examines is agent usability: a product may be usable by people while its command output, documentation or feedback causes an agent to make mistakes and retry.",
+        "First, a user supplies a task, product links and a definition of success. An outer harness, the software coordinating the test, starts an inner agent in a chosen environment. Configuration can include the agent tool, model, skills and number of runs. After the agent finishes, the outer harness examines the run, logs and outputs for retries, token use, mistakes and assumptions. It produces a report and a list of requested product improvements.",
+        "Osherove gives examples such as missing machine-readable command output and documentation that disagrees with actual behavior. He describes the tool as early and rough, and envisions using its feedback in a continuous delivery loop. These are the developer’s claims and plans; the announcement supplies no independent measurement of improvements."
       ],
       "format": "full",
-      "takeaway": "MCP server owners can investigate successful calls whose content was wrong. Treat agent-supplied intent and feedback as clues to check against recorded inputs and results.",
-      "image": "/edition-images/2026-11-06/braintrust-mcp-requests.webp",
+      "takeaway": "Product teams building interfaces for agents can use task-level evidence to investigate friction; verify suggested fixes against repeat runs.",
+      "image": "/edition-images/2026-11-07/ajx-agent-journey.webp",
       "image_width": 1440,
       "image_height": 960,
       "image_provenance": {
         "kind": "generated-editorial",
         "generator": "built-in-imagegen",
-        "prompt": "Use case: infographic-diagram. Asset type: standalone newspaper editorial infographic PNG, landscape 3:2. Explain one source-supported idea from https://www.braintrust.dev/blog/mcp-tracing: server-side MCP traces let reviewers compare requested tool inputs and returned results even without the full agent conversation. Warm cream newsprint, black ink engraved line drawings, muted brick-red arrows, bold readable serif title, generous whitespace, three large connected cards. Exact title: \"Check what the tool returned\". Left card: \"Request\" and \"Production traffic only\". Center card: \"Tool result\" and \"Production + staging\". Right card: \"Review the mismatch\" and \"Inspect inputs and results\". Small clearly readable text below: \"Illustrative example from Braintrust\". Show the unexpected staging entry highlighted in red, not a failure icon or fabricated metric. No extra factual claims, no fake screenshot, no logos, no watermark, no label describing image generation. All labels readable at article width.",
+        "prompt": "Use case: infographic-diagram. Standalone newspaper infographic PNG, landscape 3:2. Warm ivory newsprint, dark ink pen engravings, restrained rust accent, large readable serif typography. Explain AJX agent usability testing with a simple left-to-right sequence of four cards: task definition, agent attempt, run review, product feedback. Source facts: user supplies a task and definition of success; an inner agent tries the product; an outer harness reviews logs for retries, tokens and mistakes; report suggests product improvements. Exact text only: \"Find where agents struggle\"; \"Define the task\"; \"Agent tries product\"; \"Review logs\"; \"Suggest improvements\"; \"Retries · Tokens · Mistakes\". Use clear arrows linking the four stages. No metrics, no performance claims, no fake screenshots, no logos, no watermark, no footer. Keep ample whitespace.",
         "based_on": [
-          "https://www.braintrust.dev/blog/mcp-tracing"
+          "https://news.ycombinator.com/item?id=50399373"
         ],
         "reviewed": true,
-        "sha256": "d9a8412c1fa0abb09da5ae59a6d2b912fac6be5e1e28b948b4cfdacd226eeeca",
+        "sha256": "22b54d4db04c9629c53b9c5e8a94a82fe51d9a2967087017a142b97232c950d7",
+        "optimization": {
+          "format": "webp",
+          "quality": 82,
+          "max_width": 1440,
+          "source_sha256": "5d74a9b13f1e59d369a29e01ee5a6bc02f368da4311f8bd7bbb81a56b64ea643"
+        }
+      },
+      "source": "hn",
+      "interest_score": 8,
+      "hn_id": "50399373",
+      "comments": "https://news.ycombinator.com/item?id=50399373",
+      "product_url": "https://ajx.dev/",
+      "dedupe_key": "hn-original:50399373",
+      "score_reason": "Concrete agent execution review workflow with explicit limitations; no independently measured usability gains.",
+      "source_evidence": {
+        "url": "https://news.ycombinator.com/item?id=50399373",
+        "publication_date": "2026-11-06",
+        "raw_date": "2026-11-06T22:31:02.000Z",
+        "method": "Official HN API item confirms timestamp and first-party launch text by royosherove; the original Show HN announcement is the primary publication."
+      }
+    },
+    {
+      "title": "Langfuse makes missing token usage visible instead of estimating it",
+      "url": "https://langfuse.com/changelog/2026-11-06-retiring-tokenization",
+      "publisher": "Langfuse",
+      "published": "2026-11-06",
+      "category_key": "observability",
+      "summary": "Langfuse is retiring automatic token estimates and highlighting missing usage so teams can identify instrumentation gaps behind absent costs.",
+      "body": [
+        "Langfuse is an AI observability platform that records model generations and calculates their costs. Its new changelog explains why it is retiring automatic tokenization: estimating token counts from a generation’s input and output when an integration sends no usage. According to Langfuse, reasoning models and cached-token pricing can make those estimates incorrect while hiding broken instrumentation.",
+        "First, generation headers now identify missing token usage and link to guidance for fixing the integration. This helps distinguish a missing usage record from a missing model price when a generation has no cost. Teams that relied on automatic estimates should then update their instrumentation to send usage reported by the model provider, or submit costs directly. Langfuse continues calculating costs from submitted usage and model prices; integrations already sending usage or costs need no change.",
+        "The change applies to new writes and reprocessing. Historical observations are not rewritten in bulk. That boundary matters when reviewing existing records alongside newly ingested generations: the announcement changes how missing usage is handled, rather than promising a correction of every historical estimate."
+      ],
+      "format": "full",
+      "takeaway": "Teams relying on estimated model spend should check that each integration actually submits provider usage or explicit costs.",
+      "image": "/edition-images/2026-11-07/langfuse-missing-usage.webp",
+      "image_width": 1440,
+      "image_height": 960,
+      "image_provenance": {
+        "kind": "generated-editorial",
+        "generator": "built-in-imagegen",
+        "prompt": "Use case: infographic-diagram. Standalone landscape 3:2 newspaper infographic PNG. Warm ivory paper, dark ink engraving, restrained rust highlights, big readable serif labels. Explain only this Langfuse change: missing provider token usage is made visible rather than filled with automatic estimates; cost can be calculated from submitted usage and a model price. Two clearly separated horizontal paths. Top path: card \"Provider usage\" plus card \"Model price\" leads to card \"Calculated cost\". Bottom path: card \"Missing usage\" leads to card \"Visible warning\" leads to card \"Fix instrumentation\". Title verbatim \"Make missing usage visible\". No numbers, no invented dashboards, no logos, no watermark, no footer. Use generous whitespace, simple document icons and clear arrows.",
+        "based_on": [
+          "https://langfuse.com/changelog/2026-11-06-retiring-tokenization"
+        ],
+        "reviewed": true,
+        "sha256": "9b27d52ad757ac212d26e987647f857e3f48880e14cbc22a8052a4f1ff0e9e57",
+        "optimization": {
+          "format": "webp",
+          "quality": 82,
+          "max_width": 1440,
+          "source_sha256": "294f8fcc146f6d8581e5455c42f5dfd4bead00ee57fd0c14240218504fc0eb8f"
+        }
+      },
+      "source": "news",
+      "interest_score": 8,
+      "dedupe_key": "article:langfuse.com/changelog/2026-11-06-retiring-tokenization",
+      "score_reason": "Direct cost-accounting and instrumentation reliability change with a stated migration action and historical-data boundary.",
+      "source_evidence": {
+        "url": "https://langfuse.com/changelog/2026-11-06-retiring-tokenization",
+        "publication_date": "2026-11-06",
+        "raw_date": "2026-11-06",
+        "method": "Original changelog displays November 6, 2026 above its title; normalized to ISO date. No modification metadata used."
+      }
+    },
+    {
+      "title": "Langfuse adds role-based access for trace media and storage exports",
+      "url": "https://langfuse.com/changelog/2026-11-06-s3-iam-role-auth",
+      "publisher": "Langfuse",
+      "published": "2026-11-06",
+      "category_key": "observability",
+      "summary": "Enterprise deployments can access Amazon S3 through an AWS identity role for scheduled exports and external trace media.",
+      "body": [
+        "Langfuse is an AI observability platform that displays application traces, records of an application’s operations that can include media, and supports scheduled storage exports. Its announcement adds access to Amazon S3 buckets by assuming an AWS Identity and Access Management role, avoiding the need to store long-lived access keys in Langfuse.",
+        "For scheduled exports, users configure the role through the interface or the integration endpoint with authType set to ROLE_ARN. External Media Storage can also use it to render media from a team’s own bucket inside traces. The feature requires Cloud Enterprise or self-hosted Enterprise; self-hosted deployments additionally need LANGFUSE_CROSS_ACCOUNT_ROLE_ARN configured. Access keys remain supported and are still the default."
+      ],
+      "format": "brief",
+      "brief_reason": "The primary changelog is a short feature notice limited to two integration paths, configuration and Enterprise availability; a longer story would repeat or invent detail.",
+      "takeaway": "Enterprise teams exporting traces or displaying private media can review role authentication as an alternative to stored long-lived keys.",
+      "image": "/edition-images/2026-11-07/langfuse-s3-role.webp",
+      "image_width": 1440,
+      "image_height": 960,
+      "image_provenance": {
+        "kind": "generated-editorial",
+        "generator": "built-in-imagegen",
+        "prompt": "Use case: infographic-diagram. Standalone landscape 3:2 newspaper infographic PNG. Warm ivory newsprint, black ink engraving, restrained rust accent, large readable serif labels. Explain Langfuse Enterprise S3 role authentication, not a network architecture. Center a simple badge labelled \"AWS identity role\" between left card \"Langfuse Enterprise\" and right bucket icon \"Your S3 bucket\". Clear left-to-right arrow labelled \"Assume role\" from Langfuse to role; arrow from role to bucket. Below show two distinct supported uses: \"Scheduled exports\" and \"Trace media\". Title verbatim \"Connect storage with a role\". Small supporting line \"No stored long-lived access key needed\". Do not suggest automatic migration or availability outside Enterprise. No invented metrics, no fake screenshot, no logos, no watermark, no footer.",
+        "based_on": [
+          "https://langfuse.com/changelog/2026-11-06-s3-iam-role-auth"
+        ],
+        "reviewed": true,
+        "sha256": "c4be57bdc218861b0be66c8ec357b4ebc8a85cb9552095fc770aa6c05ac2236f",
         "optimization": {
           "format": "webp",
           "quality": 78,
           "max_width": 1440,
-          "source_sha256": "938a3e2b1f6a24c7191a0d5e4ab8c7ca29e0aef6fc3551e7e554ec3e3be1ee81"
+          "source_sha256": "b36cf069f2ff77c71f94aed5d4037c2a9ed9e70a46538ac23f8832264dc2d0bd"
         }
       },
       "source": "news",
-      "interest_score": 8,
-      "score_reason": "Concrete server-side visibility and a repeatable path from mismatched tool results to regression checks.",
-      "dedupe_key": "article:braintrust.dev/blog/mcp-tracing",
+      "interest_score": 7,
+      "dedupe_key": "article:langfuse.com/changelog/2026-11-06-s3-iam-role-auth",
+      "score_reason": "Narrow but concrete credential-handling improvement for trace exports and media, restricted to Enterprise.",
       "source_evidence": {
-        "url": "https://www.braintrust.dev/blog/mcp-tracing",
-        "publication_date": "2026-11-05",
-        "raw_date": "2026-11-05",
-        "raw_label": "5 November 2026",
-        "method": "Original article visible publication label agrees with article:published_time and JSON-LD datePublished; label normalized to ISO calendar date. dateModified was not used."
+        "url": "https://langfuse.com/changelog/2026-11-06-s3-iam-role-auth",
+        "publication_date": "2026-11-06",
+        "raw_date": "2026-11-06",
+        "method": "Original changelog visible publication label November 6, 2026, normalized to ISO; confirmed in fetched primary HTML."
       }
     },
     {
-      "title": "Elastic’s agent traces show a cheaper model can still answer more slowly",
-      "url": "https://www.elastic.co/observability-labs/blog/ai-agent-observability-opentelemetry",
-      "publisher": "Elastic Observability Labs",
-      "published": "2026-11-05",
+      "title": "Phoenix aligns environment parsing and clarifies telemetry warnings",
+      "url": "https://github.com/Arize-ai/phoenix/releases/tag/arize-phoenix-otel-v0.17.3",
+      "publisher": "Arize AI · Phoenix",
+      "published": "2026-11-06",
       "category_key": "observability",
-      "summary": "A shopping-assistant experiment reduced model spend but increased mean response time on most questions. Connected traces separated model time, retrieval and provider-reported charges.",
+      "summary": "Phoenix’s telemetry package aligns configuration parsing across Python and TypeScript, selects the export protocol once and names headers in encoding warnings.",
       "body": [
-        "Elastic Observability collects application telemetry for investigating behavior, latency and cost. Its walkthrough instruments a LangChain shopping assistant with OpenTelemetry’s generative-AI conventions, shared names for model and agent records. The problem is that total request time alone cannot identify which model call made the customer wait or consumed the budget.",
-        "First, the example connects agent, tool and model operations as spans, each recording one operation and its timing. A trace shows three model calls taking about 92% of one request. The application separately collects provider-reported model charges and puts their sum on the request’s root record; this excludes infrastructure and retrieval charges. Parent and child durations must not be added together.",
-        "Then the author replaces only the product-comparison model and tests five questions three times per model, checking answers as well as cost and latency. Model spend falls by 76% to 83% per question, but mean response time rises on four questions. This is a small sequential test, not a production guarantee. The article recommends broader evaluation and testing whether returning the tool’s answer directly can avoid the final model call."
+        "Phoenix is an AI observability project whose telemetry package configures the export of application traces. Its stable release lists three configuration fixes. First, Python and TypeScript now parse the .env.phoenix configuration file the same way. Next, the package selects the OpenTelemetry export protocol once. Finally, a warning about URL encoding now identifies the header name involved.",
+        "The release also repairs dead documentation links. These are narrowly described maintenance changes: the notes do not report measured delivery improvements or establish that every trace arrives successfully. Operators investigating configuration differences or encoding warnings have specific fixes to review."
       ],
-      "format": "full",
-      "takeaway": "Measure answer quality, elapsed time and model charges together before adopting a cheaper model. Use traces to choose the next experiment, then repeat the same checks.",
-      "image": "/edition-images/2026-11-06/elastic-cost-latency.webp",
+      "format": "brief",
+      "brief_reason": "The stable release provides three short configuration fixes and one documentation fix without detailed failure scenarios or measured results.",
+      "takeaway": "Phoenix operators seeing language-specific configuration differences or header-encoding warnings should review these fixes and verify trace arrival.",
+      "image": "/edition-images/2026-11-07/phoenix-telemetry-config.webp",
       "image_width": 1440,
       "image_height": 960,
       "image_provenance": {
         "kind": "generated-editorial",
         "generator": "built-in-imagegen",
-        "prompt": "Use case: infographic-diagram. Asset type: standalone newspaper editorial infographic PNG, landscape 3:2. Source-supported idea from https://www.elastic.co/observability-labs/blog/ai-agent-observability-opentelemetry : a small shopping-assistant model-swap experiment lowered model spend by 76% to 83% per question but increased mean response time on four of five questions; five questions, three repeats per model. Make an elegant simple two-panel newspaper infographic, warm cream paper, engraved dark ink line drawings, restrained brick-red accents, large readable serif labels. Exact title: \"Cheaper did not mean faster\". Left panel with coin stack icon and downward arrow, text \"Model spend\" and \"76%–83% lower per question\". Right panel with clock icon and upward arrow, text \"Mean response time\" and \"Higher on 4 of 5 questions\". Under both panels a clear full-width note: \"Small test: 5 questions · 3 repeats per model\". Small final note: \"Model charges only; infrastructure excluded\". No invented bars or timings, no quality guarantees, no logos, fake screenshots, watermark or image-generation disclosure. Treat this as reported experimental results, not a universal claim.",
+        "prompt": "Use case: infographic-diagram. Standalone landscape 3:2 newspaper infographic PNG, warm ivory paper, black ink engraved linework, restrained rust accents, large readable serif text. One idea: Phoenix aligns parsing of its configuration file in Python and TypeScript. Show one document labelled \".env.phoenix\" feeding two equal branches labelled \"Python\" and \"TypeScript\", joining into one card \"Consistent parsing\". Title verbatim \"Read the same configuration\". Below a separate small outlined note \"Phoenix telemetry configuration\". This is conceptual depiction of the release note, not an architecture. No claim that exports are guaranteed. No metrics, no fake screenshots, no logos, no watermark, no footer.",
         "based_on": [
-          "https://www.elastic.co/observability-labs/blog/ai-agent-observability-opentelemetry"
+          "https://github.com/Arize-ai/phoenix/releases/tag/arize-phoenix-otel-v0.17.3"
         ],
         "reviewed": true,
-        "sha256": "15b5cdbb9ac83dea410ebdf9493804a2d89b3aec4fa31cb081719d5b8af81aca",
+        "sha256": "0b414683863b18dacdfb51388af6b97663031e37e06b00363aba857e275201e5",
         "optimization": {
           "format": "webp",
           "quality": 82,
           "max_width": 1440,
-          "source_sha256": "14565cb841099239e487fe9eda22ac7df9d09e04c64cea31a129e96a5e5d8b2a"
-        }
-      },
-      "source": "news",
-      "interest_score": 8,
-      "score_reason": "Reproducible, narrowly scoped agent cost and latency investigation with sample limits and clear cost attribution.",
-      "dedupe_key": "article:elastic.co/observability-labs/blog/ai-agent-observability-opentelemetry",
-      "source_evidence": {
-        "url": "https://www.elastic.co/observability-labs/blog/ai-agent-observability-opentelemetry",
-        "publication_date": "2026-11-05",
-        "raw_date": "2026-11-05T00:00:00.000Z",
-        "method": "Original article time dateTime agrees with JSON-LD datePublished and visible November 05, 2026 label. Creation and modification dates were not used."
-      }
-    },
-    {
-      "title": "Langfuse records more trace reads, exports and downloads in access audits",
-      "url": "https://github.com/langfuse/langfuse/releases/tag/v4.76.0",
-      "publisher": "Langfuse",
-      "published": "2026-11-05",
-      "category_key": "observability",
-      "summary": "Access logging expands to selected trace, session and score reads, plus exports and downloads. Enterprise access-event recording must be enabled, and coverage has explicit gaps.",
-      "body": [
-        "Langfuse is an AI observability platform for inspecting application traces and evaluation scores. Those records can contain sensitive application data, so reviewing who accessed them is a separate operational need from collecting them. The release expands audit access events for selected reads of trace, observation, session and score data, and for exports and downloads. An observation records an operation within a trace.",
-        "First, an organization must have Enterprise access-event recording enabled, either through its organization setting or instance enforcement. Covered reads declare the resource and action beside their handler. The implementation records validated request parameters before returning data; a staging-write failure prevents a successful read from releasing it. Selected refused reads also receive denied events.",
-        "Exports record before their jobs enter the queue, while covered downloads record before sending bytes. A failed audit write prevents those operations from proceeding. Coverage remains selective: aggregate-only reads and several other routes are excluded. Scheduled exports are outside the export change, batch-export row counts are unavailable at request time, and refused downloads are not recorded as denied. These boundaries come from the linked implementation notes."
-      ],
-      "format": "full",
-      "takeaway": "Teams using Langfuse access audits should test the specific read and export paths they depend on; the expanded coverage does not establish a complete record of every access.",
-      "image": "/edition-images/2026-11-06/langfuse-access-audits.webp",
-      "image_width": 1440,
-      "image_height": 960,
-      "image_provenance": {
-        "kind": "generated-editorial",
-        "generator": "built-in-imagegen",
-        "prompt": "Use case: infographic-diagram. Asset type: newspaper editorial infographic PNG, landscape 3:2. Explain the source-supported access logging gate described by Langfuse release https://github.com/langfuse/langfuse/releases/tag/v4.76.0 and linked pull requests 19625 and 19757. Warm cream paper, engraved black-ink linework, restrained brick-red arrows, large serif typography, airy three-step composition. Exact title: \"Record access before releasing data\". A small header note: \"Access-event recording enabled\". Three connected elements left to right labeled \"Covered read or download\", \"Record audit event\", \"Return data\". Under the audit-event element, a red downward branch ending at a closed gate labeled \"Audit write fails\" then \"Data withheld\". Small readable scope note: \"Selected routes only\". This depicts successful covered read/download paths only, not denied requests. Do not imply all routes are covered or auditing is enabled by default. No numerical claims, no fake screenshots, no unrelated logos, no watermark or generation disclosure text.",
-        "based_on": [
-          "https://github.com/langfuse/langfuse/releases/tag/v4.76.0"
-        ],
-        "reviewed": true,
-        "sha256": "57dfed87de1cb25dd2927d263cfc8314dfac5a9ddf36460952de50d14978e0a9",
-        "optimization": {
-          "format": "webp",
-          "quality": 82,
-          "max_width": 1440,
-          "source_sha256": "a175df4770b91ba1b6c1ff4561f68d5383ee0a87b4d5fe8eaf3a1f72667c6ea1"
+          "source_sha256": "123d6b532b64899a8744c5efa69344c93913c493dd7425a13d20e04a3802f7ff"
         }
       },
       "source": "github",
-      "interest_score": 8,
-      "score_reason": "Meaningful audit coverage with documented gating, failure behavior and exclusions for sensitive AI telemetry.",
-      "dedupe_key": "release:langfuse/langfuse:v4.76.0",
+      "interest_score": 7,
+      "dedupe_key": "release:Arize-ai/phoenix:arize-phoenix-otel-v0.17.3",
+      "score_reason": "Relevant telemetry configuration maintenance with terse release notes and no measured operational impact.",
       "source_evidence": {
-        "url": "https://github.com/langfuse/langfuse/releases/tag/v4.76.0",
-        "publication_date": "2026-11-05",
-        "raw_date": "2026-11-05T18:08:03Z",
-        "method": "GitHub REST release published_at verified directly; draft=false and prerelease=false. Release-linked pull requests 19625 and 19757 reviewed for scope and limitations."
-      }
-    },
-    {
-      "title": "OpenInference traces Gemini live interactions and their tool calls",
-      "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-google-genai-v1.6.0",
-      "publisher": "Arize AI / OpenInference",
-      "published": "2026-11-05",
-      "category_key": "observability",
-      "summary": "The Google GenAI integration adds tracing for live sessions over WebSockets. Interaction records connect model generations and tool calls, with media and testing limits documented.",
-      "body": [
-        "OpenInference provides instrumentation that records AI application activity as traces. Its Google GenAI integration now covers live sessions, which exchange data through a persistent WebSocket connection. Previously, those sessions bypassed the methods the instrumentor wrapped and produced no spans. A span is a record of one operation within a trace.",
-        "The new implementation first creates an interaction record from user input until the model returns control. Within it, separate records follow model generations and tool calls. A tool request ends the current generation; another generation begins when the model continues. Session identifiers connect successive interactions. Cancelled tools receive a cancellation event, and nonblocking calls can outlast their starting interaction.",
-        "The implementation omits audio and video bytes but can record enabled transcriptions and remote media references. Images remain subject to masking settings, and the session-resumption handle is omitted. The contributor reports a real API smoke test with text and tool turns, but no real microphone or Vertex backend test. Tracing also wraps private SDK functions; their removal can reduce coverage, and streamed tool arguments may be incomplete."
-      ],
-      "format": "full",
-      "takeaway": "Teams observing live Gemini applications gain interaction-level records, but should verify their media, backend and streaming paths rather than assume the reported text smoke test covers them.",
-      "image": "/edition-images/2026-11-06/gemini-live-tracing.webp",
-      "image_width": 1440,
-      "image_height": 960,
-      "image_provenance": {
-        "kind": "generated-editorial",
-        "generator": "built-in-imagegen",
-        "prompt": "Use case: infographic-diagram. Asset type: standalone newspaper editorial infographic PNG, landscape 3:2. Source https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-google-genai-v1.6.0 and pull request 4216. Explain one Gemini Live interaction trace: user input begins an interaction, a model generation requests a tool, the tool runs, then the model continues until control returns. Warm cream newsprint, black ink engraved linework, muted brick red, elegant readable serif title and large short labels. Exact title: \"See inside a live interaction\". One wide enclosing bracket labeled \"Interaction\" surrounds three chronological connected record cards: \"Model generation\", \"Tool call\", \"Model continues\". Small input arrow entering bracket labeled \"User input\"; output arrow exiting labeled \"Control returns\". A short note beneath: \"Session ID links interactions\". Another brief scope note: \"Audio and video bytes omitted\". No waveform that implies recorded raw audio, no invented numbers, no unsupported architecture, no logos, no fake screenshot, no watermark, no generation disclosure text. Keep only these labels, readable at article width.",
-        "based_on": [
-          "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-google-genai-v1.6.0"
-        ],
-        "reviewed": true,
-        "sha256": "7f314d201abfb0c71ddae2696cf913fe0d635f8543ab568532062e5bba2c36ee",
-        "optimization": {
-          "format": "webp",
-          "quality": 82,
-          "max_width": 1440,
-          "source_sha256": "7eb44297efe986fb524f50d73eb6f6687f07942c9d9f5f8467d4b93423ceef01"
-        }
-      },
-      "source": "github",
-      "interest_score": 8,
-      "score_reason": "Closes a documented live-session tracing gap while preserving specific privacy and compatibility limits.",
-      "dedupe_key": "release:Arize-ai/openinference:python-openinference-instrumentation-google-genai-v1.6.0",
-      "source_evidence": {
-        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-google-genai-v1.6.0",
-        "publication_date": "2026-11-05",
-        "raw_date": "2026-11-05T06:59:31Z",
-        "method": "GitHub REST release published_at verified directly; draft=false and prerelease=false. Linked pull request 4216 reviewed for interaction shape, media handling and testing limits."
-      }
-    },
-    {
-      "title": "OpenInference removes duplicate Anthropic SDK spans from traced calls",
-      "url": "https://github.com/Arize-ai/openinference/releases/tag/%40arizeai/openinference-instrumentation-anthropic%401.0.1",
-      "publisher": "Arize AI / OpenInference",
-      "published": "2026-11-05",
-      "category_key": "observability",
-      "summary": "The JavaScript Anthropic integration suppresses the SDK’s extra record when OpenInference already traces a call. Trace context and nested HTTP instrumentation remain available.",
-      "body": [
-        "OpenInference is an instrumentation library that records AI model operations in traces. Its JavaScript Anthropic integration fixes duplicate records introduced when the Anthropic SDK began creating its own span for every API call. A span describes one operation within a trace. Instrumented calls consequently exported both an OpenInference model span and an SDK span for the same request.",
-        "The release identifies message creation, message streaming and token counting as affected, across stable and beta interfaces. Streaming had an additional hierarchy problem: its SDK span was not beneath the OpenInference model span. The patch changes the context the integration hands to the SDK when a call is already traced.",
-        "First, OpenInference supplies a non-recording span carrying the model span’s context. The SDK then retains that context without exporting a second record. The request continues to carry trace context, and HTTP instrumentation records sit beneath the model operation. Calls that OpenInference does not trace keep the SDK’s own spans. This is a targeted correction to record duplication and nesting; the release does not report a measured reduction in telemetry cost or changes to model behavior."
-      ],
-      "format": "full",
-      "takeaway": "JavaScript teams combining Anthropic’s SDK with OpenInference should inspect a streamed request after upgrading and confirm one model record with the expected HTTP children. The earlier Python fix is a separate integration.",
-      "image": "/edition-images/2026-11-06/anthropic-single-span.webp",
-      "image_width": 1440,
-      "image_height": 960,
-      "image_provenance": {
-        "kind": "generated-editorial",
-        "generator": "built-in-imagegen",
-        "prompt": "Use case: infographic-diagram. Asset type: standalone newspaper editorial infographic PNG, landscape 3:2. Explain one source-supported mechanism from https://github.com/Arize-ai/openinference/releases/tag/%40arizeai/openinference-instrumentation-anthropic%401.0.1 : JavaScript OpenInference hands the Anthropic SDK a non-recording span carrying the existing model trace context, suppressing the SDK duplicate while keeping HTTP children nested. Warm cream newsprint with black engraved linework, muted brick-red connection lines, readable elegant serif type, generous negative space. Exact title: \"One model call, one model record\". Show three simple boxes left to right: \"OpenInference model span\", \"SDK keeps trace context\", \"HTTP child spans\". Beneath the middle box a small crossed-out duplicate page labeled \"Extra SDK record suppressed\". Bottom short definition: \"Span = one operation record\". All connections must be clear and show HTTP spans beneath the model span, not as a second model request. Do not imply all SDK spans disappear: add a readable note \"Untraced SDK calls keep their spans\". No numbers, versions, fake screenshot, logos, watermark or image-generation disclosure.",
-        "based_on": [
-          "https://github.com/Arize-ai/openinference/releases/tag/%40arizeai/openinference-instrumentation-anthropic%401.0.1"
-        ],
-        "reviewed": true,
-        "sha256": "c48d8c84d92a88b3247093a130847b4cd45158e394b1fafd92b989ecf9357376",
-        "optimization": {
-          "format": "webp",
-          "quality": 82,
-          "max_width": 1440,
-          "source_sha256": "5924e0a7104b16acb742497a96b4a9f840f8258fc61f02b47c1ffe86989e3ca9"
-        }
-      },
-      "source": "github",
-      "interest_score": 8,
-      "score_reason": "Specific trace duplication and hierarchy fix with explicit behavior for calls outside OpenInference tracing.",
-      "dedupe_key": "release:Arize-ai/openinference:@arizeai/openinference-instrumentation-anthropic@1.0.1",
-      "source_evidence": {
-        "url": "https://github.com/Arize-ai/openinference/releases/tag/%40arizeai/openinference-instrumentation-anthropic%401.0.1",
-        "publication_date": "2026-11-05",
-        "raw_date": "2026-11-05T17:15:01Z",
-        "method": "GitHub REST release published_at verified directly; draft=false and prerelease=false. Original release patch description reviewed; JavaScript change is distinct from the historical Python release."
+        "url": "https://github.com/Arize-ai/phoenix/releases/tag/arize-phoenix-otel-v0.17.3",
+        "publication_date": "2026-11-06",
+        "raw_date": "2026-11-06T23:31:35Z",
+        "method": "Official GitHub release API published_at; draft=false and prerelease=false verified in saved API response.",
+        "api": "https://api.github.com/repos/Arize-ai/phoenix/releases/tags/arize-phoenix-otel-v0.17.3"
       }
     }
   ],
@@ -235,225 +194,132 @@
     "checked_urls": [
       "https://arize.com/blog/",
       "https://langfuse.com/blog",
-      "https://langfuse.com/changelog",
       "https://www.langchain.com/blog",
       "https://www.braintrust.dev/blog",
       "https://opentelemetry.io/blog/",
       "https://www.elastic.co/observability-labs/blog",
       "https://www.datadoghq.com/blog/",
-      "https://www.datadoghq.com/blog/index.xml",
       "https://www.honeycomb.io/blog/",
       "https://www.digitalocean.com/blog",
       "https://www.splunk.com/en_us/blog/observability.html",
-      "https://www.splunk.com/en_us/blog.html",
       "https://www.dynatrace.com/news/",
-      "https://www.braintrust.dev/blog/mcp-tracing",
-      "https://www.elastic.co/observability-labs/blog/ai-agent-observability-opentelemetry"
+      "https://langfuse.com/changelog",
+      "https://langfuse.com/changelog/2026-11-06-retiring-tokenization",
+      "https://langfuse.com/changelog/2026-11-06-s3-iam-role-auth",
+      "https://www.elastic.co/observability-labs/blog/opentelemetry-kafka-receiver-tenant-isolation"
     ],
     "excluded": [
       {
-        "url": "https://labcanary.com/",
-        "hn_id": "50386089",
-        "reason": "Outside AI-observability scope: Show HN: Lab Canary – Rating AI labs on whether their staff can speak up. No claim that HN submission time establishes linked article publication."
+        "url": "https://github.com/OneUptime/oneuptime",
+        "hn_id": "50395597",
+        "reason": "General data-observability release; no verified original dated AI-observability announcement."
       },
       {
-        "url": "https://eremoterra.com/",
-        "hn_id": "50385803",
-        "reason": "Outside AI-observability scope: Show HN: Open-world text adventure played through AI agents. No claim that HN submission time establishes linked article publication."
+        "url": "https://www.anthropic.com/research/teaching-ai-to-build-scientific-models",
+        "hn_id": "50398727",
+        "reason": "Scientific model-building research is outside the AI-observability operating beat."
       },
       {
-        "url": "https://news.ycombinator.com/item?id=50385171",
-        "hn_id": "50385171",
-        "reason": "Outside AI-observability scope: Ask HN: In the age of agentic AI, do you still pair program?. No claim that HN submission time establishes linked article publication."
+        "url": "https://coywolf.com/news/seo/google-openai-microsoft-and-anthropic-back-a-shared-robotstxt-ai-training-signal/",
+        "hn_id": "50395808",
+        "reason": "Training crawl policy, not AI application tracing, evaluation or runtime visibility."
       },
       {
-        "url": "https://aless.tabnas.dev/",
-        "hn_id": "50382213",
-        "reason": "Outside AI-observability scope: Show HN: A terminal viewer for plain text data files (JSON,YAML,CSV,XML,). No claim that HN submission time establishes linked article publication."
+        "url": "https://portfoliogenius.ai/features/ai-annotated-charts",
+        "hn_id": "50394931",
+        "reason": "Investment chart generation, not AI observability."
       },
       {
-        "url": "https://mathewingramblog.wordpress.com/2026/11/05/we-should-train-ai-as-though-it-is-conscious-just-in-case/",
-        "hn_id": "50381750",
-        "reason": "Outside AI-observability scope: We should train AI as though it is conscious just in case. No claim that HN submission time establishes linked article publication."
+        "url": "https://www.tomshardware.com/tech-industry/big-tech/nvidia-tightens-tracking-of-ai-gpus-in-southeast-asia-as-chinese-chip-smuggling-draws-scrutiny-report-claims-cloud-providers-must-join-monitoring-program-to-qualify-for-official-partner-status",
+        "hn_id": "50394613",
+        "reason": "GPU export compliance tracking, not AI application operations telemetry."
       },
       {
-        "url": "https://huggingface.co/mesmertech/mesmer-ai-detector-4b",
-        "hn_id": "50381455",
-        "reason": "Outside AI-observability scope: Show HN: Training a SOTA Pangram-like detector on a 4070ti with Claude. No claim that HN submission time establishes linked article publication."
+        "url": "https://news.ycombinator.com/item?id=50391647",
+        "hn_id": "50391647",
+        "reason": "Open-ended Ask HN discussion about agent hosting costs; no new concrete observability implementation to report."
       },
       {
-        "url": "https://glockerapp.com/",
-        "hn_id": "50381119",
-        "reason": "Outside AI-observability scope: Show HN: Site/app blocker and usage tracker specifically for Linux. No claim that HN submission time establishes linked article publication."
+        "url": "https://obelisk.club/research/app-store-2026",
+        "hn_id": "50389448",
+        "reason": "App market statistics, outside the beat."
       },
       {
-        "url": "https://quanterlab.com/",
-        "hn_id": "50380178",
-        "reason": "Outside AI-observability scope: Show HN: QuanterLab, describe a trading strategy, watch it build in front of you. No claim that HN submission time establishes linked article publication."
+        "url": "https://asia.nikkei.com/business/markets/taiwan-stocks-in-steepest-ever-fall-south-korea-halts-trading-amid-ai-rout",
+        "hn_id": "50388734",
+        "reason": "Financial markets news, outside the beat."
       },
       {
-        "url": "https://ficscout.com",
-        "hn_id": "50379416",
-        "reason": "Outside AI-observability scope: Show HN: FicScout – Like Goodreads, but see books rated by characters, plot etc.. No claim that HN submission time establishes linked article publication."
+        "url": "https://github.com/Arize-ai/phoenix/releases/tag/%40arizeai/phoenix-cli%401.20.0",
+        "reason": "Stable and in-window, but a narrow prompt-version listing command with pagination and output formats; not retained in this edition’s operational coverage."
       },
       {
-        "url": "https://ferry.indus3.org/",
-        "hn_id": "50378953",
-        "reason": "Outside AI-observability scope: Show HN: Ferry, a highly customizable and feature-rich file manager for macOS. No claim that HN submission time establishes linked article publication."
+        "url": "https://www.elastic.co/observability-labs/blog/opentelemetry-kafka-receiver-tenant-isolation",
+        "reason": "Original November 6 publication verified. General multi-tenant telemetry ingestion reliability; article does not establish a concrete AI-system application, so excluded from this AI-only draft."
       },
       {
-        "url": "https://news.ycombinator.com/item?id=50377523",
-        "hn_id": "50377523",
-        "reason": "Outside AI-observability scope: Ask HN: How do you use AI to learn complex new Math/CS topics?. No claim that HN submission time establishes linked article publication."
-      },
-      {
-        "url": "https://www.youtube.com/watch?v=JoeP7mhcq3A",
-        "hn_id": "50377318",
-        "reason": "Outside AI-observability scope: Experiments trying to push the boundaries of Amiga Games with AI [video]. No claim that HN submission time establishes linked article publication."
-      },
-      {
-        "url": "https://www.youtube.com/watch?v=2JgszpB4Cos",
-        "hn_id": "50376404",
-        "reason": "Outside AI-observability scope: Tile downgrading: getting a 2048 AI to 32,768 without more training [video]. No claim that HN submission time establishes linked article publication."
-      },
-      {
-        "url": "https://github.com/Arize-ai/phoenix/releases/tag/arize-phoenix-client-v3.7.0",
-        "reason": "Eligible narrower client metadata/annotation-validation changes; prioritized live-session coverage and access-audit behavior for this edition."
-      },
-      {
-        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-openllmetry-v0.1.27",
-        "reason": "Eligible narrow successful-span status correction; not selected in this curated issue."
-      },
-      {
-        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-llama-index-v4.7.2",
-        "reason": "Eligible token-usage preservation fix; not selected in this curated issue."
-      },
-      {
-        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-litellm-v0.1.54",
-        "reason": "Eligible nested span correction; prioritized the separately documented Anthropic JavaScript correction."
-      },
-      {
-        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-google-adk-v1.1.2",
-        "reason": "Eligible generator-close lifecycle fix; not selected in this curated issue."
-      },
-      {
-        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-anthropic-v3.3.1",
-        "reason": "Eligible Python missing-token-value guard; distinct from retained JavaScript change but narrower."
-      },
-      {
-        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-agno-v1.1.2",
-        "reason": "Eligible async-tools attribute fix; not selected in this curated issue."
-      },
-      {
-        "url": "https://github.com/braintrustdata/braintrust-sdk-javascript/releases/tag/braintrust%403.43.0",
-        "reason": "MCP tracing overlaps retained primary Braintrust announcement. Other integration updates not selected as a separate release roundup."
-      },
-      {
-        "url": "https://github.com/wandb/weave/releases/tag/v0.54.1",
-        "reason": "Eligible incremental tracing association/SDK parity fixes; not selected in this curated issue."
-      },
-      {
-        "url": "https://github.com/langwatch/langwatch/releases/tag/langwatch-3.23.0",
-        "reason": "Helm chart tag for application release already covered on 2026-11-04 under langwatch@v3.23.0; same application announcement is not new."
-      },
-      {
-        "url": "https://arize.com/blog/how-to-test-a-new-model-in-your-agent/",
-        "reason": "Primary visible date is November 2026 only; exact original publication day not verified, so excluded."
-      },
-      {
-        "url": "https://www.digitalocean.com/blog/introducing-cuttlefish",
-        "reason": "Original-page visible label is Updated November 5, not publication proof. Excluded rather than use an update/index date."
-      },
-      {
-        "url": "https://www.langchain.com/blog/agents-are-going-async",
-        "reason": "Originally November 5 but primarily asynchronous agent architecture, not an AI-observability story."
-      },
-      {
-        "url": "https://www.dynatrace.com/news/blog/dynatrace-release-radar-10-26/",
-        "reason": "New roundup of October changes, not proof those component announcements originated in frozen window. No new AI event selected."
-      },
-      {
-        "url": "https://www.datadoghq.com/blog/online-experiments-agent-observability/",
-        "reason": "Official RSS original pubDate November 4, outside frozen window."
-      },
-      {
-        "url": "https://opentelemetry.io/blog/2026/otel-js-sdk-3-0/",
-        "reason": "Broad JavaScript telemetry SDK migration; not selected without a specific AI-operating focus."
-      },
-      {
-        "url": "https://metr.org/blog/2026-11-05-anthropic-ai-rd-acceleration-assessment/",
-        "reason": "Search-discovered frontier R&D acceleration assessment; outside application observability scope. Not retained or treated as original-date-verified."
-      }
-    ],
-    "note": "Scoped, non-exhaustive sweep. Frozen edition 2026-11-06, original-news day 2026-11-05. Refreshed the repository discovery logic with its output redirected into this run directory to honor write restrictions. All five HN queries and eight watchlist repositories completed. Reviewed 23 historical issues containing 133 stories. Retained 0 HN, 2 News, 3 GitHub stories. Narrower eligible release changes were editorially omitted, not reported as nonexistent. No source-channel outage remains unresolved for this scoped check; direct HTTP 403s were recovered with the web tool. Ambiguous individual publication dates were excluded. Runner owns promotion, builds, commits and publication.",
-    "source_counts": {
-      "hn": 0,
-      "news": 2,
-      "github": 3
-    },
-    "source_checks": [
-      {
-        "url": "https://arize.com/blog/",
-        "result": "Read with web tool; direct HTTP later returned 403. Latest model-comparison article has only a month label; excluded without exact original-day proof. Automatic pricing item is historical duplicate."
-      },
-      {
-        "url": "https://langfuse.com/blog",
-        "result": "Latest highlighted article originally November 4, already covered. No November 5 post found on checked index."
-      },
-      {
-        "url": "https://langfuse.com/changelog",
-        "result": "Newest dated entry November 4; already covered. GitHub release selected for distinct audit changes, not repetition of gateway beta."
-      },
-      {
-        "url": "https://www.langchain.com/blog",
-        "result": "Newest article Agents Are Going Async is agent architecture rather than an AI-observability change; excluded after original-page review."
-      },
-      {
-        "url": "https://www.braintrust.dev/blog",
-        "result": "MCP tracing announcement dated November 5; primary article selected."
-      },
-      {
-        "url": "https://opentelemetry.io/blog/",
-        "result": "JavaScript SDK major announcement dated November 5; reviewed, broad instrumentation migration without a specific AI-operating change, not selected."
-      },
-      {
-        "url": "https://www.elastic.co/observability-labs/blog",
-        "result": "November 5 shopping-assistant cost/latency experiment; primary article selected. November 3 Significant Events item already covered."
-      },
-      {
-        "url": "https://www.datadoghq.com/blog/",
-        "result": "Index supplemented with official RSS for dated candidates."
-      },
-      {
-        "url": "https://www.datadoghq.com/blog/index.xml",
-        "result": "November 5 entries: formal specification validation, Kubernetes instrumentation management, Oracle event recap; no selected AI-observability story. Online Experiments is November 4 and out of window."
-      },
-      {
-        "url": "https://www.honeycomb.io/blog/",
-        "result": "Newest visible article November 4 Innovation Week recap; outside frozen window. Team Agents November 3 already covered."
-      },
-      {
-        "url": "https://www.digitalocean.com/blog",
-        "result": "Cuttlefish dated November 5 on index. Original article exposes Updated November 5; insufficient original publication evidence, excluded."
-      },
-      {
-        "url": "https://www.splunk.com/en_us/blog/observability.html",
-        "result": "Category page returned No results. General blog and targeted date search completed as supplementary surfaces; no verified in-window story selected."
-      },
-      {
-        "url": "https://www.splunk.com/en_us/blog.html",
-        "result": "General blog fetched successfully. Category surface limitation recorded; no article selected without exact primary publication evidence."
+        "url": "https://www.braintrust.dev/blog/mcp-tracing",
+        "reason": "November 5 publication; already covered in November 6 edition."
       },
       {
         "url": "https://www.dynatrace.com/news/",
-        "result": "Reviewed November 5 Release Radar and Kubernetes security headline. Radar recaps October features; no distinct new AI event selected; security item outside the specific beat."
+        "reason": "November 6 listing concerns general Kubernetes security posture; no concrete AI-observability change identified."
+      },
+      {
+        "url": "https://arize.com/blog/",
+        "reason": "Latest featured material includes a month-only date; no unambiguous November 6 original publication selected. No convenient day inferred."
       }
     ],
-    "history_review": {
-      "issue_count": 23,
-      "story_count": 133,
-      "method": "Parsed every issue before selection; compared canonical URLs, event keys and titles, then checked semantic overlap. Anthropic Python duplicate-span fix is distinct from JavaScript SDK fix; LangWatch Helm/application cross-post excluded."
-    }
+    "note": "Scoped primary-source sweep, not exhaustive coverage. Used supplied discovery artifact to respect write-only-run-directory restriction instead of rerunning fetch:sources (which writes outside run directory). Confirmed all nine HN items with official API, and independently refreshed latest 100 releases for all eight configured GitHub repositories into run evidence. All eleven official News surfaces returned HTTP 200. Splunk listing returned no articles; supplemented with exact-date search. Some web-tool opens failed, but direct HTTP retries succeeded for retained sources. Frozen publication date: 2026-11-06. No dateModified, resurfacing time, or sitemap lastmod used as publication evidence.",
+    "source_counts": {
+      "discovered_hn": 9,
+      "github_in_window": 2,
+      "retained_hn": 1,
+      "retained_news": 2,
+      "retained_github": 1
+    },
+    "github_checks": [
+      {
+        "repository": "langfuse/langfuse",
+        "releases_checked": 100,
+        "coverage": "latest 100 releases; not a global GitHub search"
+      },
+      {
+        "repository": "Arize-ai/phoenix",
+        "releases_checked": 100,
+        "coverage": "latest 100 releases; not a global GitHub search"
+      },
+      {
+        "repository": "Arize-ai/openinference",
+        "releases_checked": 100,
+        "coverage": "latest 100 releases; not a global GitHub search"
+      },
+      {
+        "repository": "langchain-ai/langsmith-sdk",
+        "releases_checked": 100,
+        "coverage": "latest 100 releases; not a global GitHub search"
+      },
+      {
+        "repository": "braintrustdata/braintrust-sdk",
+        "releases_checked": 100,
+        "coverage": "latest 100 releases; not a global GitHub search"
+      },
+      {
+        "repository": "wandb/weave",
+        "releases_checked": 100,
+        "coverage": "latest 100 releases; not a global GitHub search"
+      },
+      {
+        "repository": "langwatch/langwatch",
+        "releases_checked": 100,
+        "coverage": "latest 100 releases; not a global GitHub search"
+      },
+      {
+        "repository": "Helicone/helicone",
+        "releases_checked": 4,
+        "coverage": "latest 100 releases; not a global GitHub search"
+      }
+    ]
   },
   "name": "Tidy Traces — AI Observability Daily",
   "canonical_url": "https://tidytraces.com/"

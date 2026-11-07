@@ -1,89 +1,69 @@
-# AI Observability Daily — 2026-11-06
+# AI Observability Daily — 2026-11-07
 
 By Soumendra Kumar Sahoo
 
 Canonical: https://tidytraces.com/
-Coverage window: 2026-11-05
+Coverage window: 2026-11-06
 
-## Braintrust compares MCP tool requests with the results agents received
+## AJX turns agent retries and mistakes into product usability feedback
 
-Source: Braintrust — https://www.braintrust.dev/blog/mcp-tracing
-Published: 2026-11-05
+Source: Roy Osherove · Show HN — https://news.ycombinator.com/item?id=50399373
+Published: 2026-11-06
+Channel: hn
+
+AJX is a command-line tool and skill bundle for testing how easily an AI agent can use a product. Its creator, Roy Osherove, introduced it in a first-party Show HN announcement. The problem it examines is agent usability: a product may be usable by people while its command output, documentation or feedback causes an agent to make mistakes and retry.
+
+First, a user supplies a task, product links and a definition of success. An outer harness, the software coordinating the test, starts an inner agent in a chosen environment. Configuration can include the agent tool, model, skills and number of runs. After the agent finishes, the outer harness examines the run, logs and outputs for retries, token use, mistakes and assumptions. It produces a report and a list of requested product improvements.
+
+Osherove gives examples such as missing machine-readable command output and documentation that disagrees with actual behavior. He describes the tool as early and rough, and envisions using its feedback in a continuous delivery loop. These are the developer’s claims and plans; the announcement supplies no independent measurement of improvements.
+
+Why it matters: Product teams building interfaces for agents can use task-level evidence to investigate friction; verify suggested fixes against repeat runs.
+
+![AJX turns agent retries and mistakes into product usability feedback](/edition-images/2026-11-07/ajx-agent-journey.webp)
+
+## Langfuse makes missing token usage visible instead of estimating it
+
+Source: Langfuse — https://langfuse.com/changelog/2026-11-06-retiring-tokenization
+Published: 2026-11-06
 Channel: news
 
-Braintrust is an AI observability and evaluation platform that records agent activity for inspection. Its new server tracing for Model Context Protocol, the interface agents use to call tools, addresses a visibility gap: a server operator may see a successful response without knowing that the tool returned the wrong data. The operator may also lack the agent’s full conversation.
+Langfuse is an AI observability platform that records model generations and calculates their costs. Its new changelog explains why it is retiring automatic tokenization: estimating token counts from a generation’s input and output when an integration sends no usage. According to Langfuse, reasoning models and cached-token pricing can make those estimates incorrect while hiding broken instrumentation.
 
-First, enable tracing with the Braintrust JavaScript or Python SDK; the announcement covers official MCP implementations and FastMCP. Each call records its inputs, results, timing and errors. Then open the call in Logs and compare the request with the response. The article illustrates this with a production-only query that incorrectly returns staging records.
+First, generation headers now identify missing token usage and link to guidance for fixing the integration. This helps distinguish a missing usage record from a missing model price when a generation has no cost. Teams that relied on automatic estimates should then update their instrumentation to send usage reported by the model provider, or submit costs directly. Langfuse continues calculating costs from submitted usage and model prices; integrations already sending usage or costs need no change.
 
-Operators can optionally add telemetry.intent to the tool schema and a send_feedback tool to collect an agent’s stated purpose and reported difficulties. These additions are not prerequisites for tracing. Patterns can surface repeated behavior with supporting calls. After a repair, the article recommends repeating the request, adding a test and reviewing later traces for recurrence.
+The change applies to new writes and reprocessing. Historical observations are not rewritten in bulk. That boundary matters when reviewing existing records alongside newly ingested generations: the announcement changes how missing usage is handled, rather than promising a correction of every historical estimate.
 
-Why it matters: MCP server owners can investigate successful calls whose content was wrong. Treat agent-supplied intent and feedback as clues to check against recorded inputs and results.
+Why it matters: Teams relying on estimated model spend should check that each integration actually submits provider usage or explicit costs.
 
-![Braintrust compares MCP tool requests with the results agents received](/edition-images/2026-11-06/braintrust-mcp-requests.webp)
+![Langfuse makes missing token usage visible instead of estimating it](/edition-images/2026-11-07/langfuse-missing-usage.webp)
 
-## Elastic’s agent traces show a cheaper model can still answer more slowly
+## Langfuse adds role-based access for trace media and storage exports
 
-Source: Elastic Observability Labs — https://www.elastic.co/observability-labs/blog/ai-agent-observability-opentelemetry
-Published: 2026-11-05
+Source: Langfuse — https://langfuse.com/changelog/2026-11-06-s3-iam-role-auth
+Published: 2026-11-06
 Channel: news
 
-Elastic Observability collects application telemetry for investigating behavior, latency and cost. Its walkthrough instruments a LangChain shopping assistant with OpenTelemetry’s generative-AI conventions, shared names for model and agent records. The problem is that total request time alone cannot identify which model call made the customer wait or consumed the budget.
+Langfuse is an AI observability platform that displays application traces, records of an application’s operations that can include media, and supports scheduled storage exports. Its announcement adds access to Amazon S3 buckets by assuming an AWS Identity and Access Management role, avoiding the need to store long-lived access keys in Langfuse.
 
-First, the example connects agent, tool and model operations as spans, each recording one operation and its timing. A trace shows three model calls taking about 92% of one request. The application separately collects provider-reported model charges and puts their sum on the request’s root record; this excludes infrastructure and retrieval charges. Parent and child durations must not be added together.
+For scheduled exports, users configure the role through the interface or the integration endpoint with authType set to ROLE_ARN. External Media Storage can also use it to render media from a team’s own bucket inside traces. The feature requires Cloud Enterprise or self-hosted Enterprise; self-hosted deployments additionally need LANGFUSE_CROSS_ACCOUNT_ROLE_ARN configured. Access keys remain supported and are still the default.
 
-Then the author replaces only the product-comparison model and tests five questions three times per model, checking answers as well as cost and latency. Model spend falls by 76% to 83% per question, but mean response time rises on four questions. This is a small sequential test, not a production guarantee. The article recommends broader evaluation and testing whether returning the tool’s answer directly can avoid the final model call.
+Why it matters: Enterprise teams exporting traces or displaying private media can review role authentication as an alternative to stored long-lived keys.
 
-Why it matters: Measure answer quality, elapsed time and model charges together before adopting a cheaper model. Use traces to choose the next experiment, then repeat the same checks.
+![Langfuse adds role-based access for trace media and storage exports](/edition-images/2026-11-07/langfuse-s3-role.webp)
 
-![Elastic’s agent traces show a cheaper model can still answer more slowly](/edition-images/2026-11-06/elastic-cost-latency.webp)
+## Phoenix aligns environment parsing and clarifies telemetry warnings
 
-## Langfuse records more trace reads, exports and downloads in access audits
-
-Source: Langfuse — https://github.com/langfuse/langfuse/releases/tag/v4.76.0
-Published: 2026-11-05
+Source: Arize AI · Phoenix — https://github.com/Arize-ai/phoenix/releases/tag/arize-phoenix-otel-v0.17.3
+Published: 2026-11-06
 Channel: github
 
-Langfuse is an AI observability platform for inspecting application traces and evaluation scores. Those records can contain sensitive application data, so reviewing who accessed them is a separate operational need from collecting them. The release expands audit access events for selected reads of trace, observation, session and score data, and for exports and downloads. An observation records an operation within a trace.
+Phoenix is an AI observability project whose telemetry package configures the export of application traces. Its stable release lists three configuration fixes. First, Python and TypeScript now parse the .env.phoenix configuration file the same way. Next, the package selects the OpenTelemetry export protocol once. Finally, a warning about URL encoding now identifies the header name involved.
 
-First, an organization must have Enterprise access-event recording enabled, either through its organization setting or instance enforcement. Covered reads declare the resource and action beside their handler. The implementation records validated request parameters before returning data; a staging-write failure prevents a successful read from releasing it. Selected refused reads also receive denied events.
+The release also repairs dead documentation links. These are narrowly described maintenance changes: the notes do not report measured delivery improvements or establish that every trace arrives successfully. Operators investigating configuration differences or encoding warnings have specific fixes to review.
 
-Exports record before their jobs enter the queue, while covered downloads record before sending bytes. A failed audit write prevents those operations from proceeding. Coverage remains selective: aggregate-only reads and several other routes are excluded. Scheduled exports are outside the export change, batch-export row counts are unavailable at request time, and refused downloads are not recorded as denied. These boundaries come from the linked implementation notes.
+Why it matters: Phoenix operators seeing language-specific configuration differences or header-encoding warnings should review these fixes and verify trace arrival.
 
-Why it matters: Teams using Langfuse access audits should test the specific read and export paths they depend on; the expanded coverage does not establish a complete record of every access.
-
-![Langfuse records more trace reads, exports and downloads in access audits](/edition-images/2026-11-06/langfuse-access-audits.webp)
-
-## OpenInference traces Gemini live interactions and their tool calls
-
-Source: Arize AI / OpenInference — https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-google-genai-v1.6.0
-Published: 2026-11-05
-Channel: github
-
-OpenInference provides instrumentation that records AI application activity as traces. Its Google GenAI integration now covers live sessions, which exchange data through a persistent WebSocket connection. Previously, those sessions bypassed the methods the instrumentor wrapped and produced no spans. A span is a record of one operation within a trace.
-
-The new implementation first creates an interaction record from user input until the model returns control. Within it, separate records follow model generations and tool calls. A tool request ends the current generation; another generation begins when the model continues. Session identifiers connect successive interactions. Cancelled tools receive a cancellation event, and nonblocking calls can outlast their starting interaction.
-
-The implementation omits audio and video bytes but can record enabled transcriptions and remote media references. Images remain subject to masking settings, and the session-resumption handle is omitted. The contributor reports a real API smoke test with text and tool turns, but no real microphone or Vertex backend test. Tracing also wraps private SDK functions; their removal can reduce coverage, and streamed tool arguments may be incomplete.
-
-Why it matters: Teams observing live Gemini applications gain interaction-level records, but should verify their media, backend and streaming paths rather than assume the reported text smoke test covers them.
-
-![OpenInference traces Gemini live interactions and their tool calls](/edition-images/2026-11-06/gemini-live-tracing.webp)
-
-## OpenInference removes duplicate Anthropic SDK spans from traced calls
-
-Source: Arize AI / OpenInference — https://github.com/Arize-ai/openinference/releases/tag/%40arizeai/openinference-instrumentation-anthropic%401.0.1
-Published: 2026-11-05
-Channel: github
-
-OpenInference is an instrumentation library that records AI model operations in traces. Its JavaScript Anthropic integration fixes duplicate records introduced when the Anthropic SDK began creating its own span for every API call. A span describes one operation within a trace. Instrumented calls consequently exported both an OpenInference model span and an SDK span for the same request.
-
-The release identifies message creation, message streaming and token counting as affected, across stable and beta interfaces. Streaming had an additional hierarchy problem: its SDK span was not beneath the OpenInference model span. The patch changes the context the integration hands to the SDK when a call is already traced.
-
-First, OpenInference supplies a non-recording span carrying the model span’s context. The SDK then retains that context without exporting a second record. The request continues to carry trace context, and HTTP instrumentation records sit beneath the model operation. Calls that OpenInference does not trace keep the SDK’s own spans. This is a targeted correction to record duplication and nesting; the release does not report a measured reduction in telemetry cost or changes to model behavior.
-
-Why it matters: JavaScript teams combining Anthropic’s SDK with OpenInference should inspect a streamed request after upgrading and confirm one model record with the expected HTTP children. The earlier Python fix is a separate integration.
-
-![OpenInference removes duplicate Anthropic SDK spans from traced calls](/edition-images/2026-11-06/anthropic-single-span.webp)
+![Phoenix aligns environment parsing and clarifies telemetry warnings](/edition-images/2026-11-07/phoenix-telemetry-config.webp)
 
 ---
 
