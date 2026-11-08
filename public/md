@@ -1,69 +1,41 @@
-# AI Observability Daily — 2026-11-07
+# AI Observability Daily — 2026-11-08
 
 By Soumendra Kumar Sahoo
 
 Canonical: https://tidytraces.com/
-Coverage window: 2026-11-06
+Coverage window: 2026-11-07
 
-## AJX turns agent retries and mistakes into product usability feedback
+## Sentient connects coding-agent actions with local system records
 
-Source: Roy Osherove · Show HN — https://news.ycombinator.com/item?id=50399373
-Published: 2026-11-06
+Source: Hacker News · epynonymous — https://news.ycombinator.com/item?id=50409020
+Published: 2026-11-07
 Channel: hn
 
-AJX is a command-line tool and skill bundle for testing how easily an AI agent can use a product. Its creator, Roy Osherove, introduced it in a first-party Show HN announcement. The problem it examines is agent usability: a product may be usable by people while its command output, documentation or feedback causes an agent to make mistakes and retry.
+Sentient is an open-source monitor for coding agents that keeps activity records on the user’s machine. In a first-party Show HN announcement, its creator describes building it after noticing that repeated permission approvals had become routine. The concern was visibility into the many commands running beneath a coding session, beyond what the agent itself reported.
 
-First, a user supplies a task, product links and a definition of success. An outer harness, the software coordinating the test, starts an inner agent in a chosen environment. Configuration can include the agent tool, model, skills and number of runs. After the agent finishes, the outer harness examines the run, logs and outputs for retries, token use, mistakes and assumptions. It produces a report and a list of requested product improvements.
+First, the Linux monitoring path uses Tetragon, a tool for collecting events from the operating-system kernel, to observe file, process and network activity. Agent session logs then supply context about the prompt and the agent’s stated reasoning. According to the product page, deterministic rules flag risky operations, such as changes outside the repository, for review in a local dashboard. Reviewers can inspect a change alongside its command and prompt.
 
-Osherove gives examples such as missing machine-readable command output and documentation that disagrees with actual behavior. He describes the tool as early and rough, and envisions using its feedback in a continuous delivery loop. These are the developer’s claims and plans; the announcement supplies no independent measurement of improvements.
+The creator describes Sentient as read-only and local, with no cloud synchronization. It currently supports Claude Code; a mode using agent logs without kernel records is also available. Support for other agents and operating systems is planned. These are the developer’s claims, without independent evidence of complete capture or tamper resistance.
 
-Why it matters: Product teams building interfaces for agents can use task-level evidence to investigate friction; verify suggested fixes against repeat runs.
+Why it matters: For engineers supervising local coding agents: compare system activity with session logs, and test the coverage of each collection mode before relying on the combined record.
 
-![AJX turns agent retries and mistakes into product usability feedback](/edition-images/2026-11-07/ajx-agent-journey.webp)
+![Sentient connects coding-agent actions with local system records](/edition-images/2026-11-08/sentient-local-review.webp)
 
-## Langfuse makes missing token usage visible instead of estimating it
+## Phoenix preserves literal dollar sequences in prompt variables
 
-Source: Langfuse — https://langfuse.com/changelog/2026-11-06-retiring-tokenization
-Published: 2026-11-06
-Channel: news
-
-Langfuse is an AI observability platform that records model generations and calculates their costs. Its new changelog explains why it is retiring automatic tokenization: estimating token counts from a generation’s input and output when an integration sends no usage. According to Langfuse, reasoning models and cached-token pricing can make those estimates incorrect while hiding broken instrumentation.
-
-First, generation headers now identify missing token usage and link to guidance for fixing the integration. This helps distinguish a missing usage record from a missing model price when a generation has no cost. Teams that relied on automatic estimates should then update their instrumentation to send usage reported by the model provider, or submit costs directly. Langfuse continues calculating costs from submitted usage and model prices; integrations already sending usage or costs need no change.
-
-The change applies to new writes and reprocessing. Historical observations are not rewritten in bulk. That boundary matters when reviewing existing records alongside newly ingested generations: the announcement changes how missing usage is handled, rather than promising a correction of every historical estimate.
-
-Why it matters: Teams relying on estimated model spend should check that each integration actually submits provider usage or explicit costs.
-
-![Langfuse makes missing token usage visible instead of estimating it](/edition-images/2026-11-07/langfuse-missing-usage.webp)
-
-## Langfuse adds role-based access for trace media and storage exports
-
-Source: Langfuse — https://langfuse.com/changelog/2026-11-06-s3-iam-role-auth
-Published: 2026-11-06
-Channel: news
-
-Langfuse is an AI observability platform that displays application traces, records of an application’s operations that can include media, and supports scheduled storage exports. Its announcement adds access to Amazon S3 buckets by assuming an AWS Identity and Access Management role, avoiding the need to store long-lived access keys in Langfuse.
-
-For scheduled exports, users configure the role through the interface or the integration endpoint with authType set to ROLE_ARN. External Media Storage can also use it to render media from a team’s own bucket inside traces. The feature requires Cloud Enterprise or self-hosted Enterprise; self-hosted deployments additionally need LANGFUSE_CROSS_ACCOUNT_ROLE_ARN configured. Access keys remain supported and are still the default.
-
-Why it matters: Enterprise teams exporting traces or displaying private media can review role authentication as an alternative to stored long-lived keys.
-
-![Langfuse adds role-based access for trace media and storage exports](/edition-images/2026-11-07/langfuse-s3-role.webp)
-
-## Phoenix aligns environment parsing and clarifies telemetry warnings
-
-Source: Arize AI · Phoenix — https://github.com/Arize-ai/phoenix/releases/tag/arize-phoenix-otel-v0.17.3
-Published: 2026-11-06
+Source: Arize AI · Phoenix — https://github.com/Arize-ai/phoenix/releases/tag/%40arizeai/phoenix-client%407.18.2
+Published: 2026-11-07
 Channel: github
 
-Phoenix is an AI observability project whose telemetry package configures the export of application traces. Its stable release lists three configuration fixes. First, Python and TypeScript now parse the .env.phoenix configuration file the same way. Next, the package selects the OpenTelemetry export protocol once. Finally, a warning about URL encoding now identifies the header name involved.
+Phoenix is an AI observability platform whose client library helps applications work with prompts. A client patch fixes variable substitution that could change literal dollar sequences in supplied text. That matters when a prompt includes shell syntax or questions about programming: the text inserted into the prompt should match the value the application provided.
 
-The release also repairs dead documentation links. These are narrowly described maintenance changes: the notes do not report measured delivery improvements or establish that every trace arrives successfully. Operators investigating configuration differences or encoding warnings have specific fixes to review.
+Previously, the formatting utility passed each variable’s value directly to JavaScript’s replaceAll function. That function can interpret dollar sequences as replacement instructions. The patch instead supplies a function that returns the value, preserving it as literal text. The implementation still loops through the configured replacements; the change is how each replacement value reaches the string operation.
 
-Why it matters: Phoenix operators seeing language-specific configuration differences or header-encoding warnings should review these fixes and verify trace arrival.
+The accompanying tests cover a Mustache-style prompt containing a Bash question with two dollar signs, and a brace-style prompt whose value contains a dollar sign followed by an ampersand. Both checks expect the supplied text to survive formatting. The stable command-line release also updates its client dependency to include this correction. The source reports no measured effect on evaluation results.
 
-![Phoenix aligns environment parsing and clarifies telemetry warnings](/edition-images/2026-11-07/phoenix-telemetry-config.webp)
+Why it matters: For Phoenix users passing dollar-containing text into prompts: include literal-value preservation in upgrade checks, including workflows using the command-line package.
+
+![Phoenix preserves literal dollar sequences in prompt variables](/edition-images/2026-11-08/phoenix-literal-values.webp)
 
 ---
 

@@ -1,186 +1,105 @@
 {
-  "date": "2026-11-07",
-  "story_window": "2026-11-06",
-  "dek": "Agent usability tests, explicit missing token usage, role-based trace storage access, and telemetry configuration fixes.",
+  "date": "2026-11-08",
+  "story_window": "2026-11-07",
+  "dek": "Sentient connects local coding-agent actions with system records, while Phoenix fixes literal text preservation in prompt variables.",
   "stories": [
     {
-      "title": "AJX turns agent retries and mistakes into product usability feedback",
-      "url": "https://news.ycombinator.com/item?id=50399373",
-      "publisher": "Roy Osherove · Show HN",
-      "published": "2026-11-06",
+      "title": "Sentient connects coding-agent actions with local system records",
+      "url": "https://news.ycombinator.com/item?id=50409020",
+      "publisher": "Hacker News · epynonymous",
+      "published": "2026-11-07",
       "category_key": "agents",
-      "summary": "AJX runs an agent against a product, then examines its logs to suggest changes that could reduce mistakes, retries and token use.",
+      "summary": "Sentient’s creator introduces a local monitor that combines coding-agent session logs with Linux kernel events for reviewing actions.",
       "body": [
-        "AJX is a command-line tool and skill bundle for testing how easily an AI agent can use a product. Its creator, Roy Osherove, introduced it in a first-party Show HN announcement. The problem it examines is agent usability: a product may be usable by people while its command output, documentation or feedback causes an agent to make mistakes and retry.",
-        "First, a user supplies a task, product links and a definition of success. An outer harness, the software coordinating the test, starts an inner agent in a chosen environment. Configuration can include the agent tool, model, skills and number of runs. After the agent finishes, the outer harness examines the run, logs and outputs for retries, token use, mistakes and assumptions. It produces a report and a list of requested product improvements.",
-        "Osherove gives examples such as missing machine-readable command output and documentation that disagrees with actual behavior. He describes the tool as early and rough, and envisions using its feedback in a continuous delivery loop. These are the developer’s claims and plans; the announcement supplies no independent measurement of improvements."
+        "Sentient is an open-source monitor for coding agents that keeps activity records on the user’s machine. In a first-party Show HN announcement, its creator describes building it after noticing that repeated permission approvals had become routine. The concern was visibility into the many commands running beneath a coding session, beyond what the agent itself reported.",
+        "First, the Linux monitoring path uses Tetragon, a tool for collecting events from the operating-system kernel, to observe file, process and network activity. Agent session logs then supply context about the prompt and the agent’s stated reasoning. According to the product page, deterministic rules flag risky operations, such as changes outside the repository, for review in a local dashboard. Reviewers can inspect a change alongside its command and prompt.",
+        "The creator describes Sentient as read-only and local, with no cloud synchronization. It currently supports Claude Code; a mode using agent logs without kernel records is also available. Support for other agents and operating systems is planned. These are the developer’s claims, without independent evidence of complete capture or tamper resistance."
       ],
       "format": "full",
-      "takeaway": "Product teams building interfaces for agents can use task-level evidence to investigate friction; verify suggested fixes against repeat runs.",
-      "image": "/edition-images/2026-11-07/ajx-agent-journey.webp",
+      "takeaway": "For engineers supervising local coding agents: compare system activity with session logs, and test the coverage of each collection mode before relying on the combined record.",
+      "image": "/edition-images/2026-11-08/sentient-local-review.webp",
       "image_width": 1440,
       "image_height": 960,
       "image_provenance": {
         "kind": "generated-editorial",
         "generator": "built-in-imagegen",
-        "prompt": "Use case: infographic-diagram. Standalone newspaper infographic PNG, landscape 3:2. Warm ivory newsprint, dark ink pen engravings, restrained rust accent, large readable serif typography. Explain AJX agent usability testing with a simple left-to-right sequence of four cards: task definition, agent attempt, run review, product feedback. Source facts: user supplies a task and definition of success; an inner agent tries the product; an outer harness reviews logs for retries, tokens and mistakes; report suggests product improvements. Exact text only: \"Find where agents struggle\"; \"Define the task\"; \"Agent tries product\"; \"Review logs\"; \"Suggest improvements\"; \"Retries · Tokens · Mistakes\". Use clear arrows linking the four stages. No metrics, no performance claims, no fake screenshots, no logos, no watermark, no footer. Keep ample whitespace.",
+        "prompt": "Use case: infographic-diagram. Asset type: standalone newspaper editorial infographic PNG. Explain Sentient monitoring a coding agent, based on the first-party announcement https://news.ycombinator.com/item?id=50409020 and https://nosaka.ai/sentient/. Source-supported idea: Linux kernel events captured through Tetragon are correlated with agent session logs, then deterministic rules flag risky actions for local review. Show two inputs converging to one local review card. Exact text: title \"See what the agent did\"; input one \"Kernel events\" with \"Files · Processes · Network\"; input two \"Session logs\" with \"Prompts · Agent context\"; converged box \"Local review\" with \"Rules flag risky actions\". Warm cream newsprint, black engraved ink, muted rust accent, strong newspaper serif typography, generous whitespace, landscape 3:2. All text large and readable at column width. No metrics, no prevention or completeness guarantees, no logos, no footer, no watermark.",
         "based_on": [
-          "https://news.ycombinator.com/item?id=50399373"
+          "https://news.ycombinator.com/item?id=50409020",
+          "https://nosaka.ai/sentient/"
         ],
         "reviewed": true,
-        "sha256": "22b54d4db04c9629c53b9c5e8a94a82fe51d9a2967087017a142b97232c950d7",
+        "sha256": "9ba10551e448741a7bac36e4023592352d14b573e626ebb21ca2d62a034ed487",
         "optimization": {
           "format": "webp",
           "quality": 82,
           "max_width": 1440,
-          "source_sha256": "5d74a9b13f1e59d369a29e01ee5a6bc02f368da4311f8bd7bbb81a56b64ea643"
+          "source_sha256": "e55969f4bad3b62706cd83ec944bbf6d582833998bba5bc79597a374784b9814"
         }
       },
       "source": "hn",
-      "interest_score": 8,
-      "hn_id": "50399373",
-      "comments": "https://news.ycombinator.com/item?id=50399373",
-      "product_url": "https://ajx.dev/",
-      "dedupe_key": "hn-original:50399373",
-      "score_reason": "Concrete agent execution review workflow with explicit limitations; no independently measured usability gains.",
+      "interest_score": 7,
+      "hn_id": "50409020",
+      "comments": "https://news.ycombinator.com/item?id=50409020",
+      "dedupe_key": "hn-original:50409020",
+      "score_reason": "Directly relevant local agent execution visibility, but an early developer announcement without independently verified capture coverage.",
       "source_evidence": {
-        "url": "https://news.ycombinator.com/item?id=50399373",
-        "publication_date": "2026-11-06",
-        "raw_date": "2026-11-06T22:31:02.000Z",
-        "method": "Official HN API item confirms timestamp and first-party launch text by royosherove; the original Show HN announcement is the primary publication."
+        "url": "https://news.ycombinator.com/item?id=50409020",
+        "publication_date": "2026-11-07",
+        "raw_date": "2026-11-07T23:26:26.000Z",
+        "method": "Original first-party Show HN announcement text and official Firebase HN item time 1794093986; product page used only for implementation context, not as date proof.",
+        "api": "https://hacker-news.firebaseio.com/v0/item/50409020.json",
+        "supporting_urls": [
+          "https://nosaka.ai/sentient/"
+        ]
       }
     },
     {
-      "title": "Langfuse makes missing token usage visible instead of estimating it",
-      "url": "https://langfuse.com/changelog/2026-11-06-retiring-tokenization",
-      "publisher": "Langfuse",
-      "published": "2026-11-06",
-      "category_key": "observability",
-      "summary": "Langfuse is retiring automatic token estimates and highlighting missing usage so teams can identify instrumentation gaps behind absent costs.",
+      "title": "Phoenix preserves literal dollar sequences in prompt variables",
+      "url": "https://github.com/Arize-ai/phoenix/releases/tag/%40arizeai/phoenix-client%407.18.2",
+      "publisher": "Arize AI · Phoenix",
+      "published": "2026-11-07",
+      "category_key": "evals",
+      "summary": "A Phoenix client patch corrects prompt-variable handling; its command-line package picks up the same fix through a dependency update.",
       "body": [
-        "Langfuse is an AI observability platform that records model generations and calculates their costs. Its new changelog explains why it is retiring automatic tokenization: estimating token counts from a generation’s input and output when an integration sends no usage. According to Langfuse, reasoning models and cached-token pricing can make those estimates incorrect while hiding broken instrumentation.",
-        "First, generation headers now identify missing token usage and link to guidance for fixing the integration. This helps distinguish a missing usage record from a missing model price when a generation has no cost. Teams that relied on automatic estimates should then update their instrumentation to send usage reported by the model provider, or submit costs directly. Langfuse continues calculating costs from submitted usage and model prices; integrations already sending usage or costs need no change.",
-        "The change applies to new writes and reprocessing. Historical observations are not rewritten in bulk. That boundary matters when reviewing existing records alongside newly ingested generations: the announcement changes how missing usage is handled, rather than promising a correction of every historical estimate."
+        "Phoenix is an AI observability platform whose client library helps applications work with prompts. A client patch fixes variable substitution that could change literal dollar sequences in supplied text. That matters when a prompt includes shell syntax or questions about programming: the text inserted into the prompt should match the value the application provided.",
+        "Previously, the formatting utility passed each variable’s value directly to JavaScript’s replaceAll function. That function can interpret dollar sequences as replacement instructions. The patch instead supplies a function that returns the value, preserving it as literal text. The implementation still loops through the configured replacements; the change is how each replacement value reaches the string operation.",
+        "The accompanying tests cover a Mustache-style prompt containing a Bash question with two dollar signs, and a brace-style prompt whose value contains a dollar sign followed by an ampersand. Both checks expect the supplied text to survive formatting. The stable command-line release also updates its client dependency to include this correction. The source reports no measured effect on evaluation results."
       ],
       "format": "full",
-      "takeaway": "Teams relying on estimated model spend should check that each integration actually submits provider usage or explicit costs.",
-      "image": "/edition-images/2026-11-07/langfuse-missing-usage.webp",
+      "takeaway": "For Phoenix users passing dollar-containing text into prompts: include literal-value preservation in upgrade checks, including workflows using the command-line package.",
+      "image": "/edition-images/2026-11-08/phoenix-literal-values.webp",
       "image_width": 1440,
       "image_height": 960,
       "image_provenance": {
         "kind": "generated-editorial",
         "generator": "built-in-imagegen",
-        "prompt": "Use case: infographic-diagram. Standalone landscape 3:2 newspaper infographic PNG. Warm ivory paper, dark ink engraving, restrained rust highlights, big readable serif labels. Explain only this Langfuse change: missing provider token usage is made visible rather than filled with automatic estimates; cost can be calculated from submitted usage and a model price. Two clearly separated horizontal paths. Top path: card \"Provider usage\" plus card \"Model price\" leads to card \"Calculated cost\". Bottom path: card \"Missing usage\" leads to card \"Visible warning\" leads to card \"Fix instrumentation\". Title verbatim \"Make missing usage visible\". No numbers, no invented dashboards, no logos, no watermark, no footer. Use generous whitespace, simple document icons and clear arrows.",
+        "prompt": "Use case: infographic-diagram. Asset type: standalone newspaper editorial infographic PNG. Source: https://github.com/Arize-ai/phoenix/releases/tag/%40arizeai/phoenix-client%407.18.2 . Explain one narrow change: Phoenix client preserves literal dollar sequences in prompt variables. Title exactly \"Keep prompt values literal\". A simple left-to-right sequence of three large cards: \"Prompt variable\" then \"Template substitution\" then \"Literal value preserved\". In the first and last card show identical code text \"$$\" in large monospace. Connect cards with arrows. This is a conceptual illustration of the patch, not a screenshot or a full rendering algorithm. Warm cream newsprint, dark engraved ink, restrained rust accent, strong serif title, ample space, landscape 3:2, short readable labels. No benchmarks, no invented implementation detail, no logos, no footer or watermark.",
         "based_on": [
-          "https://langfuse.com/changelog/2026-11-06-retiring-tokenization"
+          "https://github.com/Arize-ai/phoenix/releases/tag/%40arizeai/phoenix-client%407.18.2"
         ],
         "reviewed": true,
-        "sha256": "9b27d52ad757ac212d26e987647f857e3f48880e14cbc22a8052a4f1ff0e9e57",
+        "sha256": "5750f2948d66249d07e9d538155e1cdb32e6a311cc9e6c9217a202c004106fbf",
         "optimization": {
           "format": "webp",
           "quality": 82,
           "max_width": 1440,
-          "source_sha256": "294f8fcc146f6d8581e5455c42f5dfd4bead00ee57fd0c14240218504fc0eb8f"
-        }
-      },
-      "source": "news",
-      "interest_score": 8,
-      "dedupe_key": "article:langfuse.com/changelog/2026-11-06-retiring-tokenization",
-      "score_reason": "Direct cost-accounting and instrumentation reliability change with a stated migration action and historical-data boundary.",
-      "source_evidence": {
-        "url": "https://langfuse.com/changelog/2026-11-06-retiring-tokenization",
-        "publication_date": "2026-11-06",
-        "raw_date": "2026-11-06",
-        "method": "Original changelog displays November 6, 2026 above its title; normalized to ISO date. No modification metadata used."
-      }
-    },
-    {
-      "title": "Langfuse adds role-based access for trace media and storage exports",
-      "url": "https://langfuse.com/changelog/2026-11-06-s3-iam-role-auth",
-      "publisher": "Langfuse",
-      "published": "2026-11-06",
-      "category_key": "observability",
-      "summary": "Enterprise deployments can access Amazon S3 through an AWS identity role for scheduled exports and external trace media.",
-      "body": [
-        "Langfuse is an AI observability platform that displays application traces, records of an application’s operations that can include media, and supports scheduled storage exports. Its announcement adds access to Amazon S3 buckets by assuming an AWS Identity and Access Management role, avoiding the need to store long-lived access keys in Langfuse.",
-        "For scheduled exports, users configure the role through the interface or the integration endpoint with authType set to ROLE_ARN. External Media Storage can also use it to render media from a team’s own bucket inside traces. The feature requires Cloud Enterprise or self-hosted Enterprise; self-hosted deployments additionally need LANGFUSE_CROSS_ACCOUNT_ROLE_ARN configured. Access keys remain supported and are still the default."
-      ],
-      "format": "brief",
-      "brief_reason": "The primary changelog is a short feature notice limited to two integration paths, configuration and Enterprise availability; a longer story would repeat or invent detail.",
-      "takeaway": "Enterprise teams exporting traces or displaying private media can review role authentication as an alternative to stored long-lived keys.",
-      "image": "/edition-images/2026-11-07/langfuse-s3-role.webp",
-      "image_width": 1440,
-      "image_height": 960,
-      "image_provenance": {
-        "kind": "generated-editorial",
-        "generator": "built-in-imagegen",
-        "prompt": "Use case: infographic-diagram. Standalone landscape 3:2 newspaper infographic PNG. Warm ivory newsprint, black ink engraving, restrained rust accent, large readable serif labels. Explain Langfuse Enterprise S3 role authentication, not a network architecture. Center a simple badge labelled \"AWS identity role\" between left card \"Langfuse Enterprise\" and right bucket icon \"Your S3 bucket\". Clear left-to-right arrow labelled \"Assume role\" from Langfuse to role; arrow from role to bucket. Below show two distinct supported uses: \"Scheduled exports\" and \"Trace media\". Title verbatim \"Connect storage with a role\". Small supporting line \"No stored long-lived access key needed\". Do not suggest automatic migration or availability outside Enterprise. No invented metrics, no fake screenshot, no logos, no watermark, no footer.",
-        "based_on": [
-          "https://langfuse.com/changelog/2026-11-06-s3-iam-role-auth"
-        ],
-        "reviewed": true,
-        "sha256": "c4be57bdc218861b0be66c8ec357b4ebc8a85cb9552095fc770aa6c05ac2236f",
-        "optimization": {
-          "format": "webp",
-          "quality": 78,
-          "max_width": 1440,
-          "source_sha256": "b36cf069f2ff77c71f94aed5d4037c2a9ed9e70a46538ac23f8832264dc2d0bd"
-        }
-      },
-      "source": "news",
-      "interest_score": 7,
-      "dedupe_key": "article:langfuse.com/changelog/2026-11-06-s3-iam-role-auth",
-      "score_reason": "Narrow but concrete credential-handling improvement for trace exports and media, restricted to Enterprise.",
-      "source_evidence": {
-        "url": "https://langfuse.com/changelog/2026-11-06-s3-iam-role-auth",
-        "publication_date": "2026-11-06",
-        "raw_date": "2026-11-06",
-        "method": "Original changelog visible publication label November 6, 2026, normalized to ISO; confirmed in fetched primary HTML."
-      }
-    },
-    {
-      "title": "Phoenix aligns environment parsing and clarifies telemetry warnings",
-      "url": "https://github.com/Arize-ai/phoenix/releases/tag/arize-phoenix-otel-v0.17.3",
-      "publisher": "Arize AI · Phoenix",
-      "published": "2026-11-06",
-      "category_key": "observability",
-      "summary": "Phoenix’s telemetry package aligns configuration parsing across Python and TypeScript, selects the export protocol once and names headers in encoding warnings.",
-      "body": [
-        "Phoenix is an AI observability project whose telemetry package configures the export of application traces. Its stable release lists three configuration fixes. First, Python and TypeScript now parse the .env.phoenix configuration file the same way. Next, the package selects the OpenTelemetry export protocol once. Finally, a warning about URL encoding now identifies the header name involved.",
-        "The release also repairs dead documentation links. These are narrowly described maintenance changes: the notes do not report measured delivery improvements or establish that every trace arrives successfully. Operators investigating configuration differences or encoding warnings have specific fixes to review."
-      ],
-      "format": "brief",
-      "brief_reason": "The stable release provides three short configuration fixes and one documentation fix without detailed failure scenarios or measured results.",
-      "takeaway": "Phoenix operators seeing language-specific configuration differences or header-encoding warnings should review these fixes and verify trace arrival.",
-      "image": "/edition-images/2026-11-07/phoenix-telemetry-config.webp",
-      "image_width": 1440,
-      "image_height": 960,
-      "image_provenance": {
-        "kind": "generated-editorial",
-        "generator": "built-in-imagegen",
-        "prompt": "Use case: infographic-diagram. Standalone landscape 3:2 newspaper infographic PNG, warm ivory paper, black ink engraved linework, restrained rust accents, large readable serif text. One idea: Phoenix aligns parsing of its configuration file in Python and TypeScript. Show one document labelled \".env.phoenix\" feeding two equal branches labelled \"Python\" and \"TypeScript\", joining into one card \"Consistent parsing\". Title verbatim \"Read the same configuration\". Below a separate small outlined note \"Phoenix telemetry configuration\". This is conceptual depiction of the release note, not an architecture. No claim that exports are guaranteed. No metrics, no fake screenshots, no logos, no watermark, no footer.",
-        "based_on": [
-          "https://github.com/Arize-ai/phoenix/releases/tag/arize-phoenix-otel-v0.17.3"
-        ],
-        "reviewed": true,
-        "sha256": "0b414683863b18dacdfb51388af6b97663031e37e06b00363aba857e275201e5",
-        "optimization": {
-          "format": "webp",
-          "quality": 82,
-          "max_width": 1440,
-          "source_sha256": "123d6b532b64899a8744c5efa69344c93913c493dd7425a13d20e04a3802f7ff"
+          "source_sha256": "4dedf27888b0c83ed64dcf6b9bf12d3d347255f32e7f0334724f45d900de590e"
         }
       },
       "source": "github",
       "interest_score": 7,
-      "dedupe_key": "release:Arize-ai/phoenix:arize-phoenix-otel-v0.17.3",
-      "score_reason": "Relevant telemetry configuration maintenance with terse release notes and no measured operational impact.",
+      "dedupe_key": "release:Arize-ai/phoenix:@arizeai/phoenix-client@7.18.2",
+      "score_reason": "A concrete but narrowly documented prompt-fidelity fix, relevant to reproducible prompt and evaluation workflows.",
       "source_evidence": {
-        "url": "https://github.com/Arize-ai/phoenix/releases/tag/arize-phoenix-otel-v0.17.3",
-        "publication_date": "2026-11-06",
-        "raw_date": "2026-11-06T23:31:35Z",
-        "method": "Official GitHub release API published_at; draft=false and prerelease=false verified in saved API response.",
-        "api": "https://api.github.com/repos/Arize-ai/phoenix/releases/tags/arize-phoenix-otel-v0.17.3"
+        "url": "https://github.com/Arize-ai/phoenix/releases/tag/%40arizeai/phoenix-client%407.18.2",
+        "publication_date": "2026-11-07",
+        "raw_date": "2026-11-07T00:08:06Z",
+        "method": "Official GitHub release API published_at, with draft:false and prerelease:false; companion CLI release published_at 2026-11-07T00:08:09Z only updates this client dependency. Linked release commit inspected for replacement callback and regression test details.",
+        "api": "https://api.github.com/repos/Arize-ai/phoenix/releases/tags/%40arizeai%2Fphoenix-client%407.18.2",
+        "supporting_urls": [
+          "https://github.com/Arize-ai/phoenix/commit/6e6e101"
+        ]
       }
     }
   ],
@@ -194,6 +113,7 @@
     "checked_urls": [
       "https://arize.com/blog/",
       "https://langfuse.com/blog",
+      "https://langfuse.com/changelog",
       "https://www.langchain.com/blog",
       "https://www.braintrust.dev/blog",
       "https://opentelemetry.io/blog/",
@@ -203,123 +123,89 @@
       "https://www.digitalocean.com/blog",
       "https://www.splunk.com/en_us/blog/observability.html",
       "https://www.dynatrace.com/news/",
-      "https://langfuse.com/changelog",
-      "https://langfuse.com/changelog/2026-11-06-retiring-tokenization",
-      "https://langfuse.com/changelog/2026-11-06-s3-iam-role-auth",
-      "https://www.elastic.co/observability-labs/blog/opentelemetry-kafka-receiver-tenant-isolation"
+      "https://arize.com/blog/how-to-test-a-new-model-in-your-agent/",
+      "https://arize.com/blog/i-put-a-ghost-in-claude-code-then-i-evaluated-it/",
+      "https://www.datadoghq.com/blog/ai/introducing-scout-sre-specialized-model-bits-ai/",
+      "https://www.datadoghq.com/blog/prompt-cache-investigation-ccm-agent-observability/"
     ],
     "excluded": [
       {
-        "url": "https://github.com/OneUptime/oneuptime",
-        "hn_id": "50395597",
-        "reason": "General data-observability release; no verified original dated AI-observability announcement."
+        "url": "https://arxiv.org/abs/2610.24328",
+        "reason": "Original arXiv submission history is 2026-10-16T23:49:40Z, outside the frozen window; HN resurfacing does not establish a new publication."
       },
       {
-        "url": "https://www.anthropic.com/research/teaching-ai-to-build-scientific-models",
-        "hn_id": "50398727",
-        "reason": "Scientific model-building research is outside the AI-observability operating beat."
+        "url": "https://www.science.org/content/article/wearable-device-makers-are-harvesting-brain-data-train-ai-without-telling-users",
+        "reason": "Consumer brain-data collection and AI training privacy, without a concrete AI application observability, instrumentation or evaluation change; excluded on scope before date selection."
       },
       {
-        "url": "https://coywolf.com/news/seo/google-openai-microsoft-and-anthropic-back-a-shared-robotstxt-ai-training-signal/",
-        "hn_id": "50395808",
-        "reason": "Training crawl policy, not AI application tracing, evaluation or runtime visibility."
+        "url": "https://news.ycombinator.com/item?id=50408419",
+        "reason": "First-party announcement reviewed through official HN API. Consumer word-game model rankings concern general language capability rather than operating, tracing or validating a production AI workflow; outside this edition's operational beat."
       },
       {
-        "url": "https://portfoliogenius.ai/features/ai-annotated-charts",
-        "hn_id": "50394931",
-        "reason": "Investment chart generation, not AI observability."
+        "url": "https://news.ycombinator.com/item?id=50406105",
+        "reason": "Spam allegation involving GitHub contributions, without concrete AI observability or evaluation relevance."
       },
       {
-        "url": "https://www.tomshardware.com/tech-industry/big-tech/nvidia-tightens-tracking-of-ai-gpus-in-southeast-asia-as-chinese-chip-smuggling-draws-scrutiny-report-claims-cloud-providers-must-join-monitoring-program-to-qualify-for-official-partner-status",
-        "hn_id": "50394613",
-        "reason": "GPU export compliance tracking, not AI application operations telemetry."
+        "url": "https://news.ycombinator.com/item?id=50403153",
+        "reason": "General context-management discussion, not a verified observability or evaluation implementation or announcement."
       },
       {
-        "url": "https://news.ycombinator.com/item?id=50391647",
-        "hn_id": "50391647",
-        "reason": "Open-ended Ask HN discussion about agent hosting costs; no new concrete observability implementation to report."
+        "url": "https://github.com/Arize-ai/phoenix/releases/tag/%40arizeai/phoenix-cli%401.20.1",
+        "reason": "Dependency-only propagation of the included client fix; folded into that story to avoid duplicate event coverage."
       },
       {
-        "url": "https://obelisk.club/research/app-store-2026",
-        "hn_id": "50389448",
-        "reason": "App market statistics, outside the beat."
+        "url": "https://arize.com/blog/how-to-test-a-new-model-in-your-agent/",
+        "reason": "Primary datePublished and article:published_time establish 2026-11-05, outside the window."
       },
       {
-        "url": "https://asia.nikkei.com/business/markets/taiwan-stocks-in-steepest-ever-fall-south-korea-halts-trading-amid-ai-rout",
-        "hn_id": "50388734",
-        "reason": "Financial markets news, outside the beat."
+        "url": "https://arize.com/blog/i-put-a-ghost-in-claude-code-then-i-evaluated-it/",
+        "reason": "Primary datePublished and article:published_time establish 2026-10-27, outside the window."
       },
       {
-        "url": "https://github.com/Arize-ai/phoenix/releases/tag/%40arizeai/phoenix-cli%401.20.0",
-        "reason": "Stable and in-window, but a narrow prompt-version listing command with pagination and output formats; not retained in this edition’s operational coverage."
+        "url": "https://www.datadoghq.com/blog/ai/introducing-scout-sre-specialized-model-bits-ai/",
+        "reason": "Primary datePublished and time element establish 2026-10-15, outside the window."
       },
       {
-        "url": "https://www.elastic.co/observability-labs/blog/opentelemetry-kafka-receiver-tenant-isolation",
-        "reason": "Original November 6 publication verified. General multi-tenant telemetry ingestion reliability; article does not establish a concrete AI-system application, so excluded from this AI-only draft."
-      },
-      {
-        "url": "https://www.braintrust.dev/blog/mcp-tracing",
-        "reason": "November 5 publication; already covered in November 6 edition."
-      },
-      {
-        "url": "https://www.dynatrace.com/news/",
-        "reason": "November 6 listing concerns general Kubernetes security posture; no concrete AI-observability change identified."
-      },
-      {
-        "url": "https://arize.com/blog/",
-        "reason": "Latest featured material includes a month-only date; no unambiguous November 6 original publication selected. No convenient day inferred."
+        "url": "https://www.datadoghq.com/blog/prompt-cache-investigation-ccm-agent-observability/",
+        "reason": "Primary datePublished and time element establish 2026-11-06, outside the window."
       }
     ],
-    "note": "Scoped primary-source sweep, not exhaustive coverage. Used supplied discovery artifact to respect write-only-run-directory restriction instead of rerunning fetch:sources (which writes outside run directory). Confirmed all nine HN items with official API, and independently refreshed latest 100 releases for all eight configured GitHub repositories into run evidence. All eleven official News surfaces returned HTTP 200. Splunk listing returned no articles; supplemented with exact-date search. Some web-tool opens failed, but direct HTTP retries succeeded for retained sources. Frozen publication date: 2026-11-06. No dateModified, resurfacing time, or sitemap lastmod used as publication evidence.",
-    "source_counts": {
-      "discovered_hn": 9,
-      "github_in_window": 2,
-      "retained_hn": 1,
-      "retained_news": 2,
-      "retained_github": 1
-    },
-    "github_checks": [
-      {
-        "repository": "langfuse/langfuse",
-        "releases_checked": 100,
-        "coverage": "latest 100 releases; not a global GitHub search"
+    "note": "Scoped sweep of all configured News surfaces plus focused exact-date web searches; no claim of exhaustive web coverage. All 25 existing issue files were parsed and reviewed for canonical URLs and event overlap before selection. Six HN candidates and two stable GitHub candidates reviewed. Retained one HN story and one GitHub story; no verified in-window News item found. Web-tool failures for HN API, product and release API were resolved by successful direct HTTP fetches. Splunk's accessible listing returned 'No results'; a focused domain/date search found no candidate. No modified or resurfacing dates were used.",
+    "source_checks": {
+      "hn": {
+        "status": "complete",
+        "queries": [
+          "observability",
+          "LLM evaluation",
+          "AI tracing",
+          "agent telemetry",
+          "langfuse"
+        ],
+        "candidates": 6,
+        "retained": 1,
+        "evidence": "discovery/2026-11-07.json; hn-sentient.txt; hn-wordspies.txt; sentient.txt"
       },
-      {
-        "repository": "Arize-ai/phoenix",
-        "releases_checked": 100,
-        "coverage": "latest 100 releases; not a global GitHub search"
+      "github": {
+        "status": "complete",
+        "repositories": 8,
+        "candidates": 2,
+        "retained": 1,
+        "evidence": "discovery/2026-11-07.json contains per-repository release counts; phoenix-client.txt and phoenix-cli.txt verify stable published_at; phoenix-commit.json supplies fix and test details"
       },
-      {
-        "repository": "Arize-ai/openinference",
-        "releases_checked": 100,
-        "coverage": "latest 100 releases; not a global GitHub search"
-      },
-      {
-        "repository": "langchain-ai/langsmith-sdk",
-        "releases_checked": 100,
-        "coverage": "latest 100 releases; not a global GitHub search"
-      },
-      {
-        "repository": "braintrustdata/braintrust-sdk",
-        "releases_checked": 100,
-        "coverage": "latest 100 releases; not a global GitHub search"
-      },
-      {
-        "repository": "wandb/weave",
-        "releases_checked": 100,
-        "coverage": "latest 100 releases; not a global GitHub search"
-      },
-      {
-        "repository": "langwatch/langwatch",
-        "releases_checked": 100,
-        "coverage": "latest 100 releases; not a global GitHub search"
-      },
-      {
-        "repository": "Helicone/helicone",
-        "releases_checked": 4,
-        "coverage": "latest 100 releases; not a global GitHub search"
+      "news": {
+        "status": "complete",
+        "configured_surfaces_checked": 11,
+        "retained": 0,
+        "evidence": "news-0.html through news-10.html; langfuse-changelog.html; arize-model.txt; arize-ghost.html; dd-scout.html; dd-cache.txt",
+        "searches": [
+          "\"November 7, 2026\" \"observability\"",
+          "\"2026-11-07\" \"evaluation\" \"agent\"",
+          "site:splunk.com/en_us/blog \"November 7, 2026\"",
+          "site:arize.com OR site:langfuse.com OR site:braintrust.dev \"Nov 7, 2026\"",
+          "\"November 7, 2026\" \"AI\" \"tracing\""
+        ]
       }
-    ]
+    }
   },
   "name": "Tidy Traces — AI Observability Daily",
   "canonical_url": "https://tidytraces.com/"
