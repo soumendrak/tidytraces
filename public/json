@@ -1,105 +1,50 @@
 {
-  "date": "2026-11-08",
-  "story_window": "2026-11-07",
-  "dek": "Sentient connects local coding-agent actions with system records, while Phoenix fixes literal text preservation in prompt variables.",
+  "date": "2026-11-09",
+  "story_window": "2026-11-08",
+  "dek": "Human review of real agent traces becomes a foundation for evaluation criteria and automated checks.",
   "stories": [
     {
-      "title": "Sentient connects coding-agent actions with local system records",
-      "url": "https://news.ycombinator.com/item?id=50409020",
-      "publisher": "Hacker News · epynonymous",
-      "published": "2026-11-07",
-      "category_key": "agents",
-      "summary": "Sentient’s creator introduces a local monitor that combines coding-agent session logs with Linux kernel events for reviewing actions.",
-      "body": [
-        "Sentient is an open-source monitor for coding agents that keeps activity records on the user’s machine. In a first-party Show HN announcement, its creator describes building it after noticing that repeated permission approvals had become routine. The concern was visibility into the many commands running beneath a coding session, beyond what the agent itself reported.",
-        "First, the Linux monitoring path uses Tetragon, a tool for collecting events from the operating-system kernel, to observe file, process and network activity. Agent session logs then supply context about the prompt and the agent’s stated reasoning. According to the product page, deterministic rules flag risky operations, such as changes outside the repository, for review in a local dashboard. Reviewers can inspect a change alongside its command and prompt.",
-        "The creator describes Sentient as read-only and local, with no cloud synchronization. It currently supports Claude Code; a mode using agent logs without kernel records is also available. Support for other agents and operating systems is planned. These are the developer’s claims, without independent evidence of complete capture or tamper resistance."
-      ],
-      "format": "full",
-      "takeaway": "For engineers supervising local coding agents: compare system activity with session logs, and test the coverage of each collection mode before relying on the combined record.",
-      "image": "/edition-images/2026-11-08/sentient-local-review.webp",
-      "image_width": 1440,
-      "image_height": 960,
-      "image_provenance": {
-        "kind": "generated-editorial",
-        "generator": "built-in-imagegen",
-        "prompt": "Use case: infographic-diagram. Asset type: standalone newspaper editorial infographic PNG. Explain Sentient monitoring a coding agent, based on the first-party announcement https://news.ycombinator.com/item?id=50409020 and https://nosaka.ai/sentient/. Source-supported idea: Linux kernel events captured through Tetragon are correlated with agent session logs, then deterministic rules flag risky actions for local review. Show two inputs converging to one local review card. Exact text: title \"See what the agent did\"; input one \"Kernel events\" with \"Files · Processes · Network\"; input two \"Session logs\" with \"Prompts · Agent context\"; converged box \"Local review\" with \"Rules flag risky actions\". Warm cream newsprint, black engraved ink, muted rust accent, strong newspaper serif typography, generous whitespace, landscape 3:2. All text large and readable at column width. No metrics, no prevention or completeness guarantees, no logos, no footer, no watermark.",
-        "based_on": [
-          "https://news.ycombinator.com/item?id=50409020",
-          "https://nosaka.ai/sentient/"
-        ],
-        "reviewed": true,
-        "sha256": "9ba10551e448741a7bac36e4023592352d14b573e626ebb21ca2d62a034ed487",
-        "optimization": {
-          "format": "webp",
-          "quality": 82,
-          "max_width": 1440,
-          "source_sha256": "e55969f4bad3b62706cd83ec944bbf6d582833998bba5bc79597a374784b9814"
-        }
-      },
-      "source": "hn",
-      "interest_score": 7,
-      "hn_id": "50409020",
-      "comments": "https://news.ycombinator.com/item?id=50409020",
-      "dedupe_key": "hn-original:50409020",
-      "score_reason": "Directly relevant local agent execution visibility, but an early developer announcement without independently verified capture coverage.",
-      "source_evidence": {
-        "url": "https://news.ycombinator.com/item?id=50409020",
-        "publication_date": "2026-11-07",
-        "raw_date": "2026-11-07T23:26:26.000Z",
-        "method": "Original first-party Show HN announcement text and official Firebase HN item time 1794093986; product page used only for implementation context, not as date proof.",
-        "api": "https://hacker-news.firebaseio.com/v0/item/50409020.json",
-        "supporting_urls": [
-          "https://nosaka.ai/sentient/"
-        ]
-      }
-    },
-    {
-      "title": "Phoenix preserves literal dollar sequences in prompt variables",
-      "url": "https://github.com/Arize-ai/phoenix/releases/tag/%40arizeai/phoenix-client%407.18.2",
-      "publisher": "Arize AI · Phoenix",
-      "published": "2026-11-07",
+      "title": "HoneyHive explains how human trace reviews become evaluation checks",
+      "url": "https://www.honeyhive.ai/learn/human-evaluation-llm",
+      "publisher": "HoneyHive",
+      "published": "2026-11-08",
       "category_key": "evals",
-      "summary": "A Phoenix client patch corrects prompt-variable handling; its command-line package picks up the same fix through a dependency update.",
+      "summary": "A guide turns open review of real traces into failure categories, pass-or-fail questions and tests for automated evaluators.",
       "body": [
-        "Phoenix is an AI observability platform whose client library helps applications work with prompts. A client patch fixes variable substitution that could change literal dollar sequences in supplied text. That matters when a prompt includes shell syntax or questions about programming: the text inserted into the prompt should match the value the application provided.",
-        "Previously, the formatting utility passed each variable’s value directly to JavaScript’s replaceAll function. That function can interpret dollar sequences as replacement instructions. The patch instead supplies a function that returns the value, preserving it as literal text. The implementation still loops through the configured replacements; the change is how each replacement value reaches the string operation.",
-        "The accompanying tests cover a Mustache-style prompt containing a Bash question with two dollar signs, and a brace-style prompt whose value contains a dollar sign followed by an ampersand. Both checks expect the supplied text to survive formatting. The stable command-line release also updates its client dependency to include this correction. The source reports no measured effect on evaluation results."
+        "HoneyHive is an agent observability and evaluation platform that records execution traces and supports human review. A trace captures the steps of an application run. Its guide to human evaluation addresses a practical problem: teams need clear examples of what went wrong before they can decide what an automated evaluator should check. The guide recommends people for subjective qualities and domain-specific judgments that automation cannot yet assess reliably.",
+        "First, sample diverse real traces and let a domain expert write open notes about failures. Group those notes into recurring failure types before writing a rubric, so the criteria do not hide unexpected problems. Then turn the failure types into pass-or-fail questions. When several reviewers participate, have them label the same examples independently, measure agreement and revise unclear criteria.",
+        "Finally, use the labeled traces to test automated checks and model-based judges. In HoneyHive, teams create human evaluator fields, select trace events and add them to an annotation queue. Queue automation can also add matching events continuously. The guide describes a review workflow; it does not demonstrate that any particular automated judge will match a team's experts."
       ],
       "format": "full",
-      "takeaway": "For Phoenix users passing dollar-containing text into prompts: include literal-value preservation in upgrade checks, including workflows using the command-line package.",
-      "image": "/edition-images/2026-11-08/phoenix-literal-values.webp",
+      "takeaway": "For teams defining evaluation criteria: review real failures before fixing the rubric, then check automated judgments against expert labels.",
+      "image": "/edition-images/2026-11-09/human-trace-review.webp",
       "image_width": 1440,
       "image_height": 960,
       "image_provenance": {
         "kind": "generated-editorial",
         "generator": "built-in-imagegen",
-        "prompt": "Use case: infographic-diagram. Asset type: standalone newspaper editorial infographic PNG. Source: https://github.com/Arize-ai/phoenix/releases/tag/%40arizeai/phoenix-client%407.18.2 . Explain one narrow change: Phoenix client preserves literal dollar sequences in prompt variables. Title exactly \"Keep prompt values literal\". A simple left-to-right sequence of three large cards: \"Prompt variable\" then \"Template substitution\" then \"Literal value preserved\". In the first and last card show identical code text \"$$\" in large monospace. Connect cards with arrows. This is a conceptual illustration of the patch, not a screenshot or a full rendering algorithm. Warm cream newsprint, dark engraved ink, restrained rust accent, strong serif title, ample space, landscape 3:2, short readable labels. No benchmarks, no invented implementation detail, no logos, no footer or watermark.",
+        "prompt": "Use case: infographic-diagram. Asset type: standalone newspaper editorial infographic PNG. Explain the human evaluation workflow described at https://www.honeyhive.ai/learn/human-evaluation-llm. Source-supported sequence: sample real execution traces, write open notes and group failures, turn failures into pass/fail questions, use human labels to test automated checks. Show four numbered cards connected left to right with simple ink illustrations of trace records, a notebook, checkboxes, and a comparison sheet. Exact title: \"Turn review into evaluation\". Exact card labels: \"Review real traces\", \"Group failures\", \"Write pass/fail questions\", \"Test automated checks\". Warm cream newsprint, dark engraved ink, muted rust accents, generous whitespace, bold readable serif type. Landscape 3:2. No other text, no invented metrics, no screenshots, no logos, no footer, no watermark.",
         "based_on": [
-          "https://github.com/Arize-ai/phoenix/releases/tag/%40arizeai/phoenix-client%407.18.2"
+          "https://www.honeyhive.ai/learn/human-evaluation-llm"
         ],
         "reviewed": true,
-        "sha256": "5750f2948d66249d07e9d538155e1cdb32e6a311cc9e6c9217a202c004106fbf",
+        "sha256": "7b0c43499574b0e918a4b3c951aed9661fd682039c46070a6217f77bbcc34d64",
         "optimization": {
           "format": "webp",
           "quality": 82,
           "max_width": 1440,
-          "source_sha256": "4dedf27888b0c83ed64dcf6b9bf12d3d347255f32e7f0334724f45d900de590e"
+          "source_sha256": "23bbaf45459a24db4241aebd20dfaee0ba4568a4620170f34a0462b27f197a21"
         }
       },
-      "source": "github",
+      "source": "news",
       "interest_score": 7,
-      "dedupe_key": "release:Arize-ai/phoenix:@arizeai/phoenix-client@7.18.2",
-      "score_reason": "A concrete but narrowly documented prompt-fidelity fix, relevant to reproducible prompt and evaluation workflows.",
+      "dedupe_key": "article:honeyhive.ai/learn/human-evaluation-llm",
+      "score_reason": "Concrete human-review workflow with direct evaluation relevance; a vendor guide rather than new measured evidence.",
       "source_evidence": {
-        "url": "https://github.com/Arize-ai/phoenix/releases/tag/%40arizeai/phoenix-client%407.18.2",
-        "publication_date": "2026-11-07",
-        "raw_date": "2026-11-07T00:08:06Z",
-        "method": "Official GitHub release API published_at, with draft:false and prerelease:false; companion CLI release published_at 2026-11-07T00:08:09Z only updates this client dependency. Linked release commit inspected for replacement callback and regression test details.",
-        "api": "https://api.github.com/repos/Arize-ai/phoenix/releases/tags/%40arizeai%2Fphoenix-client%407.18.2",
-        "supporting_urls": [
-          "https://github.com/Arize-ai/phoenix/commit/6e6e101"
-        ]
+        "url": "https://www.honeyhive.ai/learn/human-evaluation-llm",
+        "publication_date": "2026-11-08",
+        "raw_date": "2026-11-08",
+        "method": "Primary HTML Article JSON-LD datePublished is 2026-11-08. Visible Updated time and dateModified match, but are not used as original-publication proof."
       }
     }
   ],
@@ -113,7 +58,6 @@
     "checked_urls": [
       "https://arize.com/blog/",
       "https://langfuse.com/blog",
-      "https://langfuse.com/changelog",
       "https://www.langchain.com/blog",
       "https://www.braintrust.dev/blog",
       "https://opentelemetry.io/blog/",
@@ -123,89 +67,98 @@
       "https://www.digitalocean.com/blog",
       "https://www.splunk.com/en_us/blog/observability.html",
       "https://www.dynatrace.com/news/",
+      "https://langfuse.com/changelog",
+      "https://www.honeyhive.ai/learn",
+      "https://www.honeyhive.ai/learn/human-evaluation-llm",
       "https://arize.com/blog/how-to-test-a-new-model-in-your-agent/",
-      "https://arize.com/blog/i-put-a-ghost-in-claude-code-then-i-evaluated-it/",
+      "https://www.datadoghq.com/blog/prompt-cache-investigation-ccm-agent-observability/",
       "https://www.datadoghq.com/blog/ai/introducing-scout-sre-specialized-model-bits-ai/",
-      "https://www.datadoghq.com/blog/prompt-cache-investigation-ccm-agent-observability/"
+      "https://openai.com/index/measuring-how-ai-agents-handle-wet-lab-science/",
+      "https://www.beaconwake.com/observability.html",
+      "https://www.honeyhive.ai/learn/agent-benchmarks",
+      "https://www.splunk.com/en_us/blog/artificial-intelligence/adopting-ai-with-confidence.html",
+      "https://agentscouthq.com/tasks/evaluating-agents.html"
     ],
     "excluded": [
       {
-        "url": "https://arxiv.org/abs/2610.24328",
-        "reason": "Original arXiv submission history is 2026-10-16T23:49:40Z, outside the frozen window; HN resurfacing does not establish a new publication."
+        "url": "https://github.com/lamarcol/NotBot",
+        "hn_id": "50418158",
+        "reason": "Outside AI-observability beat: application, model-training, consumer/privacy or general development topic; no concrete AI tracing, evaluation or operational visibility change. HN submission time not used as article publication evidence."
       },
       {
-        "url": "https://www.science.org/content/article/wearable-device-makers-are-harvesting-brain-data-train-ai-without-telling-users",
-        "reason": "Consumer brain-data collection and AI training privacy, without a concrete AI application observability, instrumentation or evaluation change; excluded on scope before date selection."
+        "url": "https://pni.princeton.edu/news/2026/princeton-researchers-train-ai-model-learn-language-way-children-do",
+        "hn_id": "50418771",
+        "reason": "Outside AI-observability beat: application, model-training, consumer/privacy or general development topic; no concrete AI tracing, evaluation or operational visibility change. HN submission time not used as article publication evidence."
       },
       {
-        "url": "https://news.ycombinator.com/item?id=50408419",
-        "reason": "First-party announcement reviewed through official HN API. Consumer word-game model rankings concern general language capability rather than operating, tracing or validating a production AI workflow; outside this edition's operational beat."
+        "url": "https://www.youtube.com/watch?v=zrlLUUdqDJI",
+        "hn_id": "50416103",
+        "reason": "Outside AI-observability beat: application, model-training, consumer/privacy or general development topic; no concrete AI tracing, evaluation or operational visibility change. HN submission time not used as article publication evidence."
       },
       {
-        "url": "https://news.ycombinator.com/item?id=50406105",
-        "reason": "Spam allegation involving GitHub contributions, without concrete AI observability or evaluation relevance."
+        "url": "https://www.valueaddedresource.net/etsy-expands-ai-training-rights/",
+        "hn_id": "50415265",
+        "reason": "Outside AI-observability beat: application, model-training, consumer/privacy or general development topic; no concrete AI tracing, evaluation or operational visibility change. HN submission time not used as article publication evidence."
       },
       {
-        "url": "https://news.ycombinator.com/item?id=50403153",
-        "reason": "General context-management discussion, not a verified observability or evaluation implementation or announcement."
+        "url": "https://jabhook.ai/",
+        "hn_id": "50414691",
+        "reason": "Outside AI-observability beat: application, model-training, consumer/privacy or general development topic; no concrete AI tracing, evaluation or operational visibility change. HN submission time not used as article publication evidence."
       },
       {
-        "url": "https://github.com/Arize-ai/phoenix/releases/tag/%40arizeai/phoenix-cli%401.20.1",
-        "reason": "Dependency-only propagation of the included client fix; folded into that story to avoid duplicate event coverage."
+        "url": "https://velork.com",
+        "hn_id": "50414111",
+        "reason": "Outside AI-observability beat: application, model-training, consumer/privacy or general development topic; no concrete AI tracing, evaluation or operational visibility change. HN submission time not used as article publication evidence."
+      },
+      {
+        "url": "https://consumerrights.wiki/w/Etsy_AI_training_terms_change_(2026)",
+        "hn_id": "50412447",
+        "reason": "Outside AI-observability beat: application, model-training, consumer/privacy or general development topic; no concrete AI tracing, evaluation or operational visibility change. HN submission time not used as article publication evidence."
+      },
+      {
+        "url": "https://github.com/swiftbuild-ai/swiftbuild",
+        "hn_id": "50412135",
+        "reason": "Outside AI-observability beat: application, model-training, consumer/privacy or general development topic; no concrete AI tracing, evaluation or operational visibility change. HN submission time not used as article publication evidence."
+      },
+      {
+        "url": "https://www.science.org/content/article/wearable-device-makers-are-harvesting-brain-data-train-ai-without-telling-users?referrer=https%3A%2F%2Fwww.google.com%2F",
+        "hn_id": "50409856",
+        "reason": "Outside AI-observability beat: application, model-training, consumer/privacy or general development topic; no concrete AI tracing, evaluation or operational visibility change. HN submission time not used as article publication evidence."
       },
       {
         "url": "https://arize.com/blog/how-to-test-a-new-model-in-your-agent/",
-        "reason": "Primary datePublished and article:published_time establish 2026-11-05, outside the window."
-      },
-      {
-        "url": "https://arize.com/blog/i-put-a-ghost-in-claude-code-then-i-evaluated-it/",
-        "reason": "Primary datePublished and article:published_time establish 2026-10-27, outside the window."
-      },
-      {
-        "url": "https://www.datadoghq.com/blog/ai/introducing-scout-sre-specialized-model-bits-ai/",
-        "reason": "Primary datePublished and time element establish 2026-10-15, outside the window."
+        "reason": "Primary article:published_time 2026-11-05T16:00:51+00:00, outside frozen window."
       },
       {
         "url": "https://www.datadoghq.com/blog/prompt-cache-investigation-ccm-agent-observability/",
-        "reason": "Primary datePublished and time element establish 2026-11-06, outside the window."
+        "reason": "Visible Published Nov 6, 2026; outside window."
+      },
+      {
+        "url": "https://www.datadoghq.com/blog/ai/introducing-scout-sre-specialized-model-bits-ai/",
+        "reason": "Visible Published Oct 15, 2026; outside window."
+      },
+      {
+        "url": "https://openai.com/index/measuring-how-ai-agents-handle-wet-lab-science/",
+        "reason": "Original publication November 6, 2026; later digest coverage does not change date."
+      },
+      {
+        "url": "https://www.beaconwake.com/observability.html",
+        "reason": "Generated dashboard timestamp establishes refresh, not original publication."
+      },
+      {
+        "url": "https://www.honeyhive.ai/learn/agent-benchmarks",
+        "reason": "Eligible original date in Article JSON-LD, but not selected: broad benchmark catalog; prioritized the concrete human-review workflow over an additional general survey."
+      },
+      {
+        "url": "https://www.splunk.com/en_us/blog/artificial-intelligence/adopting-ai-with-confidence.html",
+        "reason": "November 4 original publication; outside window."
+      },
+      {
+        "url": "https://agentscouthq.com/tasks/evaluating-agents.html",
+        "reason": "Updated directory date does not prove original publication."
       }
     ],
-    "note": "Scoped sweep of all configured News surfaces plus focused exact-date web searches; no claim of exhaustive web coverage. All 25 existing issue files were parsed and reviewed for canonical URLs and event overlap before selection. Six HN candidates and two stable GitHub candidates reviewed. Retained one HN story and one GitHub story; no verified in-window News item found. Web-tool failures for HN API, product and release API were resolved by successful direct HTTP fetches. Splunk's accessible listing returned 'No results'; a focused domain/date search found no candidate. No modified or resurfacing dates were used.",
-    "source_checks": {
-      "hn": {
-        "status": "complete",
-        "queries": [
-          "observability",
-          "LLM evaluation",
-          "AI tracing",
-          "agent telemetry",
-          "langfuse"
-        ],
-        "candidates": 6,
-        "retained": 1,
-        "evidence": "discovery/2026-11-07.json; hn-sentient.txt; hn-wordspies.txt; sentient.txt"
-      },
-      "github": {
-        "status": "complete",
-        "repositories": 8,
-        "candidates": 2,
-        "retained": 1,
-        "evidence": "discovery/2026-11-07.json contains per-repository release counts; phoenix-client.txt and phoenix-cli.txt verify stable published_at; phoenix-commit.json supplies fix and test details"
-      },
-      "news": {
-        "status": "complete",
-        "configured_surfaces_checked": 11,
-        "retained": 0,
-        "evidence": "news-0.html through news-10.html; langfuse-changelog.html; arize-model.txt; arize-ghost.html; dd-scout.html; dd-cache.txt",
-        "searches": [
-          "\"November 7, 2026\" \"observability\"",
-          "\"2026-11-07\" \"evaluation\" \"agent\"",
-          "site:splunk.com/en_us/blog \"November 7, 2026\"",
-          "site:arize.com OR site:langfuse.com OR site:braintrust.dev \"Nov 7, 2026\"",
-          "\"November 7, 2026\" \"AI\" \"tracing\""
-        ]
-      }
-    }
+    "note": "Scoped sweep, not an exhaustive web search. Refreshed repository discovery logic in a run-local copy solely to redirect writes into the authorized evidence directory. Nine HN candidates excluded by beat; zero stable GitHub releases in window across eight configured repositories (latest 100 release scope). All eleven configured News surfaces fetched successfully; Splunk index showed no results, supplemented by focused search. Langfuse latest changelog entries predate window. Supplemental exact-date searches found HoneyHive guide; primary Article datePublished verified separately from matching dateModified. All 26 existing issues / 144 stories parsed for global URL and event review before selection. No prior HoneyHive human-evaluation story. Search queries recorded in research-log.json."
   },
   "name": "Tidy Traces — AI Observability Daily",
   "canonical_url": "https://tidytraces.com/"

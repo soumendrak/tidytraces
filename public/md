@@ -1,41 +1,25 @@
-# AI Observability Daily — 2026-11-08
+# AI Observability Daily — 2026-11-09
 
 By Soumendra Kumar Sahoo
 
 Canonical: https://tidytraces.com/
-Coverage window: 2026-11-07
+Coverage window: 2026-11-08
 
-## Sentient connects coding-agent actions with local system records
+## HoneyHive explains how human trace reviews become evaluation checks
 
-Source: Hacker News · epynonymous — https://news.ycombinator.com/item?id=50409020
-Published: 2026-11-07
-Channel: hn
+Source: HoneyHive — https://www.honeyhive.ai/learn/human-evaluation-llm
+Published: 2026-11-08
+Channel: news
 
-Sentient is an open-source monitor for coding agents that keeps activity records on the user’s machine. In a first-party Show HN announcement, its creator describes building it after noticing that repeated permission approvals had become routine. The concern was visibility into the many commands running beneath a coding session, beyond what the agent itself reported.
+HoneyHive is an agent observability and evaluation platform that records execution traces and supports human review. A trace captures the steps of an application run. Its guide to human evaluation addresses a practical problem: teams need clear examples of what went wrong before they can decide what an automated evaluator should check. The guide recommends people for subjective qualities and domain-specific judgments that automation cannot yet assess reliably.
 
-First, the Linux monitoring path uses Tetragon, a tool for collecting events from the operating-system kernel, to observe file, process and network activity. Agent session logs then supply context about the prompt and the agent’s stated reasoning. According to the product page, deterministic rules flag risky operations, such as changes outside the repository, for review in a local dashboard. Reviewers can inspect a change alongside its command and prompt.
+First, sample diverse real traces and let a domain expert write open notes about failures. Group those notes into recurring failure types before writing a rubric, so the criteria do not hide unexpected problems. Then turn the failure types into pass-or-fail questions. When several reviewers participate, have them label the same examples independently, measure agreement and revise unclear criteria.
 
-The creator describes Sentient as read-only and local, with no cloud synchronization. It currently supports Claude Code; a mode using agent logs without kernel records is also available. Support for other agents and operating systems is planned. These are the developer’s claims, without independent evidence of complete capture or tamper resistance.
+Finally, use the labeled traces to test automated checks and model-based judges. In HoneyHive, teams create human evaluator fields, select trace events and add them to an annotation queue. Queue automation can also add matching events continuously. The guide describes a review workflow; it does not demonstrate that any particular automated judge will match a team's experts.
 
-Why it matters: For engineers supervising local coding agents: compare system activity with session logs, and test the coverage of each collection mode before relying on the combined record.
+Why it matters: For teams defining evaluation criteria: review real failures before fixing the rubric, then check automated judgments against expert labels.
 
-![Sentient connects coding-agent actions with local system records](/edition-images/2026-11-08/sentient-local-review.webp)
-
-## Phoenix preserves literal dollar sequences in prompt variables
-
-Source: Arize AI · Phoenix — https://github.com/Arize-ai/phoenix/releases/tag/%40arizeai/phoenix-client%407.18.2
-Published: 2026-11-07
-Channel: github
-
-Phoenix is an AI observability platform whose client library helps applications work with prompts. A client patch fixes variable substitution that could change literal dollar sequences in supplied text. That matters when a prompt includes shell syntax or questions about programming: the text inserted into the prompt should match the value the application provided.
-
-Previously, the formatting utility passed each variable’s value directly to JavaScript’s replaceAll function. That function can interpret dollar sequences as replacement instructions. The patch instead supplies a function that returns the value, preserving it as literal text. The implementation still loops through the configured replacements; the change is how each replacement value reaches the string operation.
-
-The accompanying tests cover a Mustache-style prompt containing a Bash question with two dollar signs, and a brace-style prompt whose value contains a dollar sign followed by an ampersand. Both checks expect the supplied text to survive formatting. The stable command-line release also updates its client dependency to include this correction. The source reports no measured effect on evaluation results.
-
-Why it matters: For Phoenix users passing dollar-containing text into prompts: include literal-value preservation in upgrade checks, including workflows using the command-line package.
-
-![Phoenix preserves literal dollar sequences in prompt variables](/edition-images/2026-11-08/phoenix-literal-values.webp)
+![HoneyHive explains how human trace reviews become evaluation checks](/edition-images/2026-11-09/human-trace-review.webp)
 
 ---
 

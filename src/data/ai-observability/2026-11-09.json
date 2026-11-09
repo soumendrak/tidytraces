@@ -1,0 +1,163 @@
+{
+  "date": "2026-11-09",
+  "story_window": "2026-11-08",
+  "dek": "Human review of real agent traces becomes a foundation for evaluation criteria and automated checks.",
+  "stories": [
+    {
+      "title": "HoneyHive explains how human trace reviews become evaluation checks",
+      "url": "https://www.honeyhive.ai/learn/human-evaluation-llm",
+      "publisher": "HoneyHive",
+      "published": "2026-11-08",
+      "category_key": "evals",
+      "summary": "A guide turns open review of real traces into failure categories, pass-or-fail questions and tests for automated evaluators.",
+      "body": [
+        "HoneyHive is an agent observability and evaluation platform that records execution traces and supports human review. A trace captures the steps of an application run. Its guide to human evaluation addresses a practical problem: teams need clear examples of what went wrong before they can decide what an automated evaluator should check. The guide recommends people for subjective qualities and domain-specific judgments that automation cannot yet assess reliably.",
+        "First, sample diverse real traces and let a domain expert write open notes about failures. Group those notes into recurring failure types before writing a rubric, so the criteria do not hide unexpected problems. Then turn the failure types into pass-or-fail questions. When several reviewers participate, have them label the same examples independently, measure agreement and revise unclear criteria.",
+        "Finally, use the labeled traces to test automated checks and model-based judges. In HoneyHive, teams create human evaluator fields, select trace events and add them to an annotation queue. Queue automation can also add matching events continuously. The guide describes a review workflow; it does not demonstrate that any particular automated judge will match a team's experts."
+      ],
+      "format": "full",
+      "takeaway": "For teams defining evaluation criteria: review real failures before fixing the rubric, then check automated judgments against expert labels.",
+      "image": "/edition-images/2026-11-09/human-trace-review.webp",
+      "image_width": 1440,
+      "image_height": 960,
+      "image_provenance": {
+        "kind": "generated-editorial",
+        "generator": "built-in-imagegen",
+        "prompt": "Use case: infographic-diagram. Asset type: standalone newspaper editorial infographic PNG. Explain the human evaluation workflow described at https://www.honeyhive.ai/learn/human-evaluation-llm. Source-supported sequence: sample real execution traces, write open notes and group failures, turn failures into pass/fail questions, use human labels to test automated checks. Show four numbered cards connected left to right with simple ink illustrations of trace records, a notebook, checkboxes, and a comparison sheet. Exact title: \"Turn review into evaluation\". Exact card labels: \"Review real traces\", \"Group failures\", \"Write pass/fail questions\", \"Test automated checks\". Warm cream newsprint, dark engraved ink, muted rust accents, generous whitespace, bold readable serif type. Landscape 3:2. No other text, no invented metrics, no screenshots, no logos, no footer, no watermark.",
+        "based_on": [
+          "https://www.honeyhive.ai/learn/human-evaluation-llm"
+        ],
+        "reviewed": true,
+        "sha256": "7b0c43499574b0e918a4b3c951aed9661fd682039c46070a6217f77bbcc34d64",
+        "optimization": {
+          "format": "webp",
+          "quality": 82,
+          "max_width": 1440,
+          "source_sha256": "23bbaf45459a24db4241aebd20dfaee0ba4568a4620170f34a0462b27f197a21"
+        }
+      },
+      "source": "news",
+      "interest_score": 7,
+      "dedupe_key": "article:honeyhive.ai/learn/human-evaluation-llm",
+      "score_reason": "Concrete human-review workflow with direct evaluation relevance; a vendor guide rather than new measured evidence.",
+      "source_evidence": {
+        "url": "https://www.honeyhive.ai/learn/human-evaluation-llm",
+        "publication_date": "2026-11-08",
+        "raw_date": "2026-11-08",
+        "method": "Primary HTML Article JSON-LD datePublished is 2026-11-08. Visible Updated time and dateModified match, but are not used as original-publication proof."
+      }
+    }
+  ],
+  "research": {
+    "status": "complete",
+    "completed_sources": [
+      "hn",
+      "news",
+      "github"
+    ],
+    "checked_urls": [
+      "https://arize.com/blog/",
+      "https://langfuse.com/blog",
+      "https://www.langchain.com/blog",
+      "https://www.braintrust.dev/blog",
+      "https://opentelemetry.io/blog/",
+      "https://www.elastic.co/observability-labs/blog",
+      "https://www.datadoghq.com/blog/",
+      "https://www.honeycomb.io/blog/",
+      "https://www.digitalocean.com/blog",
+      "https://www.splunk.com/en_us/blog/observability.html",
+      "https://www.dynatrace.com/news/",
+      "https://langfuse.com/changelog",
+      "https://www.honeyhive.ai/learn",
+      "https://www.honeyhive.ai/learn/human-evaluation-llm",
+      "https://arize.com/blog/how-to-test-a-new-model-in-your-agent/",
+      "https://www.datadoghq.com/blog/prompt-cache-investigation-ccm-agent-observability/",
+      "https://www.datadoghq.com/blog/ai/introducing-scout-sre-specialized-model-bits-ai/",
+      "https://openai.com/index/measuring-how-ai-agents-handle-wet-lab-science/",
+      "https://www.beaconwake.com/observability.html",
+      "https://www.honeyhive.ai/learn/agent-benchmarks",
+      "https://www.splunk.com/en_us/blog/artificial-intelligence/adopting-ai-with-confidence.html",
+      "https://agentscouthq.com/tasks/evaluating-agents.html"
+    ],
+    "excluded": [
+      {
+        "url": "https://github.com/lamarcol/NotBot",
+        "hn_id": "50418158",
+        "reason": "Outside AI-observability beat: application, model-training, consumer/privacy or general development topic; no concrete AI tracing, evaluation or operational visibility change. HN submission time not used as article publication evidence."
+      },
+      {
+        "url": "https://pni.princeton.edu/news/2026/princeton-researchers-train-ai-model-learn-language-way-children-do",
+        "hn_id": "50418771",
+        "reason": "Outside AI-observability beat: application, model-training, consumer/privacy or general development topic; no concrete AI tracing, evaluation or operational visibility change. HN submission time not used as article publication evidence."
+      },
+      {
+        "url": "https://www.youtube.com/watch?v=zrlLUUdqDJI",
+        "hn_id": "50416103",
+        "reason": "Outside AI-observability beat: application, model-training, consumer/privacy or general development topic; no concrete AI tracing, evaluation or operational visibility change. HN submission time not used as article publication evidence."
+      },
+      {
+        "url": "https://www.valueaddedresource.net/etsy-expands-ai-training-rights/",
+        "hn_id": "50415265",
+        "reason": "Outside AI-observability beat: application, model-training, consumer/privacy or general development topic; no concrete AI tracing, evaluation or operational visibility change. HN submission time not used as article publication evidence."
+      },
+      {
+        "url": "https://jabhook.ai/",
+        "hn_id": "50414691",
+        "reason": "Outside AI-observability beat: application, model-training, consumer/privacy or general development topic; no concrete AI tracing, evaluation or operational visibility change. HN submission time not used as article publication evidence."
+      },
+      {
+        "url": "https://velork.com",
+        "hn_id": "50414111",
+        "reason": "Outside AI-observability beat: application, model-training, consumer/privacy or general development topic; no concrete AI tracing, evaluation or operational visibility change. HN submission time not used as article publication evidence."
+      },
+      {
+        "url": "https://consumerrights.wiki/w/Etsy_AI_training_terms_change_(2026)",
+        "hn_id": "50412447",
+        "reason": "Outside AI-observability beat: application, model-training, consumer/privacy or general development topic; no concrete AI tracing, evaluation or operational visibility change. HN submission time not used as article publication evidence."
+      },
+      {
+        "url": "https://github.com/swiftbuild-ai/swiftbuild",
+        "hn_id": "50412135",
+        "reason": "Outside AI-observability beat: application, model-training, consumer/privacy or general development topic; no concrete AI tracing, evaluation or operational visibility change. HN submission time not used as article publication evidence."
+      },
+      {
+        "url": "https://www.science.org/content/article/wearable-device-makers-are-harvesting-brain-data-train-ai-without-telling-users?referrer=https%3A%2F%2Fwww.google.com%2F",
+        "hn_id": "50409856",
+        "reason": "Outside AI-observability beat: application, model-training, consumer/privacy or general development topic; no concrete AI tracing, evaluation or operational visibility change. HN submission time not used as article publication evidence."
+      },
+      {
+        "url": "https://arize.com/blog/how-to-test-a-new-model-in-your-agent/",
+        "reason": "Primary article:published_time 2026-11-05T16:00:51+00:00, outside frozen window."
+      },
+      {
+        "url": "https://www.datadoghq.com/blog/prompt-cache-investigation-ccm-agent-observability/",
+        "reason": "Visible Published Nov 6, 2026; outside window."
+      },
+      {
+        "url": "https://www.datadoghq.com/blog/ai/introducing-scout-sre-specialized-model-bits-ai/",
+        "reason": "Visible Published Oct 15, 2026; outside window."
+      },
+      {
+        "url": "https://openai.com/index/measuring-how-ai-agents-handle-wet-lab-science/",
+        "reason": "Original publication November 6, 2026; later digest coverage does not change date."
+      },
+      {
+        "url": "https://www.beaconwake.com/observability.html",
+        "reason": "Generated dashboard timestamp establishes refresh, not original publication."
+      },
+      {
+        "url": "https://www.honeyhive.ai/learn/agent-benchmarks",
+        "reason": "Eligible original date in Article JSON-LD, but not selected: broad benchmark catalog; prioritized the concrete human-review workflow over an additional general survey."
+      },
+      {
+        "url": "https://www.splunk.com/en_us/blog/artificial-intelligence/adopting-ai-with-confidence.html",
+        "reason": "November 4 original publication; outside window."
+      },
+      {
+        "url": "https://agentscouthq.com/tasks/evaluating-agents.html",
+        "reason": "Updated directory date does not prove original publication."
+      }
+    ],
+    "note": "Scoped sweep, not an exhaustive web search. Refreshed repository discovery logic in a run-local copy solely to redirect writes into the authorized evidence directory. Nine HN candidates excluded by beat; zero stable GitHub releases in window across eight configured repositories (latest 100 release scope). All eleven configured News surfaces fetched successfully; Splunk index showed no results, supplemented by focused search. Langfuse latest changelog entries predate window. Supplemental exact-date searches found HoneyHive guide; primary Article datePublished verified separately from matching dateModified. All 26 existing issues / 144 stories parsed for global URL and event review before selection. No prior HoneyHive human-evaluation story. Search queries recorded in research-log.json."
+  }
+}
