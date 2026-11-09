@@ -174,11 +174,18 @@ test('live dev downloads work without dist, survive errors, and reflect content 
     }
     await download('/pdf/latest.pdf', latest); // Render validation also checks the updated story count.
     // A missing infographic must produce a handled error, not terminate the dev process.
-    const imageFile = path.join(root, 'public', edition.stories[0].image.replace(/^\//, ''));
+    const stored = async (name) => (name === `${latest}.json` ? edition : JSON.parse(await readFile(path.join(source, name), 'utf8')));
+    let imaged;
+    for (const name of names.toReversed()) {
+      const story = (await stored(name)).stories.find((candidate) => candidate.image);
+      if (story) { imaged = { day: name.slice(0, -5), image: story.image }; break; }
+    }
+    assert.ok(imaged, 'some edition has a story image to remove');
+    const imageFile = path.join(root, 'public', imaged.image.replace(/^\//, ''));
     const image = await readFile(imageFile);
     try {
       await rm(imageFile);
-      assert.equal((await fetch(`${origin}/pdf/${latest}.pdf`)).status, 503);
+      assert.equal((await fetch(`${origin}/pdf/${imaged.day}.pdf`)).status, 503);
       assert.equal((await fetch(origin)).status, 200);
     } finally { await writeFile(imageFile, image); }
     await download('/latest.pdf', latest);
