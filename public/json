@@ -1,50 +1,230 @@
 {
-  "date": "2026-11-09",
-  "story_window": "2026-11-08",
-  "dek": "Human review of real agent traces becomes a foundation for evaluation criteria and automated checks.",
+  "date": "2026-11-10",
+  "story_window": "2026-11-09",
+  "dek": "Agent audit records, evidence-backed investigations, MCP trace propagation, and monitor reliability.",
   "stories": [
     {
-      "title": "HoneyHive explains how human trace reviews become evaluation checks",
-      "url": "https://www.honeyhive.ai/learn/human-evaluation-llm",
-      "publisher": "HoneyHive",
-      "published": "2026-11-08",
-      "category_key": "evals",
-      "summary": "A guide turns open review of real traces into failure categories, pass-or-fail questions and tests for automated evaluators.",
+      "title": "Airlock pairs coding-agent policies with an audit collector",
+      "url": "https://news.ycombinator.com/item?id=50419615",
+      "publisher": "Matt / Lunar Engineering · Show HN",
+      "published": "2026-11-09",
+      "category_key": "agents",
+      "summary": "An early agent-management framework combines versioned permissions, selected action records and a shadow mode for observing policy behavior.",
       "body": [
-        "HoneyHive is an agent observability and evaluation platform that records execution traces and supports human review. A trace captures the steps of an application run. Its guide to human evaluation addresses a practical problem: teams need clear examples of what went wrong before they can decide what an automated evaluator should check. The guide recommends people for subjective qualities and domain-specific judgments that automation cannot yet assess reliably.",
-        "First, sample diverse real traces and let a domain expert write open notes about failures. Group those notes into recurring failure types before writing a rubric, so the criteria do not hide unexpected problems. Then turn the failure types into pass-or-fail questions. When several reviewers participate, have them label the same examples independently, measure agreement and revise unclear criteria.",
-        "Finally, use the labeled traces to test automated checks and model-based judges. In HoneyHive, teams create human evaluator fields, select trace events and add them to an annotation queue. Queue automation can also add matching events continuously. The guide describes a review workflow; it does not demonstrate that any particular automated judge will match a team's experts."
+        "Airlock is an early framework for managing autonomous coding agents through policies kept in version control. Its creator describes the project in a first-party Show HN announcement, including an OpenTelemetry collector that stores selected agent actions for audits. The intended problem is managing agent permissions and accountability across a business rather than configuring each developer’s local assistant.",
+        "First, an agent run proves its identity using a GitHub-issued identity token. Airlock exchanges that proof for a short-lived GitHub token restricted to the repositories and permissions in the agent’s role file. Teams can then set a repository’s autonomy level and apply stricter overrides to individual files. A shadow mode lets them observe how the framework would behave before enabling it.",
+        "The audit collector records a subset of actions, so the announcement does not establish complete execution coverage. Prompt storage that only customers can decrypt remains exploratory. The creator says the schemas and reusable GitHub actions are public, while opening the backplane’s source is planned after further development."
       ],
       "format": "full",
-      "takeaway": "For teams defining evaluation criteria: review real failures before fixing the rubric, then check automated judgments against expert labels.",
-      "image": "/edition-images/2026-11-09/human-trace-review.webp",
+      "takeaway": "Teams piloting fleet policies should test which agent actions reach the audit record and which remain outside its coverage.",
+      "image": "/edition-images/2026-11-10/airlock-audit.webp",
       "image_width": 1440,
       "image_height": 960,
       "image_provenance": {
         "kind": "generated-editorial",
         "generator": "built-in-imagegen",
-        "prompt": "Use case: infographic-diagram. Asset type: standalone newspaper editorial infographic PNG. Explain the human evaluation workflow described at https://www.honeyhive.ai/learn/human-evaluation-llm. Source-supported sequence: sample real execution traces, write open notes and group failures, turn failures into pass/fail questions, use human labels to test automated checks. Show four numbered cards connected left to right with simple ink illustrations of trace records, a notebook, checkboxes, and a comparison sheet. Exact title: \"Turn review into evaluation\". Exact card labels: \"Review real traces\", \"Group failures\", \"Write pass/fail questions\", \"Test automated checks\". Warm cream newsprint, dark engraved ink, muted rust accents, generous whitespace, bold readable serif type. Landscape 3:2. No other text, no invented metrics, no screenshots, no logos, no footer, no watermark.",
+        "prompt": "Use case: infographic-diagram\nAsset type: standalone newspaper editorial infographic, PNG, landscape 3:2.\nPrimary request: explain one source-supported idea for this story: Airlock pairs coding-agent policies with an audit collector.\nSource-supported facts: The creator describes an OpenTelemetry collector storing a subset of agent actions useful for audit. Show a conceptual record path, explicitly marked partial coverage.\nStyle: warm cream newsprint, black engraved ink, restrained rust red accents, generous whitespace, elegant readable serif title, very large legible labels. Simple connected elements with clear arrows. Match a traditional newspaper explanatory illustration, not a dashboard screenshot.\nText (verbatim): \"Airlock: selected actions for audit\"; \"Coding agent\"; \"Selected actions\"; \"OpenTelemetry collector\"; \"Audit record\"; \"Partial coverage\"\nConstraints: use only these labels; preserve qualifications; no extra claims, metrics, logos, captions, footers, or watermarks.",
         "based_on": [
-          "https://www.honeyhive.ai/learn/human-evaluation-llm"
+          "https://news.ycombinator.com/item?id=50419615"
         ],
         "reviewed": true,
-        "sha256": "7b0c43499574b0e918a4b3c951aed9661fd682039c46070a6217f77bbcc34d64",
+        "sha256": "b5677bf47863e4a201d754a1fc2daf4fc47d530060eb066486e1da4ab6b90be9",
         "optimization": {
           "format": "webp",
           "quality": 82,
           "max_width": 1440,
-          "source_sha256": "23bbaf45459a24db4241aebd20dfaee0ba4568a4620170f34a0462b27f197a21"
+          "source_sha256": "55e1cc8f9b772efe1e10e2e4af04e7032ecbbfb1c837b47e26d4c4d7d8705eb6"
+        }
+      },
+      "source": "hn",
+      "interest_score": 7,
+      "hn_id": "50419615",
+      "comments": "https://news.ycombinator.com/item?id=50419615",
+      "dedupe_key": "article:news.ycombinator.com/item?id=50419615",
+      "score_reason": "Direct agent auditability relevance; early creator claims with explicitly partial collection and unfinished privacy work.",
+      "source_evidence": {
+        "url": "https://news.ycombinator.com/item?id=50419615",
+        "publication_date": "2026-11-09",
+        "raw_date": "2026-11-09T00:59:27Z",
+        "method": "Official HN item API time converted to UTC; original first-party Show HN text supplies the announcement, not a resurfaced linked article."
+      }
+    },
+    {
+      "title": "ClickHouse gives investigation agents managed access to telemetry",
+      "url": "https://clickhouse.com/blog/announcing-clickhouse-observability",
+      "publisher": "ClickHouse",
+      "published": "2026-11-09",
+      "category_key": "observability",
+      "summary": "A managed observability beta exposes the same logs, metrics and traces to engineers and investigation agents.",
+      "body": [
+        "ClickHouse Observability is a managed service for investigating logs, metrics and traces using the open-source ClickStack interface. Its public beta removes database administration from the default setup. The announcement explicitly targets engineers and their investigation agents, whose queries can create changing capacity demands.",
+        "First, a team creates a service and sends existing OpenTelemetry data to its managed ingestion endpoint. ClickHouse handles ingestion, schemas and storage. Engineers explore the records in ClickStack, while agents access the same telemetry through its Model Context Protocol server, an interface for calling investigation tools. Those tools search logs and follow traces; SQL supports additional analysis.",
+        "A separate private preview, Observability Apps, lets agents generate investigation screens over live data. The publisher says generated code runs in a sandbox, with read-only queries using the viewer’s database permissions. These are separate availability stages. During beta, ClickHouse plans further work on automatic scaling and schema optimization."
+      ],
+      "format": "full",
+      "takeaway": "Teams giving agents production telemetry access should verify query permissions and follow findings back to the underlying records.",
+      "image": "/edition-images/2026-11-10/clickhouse-agent-investigations.webp",
+      "image_width": 1440,
+      "image_height": 960,
+      "image_provenance": {
+        "kind": "generated-editorial",
+        "generator": "built-in-imagegen",
+        "prompt": "Use case: infographic-diagram\nAsset type: standalone newspaper editorial infographic, PNG, landscape 3:2.\nPrimary request: explain one source-supported idea for this story: ClickHouse gives investigation agents managed access to telemetry.\nSource-supported facts: The public beta ingests OpenTelemetry data and exposes the same telemetry to engineers through ClickStack and to agents through MCP tools and SQL.\nStyle: warm cream newsprint, black engraved ink, restrained rust red accents, generous whitespace, elegant readable serif title, very large legible labels. Simple connected elements with clear arrows. Match a traditional newspaper explanatory illustration, not a dashboard screenshot.\nText (verbatim): \"One telemetry store, two investigation paths\"; \"OpenTelemetry data\"; \"ClickHouse Observability\"; \"Engineers: ClickStack\"; \"Agents: tools and SQL\"; \"Public beta\"\nConstraints: use only these labels; preserve qualifications; no extra claims, metrics, logos, captions, footers, or watermarks.",
+        "based_on": [
+          "https://clickhouse.com/blog/announcing-clickhouse-observability"
+        ],
+        "reviewed": true,
+        "sha256": "546cb5d8efc1d3e4f2e7e7908c11db6e4dcf826287341f12524db1fe760ace96",
+        "optimization": {
+          "format": "webp",
+          "quality": 82,
+          "max_width": 1440,
+          "source_sha256": "fdcdd058e02a71f5703dcad64b7bcd9c0e619c8e98286c9bfd0a25db91a7b938"
+        }
+      },
+      "source": "hn",
+      "interest_score": 8,
+      "hn_id": "50431267",
+      "comments": "https://news.ycombinator.com/item?id=50431267",
+      "dedupe_key": "article:clickhouse.com/blog/announcing-clickhouse-observability",
+      "score_reason": "Concrete managed telemetry access for investigation agents, with explicit query and preview boundaries.",
+      "source_evidence": {
+        "url": "https://clickhouse.com/blog/announcing-clickhouse-observability",
+        "publication_date": "2026-11-09",
+        "raw_date": "2026-11-09T19:00:07.393Z",
+        "method": "Primary article JSON-LD datePublished, corroborated by visible Nov 9 publication label; dateModified ignored."
+      }
+    },
+    {
+      "title": "Elastic checks an investigation agent’s answer against traces and a query",
+      "url": "https://www.elastic.co/observability-labs/blog/apm-root-cause-analysis-ai-agent-service-map",
+      "publisher": "Elastic Observability Labs",
+      "published": "2026-11-09",
+      "category_key": "agents",
+      "summary": "A fault-injection walkthrough follows an agent’s diagnosis to a failing operation, then checks its scope with a direct query.",
+      "body": [
+        "Elastic AI Agent investigates production telemetry through a conversational interface. An Elastic walkthrough tests its findings against application performance monitoring records in an instrumented demonstration shop. A checkout alert appears upstream of an injected payment fault, so the investigation must separate the visible symptom from the failing service.",
+        "First, the authors attach the alert to the agent’s conversation. Its answer points to payment failures, but expresses uncertainty about whether a particular customer tier is affected. They then open the service map and drill through a transaction into a failing span, the record of one operation within a trace.",
+        "Finally, a direct Elasticsearch Query Language query checks the suspected scope: 80 of 138 gold-tier charges failed, while other tiers did not. This is a controlled demonstration with injected faults, not a production incident or a general accuracy benchmark. The article also warns that the agent’s answers vary between runs."
+      ],
+      "format": "full",
+      "takeaway": "When using agents for incident diagnosis, retain a path from each proposed cause to trace evidence and a reproducible scope check.",
+      "image": "/edition-images/2026-11-10/elastic-evidence-check.webp",
+      "image_width": 1440,
+      "image_height": 960,
+      "image_provenance": {
+        "kind": "generated-editorial",
+        "generator": "built-in-imagegen",
+        "prompt": "Use case: infographic-diagram\nAsset type: standalone newspaper editorial infographic, PNG, landscape 3:2.\nPrimary request: explain one source-supported idea for this story: Elastic checks an investigation agent’s answer against traces and a query.\nSource-supported facts: A fault-injection demo follows an alert into an agent diagnosis, checks a failing span, then queries affected requests. Use no numerical claims in the image.\nStyle: warm cream newsprint, black engraved ink, restrained rust red accents, generous whitespace, elegant readable serif title, very large legible labels. Simple connected elements with clear arrows. Match a traditional newspaper explanatory illustration, not a dashboard screenshot.\nText (verbatim): \"Check the agent’s diagnosis\"; \"Alert\"; \"Agent proposes cause\"; \"Inspect failing span\"; \"Query affected requests\"; \"Controlled demo\"\nConstraints: use only these labels; preserve qualifications; no extra claims, metrics, logos, captions, footers, or watermarks.",
+        "based_on": [
+          "https://www.elastic.co/observability-labs/blog/apm-root-cause-analysis-ai-agent-service-map"
+        ],
+        "reviewed": true,
+        "sha256": "88c8e2ff278c7c5435db99ab241ca4a76f6fba4f00091916d6e0517c63ef4879",
+        "optimization": {
+          "format": "webp",
+          "quality": 82,
+          "max_width": 1440,
+          "source_sha256": "52161efbdfd7720737c38c73e88f2f59fbba0e198065d5a514816e0db23ba13e"
         }
       },
       "source": "news",
-      "interest_score": 7,
-      "dedupe_key": "article:honeyhive.ai/learn/human-evaluation-llm",
-      "score_reason": "Concrete human-review workflow with direct evaluation relevance; a vendor guide rather than new measured evidence.",
+      "interest_score": 8,
+      "dedupe_key": "article:www.elastic.co/observability-labs/blog/apm-root-cause-analysis-ai-agent-service-map",
+      "score_reason": "Reproducible investigation pattern that checks an uncertain agent conclusion against underlying telemetry.",
       "source_evidence": {
-        "url": "https://www.honeyhive.ai/learn/human-evaluation-llm",
-        "publication_date": "2026-11-08",
-        "raw_date": "2026-11-08",
-        "method": "Primary HTML Article JSON-LD datePublished is 2026-11-08. Visible Updated time and dateModified match, but are not used as original-publication proof."
+        "url": "https://www.elastic.co/observability-labs/blog/apm-root-cause-analysis-ai-agent-service-map",
+        "publication_date": "2026-11-09",
+        "raw_date": "2026-11-09T16:15:00.000Z",
+        "method": "Primary article JSON-LD datePublished and visible November 09 publication label agree."
+      }
+    },
+    {
+      "title": "HoneyHive explains how to keep tool calls linked across MCP boundaries",
+      "url": "https://www.honeyhive.ai/learn/mcp-observability",
+      "publisher": "HoneyHive Engineering",
+      "published": "2026-11-09",
+      "category_key": "observability",
+      "summary": "A tracing guide separates request identity, tool failures and sensitive payloads when instrumenting Model Context Protocol calls.",
+      "body": [
+        "Model Context Protocol, or MCP, connects agents to tools and data. HoneyHive’s engineering guide explains how to trace requests across its client and server so a failed tool call stays linked to the agent run. A shared connection alone cannot identify that run because unrelated requests can be interleaved.",
+        "First, the client places trace context in the request’s metadata, allowing the server to connect its operation record to the caller. This works across both local process communication and HTTP. Next, instrumentation records the method, relevant tool name, timing and error type. A tool can fail inside an otherwise successful protocol response, so that result needs its own error classification.",
+        "The guide cautions that OpenTelemetry’s MCP conventions remain in development and instrumentation may not emit the expected fields. Tool arguments and results are optional, potentially sensitive data. HoneyHive describes its automatic instrumentation as experimental and recommends explicit tracing decorators for production; its MCP guide does not itself document cross-service propagation."
+      ],
+      "format": "full",
+      "takeaway": "Inspect emitted records and test propagation across an actual client-server call before relying on an MCP dashboard.",
+      "image": "/edition-images/2026-11-10/mcp-trace-context.webp",
+      "image_width": 1440,
+      "image_height": 960,
+      "image_provenance": {
+        "kind": "generated-editorial",
+        "generator": "built-in-imagegen",
+        "prompt": "Use case: infographic-diagram\nAsset type: standalone newspaper editorial infographic, PNG, landscape 3:2.\nPrimary request: explain one source-supported idea for this story: HoneyHive explains how to keep tool calls linked across MCP boundaries.\nSource-supported facts: Trace context travels in MCP request metadata to link client and server operation records to the originating agent run. Show a conceptual path, not a product screenshot.\nStyle: warm cream newsprint, black engraved ink, restrained rust red accents, generous whitespace, elegant readable serif title, very large legible labels. Simple connected elements with clear arrows. Match a traditional newspaper explanatory illustration, not a dashboard screenshot.\nText (verbatim): \"Keep the tool call linked\"; \"Agent run\"; \"MCP client\"; \"Trace context in request\"; \"MCP server\"; \"Linked operation records\"\nConstraints: use only these labels; preserve qualifications; no extra claims, metrics, logos, captions, footers, or watermarks.",
+        "based_on": [
+          "https://www.honeyhive.ai/learn/mcp-observability"
+        ],
+        "reviewed": true,
+        "sha256": "8d63f0b518dc142c49cd77c54a54cc329e6e08b58ece873897e29654d614503a",
+        "optimization": {
+          "format": "webp",
+          "quality": 82,
+          "max_width": 1440,
+          "source_sha256": "c175a702b09efbc8324630d4af7bc943c9b57b6ac84ad60b543367d449565a20"
+        }
+      },
+      "source": "news",
+      "interest_score": 8,
+      "dedupe_key": "article:www.honeyhive.ai/learn/mcp-observability",
+      "score_reason": "Specific tracing and error-classification guidance with candid convention and instrumentation limits.",
+      "source_evidence": {
+        "url": "https://www.honeyhive.ai/learn/mcp-observability",
+        "publication_date": "2026-11-09",
+        "raw_date": "2026-11-09",
+        "method": "Primary article Article JSON-LD datePublished is 2026-11-09; visible Updated label agrees but is not used as publication proof."
+      }
+    },
+    {
+      "title": "Langfuse keeps monitor alerts and score views closer to their evidence",
+      "url": "https://github.com/langfuse/langfuse/releases/tag/v4.77.0",
+      "publisher": "Langfuse · GitHub release",
+      "published": "2026-11-09",
+      "category_key": "observability",
+      "summary": "Release fixes preserve alert filters in observation links and correct several evaluation-score display and query cases.",
+      "body": [
+        "Langfuse is an AI observability platform that collects application traces and evaluation scores. Its stable release includes changes to the evidence available when operators investigate a monitor alert or review quality results. These fixes address the connection between a notification and its underlying records, along with score visibility.",
+        "First, monitor alert messages now include the measured value and its unit. The observation link also carries the alert’s filters, preserving the selection used by the notification. These are distinct changes: one makes the message more informative, while the other keeps the investigation link aligned with its criteria.",
+        "Then, score-related fixes load score configurations for read-only users and display trace-level correction scores in the individual trace view. A dashboard query fix excludes deleted scores in a join when its normal finalization step is skipped. The release notes identify these implementation changes but provide no measured improvement in investigation time or evaluation accuracy."
+      ],
+      "format": "full",
+      "takeaway": "Langfuse operators should compare a known alert’s filters with its linked observations and verify score visibility using a read-only account.",
+      "image": "/edition-images/2026-11-10/langfuse-monitor-evidence.webp",
+      "image_width": 1440,
+      "image_height": 960,
+      "image_provenance": {
+        "kind": "generated-editorial",
+        "generator": "built-in-imagegen",
+        "prompt": "Use case: infographic-diagram\nAsset type: standalone newspaper editorial infographic, PNG, landscape 3:2.\nPrimary request: explain one source-supported idea for this story: Langfuse keeps monitor alerts and score views closer to their evidence.\nSource-supported facts: The release adds measured value and unit to alert messages and carries alert filters into the observations data link. Illustrate only this narrow source-supported relationship.\nStyle: warm cream newsprint, black engraved ink, restrained rust red accents, generous whitespace, elegant readable serif title, very large legible labels. Simple connected elements with clear arrows. Match a traditional newspaper explanatory illustration, not a dashboard screenshot.\nText (verbatim): \"Follow an alert to matching evidence\"; \"Monitor alert\"; \"Metric value and unit\"; \"Link carries filters\"; \"Matching observations\"\nConstraints: use only these labels; preserve qualifications; no extra claims, metrics, logos, captions, footers, or watermarks.",
+        "based_on": [
+          "https://github.com/langfuse/langfuse/releases/tag/v4.77.0"
+        ],
+        "reviewed": true,
+        "sha256": "51b8a51e34b030bd48a5d27f5ca61c609727ba7a34fdabaffaa626cc8f07cd26",
+        "optimization": {
+          "format": "webp",
+          "quality": 82,
+          "max_width": 1440,
+          "source_sha256": "38fd8411b989fa8241ac5141024279fe77602d2fcaccb64ce96c797f1d9c56b1"
+        }
+      },
+      "source": "github",
+      "interest_score": 8,
+      "dedupe_key": "release:github.com/langfuse/langfuse/releases/tag/v4.77.0",
+      "score_reason": "Concrete alert-to-evidence alignment and score-visibility fixes relevant to operating evaluation pipelines.",
+      "source_evidence": {
+        "url": "https://github.com/langfuse/langfuse/releases/tag/v4.77.0",
+        "publication_date": "2026-11-09",
+        "raw_date": "2026-11-09T12:21:23Z",
+        "method": "Official GitHub release API published_at; draft=false and prerelease=false. Scope excludes features already covered in earlier editions."
       }
     }
   ],
@@ -67,98 +247,126 @@
       "https://www.digitalocean.com/blog",
       "https://www.splunk.com/en_us/blog/observability.html",
       "https://www.dynatrace.com/news/",
-      "https://langfuse.com/changelog",
-      "https://www.honeyhive.ai/learn",
-      "https://www.honeyhive.ai/learn/human-evaluation-llm",
+      "https://clickhouse.com/blog/announcing-clickhouse-observability",
+      "https://blogs.cisco.com/news/moving-fast-and-staying-in-control-in-the-agentic-ai-era",
       "https://arize.com/blog/how-to-test-a-new-model-in-your-agent/",
-      "https://www.datadoghq.com/blog/prompt-cache-investigation-ccm-agent-observability/",
+      "https://www.honeyhive.ai/learn/mcp-observability",
+      "https://www.elastic.co/observability-labs/blog/apm-root-cause-analysis-ai-agent-service-map",
+      "https://www.dynatrace.com/news/blog/when-the-algorithm-hallucinates-in-the-icu-whos-watching/",
+      "https://langfuse.com/blog/introducing-gateway",
       "https://www.datadoghq.com/blog/ai/introducing-scout-sre-specialized-model-bits-ai/",
-      "https://openai.com/index/measuring-how-ai-agents-handle-wet-lab-science/",
-      "https://www.beaconwake.com/observability.html",
-      "https://www.honeyhive.ai/learn/agent-benchmarks",
-      "https://www.splunk.com/en_us/blog/artificial-intelligence/adopting-ai-with-confidence.html",
-      "https://agentscouthq.com/tasks/evaluating-agents.html"
+      "https://www.datadoghq.com/blog/kubernetes-processes-datadog-mcp-server/",
+      "https://www.langchain.com/blog/what-is-eval-driven-development"
     ],
     "excluded": [
       {
-        "url": "https://github.com/lamarcol/NotBot",
-        "hn_id": "50418158",
-        "reason": "Outside AI-observability beat: application, model-training, consumer/privacy or general development topic; no concrete AI tracing, evaluation or operational visibility change. HN submission time not used as article publication evidence."
+        "url": "https://o11y.jobs/",
+        "hn_id": "50433321",
+        "reason": "Job board; no concrete AI-system operation or instrumentation change."
       },
       {
-        "url": "https://pni.princeton.edu/news/2026/princeton-researchers-train-ai-model-learn-language-way-children-do",
-        "hn_id": "50418771",
-        "reason": "Outside AI-observability beat: application, model-training, consumer/privacy or general development topic; no concrete AI tracing, evaluation or operational visibility change. HN submission time not used as article publication evidence."
+        "url": "https://app.nuancelabs.ai/try",
+        "hn_id": "50432589",
+        "reason": "General conversational video model launch; no retained operational observability result."
       },
       {
-        "url": "https://www.youtube.com/watch?v=zrlLUUdqDJI",
-        "hn_id": "50416103",
-        "reason": "Outside AI-observability beat: application, model-training, consumer/privacy or general development topic; no concrete AI tracing, evaluation or operational visibility change. HN submission time not used as article publication evidence."
+        "url": "https://news.ycombinator.com/item?id=50432411",
+        "hn_id": "50432411",
+        "reason": "Personal project collection; outside the AI-observability beat."
       },
       {
-        "url": "https://www.valueaddedresource.net/etsy-expands-ai-training-rights/",
-        "hn_id": "50415265",
-        "reason": "Outside AI-observability beat: application, model-training, consumer/privacy or general development topic; no concrete AI tracing, evaluation or operational visibility change. HN submission time not used as article publication evidence."
+        "url": "https://apiclay.com",
+        "hn_id": "50432130",
+        "reason": "API creation and marketplace announcement; no substantive AI observability change."
       },
       {
-        "url": "https://jabhook.ai/",
-        "hn_id": "50414691",
-        "reason": "Outside AI-observability beat: application, model-training, consumer/privacy or general development topic; no concrete AI tracing, evaluation or operational visibility change. HN submission time not used as article publication evidence."
+        "url": "https://www.tomshardware.com/peripherals/wearable-tech/wearable-sleep-trackers-are-using-your-brainwaves-to-train-ai-models-without-explicit-user-consent-tens-of-millions-of-hours-of-eeg-data-harvested",
+        "hn_id": "50429502",
+        "reason": "Wearable training-data consent story, rather than AI runtime telemetry privacy."
       },
       {
-        "url": "https://velork.com",
-        "hn_id": "50414111",
-        "reason": "Outside AI-observability beat: application, model-training, consumer/privacy or general development topic; no concrete AI tracing, evaluation or operational visibility change. HN submission time not used as article publication evidence."
+        "url": "https://github.com/adrbn/bo2-mac",
+        "hn_id": "50427552",
+        "reason": "Game port; outside scope."
       },
       {
-        "url": "https://consumerrights.wiki/w/Etsy_AI_training_terms_change_(2026)",
-        "hn_id": "50412447",
-        "reason": "Outside AI-observability beat: application, model-training, consumer/privacy or general development topic; no concrete AI tracing, evaluation or operational visibility change. HN submission time not used as article publication evidence."
+        "url": "https://github.com/pounceandmiss/tkabber-demo",
+        "hn_id": "50426474",
+        "reason": "GUI toolkit port; outside scope."
       },
       {
-        "url": "https://github.com/swiftbuild-ai/swiftbuild",
-        "hn_id": "50412135",
-        "reason": "Outside AI-observability beat: application, model-training, consumer/privacy or general development topic; no concrete AI tracing, evaluation or operational visibility change. HN submission time not used as article publication evidence."
+        "url": "https://news.ycombinator.com/item?id=50426070",
+        "hn_id": "50426070",
+        "reason": "Short question soliciting evaluation methods, not substantive published guidance or a verified implementation."
       },
       {
-        "url": "https://www.science.org/content/article/wearable-device-makers-are-harvesting-brain-data-train-ai-without-telling-users?referrer=https%3A%2F%2Fwww.google.com%2F",
-        "hn_id": "50409856",
-        "reason": "Outside AI-observability beat: application, model-training, consumer/privacy or general development topic; no concrete AI tracing, evaluation or operational visibility change. HN submission time not used as article publication evidence."
+        "url": "https://news.ycombinator.com/item?id=50425195",
+        "hn_id": "50425195",
+        "reason": "Time tracking and invoicing; outside scope."
+      },
+      {
+        "url": "https://ernie.baidu.com/research/posts/ernie-evolve/",
+        "hn_id": "50424638",
+        "reason": "Automated model-training/inference research; not selected without a direct production-observability mechanism."
+      },
+      {
+        "url": "https://github.com/radioso-ai/radioso",
+        "hn_id": "50423820",
+        "reason": "Customer-agent framework announcement mentions audit trails but focuses on application creation; narrower dedicated audit-tool story selected."
+      },
+      {
+        "url": "https://hai.stanford.edu/news/tracking-ais-real-time-footprint-on-the-labor-market",
+        "hn_id": "50422174",
+        "reason": "Labor market tracking, not AI runtime visibility."
+      },
+      {
+        "url": "https://wordspies.com/hn",
+        "hn_id": "50420270",
+        "reason": "Game-specific model benchmark; not selected over directly actionable tracing and evaluation operations."
+      },
+      {
+        "url": "https://news.ycombinator.com/item?id=50420216",
+        "hn_id": "50420216",
+        "reason": "Education discussion; outside scope."
+      },
+      {
+        "url": "https://github.com/Arize-ai/phoenix/releases/tag/arize-phoenix-sqlean-v0.2.2",
+        "reason": "Stable release date verified, but notes only bump a bundled SQLite extension dependency; no stated operator-facing AI tracing/evaluation fix."
+      },
+      {
+        "url": "https://langfuse.com/blog/introducing-gateway",
+        "reason": "Same public-beta gateway announcement already covered in 2026-11-05 issue via the official changelog; exclude cross-post/relaunch."
       },
       {
         "url": "https://arize.com/blog/how-to-test-a-new-model-in-your-agent/",
-        "reason": "Primary article:published_time 2026-11-05T16:00:51+00:00, outside frozen window."
+        "reason": "Original article:published_time is 2026-11-05T16:00:51+00:00, outside frozen window despite month-only visible label."
       },
       {
-        "url": "https://www.datadoghq.com/blog/prompt-cache-investigation-ccm-agent-observability/",
-        "reason": "Visible Published Nov 6, 2026; outside window."
+        "url": "https://arize.com/blog/phoenix-automatic-model-pricing-updates/",
+        "reason": "Same original announcement already covered in 2026-11-03 issue."
+      },
+      {
+        "url": "https://blogs.cisco.com/news/moving-fast-and-staying-in-control-in-the-agentic-ai-era",
+        "reason": "Dated primary source verified; broad product-preview roundup with vendor performance claims. Prefer concrete trace-verification and propagation guidance for this selective edition."
+      },
+      {
+        "url": "https://www.dynatrace.com/news/blog/when-the-algorithm-hallucinates-in-the-icu-whos-watching/",
+        "reason": "Dated primary opinion verified; strategic healthcare governance argument, without a concrete new implementation or evaluation result. Lower priority than selected operational guidance."
       },
       {
         "url": "https://www.datadoghq.com/blog/ai/introducing-scout-sre-specialized-model-bits-ai/",
-        "reason": "Visible Published Oct 15, 2026; outside window."
+        "reason": "Original publication 2026-10-15, outside frozen window."
       },
       {
-        "url": "https://openai.com/index/measuring-how-ai-agents-handle-wet-lab-science/",
-        "reason": "Original publication November 6, 2026; later digest coverage does not change date."
+        "url": "https://www.datadoghq.com/blog/kubernetes-processes-datadog-mcp-server/",
+        "reason": "Eligible read-only Kubernetes/process investigation tools; not retained in selective edition because focus is general infrastructure inspection rather than visibility into AI execution. ClickHouse story retains only the managed agent-query workflow."
       },
       {
-        "url": "https://www.beaconwake.com/observability.html",
-        "reason": "Generated dashboard timestamp establishes refresh, not original publication."
-      },
-      {
-        "url": "https://www.honeyhive.ai/learn/agent-benchmarks",
-        "reason": "Eligible original date in Article JSON-LD, but not selected: broad benchmark catalog; prioritized the concrete human-review workflow over an additional general survey."
-      },
-      {
-        "url": "https://www.splunk.com/en_us/blog/artificial-intelligence/adopting-ai-with-confidence.html",
-        "reason": "November 4 original publication; outside window."
-      },
-      {
-        "url": "https://agentscouthq.com/tasks/evaluating-agents.html",
-        "reason": "Updated directory date does not prove original publication."
+        "url": "https://www.langchain.com/blog/what-is-eval-driven-development",
+        "reason": "Eligible general evaluation-development tutorial; not retained in selective edition, prioritizing concrete trace propagation, fault-injection verification, audit collection and monitor fixes. This is an editorial omission, not a duplicate determination."
       }
     ],
-    "note": "Scoped sweep, not an exhaustive web search. Refreshed repository discovery logic in a run-local copy solely to redirect writes into the authorized evidence directory. Nine HN candidates excluded by beat; zero stable GitHub releases in window across eight configured repositories (latest 100 release scope). All eleven configured News surfaces fetched successfully; Splunk index showed no results, supplemented by focused search. Langfuse latest changelog entries predate window. Supplemental exact-date searches found HoneyHive guide; primary Article datePublished verified separately from matching dateModified. All 26 existing issues / 144 stories parsed for global URL and event review before selection. No prior HoneyHive human-evaluation story. Search queries recorded in research-log.json."
+    "note": "Scoped sweep, not exhaustive web coverage. Reused supplied successful discovery artifact fetched 2026-11-10T00:56:05.512Z; did not rerun fetch:sources because invocation permits writes only under this run directory. Official HN API checks saved for all 16 candidates. GitHub watchlist checks completed by supplied discovery (8 repositories); both stable candidate releases independently checked through official API. All 11 configured News surfaces fetched successfully and saved; web search supplements saved in research-log.md. Splunk index returned No results; Cisco primary article checked separately. All 145 historical stories from 27 issues read and compared by URL, event and text. Airlock is distinct from prior macOS VM product: different creator, domain and fleet-policy implementation. Langfuse release story excludes repeated tokenization, gateway beta, S3 role authentication and access-auditing announcements. No app build, promotion, commit or deployment performed."
   },
   "name": "Tidy Traces — AI Observability Daily",
   "canonical_url": "https://tidytraces.com/"
