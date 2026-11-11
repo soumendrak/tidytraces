@@ -1,89 +1,89 @@
-# AI Observability Daily — 2026-11-10
+# AI Observability Daily — 2026-11-11
 
 By Soumendra Kumar Sahoo
 
 Canonical: https://tidytraces.com/
-Coverage window: 2026-11-09
+Coverage window: 2026-11-10
 
-## Airlock pairs coding-agent policies with an audit collector
+## Jaeger previews trace investigations with visible evidence
 
-Source: Matt / Lunar Engineering · Show HN — https://news.ycombinator.com/item?id=50419615
-Published: 2026-11-09
-Channel: hn
-
-Airlock is an early framework for managing autonomous coding agents through policies kept in version control. Its creator describes the project in a first-party Show HN announcement, including an OpenTelemetry collector that stores selected agent actions for audits. The intended problem is managing agent permissions and accountability across a business rather than configuring each developer’s local assistant.
-
-First, an agent run proves its identity using a GitHub-issued identity token. Airlock exchanges that proof for a short-lived GitHub token restricted to the repositories and permissions in the agent’s role file. Teams can then set a repository’s autonomy level and apply stricter overrides to individual files. A shadow mode lets them observe how the framework would behave before enabling it.
-
-The audit collector records a subset of actions, so the announcement does not establish complete execution coverage. Prompt storage that only customers can decrypt remains exploratory. The creator says the schemas and reusable GitHub actions are public, while opening the backplane’s source is planned after further development.
-
-Why it matters: Teams piloting fleet policies should test which agent actions reach the audit record and which remain outside its coverage.
-
-![Airlock pairs coding-agent policies with an audit collector](/edition-images/2026-11-10/airlock-audit.webp)
-
-## ClickHouse gives investigation agents managed access to telemetry
-
-Source: ClickHouse — https://clickhouse.com/blog/announcing-clickhouse-observability
-Published: 2026-11-09
-Channel: hn
-
-ClickHouse Observability is a managed service for investigating logs, metrics and traces using the open-source ClickStack interface. Its public beta removes database administration from the default setup. The announcement explicitly targets engineers and their investigation agents, whose queries can create changing capacity demands.
-
-First, a team creates a service and sends existing OpenTelemetry data to its managed ingestion endpoint. ClickHouse handles ingestion, schemas and storage. Engineers explore the records in ClickStack, while agents access the same telemetry through its Model Context Protocol server, an interface for calling investigation tools. Those tools search logs and follow traces; SQL supports additional analysis.
-
-A separate private preview, Observability Apps, lets agents generate investigation screens over live data. The publisher says generated code runs in a sandbox, with read-only queries using the viewer’s database permissions. These are separate availability stages. During beta, ClickHouse plans further work on automatic scaling and schema optimization.
-
-Why it matters: Teams giving agents production telemetry access should verify query permissions and follow findings back to the underlying records.
-
-![ClickHouse gives investigation agents managed access to telemetry](/edition-images/2026-11-10/clickhouse-agent-investigations.webp)
-
-## Elastic checks an investigation agent’s answer against traces and a query
-
-Source: Elastic Observability Labs — https://www.elastic.co/observability-labs/blog/apm-root-cause-analysis-ai-agent-service-map
-Published: 2026-11-09
+Source: Jaeger Maintainers · CNCF — https://www.cncf.io/blog/2026/11/10/jaeger-previews-ai-assisted-troubleshooting-and-genai-observability-for-opentelemetry-traces-at-kubecon/
+Published: 2026-11-10
 Channel: news
 
-Elastic AI Agent investigates production telemetry through a conversational interface. An Elastic walkthrough tests its findings against application performance monitoring records in an instrumented demonstration shop. A checkout alert appears upstream of an injected payment fault, so the investigation must separate the visible symptom from the failing service.
+Jaeger is an open-source distributed tracing tool that helps engineers follow requests across services. Large traces can bury useful evidence among many spans, each a record of one operation; model calls, retrieval and tool execution add more steps to examine.
 
-First, the authors attach the alert to the agent’s conversation. Its answer points to payment failures, but expresses uncertainty about whether a particular customer tier is affected. They then open the service map and drill through a transaction into a failing span, the record of one operation within a trace.
+First, engineers can ask the experimental Ask Jaeger assistant questions in ordinary language. Its answers stream into the interface alongside visible tool calls. An optional Model Context Protocol endpoint, an interface agents use to call tools, provides focused ways to discover traces, examine errors and inspect individual operations. Rather than send an entire trace to a model, agents retrieve evidence as each investigation step needs it.
 
-Finally, a direct Elasticsearch Query Language query checks the suspected scope: 80 of 138 gold-tier charges failed, while other tiers did not. This is a controlled demonstration with injected faults, not a production incident or a general accuracy benchmark. The article also warns that the agent’s answers vary between runs.
+Next, specialized views use OpenTelemetry’s shared field conventions to show model interactions, agent activity, token use and tool execution alongside service traces. These capabilities remain an experimental preview. The maintainers invite teams to enable them, follow the integration guide and provide feedback; they do not report a general accuracy benchmark.
 
-Why it matters: When using agents for incident diagnosis, retain a path from each proposed cause to trace evidence and a reproducible scope check.
+Why it matters: For Jaeger operators: test known failures and inspect the evidence behind each answer.
 
-![Elastic checks an investigation agent’s answer against traces and a query](/edition-images/2026-11-10/elastic-evidence-check.webp)
+![Jaeger previews trace investigations with visible evidence](/edition-images/2026-11-11/jaeger-trace-evidence.webp)
 
-## HoneyHive explains how to keep tool calls linked across MCP boundaries
+## Datadog connects model-serving config to the pods that actually run
 
-Source: HoneyHive Engineering — https://www.honeyhive.ai/learn/mcp-observability
-Published: 2026-11-09
+Source: Datadog — https://www.datadoghq.com/blog/kubernetes-inference-workload-monitoring/
+Published: 2026-11-10
 Channel: news
 
-Model Context Protocol, or MCP, connects agents to tools and data. HoneyHive’s engineering guide explains how to trace requests across its client and server so a failed tool call stays linked to the agent run. A shared connection alone cannot identify that run because unrelated requests can be interleaved.
+Datadog is an observability platform that monitors infrastructure and applications. When a model endpoint returns errors or slows down, serving work is often spread across Kubernetes resources, so engineers have to piece together custom configuration, pod state and scheduling events from separate views.
 
-First, the client places trace context in the request’s metadata, allowing the server to connect its operation record to the caller. This works across both local process communication and HTTP. Next, instrumentation records the method, relevant tool name, timing and error type. A tool can fail inside an otherwise successful protocol response, so that result needs its own error classification.
+Datadog's Kubernetes inference workload, available as a preview, groups the resources that support a serving model into one virtual workload. First, in Kubernetes Explorer, engineers can compare the configuration declared in custom resources with observed pod state and runtime metrics. The preview supports vLLM-backed workloads that use KubeRay, NVIDIA Dynamo and KServe. Datadog automatically detects those pods and assigns workload and component tags, which metrics, traces and logs inherit when they can be linked to the pods.
 
-The guide cautions that OpenTelemetry’s MCP conventions remain in development and instrumentation may not emit the expected fields. Tool arguments and results are optional, potentially sensitive data. HoneyHive describes its automatic instrumentation as experimental and recommends explicit tracing decorators for production; its MCP guide does not itself document cross-service propagation.
+Next, a Components tab shows readiness and pod counts for roles such as Ray head and worker or Dynamo frontend and worker, so engineers can tell a pod waiting for resources from one that is running but unhealthy. A Metrics tab shows runtime and resource use, including GPU memory, activity and occupancy for Dynamo workloads when paid GPU monitoring is configured. The post illustrates a decode worker stuck pending for lack of the required GPU capacity. Investigate with Bits can recommend next steps, but a capacity change still depends on whether released resources satisfy the pending pod's scheduling requirements.
 
-Why it matters: Inspect emitted records and test propagation across an actual client-server call before relying on an MCP dashboard.
+Why it matters: For platform engineers running vLLM, Dynamo or KServe: use the preview to follow a model symptom to pod readiness and GPU placement, and confirm GPU monitoring is enabled before relying on device metrics.
 
-![HoneyHive explains how to keep tool calls linked across MCP boundaries](/edition-images/2026-11-10/mcp-trace-context.webp)
+![Datadog connects model-serving config to the pods that actually run](/edition-images/2026-11-11/datadog-inference-workloads.webp)
 
-## Langfuse keeps monitor alerts and score views closer to their evidence
+## Datadog shows how teams use Codex and whether the code ships
 
-Source: Langfuse · GitHub release — https://github.com/langfuse/langfuse/releases/tag/v4.77.0
-Published: 2026-11-09
+Source: Datadog — https://www.datadoghq.com/blog/monitor-openai-codex-with-datadog/
+Published: 2026-11-10
+Channel: news
+
+Datadog is an observability platform that collects metrics, traces and logs. Engineering leaders who give teams access to OpenAI Codex, a coding agent, still may not see how people use it, how much of its code they accept, or whether its review comments are useful.
+
+The OpenAI Codex integration collects per-user activity from the Codex Analytics API and reports it as Datadog metrics. First, an overview dashboard tracks threads (conversations a developer starts) and turns (messages in those conversations), plus consumed Codex credits and tokens. Credits reflect credit consumption, not spend. Usage can be filtered by workspace, user, model or client, and token use can be split into cached input, uncached input and output, but not by client.
+
+Next, the dashboard plots lines of code added and removed that are attributable to Codex, and it tracks reviews and responses such as upvotes and downvotes. Those signals can be sent to Datadog AI Impact, which classifies pull requests as AI-assisted or not and compares throughput, cycle time, change failure rate and recovery time. Commits count as AI-assisted when Codex reports that the engineer created lines of code that day; a pull request counts if it contains at least one such commit. Setup requires a ChatGPT Enterprise workspace with Codex enabled and an admin key that can read the analytics API.
+
+Why it matters: For engineering leaders rolling out Codex: confirm the workspace and key requirements, then compare usage with attributed code and delivery outcomes rather than treating access as adoption.
+
+![Datadog shows how teams use Codex and whether the code ships](/edition-images/2026-11-11/datadog-codex-usage.webp)
+
+## Braintrust brings projects and access controls into Terraform review
+
+Source: Braintrust — https://www.braintrust.dev/blog/terraform
+Published: 2026-11-10
+Channel: news
+
+Braintrust is a platform for observing agent runs and evaluating their outputs. Its Terraform provider manages projects, permissions and credentials as code. As more teams build agents, repeating setup manually makes it harder to maintain consistency while giving each team appropriate access.
+
+First, create an organization and a service token, then supply that token through the BRAINTRUST_API_KEY environment variable. Define the desired resources in Terraform configuration and initialize the provider. Run terraform plan to inspect proposed changes before applying them. Supported resources include groups, roles, service accounts, projects, dataset containers and score definitions. Version control preserves the change history.
+
+For an existing organization, Braintrust’s export utility generates configuration and matching import instructions. Review both together, inspect the plan and import resources into Terraform state without recreating them. The provider reads current settings and translates configuration into API requests. Braintrust recommends this approach for shared settings that change infrequently; dataset contents, logs and experiments remain in application workflows.
+
+Why it matters: For Braintrust platform teams: review permissions in Terraform plans and keep evaluation data in application workflows.
+
+![Braintrust brings projects and access controls into Terraform review](/edition-images/2026-11-11/braintrust-terraform-review.webp)
+
+## Langfuse records prompt-cache outcomes on request traces
+
+Source: Langfuse · GitHub — https://github.com/langfuse/langfuse/releases/tag/v4.78.0
+Published: 2026-11-10
 Channel: github
 
-Langfuse is an AI observability platform that collects application traces and evaluation scores. Its stable release includes changes to the evidence available when operators investigate a monitor alert or review quality results. These fixes address the connection between a notification and its underlying records, along with score visibility.
+Langfuse is an AI observability platform that records application traces and evaluation scores. Its stable release adds prompt-cache outcome tags to request spans, records describing individual operations within a trace. This makes the cache outcome part of the evidence attached to a request, rather than leaving reviewers with only the surrounding application activity.
 
-First, monitor alert messages now include the measured value and its unit. The observation link also carries the alert’s filters, preserving the selection used by the notification. These are distinct changes: one makes the message more informative, while the other keeps the investigation link aligned with its criteria.
+The release also changes what reviewers see when working with evaluation results. First, the add-score menu can show score-configuration details. Next, when invalid stored score rows are filtered, Langfuse issues a warning. The notes describe that warning without quantifying how many records might be affected or claiming that filtered rows are repaired.
 
-Then, score-related fixes load score configurations for read-only users and display trace-level correction scores in the individual trace view. A dashboard query fix excludes deleted scores in a join when its normal finalization step is skipped. The release notes identify these implementation changes but provide no measured improvement in investigation time or evaluation accuracy.
+For Topics setup, teams can filter the traces used in the setup flow, and non-transient model-test failures are logged. These are selected operational changes from a broader release that also adds an external HTTP code-evaluation dispatcher. The release notes do not describe that dispatcher’s deployment requirements or provide a measured improvement in evaluation accuracy.
 
-Why it matters: Langfuse operators should compare a known alert’s filters with its linked observations and verify score visibility using a read-only account.
+Why it matters: For Langfuse operators: inspect known cache outcomes and investigate warnings before treating score views as complete.
 
-![Langfuse keeps monitor alerts and score views closer to their evidence](/edition-images/2026-11-10/langfuse-monitor-evidence.webp)
+![Langfuse records prompt-cache outcomes on request traces](/edition-images/2026-11-11/langfuse-cache-outcomes.webp)
 
 ---
 
