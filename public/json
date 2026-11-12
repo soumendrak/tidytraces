@@ -1,227 +1,236 @@
 {
-  "date": "2026-11-11",
-  "story_window": "2026-11-10",
-  "dek": "Trace investigations with visible evidence, Codex usage and inference serving views, reviewed observability setup as code, and clearer prompt-cache and score records.",
+  "date": "2026-11-12",
+  "story_window": "2026-11-11",
+  "dek": "Model-request logging, tracing compatibility, controllable agent tests, common evaluation traces and evidence-backed incident investigations.",
   "stories": [
     {
-      "title": "Jaeger previews trace investigations with visible evidence",
-      "url": "https://www.cncf.io/blog/2026/11/10/jaeger-previews-ai-assisted-troubleshooting-and-genai-observability-for-opentelemetry-traces-at-kubecon/",
-      "publisher": "Jaeger Maintainers · CNCF",
-      "published": "2026-11-10",
+      "title": "Llmtee keeps usage logging off the model request path",
+      "url": "https://news.ycombinator.com/item?id=50451943",
+      "publisher": "garritfra · Hacker News",
+      "published": "2026-11-11",
       "category_key": "observability",
-      "summary": "An experimental assistant retrieves focused trace evidence and exposes its tool calls.",
+      "summary": "A lightweight proxy logs model usage separately from request forwarding and blocks later requests when a key exceeds its budget.",
       "body": [
-        "Jaeger is an open-source distributed tracing tool that helps engineers follow requests across services. Large traces can bury useful evidence among many spans, each a record of one operation; model calls, retrieval and tool execution add more steps to examine.",
-        "First, engineers can ask the experimental Ask Jaeger assistant questions in ordinary language. Its answers stream into the interface alongside visible tool calls. An optional Model Context Protocol endpoint, an interface agents use to call tools, provides focused ways to discover traces, examine errors and inspect individual operations. Rather than send an entire trace to a model, agents retrieve evidence as each investigation step needs it.",
-        "Next, specialized views use OpenTelemetry’s shared field conventions to show model interactions, agent activity, token use and tool execution alongside service traces. These capabilities remain an experimental preview. The maintainers invite teams to enable them, follow the integration guide and provide feedback; they do not report a general accuracy benchmark."
+        "Llmtee is a proxy that sits between an application and a language-model provider to record tokens, estimated cost, latency and time to first token. Its developer says existing logging options required extra services or changes to application code. This alternative uses a changed base URL and a local SQLite database.",
+        "First, the proxy forwards a streaming response chunk by chunk while sending a copy to a usage parser. Next, it batches database writes away from the request path. According to the first-party announcement, requests continue even if SQLite is slow or unavailable. That design separates serving a response from saving its usage record; it does not establish that every record survives a storage failure.",
+        "The proxy also enforces daily and monthly budgets per key. Later requests receive a provider-shaped rate-limit error after the limit is exceeded, but the request that crosses the limit still completes. Prices come from a table embedded at build time. The developer explicitly excludes evaluations, prompt management, routing, fallbacks and caching, and asks for feedback on budget semantics and future native provider support."
       ],
       "format": "full",
-      "takeaway": "For Jaeger operators: test known failures and inspect the evidence behind each answer.",
-      "image": "/edition-images/2026-11-11/jaeger-trace-evidence.webp",
+      "takeaway": "For teams considering Llmtee: test storage outages and budget-crossing requests before relying on its usage records or spending limits.",
+      "image": "/edition-images/2026-11-12/llmtee-request-logging.webp",
       "image_width": 1440,
       "image_height": 960,
       "image_provenance": {
         "kind": "generated-editorial",
         "generator": "built-in-imagegen",
-        "prompt": "Use case: infographic-diagram. Asset type: standalone newspaper infographic PNG. Explain Jaeger experimental trace investigation using focused evidence. Source-supported facts: Ask Jaeger shows tool calls; agents retrieve trace evidence step by step instead of sending an entire trace. Compose landscape 3:2 with three connected panels: question bubble, magnifying glass over a few trace records, answer beside visible evidence cards. Warm cream newsprint, black engraved ink, restrained rust accent, bold serif headline, generous spacing and large readable labels. Exact text only: \"Jaeger: follow the evidence\"; \"Experimental preview\"; \"Ask a question\"; \"Retrieve relevant spans\"; \"Inspect answer and tool calls\"; \"Span = one operation record\". Arrows left to right. No invented metrics or architecture, no logos or fake screenshots, no watermark, no AI-generated label.",
+        "prompt": "Use case: infographic-diagram. Asset type: standalone newspaper editorial infographic PNG, landscape about 3:2. Style: warm cream newsprint, dark engraved ink, restrained teal and rust accents, strong readable serif headline, generous whitespace, very large legible labels and simple connected elements. Draw one clear mechanism with accurate arrow directions. No invented metrics, dates, product versions, fake screenshots or logos. No watermark or footer. No AI-generated label or caption inside the image. Use only the exact text specified, no additional words. Primary request and source-supported scope: Separate model-response forwarding from off-path usage logging. A stream passes through a proxy toward the application; a clearly separate branch copies usage to batched SQLite writes. Storage trouble must not be drawn as blocking the response path. Text (verbatim): \"Llmtee: serve and record separately\"; \"Model response\"; \"Pass through\"; \"Application\"; \"Usage copy\"; \"Batched SQLite writes\".",
         "based_on": [
-          "https://www.cncf.io/blog/2026/11/10/jaeger-previews-ai-assisted-troubleshooting-and-genai-observability-for-opentelemetry-traces-at-kubecon/"
+          "https://news.ycombinator.com/item?id=50451943"
         ],
         "reviewed": true,
-        "sha256": "ddfbd5016f452959548747705c43fff419baeecf38a5c5a07a5be0ba7e643985",
-        "optimization": {
-          "format": "webp",
-          "quality": 74,
-          "max_width": 1440,
-          "source_sha256": "9c43d504daad3d9058358d8ad56b636bde741b72ae5dfcbab6a1547f02a4c566"
-        }
-      },
-      "source": "news",
-      "interest_score": 8,
-      "score_reason": "Concrete experimental trace investigation and AI workload visibility with inspectable tool evidence.",
-      "dedupe_key": "article:cncf.io/jaeger-ai-troubleshooting-genai-preview",
-      "source_evidence": {
-        "url": "https://www.cncf.io/blog/2026/11/10/jaeger-previews-ai-assisted-troubleshooting-and-genai-observability-for-opentelemetry-traces-at-kubecon/",
-        "publication_date": "2026-11-10",
-        "raw_date": "2026-11-10T16:00:00+00:00",
-        "method": "Original CNCF article article:published_time and datePublished, corroborated by visible Posted on date."
-      }
-    },
-    {
-      "title": "Datadog connects model-serving config to the pods that actually run",
-      "url": "https://www.datadoghq.com/blog/kubernetes-inference-workload-monitoring/",
-      "publisher": "Datadog",
-      "published": "2026-11-10",
-      "category_key": "observability",
-      "summary": "A preview workload view compares serving configuration with pod readiness and GPU capacity.",
-      "body": [
-        "Datadog is an observability platform that monitors infrastructure and applications. When a model endpoint returns errors or slows down, serving work is often spread across Kubernetes resources, so engineers have to piece together custom configuration, pod state and scheduling events from separate views.",
-        "Datadog's Kubernetes inference workload, available as a preview, groups the resources that support a serving model into one virtual workload. First, in Kubernetes Explorer, engineers can compare the configuration declared in custom resources with observed pod state and runtime metrics. The preview supports vLLM-backed workloads that use KubeRay, NVIDIA Dynamo and KServe. Datadog automatically detects those pods and assigns workload and component tags, which metrics, traces and logs inherit when they can be linked to the pods.",
-        "Next, a Components tab shows readiness and pod counts for roles such as Ray head and worker or Dynamo frontend and worker, so engineers can tell a pod waiting for resources from one that is running but unhealthy. A Metrics tab shows runtime and resource use, including GPU memory, activity and occupancy for Dynamo workloads when paid GPU monitoring is configured. The post illustrates a decode worker stuck pending for lack of the required GPU capacity. Investigate with Bits can recommend next steps, but a capacity change still depends on whether released resources satisfy the pending pod's scheduling requirements."
-      ],
-      "format": "full",
-      "takeaway": "For platform engineers running vLLM, Dynamo or KServe: use the preview to follow a model symptom to pod readiness and GPU placement, and confirm GPU monitoring is enabled before relying on device metrics.",
-      "image": "/edition-images/2026-11-11/datadog-inference-workloads.webp",
-      "image_width": 1248,
-      "image_height": 832,
-      "image_provenance": {
-        "kind": "generated-editorial",
-        "generator": "built-in-imagegen",
-        "prompt": "Use case: infographic-diagram. Asset type: standalone newspaper story infographic PNG, landscape about 3:2. Primary request: explain Datadog's preview that connects a model-serving problem to the Kubernetes pods and configuration behind it. Source-supported facts: a model endpoint error or slowdown can hide in scattered cluster resources; a preview workload view groups serving resources; engineers compare declared configuration with pod readiness and can inspect GPU capacity. Style: warm cream newsprint paper, dark engraved ink, restrained rust accent, bold serif headline, generous spacing, large readable labels, like a printed newspaper diagram. Composition: three connected panels with clear left-to-right arrows, plus a small banner. Panel 1 a simple warning on a model endpoint, panel 2 a folder of related cluster resources under a magnifying glass, panel 3 a readiness checklist beside a small GPU block. Exact text only: \"From model symptom to serving pods\"; \"Preview\"; \"Model endpoint issue\"; \"Compare config and pods\"; \"Check readiness and capacity\". Constraints: no invented metrics or percentages, no product logos, no fake screenshots, no people portraits, no watermark, no footer, no AI-generated label or caption inside the image; keep labels short and spelled correctly.",
-        "based_on": [
-          "https://www.datadoghq.com/blog/kubernetes-inference-workload-monitoring/"
-        ],
-        "reviewed": true,
-        "sha256": "8bd1e6899a2f9d40a6446fae3fe51bcbdad23624ef39909c62f568d6d79abecf",
+        "sha256": "c635716f788b6c7d2d61840601d2bbe44f4bfca81fbccb586ed458229e8b589b",
         "optimization": {
           "format": "webp",
           "quality": 82,
           "max_width": 1440,
-          "source_sha256": "a76d2286e06546848251d28fa690bbb87b4d5c83094cb817820002c14a215970"
+          "source_sha256": "11e1a74b6e8dbe946bd6ba1b74e9cf8f9597e90c7a756ffbf7ea16569866c2d6"
         }
       },
-      "source": "news",
-      "interest_score": 8,
-      "score_reason": "Concrete preview of inference-serving visibility that ties custom-resource configuration to pod readiness and optional GPU evidence.",
-      "dedupe_key": "article:datadoghq.com/kubernetes-inference-workload-monitoring",
+      "source": "hn",
+      "interest_score": 7,
+      "hn_id": "50451943",
+      "comments": "https://news.ycombinator.com/item?id=50451943",
+      "score_reason": "Direct usage visibility and budget semantics, with implementation claims from a first-party announcement and no independent validation.",
+      "dedupe_key": "hn-original:50451943",
       "source_evidence": {
-        "url": "https://www.datadoghq.com/blog/kubernetes-inference-workload-monitoring/",
-        "publication_date": "2026-11-10",
-        "raw_date": "2026-11-10T00:00:00.000Z",
-        "method": "Original Datadog article datePublished 2026-11-10T00:00:00.000Z and visible Published label Nov 10, 2026, confirmed on the primary page. The blog index HTML did not expose this date, so the item was found by targeted search and then verified on the article itself."
+        "url": "https://news.ycombinator.com/item?id=50451943",
+        "publication_date": "2026-11-11",
+        "raw_date": "2026-11-11T10:55:46.000Z",
+        "method": "Original first-party Show HN announcement body and author verified using official HN item API. The original announcement itself is the primary publication; its Unix time is converted to ISO UTC. This does not date a linked repository or later README update.",
+        "api": "https://hacker-news.firebaseio.com/v0/item/50451943.json",
+        "product_url": "https://github.com/garritfra/llmtee"
       }
     },
     {
-      "title": "Datadog shows how teams use Codex and whether the code ships",
-      "url": "https://www.datadoghq.com/blog/monitor-openai-codex-with-datadog/",
-      "publisher": "Datadog",
-      "published": "2026-11-10",
+      "title": "Phoenix changes tracing setup to record spans from updated applications",
+      "url": "https://github.com/Arize-ai/phoenix/releases/tag/%40arizeai/phoenix-otel%403.0.0",
+      "publisher": "Arize Phoenix · GitHub",
+      "published": "2026-11-11",
       "category_key": "observability",
-      "summary": "A Codex integration reports usage, attributed code and review activity, and can compare delivery outcomes.",
+      "summary": "A JavaScript tracing migration restores recording compatibility while changing processor setup and environment-variable handling.",
       "body": [
-        "Datadog is an observability platform that collects metrics, traces and logs. Engineering leaders who give teams access to OpenAI Codex, a coding agent, still may not see how people use it, how much of its code they accept, or whether its review comments are useful.",
-        "The OpenAI Codex integration collects per-user activity from the Codex Analytics API and reports it as Datadog metrics. First, an overview dashboard tracks threads (conversations a developer starts) and turns (messages in those conversations), plus consumed Codex credits and tokens. Credits reflect credit consumption, not spend. Usage can be filtered by workspace, user, model or client, and token use can be split into cached input, uncached input and output, but not by client.",
-        "Next, the dashboard plots lines of code added and removed that are attributable to Codex, and it tracks reviews and responses such as upvotes and downvotes. Those signals can be sent to Datadog AI Impact, which classifies pull requests as AI-assisted or not and compares throughput, cycle time, change failure rate and recovery time. Commits count as AI-assisted when Codex reports that the engineer created lines of code that day; a pull request counts if it contains at least one such commit. Setup requires a ChatGPT Enterprise workspace with Codex enabled and an admin key that can read the analytics API."
+        "Arize Phoenix is an AI observability platform for inspecting application traces and evaluation results. Its JavaScript tracing package moves to an updated OpenTelemetry tracing implementation so applications using that implementation can record spans after initialization. A span is the record of one operation within a trace.",
+        "First, applications call the package’s register function to obtain the tracing provider. The returned provider no longer has its own register method, so setup code must account for that changed interface. Next, custom span processors must come from the underlying tracing package and accept an options object. Phoenix also re-exports the batch and simple processor classes. A processor handles spans before they reach an exporter.",
+        "The migration changes configuration behavior as well: register no longer applies environment variables for sampling, span limits, attribute limits or batch processing. The release raises the minimum Node.js runtime and links a migration guide. Evaluation code that supplies its own tracing provider must use a compatible provider too. These are compatibility requirements, rather than a claim that upgrading automatically preserves an application’s previous telemetry settings."
       ],
       "format": "full",
-      "takeaway": "For engineering leaders rolling out Codex: confirm the workspace and key requirements, then compare usage with attributed code and delivery outcomes rather than treating access as adoption.",
-      "image": "/edition-images/2026-11-11/datadog-codex-usage.webp",
-      "image_width": 1248,
-      "image_height": 832,
-      "image_provenance": {
-        "kind": "generated-editorial",
-        "generator": "built-in-imagegen",
-        "prompt": "Use case: infographic-diagram. Asset type: standalone newspaper story infographic PNG, landscape about 3:2. Explain how Datadog collects Codex coding-agent activity so leaders can review usage, attributed code, and delivery impact. Source-supported facts only: Datadog collects per-user Codex activity as metrics; an overview dashboard tracks threads, turns, credits and tokens; attributed lines of code and review responses can be compared with delivery outcomes. This is a generally announced integration, not an experimental preview, and it is not about traces or spans. Style: warm cream newsprint paper, dark engraved ink, restrained rust or teal accent, bold serif headline, generous spacing, large readable labels, like a printed newspaper diagram. Composition: three connected panels with clear left-to-right arrows and no extra banner or footer. Panel 1 a simple activity ledger, panel 2 a code page with a small review mark, panel 3 two unlabeled comparison columns with abstract bars only and no numbers. Exact text only, and no other words anywhere in the image: \"See how Codex is used\"; \"Collect activity\"; \"Review code and comments\"; \"Compare delivery outcomes\". Do not write Experimental, preview, Span, operation, record, or any other caption. Constraints: no invented metrics or numbers, no product logos, no fake screenshots, no people portraits, no watermark, no footer, no AI-generated label or caption inside the image; keep labels short and spelled correctly.",
-        "based_on": [
-          "https://www.datadoghq.com/blog/monitor-openai-codex-with-datadog/"
-        ],
-        "reviewed": true,
-        "sha256": "bce9734c07052bc3e10f6fb375edeccba4ceb4879a31d203cdbf1d98315bce79",
-        "optimization": {
-          "format": "webp",
-          "quality": 82,
-          "max_width": 1440,
-          "source_sha256": "4961c7b734337e3be5c1e1a51baec9ef5d29108522f008c773b6263f4174edb9"
-        }
-      },
-      "source": "news",
-      "interest_score": 8,
-      "score_reason": "Concrete coding-agent usage, attribution and delivery-comparison implementation with stated setup and API limits.",
-      "dedupe_key": "article:datadoghq.com/monitor-openai-codex-with-datadog",
-      "source_evidence": {
-        "url": "https://www.datadoghq.com/blog/monitor-openai-codex-with-datadog/",
-        "publication_date": "2026-11-10",
-        "raw_date": "2026-11-10T00:00:00.000Z",
-        "method": "Original Datadog article datePublished 2026-11-10T00:00:00.000Z and visible Published label Nov 10, 2026, confirmed on the primary page. The blog index HTML did not expose this date, so the item was found by targeted search and then verified on the article itself."
-      }
-    },
-    {
-      "title": "Braintrust brings projects and access controls into Terraform review",
-      "url": "https://www.braintrust.dev/blog/terraform",
-      "publisher": "Braintrust",
-      "published": "2026-11-10",
-      "category_key": "observability",
-      "summary": "A Terraform provider defines shared observability settings as code and previews changes.",
-      "body": [
-        "Braintrust is a platform for observing agent runs and evaluating their outputs. Its Terraform provider manages projects, permissions and credentials as code. As more teams build agents, repeating setup manually makes it harder to maintain consistency while giving each team appropriate access.",
-        "First, create an organization and a service token, then supply that token through the BRAINTRUST_API_KEY environment variable. Define the desired resources in Terraform configuration and initialize the provider. Run terraform plan to inspect proposed changes before applying them. Supported resources include groups, roles, service accounts, projects, dataset containers and score definitions. Version control preserves the change history.",
-        "For an existing organization, Braintrust’s export utility generates configuration and matching import instructions. Review both together, inspect the plan and import resources into Terraform state without recreating them. The provider reads current settings and translates configuration into API requests. Braintrust recommends this approach for shared settings that change infrequently; dataset contents, logs and experiments remain in application workflows."
-      ],
-      "format": "full",
-      "takeaway": "For Braintrust platform teams: review permissions in Terraform plans and keep evaluation data in application workflows.",
-      "image": "/edition-images/2026-11-11/braintrust-terraform-review.webp",
+      "takeaway": "For Phoenix JavaScript users: review the migration guide, verify processor and sampling configuration, and confirm a known operation appears in the stored trace.",
+      "image": "/edition-images/2026-11-12/phoenix-tracing-migration.webp",
       "image_width": 1440,
       "image_height": 960,
       "image_provenance": {
         "kind": "generated-editorial",
         "generator": "built-in-imagegen",
-        "prompt": "Use case: infographic-diagram. Asset type: standalone newspaper infographic PNG. Explain Braintrust Terraform change review. Source-supported facts: define projects and permissions as code, inspect terraform plan, apply reviewed changes. Show three spacious connected panels with a configuration document, a proposed-changes checklist under a magnifying glass, and a project folder with access key. Warm cream newspaper paper, dark engraved ink, restrained teal accent, bold serif headline. Landscape 3:2. Exact text only: \"Braintrust setup as code\"; \"Define resources\"; \"Review the plan\"; \"Apply changes\"; \"Projects and permissions\". Clear left-to-right arrows. Large readable text. No invented results, no product screenshot, no unrelated logos, no watermark, no AI-generated label.",
+        "prompt": "Use case: infographic-diagram. Asset type: standalone newspaper editorial infographic PNG, landscape about 3:2. Style: warm cream newsprint, dark engraved ink, restrained teal and rust accents, strong readable serif headline, generous whitespace, very large legible labels and simple connected elements. Draw one clear mechanism with accurate arrow directions. No invented metrics, dates, product versions, fake screenshots or logos. No watermark or footer. No AI-generated label or caption inside the image. Use only the exact text specified, no additional words. Primary request and source-supported scope: Conceptual migration checklist for Phoenix JavaScript tracing: initialize tracing, configure compatible processors, verify a known operation is recorded. Explain a span as an operation record. This is editorial verification guidance, not automatic migration. Text (verbatim): \"Phoenix: verify tracing after migration\"; \"Initialize tracing\"; \"Configure processors\"; \"Verify a stored span\"; \"Span = one operation record\"; \"Editorial check\".",
         "based_on": [
-          "https://www.braintrust.dev/blog/terraform"
+          "https://github.com/Arize-ai/phoenix/releases/tag/%40arizeai/phoenix-otel%403.0.0"
         ],
         "reviewed": true,
-        "sha256": "af9709c90aa3889f4b11d4d011c6200d111d7bb67f6e24d83a0bfddb245a35fa",
-        "optimization": {
-          "format": "webp",
-          "quality": 74,
-          "max_width": 1440,
-          "source_sha256": "7148cbd1f43f4aa0a0de5b389f4fe0a8e7506021e60114f3640a46f566a5fed2"
-        }
-      },
-      "source": "news",
-      "interest_score": 8,
-      "score_reason": "Source-backed provisioning and import workflow for governed AI observability and evaluation infrastructure.",
-      "dedupe_key": "article:braintrust.dev/blog/terraform",
-      "source_evidence": {
-        "url": "https://www.braintrust.dev/blog/terraform",
-        "publication_date": "2026-11-10",
-        "raw_date": "2026-11-10",
-        "method": "Original article visible publication label and article:published_time both say 10 November 2026; normalized to ISO calendar date."
-      }
-    },
-    {
-      "title": "Langfuse records prompt-cache outcomes on request traces",
-      "url": "https://github.com/langfuse/langfuse/releases/tag/v4.78.0",
-      "publisher": "Langfuse · GitHub",
-      "published": "2026-11-10",
-      "category_key": "evals",
-      "summary": "Prompt-cache tags and warnings expose more evidence in trace and score reviews.",
-      "body": [
-        "Langfuse is an AI observability platform that records application traces and evaluation scores. Its stable release adds prompt-cache outcome tags to request spans, records describing individual operations within a trace. This makes the cache outcome part of the evidence attached to a request, rather than leaving reviewers with only the surrounding application activity.",
-        "The release also changes what reviewers see when working with evaluation results. First, the add-score menu can show score-configuration details. Next, when invalid stored score rows are filtered, Langfuse issues a warning. The notes describe that warning without quantifying how many records might be affected or claiming that filtered rows are repaired.",
-        "For Topics setup, teams can filter the traces used in the setup flow, and non-transient model-test failures are logged. These are selected operational changes from a broader release that also adds an external HTTP code-evaluation dispatcher. The release notes do not describe that dispatcher’s deployment requirements or provide a measured improvement in evaluation accuracy."
-      ],
-      "format": "full",
-      "takeaway": "For Langfuse operators: inspect known cache outcomes and investigate warnings before treating score views as complete.",
-      "image": "/edition-images/2026-11-11/langfuse-cache-outcomes.webp",
-      "image_width": 1440,
-      "image_height": 960,
-      "image_provenance": {
-        "kind": "generated-editorial",
-        "generator": "built-in-imagegen",
-        "prompt": "Use case: infographic-diagram. Asset type: standalone newspaper infographic PNG. Explain one Langfuse release mechanism: prompt-cache outcome is tagged on request spans; a span is one operation record. Draw a request record as a large engraved card, a small cache outcome tag attached to it, and an inspection magnifier beside it. Two elements connected by a clear arrow: request record to trace review. Exact text only: \"Langfuse: cache evidence in the trace\"; \"Request span\"; \"Prompt-cache outcome\"; \"Review the record\"; \"Span = one operation record\". Warm cream newspaper paper, black ink, restrained rust accent, bold readable serif typography, landscape 3:2 and generous whitespace. No invented metrics, no claimed savings, no fake screenshot, no logo, no watermark, no AI-generated label.",
-        "based_on": [
-          "https://github.com/langfuse/langfuse/releases/tag/v4.78.0"
-        ],
-        "reviewed": true,
-        "sha256": "8f906ed927aeaca582f836fbad210a746f2f0d9fd81cee01656bf0aaa71554fc",
+        "sha256": "ab4019ebc0092df69d4ec2a3891d1fe44fc2eacca4bb8dafab00ab6756c66259",
         "optimization": {
           "format": "webp",
           "quality": 82,
           "max_width": 1440,
-          "source_sha256": "d016e12eb969f722ec850488f6fbdae64a2055034e6241debc5014968ba75ab8"
+          "source_sha256": "012086ece762ace276e08b9fa9e0b6249f1efe00a9f0f03920cd9c6599912f23"
         }
       },
       "source": "github",
       "interest_score": 8,
-      "score_reason": "Direct trace evidence and score visibility changes; no inferred performance or accuracy benefit.",
-      "dedupe_key": "release:langfuse/langfuse:v4.78.0",
+      "score_reason": "Breaking tracing compatibility and configuration changes directly affect whether application and evaluation spans are recorded.",
+      "dedupe_key": "release:Arize-ai/phoenix:@arizeai/phoenix-otel@3.0.0",
       "source_evidence": {
-        "url": "https://github.com/langfuse/langfuse/releases/tag/v4.78.0",
-        "publication_date": "2026-11-10",
-        "raw_date": "2026-11-10T13:11:37Z",
-        "method": "Official GitHub release API published_at; draft:false and prerelease:false confirmed.",
-        "api": "https://api.github.com/repos/langfuse/langfuse/releases/tags/v4.78.0"
+        "url": "https://github.com/Arize-ai/phoenix/releases/tag/%40arizeai/phoenix-otel%403.0.0",
+        "publication_date": "2026-11-11",
+        "raw_date": "2026-11-11T00:56:20Z",
+        "method": "Official GitHub release API published_at confirms original stable publication; draft:false and prerelease:false. The client and CLI announcements repeat the same migration and are consolidated.",
+        "api": "https://api.github.com/repos/Arize-ai/phoenix/releases/tags/%40arizeai/phoenix-otel%403.0.0",
+        "compatibility_details": "@arizeai/phoenix-otel 3.0.0 uses @opentelemetry/sdk-trace 3.x and @opentelemetry/api 1.10; Node.js >=22.15 required. Custom processors accept options objects. evaluateExperiment providers must use the compatible tracer implementation. register() no longer applies OTEL_TRACES_SAMPLER, OTEL_SPAN_*, OTEL_ATTRIBUTE_* or OTEL_BSP_* environment variables."
+      }
+    },
+    {
+      "title": "Rystic exposes controllable API state for agent tests",
+      "url": "https://news.ycombinator.com/item?id=50448400",
+      "publisher": "Rystic founders · Hacker News",
+      "published": "2026-11-11",
+      "category_key": "evals",
+      "summary": "Local simulators let developers set service state, inject failures and inspect results while testing integrations and agents.",
+      "body": [
+        "Rystic builds local simulators of third-party APIs, including Slack, GitHub and Linear. Its founders describe them as controllable substitutes for real services when testing application code or running agent evaluations. Their starting problem is verification: generating code is fast, while shared sandboxes, account setup and manual interactions make repeatable integration checks difficult.",
+        "First, a developer sets the simulator’s state. Then the test exercises the integration, with options to inject faults, add latency, use multiple actors or control rate limiting. Finally, the developer can inspect the resulting state. The announcement links a demonstration of running evaluations against the Slack simulator. These controls make a test environment adjustable; they do not prove that an agent will behave correctly against the real service.",
+        "The founders say they build simulators by testing documented behavior, probing APIs and collecting traces to reconstruct state transitions. They report checking several hundred multistep workflows, running nightly checks for drift and sharing failing tests with customers. Each simulator has a fidelity card describing its match to the real API. Those are bounded compatibility claims, rather than proof of complete equivalence."
+      ],
+      "format": "full",
+      "takeaway": "For agent evaluation teams: inspect fidelity cards and failing workflows before using a simulator as a substitute for a production integration.",
+      "image": "/edition-images/2026-11-12/rystic-controlled-tests.webp",
+      "image_width": 1440,
+      "image_height": 960,
+      "image_provenance": {
+        "kind": "generated-editorial",
+        "generator": "built-in-imagegen",
+        "prompt": "Use case: infographic-diagram. Asset type: standalone newspaper editorial infographic PNG, landscape about 3:2. Style: warm cream newsprint, dark engraved ink, restrained teal and rust accents, strong readable serif headline, generous whitespace, very large legible labels and simple connected elements. Draw one clear mechanism with accurate arrow directions. No invented metrics, dates, product versions, fake screenshots or logos. No watermark or footer. No AI-generated label or caption inside the image. Use only the exact text specified, no additional words. Primary request and source-supported scope: A conceptual three-step Rystic testing sequence: set local simulator state, run a test with optional faults, inspect resulting state. Do not imply complete parity with real services. Text (verbatim): \"Rystic: control the test environment\"; \"Set service state\"; \"Run test\"; \"Inspect resulting state\"; \"Optional fault injection\".",
+        "based_on": [
+          "https://news.ycombinator.com/item?id=50448400"
+        ],
+        "reviewed": true,
+        "sha256": "22c9e8d04d4f5807679e70f15a12dce8eb66d7be2ec2893175fec038497fbebd",
+        "optimization": {
+          "format": "webp",
+          "quality": 82,
+          "max_width": 1440,
+          "source_sha256": "b9a7f61f73ed6c0c491b194ec127878855c9a795eb719d873f198549eda65d6b"
+        }
+      },
+      "source": "hn",
+      "interest_score": 8,
+      "hn_id": "50448400",
+      "comments": "https://news.ycombinator.com/item?id=50448400",
+      "score_reason": "Concrete controllable evaluation environment with fault injection, state inspection and explicit fidelity limits.",
+      "dedupe_key": "hn-original:50448400",
+      "source_evidence": {
+        "url": "https://news.ycombinator.com/item?id=50448400",
+        "publication_date": "2026-11-11",
+        "raw_date": "2026-11-11T00:44:10.000Z",
+        "method": "Original first-party Show HN announcement body and author verified using official HN item API. The original announcement itself is the primary publication; its Unix time is converted to ISO UTC. This does not date a linked repository or later README update.",
+        "api": "https://hacker-news.firebaseio.com/v0/item/50448400.json",
+        "product_url": "https://www.rystic.ai"
+      }
+    },
+    {
+      "title": "AWS normalizes agent traces before comparing evaluation results",
+      "url": "https://aws.amazon.com/blogs/machine-learning/uaef-a-framework-agnostic-system-for-closed-loop-evaluation-of-ai-agents/",
+      "publisher": "Amazon Web Services",
+      "published": "2026-11-11",
+      "category_key": "evals",
+      "summary": "A shared trace format lets supported agent frameworks use the same evaluation engine.",
+      "body": [
+        "AWS’s Universal Agent Evaluation Framework is an open-source system for testing AI agents across supported frameworks. Frameworks record messages, tool calls and handoffs differently, which can tie evaluation logic to one implementation and complicate comparisons after a change.",
+        "First, an adapter converts the execution record into a common trace format. The same scoring engine then applies selected metrics to that record. It combines deterministic checks with model-based judges across dimensions including tool use, response quality and performance. Tests that need reference answers are skipped when those answers are absent. Tool-call checks need expected tools, ordering and arguments.",
+        "For comparisons over time, persisted experiments keep summary metadata in DynamoDB and full results in object storage. Reviewers can compare shared metrics against a baseline. Judge responses must cite text present in the scored content; unsupported evidence is rejected. AWS cautions that judge scores are evaluation signals and should not gate security controls. The library and deployable web interface share the engine."
+      ],
+      "format": "full",
+      "takeaway": "For teams evaluating agents across frameworks: validate adapter coverage and references before comparing scores.",
+      "image": "/edition-images/2026-11-12/aws-common-evaluation-trace.webp",
+      "image_width": 1440,
+      "image_height": 960,
+      "image_provenance": {
+        "kind": "generated-editorial",
+        "generator": "built-in-imagegen",
+        "prompt": "Use case: infographic-diagram. Asset type: standalone newspaper editorial infographic PNG, landscape about 3:2. Style: warm cream newsprint, dark engraved ink, restrained teal and rust accents, strong readable serif headline, generous whitespace, very large legible labels and simple connected elements. Draw one clear mechanism with accurate arrow directions. No invented metrics, dates, product versions, fake screenshots or logos. No watermark or footer. No AI-generated label or caption inside the image. Use only the exact text specified, no additional words. Primary request and source-supported scope: Different supported agent execution formats pass through adapters to one common trace format, then a shared evaluation engine, then comparable results. Only explain normalization before scoring; do not promise scores are ground truth. Text (verbatim): \"One trace format before scoring\"; \"Agent records\"; \"Adapters\"; \"Common trace\"; \"Shared scoring\"; \"Compare results\".",
+        "based_on": [
+          "https://aws.amazon.com/blogs/machine-learning/uaef-a-framework-agnostic-system-for-closed-loop-evaluation-of-ai-agents/"
+        ],
+        "reviewed": true,
+        "sha256": "6bbe10960546790abb2afa15928a936137a209fa4b41be4ab1ad33be6d924c06",
+        "optimization": {
+          "format": "webp",
+          "quality": 82,
+          "max_width": 1440,
+          "source_sha256": "a80e491ca668d7d15245012b5edbbdc93affb257b5ff05ef4ba021c52335d6bd"
+        }
+      },
+      "source": "news",
+      "interest_score": 8,
+      "score_reason": "Primary-source implementation with common trace adapters, persisted comparisons and explicit judge-evidence safeguards.",
+      "dedupe_key": "article:aws.amazon.com/uaef-framework-agnostic-agent-evaluation",
+      "source_evidence": {
+        "url": "https://aws.amazon.com/blogs/machine-learning/uaef-a-framework-agnostic-system-for-closed-loop-evaluation-of-ai-agents/",
+        "publication_date": "2026-11-11",
+        "raw_date": "2026-11-11T07:50:55-08:00",
+        "method": "Original AWS article time[property=datePublished] datetime and article:published_time both read 2026-11-11T07:50:55-08:00; visible date is 11 NOV 2026."
+      }
+    },
+    {
+      "title": "Dynatrace’s SRE Agent shows evidence behind incident recommendations",
+      "url": "https://www.dynatrace.com/news/blog/the-sre-agent-is-generally-available-investigation-and-triage-start-the-moment-a-problem-is-detected/",
+      "publisher": "Dynatrace",
+      "published": "2026-11-11",
+      "category_key": "agents",
+      "summary": "A generally available investigation agent exposes findings and ruled-out causes, with workflows controlling routing and approval.",
+      "body": [
+        "Dynatrace’s SRE Agent is an incident-investigation agent that works inside configurable operational workflows. Its general-availability announcement focuses on the delay between an alert and understanding what failed, who is affected and which team should respond. Dynatrace says the agent exposes supporting evidence and what it checked and ruled out.",
+        "First, Dynatrace identifies a problem and its root cause. The agent starts from that finding, then examines related logs, events, deployments and metrics, follows service dependencies and checks earlier problems. It returns an analysis, affected services and users, and remediation recommendations. The workflow applies configured urgency rules and ownership data to decide where the result goes.",
+        "Operators can annotate a problem, open a ticket, notify a team or prepare a proposed fix for approval. The announcement separates the agent’s investigation from the workflow’s defined triggers and subsequent actions. It recommends starting with owned services and critical problems, comparing the analysis with the team’s own findings, and widening the scope after review. Claims about investigations completing within minutes are vendor claims; the illustrative checkout incident is not an independently verified production result."
+      ],
+      "format": "full",
+      "takeaway": "For teams adopting investigation agents: compare recommendations with their cited evidence and keep consequential fixes behind the intended approval step.",
+      "image": "/edition-images/2026-11-12/dynatrace-evidence-review.webp",
+      "image_width": 1440,
+      "image_height": 960,
+      "image_provenance": {
+        "kind": "generated-editorial",
+        "generator": "built-in-imagegen",
+        "prompt": "Use case: infographic-diagram. Asset type: standalone newspaper editorial infographic PNG, landscape about 3:2. Style: warm cream newsprint, dark engraved ink, restrained teal and rust accents, strong readable serif headline, generous whitespace, very large legible labels and simple connected elements. Draw one clear mechanism with accurate arrow directions. No invented metrics, dates, product versions, fake screenshots or logos. No watermark or footer. No AI-generated label or caption inside the image. Use only the exact text specified, no additional words. Primary request and source-supported scope: An incident investigation agent presents evidence with its recommendation, then a person reviews a proposed fix. Show supporting records feeding the investigation; then a clearly separate approval checkpoint before the proposed fix proceeds. Do not imply automatic remediation or guaranteed correctness. Text (verbatim): \"Dynatrace: review the evidence\"; \"Incident evidence\"; \"Agent investigation\"; \"Recommendation\"; \"Review proposed fix\".",
+        "based_on": [
+          "https://www.dynatrace.com/news/blog/the-sre-agent-is-generally-available-investigation-and-triage-start-the-moment-a-problem-is-detected/"
+        ],
+        "reviewed": true,
+        "sha256": "9353ff1b8aaba149ff03d6013d7f69de46b399798675e10010fcf27f08c2c8a1",
+        "optimization": {
+          "format": "webp",
+          "quality": 82,
+          "max_width": 1440,
+          "source_sha256": "33885bd8f244b89e330e54abe6634e48d27f7fbf94d21af715c891ca5eaf2213"
+        }
+      },
+      "source": "news",
+      "interest_score": 8,
+      "score_reason": "Concrete agent investigation visibility, evidence chains and operator-controlled routing and approval, with vendor performance claims identified.",
+      "dedupe_key": "article:dynatrace.com/sre-agent-general-availability-evidence-workflows",
+      "source_evidence": {
+        "url": "https://www.dynatrace.com/news/blog/the-sre-agent-is-generally-available-investigation-and-triage-start-the-moment-a-problem-is-detected/",
+        "publication_date": "2026-11-11",
+        "raw_date": "2026-11-11T18:22:08+00:00",
+        "method": "Original publisher JSON-LD datePublished is 2026-11-11T18:22:08+00:00; visible article label says Published November 11, 2026. Direct HTTP primary fetch recovered web-tool failure."
       }
     }
   ],
@@ -244,164 +253,613 @@
       "https://www.digitalocean.com/blog",
       "https://www.splunk.com/en_us/blog/observability.html",
       "https://www.dynatrace.com/news/",
-      "https://www.cncf.io/blog/2026/11/10/jaeger-previews-ai-assisted-troubleshooting-and-genai-observability-for-opentelemetry-traces-at-kubecon/",
-      "https://www.braintrust.dev/blog/terraform",
-      "https://github.com/langfuse/langfuse/releases/tag/v3.227.1",
-      "https://github.com/Arize-ai/phoenix/releases/tag/arize-phoenix-evals-v3.10.0",
-      "https://github.com/Arize-ai/phoenix/releases/tag/%40arizeai/phoenix-cli%401.21.0",
-      "https://www.langchain.com/blog/how-workday-built-an-enterprise-scale-ai-agent-platform-with-langgraph-and-langsmith",
-      "https://www.dynatrace.com/news/blog/state-of-observability-report-2026-key-insights/",
-      "https://www.elastic.co/observability-labs/blog/elastic-streams-telemetry-pipeline-s3",
-      "https://www.splunk.com/en_us/blog/observability/splunk-observability-at-cisco-live.html",
-      "https://www.honeycomb.io/blog",
-      "https://www.datadoghq.com/blog/kubernetes-inference-workload-monitoring/",
-      "https://www.datadoghq.com/blog/monitor-openai-codex-with-datadog/",
-      "https://opentelemetry.io/blog/2026/when-missing-telemetry-is-the-signal/",
-      "https://www.digitalocean.com/blog/qm-ycombinator-digitalocean-one-click"
+      "https://langfuse.com/changelog",
+      "https://www.splunk.com/en_us/blog/site-map.html",
+      "https://arize.com/blog/how-to-test-a-new-model-in-your-agent/",
+      "https://www.dynatrace.com/news/blog/raising-the-bar-for-enterprise-resilience-in-the-age-of-ai/",
+      "https://opentelemetry.io/blog/2026/collector-batching-migration/",
+      "https://www.datadoghq.com/blog/aws-account-management/",
+      "https://langfuse.com/changelog/2026-11-11-default-evaluation-model-and-batch-evaluation-via-mcp",
+      "https://aws.amazon.com/blogs/machine-learning/uaef-a-framework-agnostic-system-for-closed-loop-evaluation-of-ai-agents/",
+      "https://www.dynatrace.com/news/blog/the-sre-agent-is-generally-available-investigation-and-triage-start-the-moment-a-problem-is-detected/"
     ],
     "excluded": [
       {
-        "url": "https://clickhouse.com/blog/observability-ui-is-dead-whats-next",
-        "hn_id": "50441585",
-        "reason": "Primary article datePublished is 2026-11-09T16:57:20.026Z, outside frozen window; HN resurfacing does not change it."
+        "url": "https://medium.com/chick-fil-atech/observability-at-the-edge-b2385065ab6e",
+        "hn_id": "50454115",
+        "reason": "Traditional Kubernetes edge observability; discovery provides no concrete AI-system operating relationship. Excluded on scope, without treating HN submission as article publication."
       },
       {
-        "url": "https://github.com/luchtan-GIT/m4r-data",
-        "hn_id": "50438804",
-        "reason": "Music creative-calibration dataset; not selected over direct trace and evaluation operations. Repository is not original-publication evidence for this window."
+        "url": "https://rankings.leffke.com/categories/deploy-observability",
+        "hn_id": "50452969",
+        "reason": "Primary rankings page fetched successfully via direct HTTP after web-tool failure. Undated continuously maintained comparison; original publication on frozen day is not established. HN submission time is not publication proof."
       },
       {
-        "url": "https://news.ycombinator.com/item?id=50447699",
-        "hn_id": "50447699",
-        "reason": "Speculative recursive-self-improvement discussion, outside operational observability scope."
+        "url": "https://acneally.vercel.app",
+        "hn_id": "50460717",
+        "reason": "Official HN item checked. General AI, application product, social discussion, training, hiring or unrelated engineering item; no selected concrete AI-observability mechanism."
       },
       {
-        "url": "https://pushform.io/",
-        "hn_id": "50446986",
-        "reason": "General modeling product, outside observability scope."
+        "url": "https://zumungo.com/get-started.html",
+        "hn_id": "50459255",
+        "reason": "Official HN item checked. General AI, application product, social discussion, training, hiring or unrelated engineering item; no selected concrete AI-observability mechanism."
       },
       {
-        "url": "https://news.ycombinator.com/item?id=50446617",
-        "hn_id": "50446617",
-        "reason": "Hiring and senior pipeline discussion, outside scope."
+        "url": "https://news.ycombinator.com/item?id=50458889",
+        "hn_id": "50458889",
+        "reason": "Official HN item checked. General AI, application product, social discussion, training, hiring or unrelated engineering item; no selected concrete AI-observability mechanism."
       },
       {
-        "url": "https://github.com/shanjeevrajendran/cloakroom",
-        "hn_id": "50446007",
-        "reason": "First-party secret-masking announcement reviewed; privacy prevention tool rather than a concrete telemetry or evaluation change. Omitted from selective edition."
+        "url": "https://hardwired-pause.ai/",
+        "hn_id": "50458124",
+        "reason": "Official HN item checked. General AI, application product, social discussion, training, hiring or unrelated engineering item; no selected concrete AI-observability mechanism."
       },
       {
-        "url": "https://thunderphone.com/blog/introducing-zeus",
-        "hn_id": "50445758",
-        "reason": "Primary blog datePublished and article:published_time are 2026-11-09; exclude prior-day launch despite HN announcement timing."
+        "url": "https://news.ycombinator.com/item?id=50457952",
+        "hn_id": "50457952",
+        "reason": "Official HN item checked. General AI, application product, social discussion, training, hiring or unrelated engineering item; no selected concrete AI-observability mechanism."
       },
       {
-        "url": "https://charleshuang.me/2026/09/27/theoremsmith/",
-        "hn_id": "50444276",
-        "reason": "Training problem generation; linked original URL is dated 2026-09-27, not frozen window."
+        "url": "https://dailyatlas.io/",
+        "hn_id": "50457027",
+        "reason": "Official HN item checked. General AI, application product, social discussion, training, hiring or unrelated engineering item; no selected concrete AI-observability mechanism."
       },
       {
-        "url": "https://medium.com/prooftrading/building-ai-tools-for-institutional-trading-a1e74035fcd3",
-        "hn_id": "50444003",
-        "reason": "Institutional trading application development; no selected concrete AI-observability implementation."
+        "url": "https://www.sciencedirect.com/science/article/pii/S2589750026001378?via%3Dihub",
+        "hn_id": "50455929",
+        "reason": "Official HN item checked. General AI, application product, social discussion, training, hiring or unrelated engineering item; no selected concrete AI-observability mechanism."
       },
       {
-        "url": "https://github.com/GoogleChrome/modern-web-guidance",
-        "hn_id": "50443812",
-        "reason": "Agent coding guidance for browser APIs, outside observability scope."
+        "url": "https://news.ycombinator.com/item?id=50455811",
+        "hn_id": "50455811",
+        "reason": "Original launch post reviewed. Tool generation, authentication and deterministic website integrations are the main change; no selected telemetry or agent-evaluation implementation. Selective omission."
       },
       {
-        "url": "https://www.youtube.com/watch?v=yT-iu1kovKg",
-        "hn_id": "50443070",
-        "reason": "Model training-data collection, outside runtime observability scope."
+        "url": "https://github.com/klad-app/klad",
+        "hn_id": "50454951",
+        "reason": "Official HN item checked. General AI, application product, social discussion, training, hiring or unrelated engineering item; no selected concrete AI-observability mechanism."
       },
       {
-        "url": "https://getpolicypeek.com/",
-        "hn_id": "50442804",
-        "reason": "Vendor privacy-policy comparison, not runtime telemetry privacy or AI-system instrumentation."
+        "url": "https://foundrs.com/game.html",
+        "hn_id": "50454626",
+        "reason": "Official HN item checked. General AI, application product, social discussion, training, hiring or unrelated engineering item; no selected concrete AI-observability mechanism."
       },
       {
-        "url": "https://news.ycombinator.com/item?id=50441674",
-        "hn_id": "50441674",
-        "reason": "AI alignment discussion, outside operational beat."
+        "url": "https://github.com/FrigadeHQ/yogurt",
+        "hn_id": "50454625",
+        "reason": "Official HN item checked. General AI, application product, social discussion, training, hiring or unrelated engineering item; no selected concrete AI-observability mechanism."
       },
       {
-        "url": "https://aircad.com",
-        "hn_id": "50441350",
-        "reason": "Browser drafting application, outside scope."
+        "url": "https://forwardmodel.ai/",
+        "hn_id": "50454606",
+        "reason": "Official HN item checked. General AI, application product, social discussion, training, hiring or unrelated engineering item; no selected concrete AI-observability mechanism."
       },
       {
-        "url": "https://apptraction.dev",
-        "hn_id": "50440624",
-        "reason": "App Store management tool, outside scope."
+        "url": "https://aicoderating.com/",
+        "hn_id": "50454286",
+        "reason": "Repository disclosure convention, rather than runtime instrumentation or an agent-evaluation implementation."
       },
       {
-        "url": "https://apestogether.ai/developers",
-        "hn_id": "50439989",
-        "reason": "Trading-bot subscription product, outside scope."
+        "url": "https://news.ycombinator.com/item?id=50453369",
+        "hn_id": "50453369",
+        "reason": "Official HN item checked. General AI, application product, social discussion, training, hiring or unrelated engineering item; no selected concrete AI-observability mechanism."
       },
       {
-        "url": "https://github.com/pgrekovich/simstim",
-        "hn_id": "50439671",
-        "reason": "Local call transcription product, outside observability scope."
+        "url": "https://specialist-ai.github.io/",
+        "hn_id": "50451058",
+        "reason": "Official HN item checked. General AI, application product, social discussion, training, hiring or unrelated engineering item; no selected concrete AI-observability mechanism."
       },
       {
-        "url": "https://aivisionindex.com/",
-        "hn_id": "50439591",
-        "reason": "First-party private vision benchmark announcement reviewed with official HN API and product page. Selective omission: prioritizing trace evidence and governed evaluation infrastructure; private test corpus cannot be inspected for reproducibility."
+        "url": "https://pdfmeasure.com/",
+        "hn_id": "50448062",
+        "reason": "Official HN item checked. General AI, application product, social discussion, training, hiring or unrelated engineering item; no selected concrete AI-observability mechanism."
       },
       {
-        "url": "https://news.ycombinator.com/item?id=50438889",
-        "hn_id": "50438889",
-        "reason": "Model training memory announcement, outside operational observability scope."
+        "url": "https://github.com/Arize-ai/phoenix/releases/tag/%40arizeai/phoenix-client%408.0.0",
+        "reason": "Same OpenTelemetry migration announcement as retained Phoenix tracing-package release; consolidate client and CLI dependency releases rather than repeat one event."
       },
       {
-        "url": "https://news.ycombinator.com/item?id=50436036",
-        "hn_id": "50436036",
-        "reason": "Hiring request, not editorial story."
+        "url": "https://github.com/Arize-ai/phoenix/releases/tag/%40arizeai/phoenix-cli%401.22.0",
+        "reason": "Same OpenTelemetry migration announcement as retained Phoenix tracing-package release; consolidate client and CLI dependency releases rather than repeat one event."
       },
       {
-        "url": "https://github.com/langfuse/langfuse/releases/tag/v3.227.1",
-        "reason": "Stable timestamp verified. Backported export and credential-reset fixes; omitted from selective edition, prioritizing new trace evidence rather than maintenance backports."
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-semantic-conventions-v0.1.44",
+        "reason": "Stable release timestamp checked. OpenInference release train reviewed as shared events: dependency minimum bumps, provider/model metadata, stream completion/cancellation and session linkage. Omitted from this selective edition; do not turn shared dependency changes into many nominal stories."
       },
       {
-        "url": "https://github.com/Arize-ai/phoenix/releases/tag/arize-phoenix-evals-v3.10.0",
-        "reason": "Stable timestamp verified. Python evaluator provider and tool-call updates; omitted from selective edition. Metadata preservation overlaps prior Phoenix evaluation coverage; no separate repeat story."
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-vertexai-v0.1.34",
+        "reason": "Stable release timestamp checked. OpenInference release train reviewed as shared events: dependency minimum bumps, provider/model metadata, stream completion/cancellation and session linkage. Omitted from this selective edition; do not turn shared dependency changes into many nominal stories."
       },
       {
-        "url": "https://github.com/Arize-ai/phoenix/releases/tag/%40arizeai/phoenix-cli%401.21.0",
-        "reason": "Stable timestamp verified. Narrow dataset-version listing command; omitted from selective edition."
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-vertexai-v0.1.33",
+        "reason": "Stable release timestamp checked. OpenInference release train reviewed as shared events: dependency minimum bumps, provider/model metadata, stream completion/cancellation and session linkage. Omitted from this selective edition; do not turn shared dependency changes into many nominal stories."
       },
       {
-        "url": "https://www.langchain.com/blog/how-workday-built-an-enterprise-scale-ai-agent-platform-with-langgraph-and-langsmith",
-        "reason": "Original datePublished 2026-11-10T16:00:00.000Z verified. Customer platform case study gives limited tracing/evaluation mechanism detail; omitted in favor of concrete operational changes."
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-v0.1.76",
+        "reason": "Stable release timestamp checked. OpenInference release train reviewed as shared events: dependency minimum bumps, provider/model metadata, stream completion/cancellation and session linkage. Omitted from this selective edition; do not turn shared dependency changes into many nominal stories."
       },
       {
-        "url": "https://www.dynatrace.com/news/blog/state-of-observability-report-2026-key-insights/",
-        "reason": "Primary report overview reviewed. Survey and strategic guidance rather than a new operational implementation; omitted from selective edition."
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-typesafe-v0.1.9",
+        "reason": "Stable release timestamp checked. OpenInference release train reviewed as shared events: dependency minimum bumps, provider/model metadata, stream completion/cancellation and session linkage. Omitted from this selective edition; do not turn shared dependency changes into many nominal stories."
       },
       {
-        "url": "https://www.elastic.co/observability-labs/blog/elastic-streams-telemetry-pipeline-s3",
-        "reason": "Primary private-preview telemetry pipeline article reviewed. General telemetry routing without concrete new AI workload instrumentation; outside this selective AI-only edition."
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-typesafe-v0.1.10",
+        "reason": "Stable release timestamp checked. OpenInference release train reviewed as shared events: dependency minimum bumps, provider/model metadata, stream completion/cancellation and session linkage. Omitted from this selective edition; do not turn shared dependency changes into many nominal stories."
       },
       {
-        "url": "https://www.splunk.com/en_us/blog/observability/splunk-observability-at-cisco-live.html",
-        "reason": "Primary product roundup reviewed after index returned No results. Evaluation and Tokenomics build on earlier announcements, with future availability and vendor claims. Omitted pending event-level separation from previous Cisco/Splunk coverage."
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-together-v0.1.18",
+        "reason": "Stable release timestamp checked. OpenInference release train reviewed as shared events: dependency minimum bumps, provider/model metadata, stream completion/cancellation and session linkage. Omitted from this selective edition; do not turn shared dependency changes into many nominal stories."
       },
       {
-        "url": "https://www.honeycomb.io/blog",
-        "reason": "Latest window item concerns monitoring-versus-observability positioning; no new AI-specific implementation selected."
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-together-v0.1.17",
+        "reason": "Stable release timestamp checked. OpenInference release train reviewed as shared events: dependency minimum bumps, provider/model metadata, stream completion/cancellation and session linkage. Omitted from this selective edition; do not turn shared dependency changes into many nominal stories."
       },
       {
-        "url": "https://opentelemetry.io/blog/2026/when-missing-telemetry-is-the-signal/",
-        "reason": "Primary page dated Tuesday, November 10, 2026 verified. Conceptual essay on empty dashboards as a signal; omitted in favor of concrete operational implementations."
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-strands-agents-v0.1.17",
+        "reason": "Stable release timestamp checked. OpenInference release train reviewed as shared events: dependency minimum bumps, provider/model metadata, stream completion/cancellation and session linkage. Omitted from this selective edition; do not turn shared dependency changes into many nominal stories."
       },
       {
-        "url": "https://www.digitalocean.com/blog/qm-ycombinator-digitalocean-one-click",
-        "reason": "Primary published_at 2026-11-10T18:29:46.028Z verified. One-click agent-harness deploy announcement, not a telemetry, evaluation or runtime-visibility change."
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-strands-agents-v0.1.16",
+        "reason": "Stable release timestamp checked. OpenInference release train reviewed as shared events: dependency minimum bumps, provider/model metadata, stream completion/cancellation and session linkage. Omitted from this selective edition; do not turn shared dependency changes into many nominal stories."
+      },
+      {
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-smolagents-v0.1.48",
+        "reason": "Stable release timestamp checked. OpenInference release train reviewed as shared events: dependency minimum bumps, provider/model metadata, stream completion/cancellation and session linkage. Omitted from this selective edition; do not turn shared dependency changes into many nominal stories."
+      },
+      {
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-smolagents-v0.1.47",
+        "reason": "Stable release timestamp checked. OpenInference release train reviewed as shared events: dependency minimum bumps, provider/model metadata, stream completion/cancellation and session linkage. Omitted from this selective edition; do not turn shared dependency changes into many nominal stories."
+      },
+      {
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-pydantic-ai-v0.1.35",
+        "reason": "Stable release timestamp checked. OpenInference release train reviewed as shared events: dependency minimum bumps, provider/model metadata, stream completion/cancellation and session linkage. Omitted from this selective edition; do not turn shared dependency changes into many nominal stories."
+      },
+      {
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-pydantic-ai-v0.1.34",
+        "reason": "Stable release timestamp checked. OpenInference release train reviewed as shared events: dependency minimum bumps, provider/model metadata, stream completion/cancellation and session linkage. Omitted from this selective edition; do not turn shared dependency changes into many nominal stories."
+      },
+      {
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-portkey-v0.1.27",
+        "reason": "Stable release timestamp checked. OpenInference release train reviewed as shared events: dependency minimum bumps, provider/model metadata, stream completion/cancellation and session linkage. Omitted from this selective edition; do not turn shared dependency changes into many nominal stories."
+      },
+      {
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-portkey-v0.1.26",
+        "reason": "Stable release timestamp checked. OpenInference release train reviewed as shared events: dependency minimum bumps, provider/model metadata, stream completion/cancellation and session linkage. Omitted from this selective edition; do not turn shared dependency changes into many nominal stories."
+      },
+      {
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-pipecat-v2.0.12",
+        "reason": "Stable release timestamp checked. OpenInference release train reviewed as shared events: dependency minimum bumps, provider/model metadata, stream completion/cancellation and session linkage. Omitted from this selective edition; do not turn shared dependency changes into many nominal stories."
+      },
+      {
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-pipecat-v2.0.11",
+        "reason": "Stable release timestamp checked. OpenInference release train reviewed as shared events: dependency minimum bumps, provider/model metadata, stream completion/cancellation and session linkage. Omitted from this selective edition; do not turn shared dependency changes into many nominal stories."
+      },
+      {
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-openllmetry-v0.1.29",
+        "reason": "Stable release timestamp checked. OpenInference release train reviewed as shared events: dependency minimum bumps, provider/model metadata, stream completion/cancellation and session linkage. Omitted from this selective edition; do not turn shared dependency changes into many nominal stories."
+      },
+      {
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-openllmetry-v0.1.28",
+        "reason": "Stable release timestamp checked. OpenInference release train reviewed as shared events: dependency minimum bumps, provider/model metadata, stream completion/cancellation and session linkage. Omitted from this selective edition; do not turn shared dependency changes into many nominal stories."
+      },
+      {
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-openlit-v0.1.23",
+        "reason": "Stable release timestamp checked. OpenInference release train reviewed as shared events: dependency minimum bumps, provider/model metadata, stream completion/cancellation and session linkage. Omitted from this selective edition; do not turn shared dependency changes into many nominal stories."
+      },
+      {
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-openlit-v0.1.22",
+        "reason": "Stable release timestamp checked. OpenInference release train reviewed as shared events: dependency minimum bumps, provider/model metadata, stream completion/cancellation and session linkage. Omitted from this selective edition; do not turn shared dependency changes into many nominal stories."
+      },
+      {
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-openai-v0.1.71",
+        "reason": "Stable release timestamp checked. OpenInference release train reviewed as shared events: dependency minimum bumps, provider/model metadata, stream completion/cancellation and session linkage. Omitted from this selective edition; do not turn shared dependency changes into many nominal stories."
+      },
+      {
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-openai-v0.1.70",
+        "reason": "Stable release timestamp checked. OpenInference release train reviewed as shared events: dependency minimum bumps, provider/model metadata, stream completion/cancellation and session linkage. Omitted from this selective edition; do not turn shared dependency changes into many nominal stories."
+      },
+      {
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-openai-agents-v2.8.1",
+        "reason": "Stable release timestamp checked. OpenInference release train reviewed as shared events: dependency minimum bumps, provider/model metadata, stream completion/cancellation and session linkage. Omitted from this selective edition; do not turn shared dependency changes into many nominal stories."
+      },
+      {
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-openai-agents-v2.8.0",
+        "reason": "Stable release timestamp checked. OpenInference release train reviewed as shared events: dependency minimum bumps, provider/model metadata, stream completion/cancellation and session linkage. Omitted from this selective edition; do not turn shared dependency changes into many nominal stories."
+      },
+      {
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-ollama-v0.1.18",
+        "reason": "Stable release timestamp checked. OpenInference release train reviewed as shared events: dependency minimum bumps, provider/model metadata, stream completion/cancellation and session linkage. Omitted from this selective edition; do not turn shared dependency changes into many nominal stories."
+      },
+      {
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-ollama-v0.1.17",
+        "reason": "Stable release timestamp checked. OpenInference release train reviewed as shared events: dependency minimum bumps, provider/model metadata, stream completion/cancellation and session linkage. Omitted from this selective edition; do not turn shared dependency changes into many nominal stories."
+      },
+      {
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-mistralai-v2.3.3",
+        "reason": "Stable release timestamp checked. OpenInference release train reviewed as shared events: dependency minimum bumps, provider/model metadata, stream completion/cancellation and session linkage. Omitted from this selective edition; do not turn shared dependency changes into many nominal stories."
+      },
+      {
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-mistralai-v2.3.2",
+        "reason": "Stable release timestamp checked. OpenInference release train reviewed as shared events: dependency minimum bumps, provider/model metadata, stream completion/cancellation and session linkage. Omitted from this selective edition; do not turn shared dependency changes into many nominal stories."
+      },
+      {
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-mcp-v2.1.3",
+        "reason": "Stable release timestamp checked. OpenInference release train reviewed as shared events: dependency minimum bumps, provider/model metadata, stream completion/cancellation and session linkage. Omitted from this selective edition; do not turn shared dependency changes into many nominal stories."
+      },
+      {
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-mcp-v2.1.2",
+        "reason": "Stable release timestamp checked. OpenInference release train reviewed as shared events: dependency minimum bumps, provider/model metadata, stream completion/cancellation and session linkage. Omitted from this selective edition; do not turn shared dependency changes into many nominal stories."
+      },
+      {
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-llama-index-v4.7.4",
+        "reason": "Stable release timestamp checked. OpenInference release train reviewed as shared events: dependency minimum bumps, provider/model metadata, stream completion/cancellation and session linkage. Omitted from this selective edition; do not turn shared dependency changes into many nominal stories."
+      },
+      {
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-llama-index-v4.7.3",
+        "reason": "Stable release timestamp checked. OpenInference release train reviewed as shared events: dependency minimum bumps, provider/model metadata, stream completion/cancellation and session linkage. Omitted from this selective edition; do not turn shared dependency changes into many nominal stories."
+      },
+      {
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-litellm-v0.1.56",
+        "reason": "Stable release timestamp checked. OpenInference release train reviewed as shared events: dependency minimum bumps, provider/model metadata, stream completion/cancellation and session linkage. Omitted from this selective edition; do not turn shared dependency changes into many nominal stories."
+      },
+      {
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-litellm-v0.1.55",
+        "reason": "Stable release timestamp checked. OpenInference release train reviewed as shared events: dependency minimum bumps, provider/model metadata, stream completion/cancellation and session linkage. Omitted from this selective edition; do not turn shared dependency changes into many nominal stories."
+      },
+      {
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-langchain-v0.1.84",
+        "reason": "Stable release timestamp checked. OpenInference release train reviewed as shared events: dependency minimum bumps, provider/model metadata, stream completion/cancellation and session linkage. Omitted from this selective edition; do not turn shared dependency changes into many nominal stories."
+      },
+      {
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-langchain-v0.1.83",
+        "reason": "Stable release timestamp checked. OpenInference release train reviewed as shared events: dependency minimum bumps, provider/model metadata, stream completion/cancellation and session linkage. Omitted from this selective edition; do not turn shared dependency changes into many nominal stories."
+      },
+      {
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-instructor-v0.1.33",
+        "reason": "Stable release timestamp checked. OpenInference release train reviewed as shared events: dependency minimum bumps, provider/model metadata, stream completion/cancellation and session linkage. Omitted from this selective edition; do not turn shared dependency changes into many nominal stories."
+      },
+      {
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-instructor-v0.1.32",
+        "reason": "Stable release timestamp checked. OpenInference release train reviewed as shared events: dependency minimum bumps, provider/model metadata, stream completion/cancellation and session linkage. Omitted from this selective edition; do not turn shared dependency changes into many nominal stories."
+      },
+      {
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-haystack-v0.1.51",
+        "reason": "Stable release timestamp checked. OpenInference release train reviewed as shared events: dependency minimum bumps, provider/model metadata, stream completion/cancellation and session linkage. Omitted from this selective edition; do not turn shared dependency changes into many nominal stories."
+      },
+      {
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-haystack-v0.1.50",
+        "reason": "Stable release timestamp checked. OpenInference release train reviewed as shared events: dependency minimum bumps, provider/model metadata, stream completion/cancellation and session linkage. Omitted from this selective edition; do not turn shared dependency changes into many nominal stories."
+      },
+      {
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-guardrails-v0.1.31",
+        "reason": "Stable release timestamp checked. OpenInference release train reviewed as shared events: dependency minimum bumps, provider/model metadata, stream completion/cancellation and session linkage. Omitted from this selective edition; do not turn shared dependency changes into many nominal stories."
+      },
+      {
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-guardrails-v0.1.30",
+        "reason": "Stable release timestamp checked. OpenInference release train reviewed as shared events: dependency minimum bumps, provider/model metadata, stream completion/cancellation and session linkage. Omitted from this selective edition; do not turn shared dependency changes into many nominal stories."
+      },
+      {
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-groq-v0.1.38",
+        "reason": "Stable release timestamp checked. OpenInference release train reviewed as shared events: dependency minimum bumps, provider/model metadata, stream completion/cancellation and session linkage. Omitted from this selective edition; do not turn shared dependency changes into many nominal stories."
+      },
+      {
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-groq-v0.1.37",
+        "reason": "Stable release timestamp checked. OpenInference release train reviewed as shared events: dependency minimum bumps, provider/model metadata, stream completion/cancellation and session linkage. Omitted from this selective edition; do not turn shared dependency changes into many nominal stories."
+      },
+      {
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-google-genai-v1.6.2",
+        "reason": "Stable release timestamp checked. OpenInference release train reviewed as shared events: dependency minimum bumps, provider/model metadata, stream completion/cancellation and session linkage. Omitted from this selective edition; do not turn shared dependency changes into many nominal stories."
+      },
+      {
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-google-genai-v1.6.1",
+        "reason": "Stable release timestamp checked. OpenInference release train reviewed as shared events: dependency minimum bumps, provider/model metadata, stream completion/cancellation and session linkage. Omitted from this selective edition; do not turn shared dependency changes into many nominal stories."
+      },
+      {
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-google-adk-v1.1.4",
+        "reason": "Stable release timestamp checked. OpenInference release train reviewed as shared events: dependency minimum bumps, provider/model metadata, stream completion/cancellation and session linkage. Omitted from this selective edition; do not turn shared dependency changes into many nominal stories."
+      },
+      {
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-google-adk-v1.1.3",
+        "reason": "Stable release timestamp checked. OpenInference release train reviewed as shared events: dependency minimum bumps, provider/model metadata, stream completion/cancellation and session linkage. Omitted from this selective edition; do not turn shared dependency changes into many nominal stories."
+      },
+      {
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-dspy-v0.1.52",
+        "reason": "Stable release timestamp checked. OpenInference release train reviewed as shared events: dependency minimum bumps, provider/model metadata, stream completion/cancellation and session linkage. Omitted from this selective edition; do not turn shared dependency changes into many nominal stories."
+      },
+      {
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-dspy-v0.1.51",
+        "reason": "Stable release timestamp checked. OpenInference release train reviewed as shared events: dependency minimum bumps, provider/model metadata, stream completion/cancellation and session linkage. Omitted from this selective edition; do not turn shared dependency changes into many nominal stories."
+      },
+      {
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-crewai-v1.1.25",
+        "reason": "Stable release timestamp checked. OpenInference release train reviewed as shared events: dependency minimum bumps, provider/model metadata, stream completion/cancellation and session linkage. Omitted from this selective edition; do not turn shared dependency changes into many nominal stories."
+      },
+      {
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-crewai-v1.1.24",
+        "reason": "Stable release timestamp checked. OpenInference release train reviewed as shared events: dependency minimum bumps, provider/model metadata, stream completion/cancellation and session linkage. Omitted from this selective edition; do not turn shared dependency changes into many nominal stories."
+      },
+      {
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-cohere-v0.1.20",
+        "reason": "Stable release timestamp checked. OpenInference release train reviewed as shared events: dependency minimum bumps, provider/model metadata, stream completion/cancellation and session linkage. Omitted from this selective edition; do not turn shared dependency changes into many nominal stories."
+      },
+      {
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-cohere-v0.1.19",
+        "reason": "Stable release timestamp checked. OpenInference release train reviewed as shared events: dependency minimum bumps, provider/model metadata, stream completion/cancellation and session linkage. Omitted from this selective edition; do not turn shared dependency changes into many nominal stories."
+      },
+      {
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-claude-agent-sdk-v0.1.27",
+        "reason": "Stable release timestamp checked. OpenInference release train reviewed as shared events: dependency minimum bumps, provider/model metadata, stream completion/cancellation and session linkage. Omitted from this selective edition; do not turn shared dependency changes into many nominal stories."
+      },
+      {
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-claude-agent-sdk-v0.1.26",
+        "reason": "Stable release timestamp checked. OpenInference release train reviewed as shared events: dependency minimum bumps, provider/model metadata, stream completion/cancellation and session linkage. Omitted from this selective edition; do not turn shared dependency changes into many nominal stories."
+      },
+      {
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-beeai-v0.1.34",
+        "reason": "Stable release timestamp checked. OpenInference release train reviewed as shared events: dependency minimum bumps, provider/model metadata, stream completion/cancellation and session linkage. Omitted from this selective edition; do not turn shared dependency changes into many nominal stories."
+      },
+      {
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-beeai-v0.1.33",
+        "reason": "Stable release timestamp checked. OpenInference release train reviewed as shared events: dependency minimum bumps, provider/model metadata, stream completion/cancellation and session linkage. Omitted from this selective edition; do not turn shared dependency changes into many nominal stories."
+      },
+      {
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-bedrock-v0.1.65",
+        "reason": "Stable release timestamp checked. OpenInference release train reviewed as shared events: dependency minimum bumps, provider/model metadata, stream completion/cancellation and session linkage. Omitted from this selective edition; do not turn shared dependency changes into many nominal stories."
+      },
+      {
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-bedrock-v0.1.64",
+        "reason": "Stable release timestamp checked. OpenInference release train reviewed as shared events: dependency minimum bumps, provider/model metadata, stream completion/cancellation and session linkage. Omitted from this selective edition; do not turn shared dependency changes into many nominal stories."
+      },
+      {
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-autogen-agentchat-v0.1.27",
+        "reason": "Stable release timestamp checked. OpenInference release train reviewed as shared events: dependency minimum bumps, provider/model metadata, stream completion/cancellation and session linkage. Omitted from this selective edition; do not turn shared dependency changes into many nominal stories."
+      },
+      {
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-autogen-agentchat-v0.1.26",
+        "reason": "Stable release timestamp checked. OpenInference release train reviewed as shared events: dependency minimum bumps, provider/model metadata, stream completion/cancellation and session linkage. Omitted from this selective edition; do not turn shared dependency changes into many nominal stories."
+      },
+      {
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-anthropic-v3.3.3",
+        "reason": "Stable release timestamp checked. OpenInference release train reviewed as shared events: dependency minimum bumps, provider/model metadata, stream completion/cancellation and session linkage. Omitted from this selective edition; do not turn shared dependency changes into many nominal stories."
+      },
+      {
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-anthropic-v3.3.2",
+        "reason": "Stable release timestamp checked. OpenInference release train reviewed as shared events: dependency minimum bumps, provider/model metadata, stream completion/cancellation and session linkage. Omitted from this selective edition; do not turn shared dependency changes into many nominal stories."
+      },
+      {
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-agno-v1.1.4",
+        "reason": "Stable release timestamp checked. OpenInference release train reviewed as shared events: dependency minimum bumps, provider/model metadata, stream completion/cancellation and session linkage. Omitted from this selective edition; do not turn shared dependency changes into many nominal stories."
+      },
+      {
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-agno-v1.1.3",
+        "reason": "Stable release timestamp checked. OpenInference release train reviewed as shared events: dependency minimum bumps, provider/model metadata, stream completion/cancellation and session linkage. Omitted from this selective edition; do not turn shared dependency changes into many nominal stories."
+      },
+      {
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-agentspec-v0.1.19",
+        "reason": "Stable release timestamp checked. OpenInference release train reviewed as shared events: dependency minimum bumps, provider/model metadata, stream completion/cancellation and session linkage. Omitted from this selective edition; do not turn shared dependency changes into many nominal stories."
+      },
+      {
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-agentspec-v0.1.18",
+        "reason": "Stable release timestamp checked. OpenInference release train reviewed as shared events: dependency minimum bumps, provider/model metadata, stream completion/cancellation and session linkage. Omitted from this selective edition; do not turn shared dependency changes into many nominal stories."
+      },
+      {
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-ag2-v0.1.17",
+        "reason": "Stable release timestamp checked. OpenInference release train reviewed as shared events: dependency minimum bumps, provider/model metadata, stream completion/cancellation and session linkage. Omitted from this selective edition; do not turn shared dependency changes into many nominal stories."
+      },
+      {
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-ag2-v0.1.16",
+        "reason": "Stable release timestamp checked. OpenInference release train reviewed as shared events: dependency minimum bumps, provider/model metadata, stream completion/cancellation and session linkage. Omitted from this selective edition; do not turn shared dependency changes into many nominal stories."
+      },
+      {
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/java-openinference-semantic-conventions-v0.1.24",
+        "reason": "Stable release timestamp checked. OpenInference release train reviewed as shared events: dependency minimum bumps, provider/model metadata, stream completion/cancellation and session linkage. Omitted from this selective edition; do not turn shared dependency changes into many nominal stories."
+      },
+      {
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/go/openinference-semantic-conventions/v0.1.13",
+        "reason": "Stable release timestamp checked. OpenInference release train reviewed as shared events: dependency minimum bumps, provider/model metadata, stream completion/cancellation and session linkage. Omitted from this selective edition; do not turn shared dependency changes into many nominal stories."
+      },
+      {
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/%40arizeai/openinference-vercel%403.3.2",
+        "reason": "Stable release timestamp checked. OpenInference release train reviewed as shared events: dependency minimum bumps, provider/model metadata, stream completion/cancellation and session linkage. Omitted from this selective edition; do not turn shared dependency changes into many nominal stories."
+      },
+      {
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/%40arizeai/openinference-tanstack-ai%400.3.4",
+        "reason": "Stable release timestamp checked. OpenInference release train reviewed as shared events: dependency minimum bumps, provider/model metadata, stream completion/cancellation and session linkage. Omitted from this selective edition; do not turn shared dependency changes into many nominal stories."
+      },
+      {
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/%40arizeai/openinference-semantic-conventions%402.16.0",
+        "reason": "Stable release timestamp checked. OpenInference release train reviewed as shared events: dependency minimum bumps, provider/model metadata, stream completion/cancellation and session linkage. Omitted from this selective edition; do not turn shared dependency changes into many nominal stories."
+      },
+      {
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/%40arizeai/openinference-instrumentation-typesafe%400.4.5",
+        "reason": "Stable release timestamp checked. OpenInference release train reviewed as shared events: dependency minimum bumps, provider/model metadata, stream completion/cancellation and session linkage. Omitted from this selective edition; do not turn shared dependency changes into many nominal stories."
+      },
+      {
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/%40arizeai/openinference-instrumentation-openai%404.4.4",
+        "reason": "Stable release timestamp checked. OpenInference release train reviewed as shared events: dependency minimum bumps, provider/model metadata, stream completion/cancellation and session linkage. Omitted from this selective edition; do not turn shared dependency changes into many nominal stories."
+      },
+      {
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/%40arizeai/openinference-instrumentation-openai-agents%400.3.4",
+        "reason": "Stable release timestamp checked. OpenInference release train reviewed as shared events: dependency minimum bumps, provider/model metadata, stream completion/cancellation and session linkage. Omitted from this selective edition; do not turn shared dependency changes into many nominal stories."
+      },
+      {
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/%40arizeai/openinference-instrumentation-mcp%400.2.38",
+        "reason": "Stable release timestamp checked. OpenInference release train reviewed as shared events: dependency minimum bumps, provider/model metadata, stream completion/cancellation and session linkage. Omitted from this selective edition; do not turn shared dependency changes into many nominal stories."
+      },
+      {
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/%40arizeai/openinference-instrumentation-langchain%404.2.0",
+        "reason": "Stable release timestamp checked. OpenInference release train reviewed as shared events: dependency minimum bumps, provider/model metadata, stream completion/cancellation and session linkage. Omitted from this selective edition; do not turn shared dependency changes into many nominal stories."
+      },
+      {
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/%40arizeai/openinference-instrumentation-langchain-v0%400.1.6",
+        "reason": "Stable release timestamp checked. OpenInference release train reviewed as shared events: dependency minimum bumps, provider/model metadata, stream completion/cancellation and session linkage. Omitted from this selective edition; do not turn shared dependency changes into many nominal stories."
+      },
+      {
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/%40arizeai/openinference-instrumentation-claude-agent-sdk%400.3.7",
+        "reason": "Stable release timestamp checked. OpenInference release train reviewed as shared events: dependency minimum bumps, provider/model metadata, stream completion/cancellation and session linkage. Omitted from this selective edition; do not turn shared dependency changes into many nominal stories."
+      },
+      {
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/%40arizeai/openinference-instrumentation-beeai%401.6.4",
+        "reason": "Stable release timestamp checked. OpenInference release train reviewed as shared events: dependency minimum bumps, provider/model metadata, stream completion/cancellation and session linkage. Omitted from this selective edition; do not turn shared dependency changes into many nominal stories."
+      },
+      {
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/%40arizeai/openinference-instrumentation-bedrock%400.5.7",
+        "reason": "Stable release timestamp checked. OpenInference release train reviewed as shared events: dependency minimum bumps, provider/model metadata, stream completion/cancellation and session linkage. Omitted from this selective edition; do not turn shared dependency changes into many nominal stories."
+      },
+      {
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/%40arizeai/openinference-instrumentation-bedrock-agent-runtime%401.2.6",
+        "reason": "Stable release timestamp checked. OpenInference release train reviewed as shared events: dependency minimum bumps, provider/model metadata, stream completion/cancellation and session linkage. Omitted from this selective edition; do not turn shared dependency changes into many nominal stories."
+      },
+      {
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/%40arizeai/openinference-instrumentation-anthropic%401.0.2",
+        "reason": "Stable release timestamp checked. OpenInference release train reviewed as shared events: dependency minimum bumps, provider/model metadata, stream completion/cancellation and session linkage. Omitted from this selective edition; do not turn shared dependency changes into many nominal stories."
+      },
+      {
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/%40arizeai/openinference-genai%400.4.2",
+        "reason": "Stable release timestamp checked. OpenInference release train reviewed as shared events: dependency minimum bumps, provider/model metadata, stream completion/cancellation and session linkage. Omitted from this selective edition; do not turn shared dependency changes into many nominal stories."
+      },
+      {
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/%40arizeai/openinference-core%402.8.2",
+        "reason": "Stable release timestamp checked. OpenInference release train reviewed as shared events: dependency minimum bumps, provider/model metadata, stream completion/cancellation and session linkage. Omitted from this selective edition; do not turn shared dependency changes into many nominal stories."
+      },
+      {
+        "url": "https://github.com/braintrustdata/braintrust-sdk-javascript/releases/tag/braintrust%403.44.0",
+        "reason": "Stable release timestamp checked. Framework compatibility, content-capture and service-tier changes reviewed; selectively omitted in favor of the breaking Phoenix recording/configuration migration. Temporal and LangChain packages share this release train."
+      },
+      {
+        "url": "https://github.com/braintrustdata/braintrust-sdk-javascript/releases/tag/%40braintrust/temporal%401.1.0",
+        "reason": "Stable release timestamp checked. Framework compatibility, content-capture and service-tier changes reviewed; selectively omitted in favor of the breaking Phoenix recording/configuration migration. Temporal and LangChain packages share this release train."
+      },
+      {
+        "url": "https://github.com/braintrustdata/braintrust-sdk-javascript/releases/tag/%40braintrust/langchain-js%400.3.0",
+        "reason": "Stable release timestamp checked. Framework compatibility, content-capture and service-tier changes reviewed; selectively omitted in favor of the breaking Phoenix recording/configuration migration. Temporal and LangChain packages share this release train."
+      },
+      {
+        "url": "https://arize.com/blog/how-to-test-a-new-model-in-your-agent/",
+        "reason": "Original article:published_time is 2026-11-05T16:00:51+00:00, outside frozen window; featured placement is not a new publication."
+      },
+      {
+        "url": "https://www.dynatrace.com/news/blog/raising-the-bar-for-enterprise-resilience-in-the-age-of-ai/",
+        "reason": "Original datePublished 2026-11-11T15:29:37+00:00 verified; broad platform resilience roadmap and engineering practices rather than a distinct AI-observability implementation. Selective omission."
+      },
+      {
+        "url": "https://opentelemetry.io/blog/2026/collector-batching-migration/",
+        "reason": "Primary article published November 11; general Collector batching migration without a concrete AI-system-specific change. Omitted under AI-only scope."
+      },
+      {
+        "url": "https://www.datadoghq.com/blog/aws-account-management/",
+        "reason": "Original datePublished 2026-11-11T00:00:00.000Z verified; general AWS workload placement/access control, not selected AI-observability news."
+      },
+      {
+        "url": "https://langfuse.com/changelog/2026-11-11-default-evaluation-model-and-batch-evaluation-via-mcp",
+        "reason": "Primary changelog reviewed. Narrow MCP control-plane commands for defaults and batch evaluation; selectively omitted to prioritize cross-framework evaluation portability and controllable test environments."
       }
     ],
-    "note": "Scoped sweep, not exhaustive coverage. Supplied discovery artifact fetched 2026-11-11T08:31:06.023Z: 20 HN candidates, eight GitHub watchlist repositories and four stable release candidates. Official HN API checked for all 20; all four release APIs independently verified. All 11 configured News surfaces fetched with HTTP 200 and saved. Web Dynatrace timeout recovered by successful direct HTTP fetch. Splunk index No results supplemented with search and primary article. Used supplied discovery instead of rerunning fetch:sources because writes are limited to this run directory. Read 28 existing issue files containing 150 stories; compared URLs, headlines, stable events and relevant narrative content. No retained URL/event repeats historical coverage. Publication window frozen to original publications on 2026-11-10. Manual readability and infographic reviews completed. Outer runner owns automated validation, tests, build, promotion, commit and publication; none performed here. Editorial follow-up after the first draft: Datadog's blog index HTML did not expose 2026-11-10 article dates, so two official Datadog posts were located by targeted search, verified on the original pages, and added before publication. OpenTelemetry and DigitalOcean window items were reviewed and excluded as noted."
+    "source_checks": {
+      "hn": {
+        "status": "complete",
+        "candidate_count": 20,
+        "official_items_verified": 20
+      },
+      "news": {
+        "status": "complete",
+        "configured_surfaces": 11,
+        "checks": [
+          {
+            "url": "https://arize.com/blog/",
+            "result": "Primary index checked; latest model-evaluation guide article:published_time is 2026-11-05T16:00:51+00:00, outside window. Older featured articles do not become new when resurfaced."
+          },
+          {
+            "url": "https://langfuse.com/blog",
+            "result": "Blog checked; gateway launch and regulated-industry posts are outside window. Changelog separately inspected."
+          },
+          {
+            "url": "https://www.langchain.com/blog",
+            "result": "Primary index checked; recent listed posts stop at November 10. Targeted date search found no selected new original window item."
+          },
+          {
+            "url": "https://www.braintrust.dev/blog",
+            "result": "Primary index checked; latest listed original article is Terraform on November 10, already covered historically."
+          },
+          {
+            "url": "https://opentelemetry.io/blog/",
+            "result": "Primary index and batching migration reviewed. Batch processor deprecation is general telemetry-pipeline guidance with no concrete AI workload change; omitted from AI-only selection. FOSDEM event notice is not a technical story."
+          },
+          {
+            "url": "https://www.elastic.co/observability-labs/blog",
+            "result": "Primary dated index checked; latest article is November 10 telemetry-pipeline private preview, outside window."
+          },
+          {
+            "url": "https://www.datadoghq.com/blog/",
+            "result": "Primary index checked and exact-date search supplemented it. Window AWS account-management post is general cloud isolation/security, without selected AI-observability change. Previous-day model-serving and Codex stories are already covered."
+          },
+          {
+            "url": "https://www.honeycomb.io/blog/",
+            "result": "Primary dated index checked; latest listed item is November 10 positioning discussion. No selected window publication."
+          },
+          {
+            "url": "https://www.digitalocean.com/blog",
+            "result": "Primary categorized index and targeted date search checked. No selected new window observability story; legal last-updated date is not a publication event."
+          },
+          {
+            "url": "https://www.splunk.com/en_us/blog/observability.html",
+            "result": "HTTP 200 but dynamic listing says No results. Recovered source check through official blog sitemap and targeted date searches; no selected original window story."
+          },
+          {
+            "url": "https://www.dynatrace.com/news/",
+            "result": "Primary index checked. SRE Agent general availability retained after direct primary HTTP verification. Enterprise-resilience post separately reviewed and omitted: broad platform engineering program, not a distinct AI tracing or evaluation implementation."
+          }
+        ]
+      },
+      "github": {
+        "status": "complete",
+        "candidate_count": 96,
+        "stable_release_apis_verified": 96,
+        "watchlist_checks": [
+          {
+            "repository": "langfuse/langfuse",
+            "releases_checked": 100,
+            "coverage": "latest 100 releases; not a global GitHub search"
+          },
+          {
+            "repository": "Arize-ai/phoenix",
+            "releases_checked": 100,
+            "coverage": "latest 100 releases; not a global GitHub search"
+          },
+          {
+            "repository": "Arize-ai/openinference",
+            "releases_checked": 100,
+            "coverage": "latest 100 releases; not a global GitHub search"
+          },
+          {
+            "repository": "langchain-ai/langsmith-sdk",
+            "releases_checked": 100,
+            "coverage": "latest 100 releases; not a global GitHub search"
+          },
+          {
+            "repository": "braintrustdata/braintrust-sdk",
+            "releases_checked": 100,
+            "coverage": "latest 100 releases; not a global GitHub search"
+          },
+          {
+            "repository": "wandb/weave",
+            "releases_checked": 100,
+            "coverage": "latest 100 releases; not a global GitHub search"
+          },
+          {
+            "repository": "langwatch/langwatch",
+            "releases_checked": 100,
+            "coverage": "latest 100 releases; not a global GitHub search"
+          },
+          {
+            "repository": "Helicone/helicone",
+            "releases_checked": 4,
+            "coverage": "latest 100 releases; not a global GitHub search"
+          }
+        ]
+      }
+    },
+    "note": "Scoped sweep, not exhaustive web coverage. Used supplied discovery fetched 2026-11-12T00:56:22.066Z, preserving the user's run-only write boundary instead of rerunning fetch:sources. All 20 official HN item APIs and all 96 stable GitHub release APIs returned HTTP 200; release published_at, draft:false and prerelease:false checked. All 11 configured News surfaces returned HTTP 200. Dynamic or unavailable web-tool views were recovered by direct HTTP fetches and official sitemap/date searches. Publication window is frozen to original publications on 2026-11-11. Read all 29 existing issue files (155 stories) and compared canonical URLs, stable events, titles and relevant narrative coverage; retained announcements do not repeat history. Shared release trains consolidated editorially. Five retained full stories received independent readability/factual review; built-in graphics reviewed as originals and final compressed files. Outer runner owns schema/draft/asset validation, tests, build, promotion, commit and publication; none performed here."
   },
   "name": "Tidy Traces — AI Observability Daily",
   "canonical_url": "https://tidytraces.com/"

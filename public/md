@@ -1,89 +1,89 @@
-# AI Observability Daily — 2026-11-11
+# AI Observability Daily — 2026-11-12
 
 By Soumendra Kumar Sahoo
 
 Canonical: https://tidytraces.com/
-Coverage window: 2026-11-10
+Coverage window: 2026-11-11
 
-## Jaeger previews trace investigations with visible evidence
+## Llmtee keeps usage logging off the model request path
 
-Source: Jaeger Maintainers · CNCF — https://www.cncf.io/blog/2026/11/10/jaeger-previews-ai-assisted-troubleshooting-and-genai-observability-for-opentelemetry-traces-at-kubecon/
-Published: 2026-11-10
-Channel: news
+Source: garritfra · Hacker News — https://news.ycombinator.com/item?id=50451943
+Published: 2026-11-11
+Channel: hn
 
-Jaeger is an open-source distributed tracing tool that helps engineers follow requests across services. Large traces can bury useful evidence among many spans, each a record of one operation; model calls, retrieval and tool execution add more steps to examine.
+Llmtee is a proxy that sits between an application and a language-model provider to record tokens, estimated cost, latency and time to first token. Its developer says existing logging options required extra services or changes to application code. This alternative uses a changed base URL and a local SQLite database.
 
-First, engineers can ask the experimental Ask Jaeger assistant questions in ordinary language. Its answers stream into the interface alongside visible tool calls. An optional Model Context Protocol endpoint, an interface agents use to call tools, provides focused ways to discover traces, examine errors and inspect individual operations. Rather than send an entire trace to a model, agents retrieve evidence as each investigation step needs it.
+First, the proxy forwards a streaming response chunk by chunk while sending a copy to a usage parser. Next, it batches database writes away from the request path. According to the first-party announcement, requests continue even if SQLite is slow or unavailable. That design separates serving a response from saving its usage record; it does not establish that every record survives a storage failure.
 
-Next, specialized views use OpenTelemetry’s shared field conventions to show model interactions, agent activity, token use and tool execution alongside service traces. These capabilities remain an experimental preview. The maintainers invite teams to enable them, follow the integration guide and provide feedback; they do not report a general accuracy benchmark.
+The proxy also enforces daily and monthly budgets per key. Later requests receive a provider-shaped rate-limit error after the limit is exceeded, but the request that crosses the limit still completes. Prices come from a table embedded at build time. The developer explicitly excludes evaluations, prompt management, routing, fallbacks and caching, and asks for feedback on budget semantics and future native provider support.
 
-Why it matters: For Jaeger operators: test known failures and inspect the evidence behind each answer.
+Why it matters: For teams considering Llmtee: test storage outages and budget-crossing requests before relying on its usage records or spending limits.
 
-![Jaeger previews trace investigations with visible evidence](/edition-images/2026-11-11/jaeger-trace-evidence.webp)
+![Llmtee keeps usage logging off the model request path](/edition-images/2026-11-12/llmtee-request-logging.webp)
 
-## Datadog connects model-serving config to the pods that actually run
+## Phoenix changes tracing setup to record spans from updated applications
 
-Source: Datadog — https://www.datadoghq.com/blog/kubernetes-inference-workload-monitoring/
-Published: 2026-11-10
-Channel: news
-
-Datadog is an observability platform that monitors infrastructure and applications. When a model endpoint returns errors or slows down, serving work is often spread across Kubernetes resources, so engineers have to piece together custom configuration, pod state and scheduling events from separate views.
-
-Datadog's Kubernetes inference workload, available as a preview, groups the resources that support a serving model into one virtual workload. First, in Kubernetes Explorer, engineers can compare the configuration declared in custom resources with observed pod state and runtime metrics. The preview supports vLLM-backed workloads that use KubeRay, NVIDIA Dynamo and KServe. Datadog automatically detects those pods and assigns workload and component tags, which metrics, traces and logs inherit when they can be linked to the pods.
-
-Next, a Components tab shows readiness and pod counts for roles such as Ray head and worker or Dynamo frontend and worker, so engineers can tell a pod waiting for resources from one that is running but unhealthy. A Metrics tab shows runtime and resource use, including GPU memory, activity and occupancy for Dynamo workloads when paid GPU monitoring is configured. The post illustrates a decode worker stuck pending for lack of the required GPU capacity. Investigate with Bits can recommend next steps, but a capacity change still depends on whether released resources satisfy the pending pod's scheduling requirements.
-
-Why it matters: For platform engineers running vLLM, Dynamo or KServe: use the preview to follow a model symptom to pod readiness and GPU placement, and confirm GPU monitoring is enabled before relying on device metrics.
-
-![Datadog connects model-serving config to the pods that actually run](/edition-images/2026-11-11/datadog-inference-workloads.webp)
-
-## Datadog shows how teams use Codex and whether the code ships
-
-Source: Datadog — https://www.datadoghq.com/blog/monitor-openai-codex-with-datadog/
-Published: 2026-11-10
-Channel: news
-
-Datadog is an observability platform that collects metrics, traces and logs. Engineering leaders who give teams access to OpenAI Codex, a coding agent, still may not see how people use it, how much of its code they accept, or whether its review comments are useful.
-
-The OpenAI Codex integration collects per-user activity from the Codex Analytics API and reports it as Datadog metrics. First, an overview dashboard tracks threads (conversations a developer starts) and turns (messages in those conversations), plus consumed Codex credits and tokens. Credits reflect credit consumption, not spend. Usage can be filtered by workspace, user, model or client, and token use can be split into cached input, uncached input and output, but not by client.
-
-Next, the dashboard plots lines of code added and removed that are attributable to Codex, and it tracks reviews and responses such as upvotes and downvotes. Those signals can be sent to Datadog AI Impact, which classifies pull requests as AI-assisted or not and compares throughput, cycle time, change failure rate and recovery time. Commits count as AI-assisted when Codex reports that the engineer created lines of code that day; a pull request counts if it contains at least one such commit. Setup requires a ChatGPT Enterprise workspace with Codex enabled and an admin key that can read the analytics API.
-
-Why it matters: For engineering leaders rolling out Codex: confirm the workspace and key requirements, then compare usage with attributed code and delivery outcomes rather than treating access as adoption.
-
-![Datadog shows how teams use Codex and whether the code ships](/edition-images/2026-11-11/datadog-codex-usage.webp)
-
-## Braintrust brings projects and access controls into Terraform review
-
-Source: Braintrust — https://www.braintrust.dev/blog/terraform
-Published: 2026-11-10
-Channel: news
-
-Braintrust is a platform for observing agent runs and evaluating their outputs. Its Terraform provider manages projects, permissions and credentials as code. As more teams build agents, repeating setup manually makes it harder to maintain consistency while giving each team appropriate access.
-
-First, create an organization and a service token, then supply that token through the BRAINTRUST_API_KEY environment variable. Define the desired resources in Terraform configuration and initialize the provider. Run terraform plan to inspect proposed changes before applying them. Supported resources include groups, roles, service accounts, projects, dataset containers and score definitions. Version control preserves the change history.
-
-For an existing organization, Braintrust’s export utility generates configuration and matching import instructions. Review both together, inspect the plan and import resources into Terraform state without recreating them. The provider reads current settings and translates configuration into API requests. Braintrust recommends this approach for shared settings that change infrequently; dataset contents, logs and experiments remain in application workflows.
-
-Why it matters: For Braintrust platform teams: review permissions in Terraform plans and keep evaluation data in application workflows.
-
-![Braintrust brings projects and access controls into Terraform review](/edition-images/2026-11-11/braintrust-terraform-review.webp)
-
-## Langfuse records prompt-cache outcomes on request traces
-
-Source: Langfuse · GitHub — https://github.com/langfuse/langfuse/releases/tag/v4.78.0
-Published: 2026-11-10
+Source: Arize Phoenix · GitHub — https://github.com/Arize-ai/phoenix/releases/tag/%40arizeai/phoenix-otel%403.0.0
+Published: 2026-11-11
 Channel: github
 
-Langfuse is an AI observability platform that records application traces and evaluation scores. Its stable release adds prompt-cache outcome tags to request spans, records describing individual operations within a trace. This makes the cache outcome part of the evidence attached to a request, rather than leaving reviewers with only the surrounding application activity.
+Arize Phoenix is an AI observability platform for inspecting application traces and evaluation results. Its JavaScript tracing package moves to an updated OpenTelemetry tracing implementation so applications using that implementation can record spans after initialization. A span is the record of one operation within a trace.
 
-The release also changes what reviewers see when working with evaluation results. First, the add-score menu can show score-configuration details. Next, when invalid stored score rows are filtered, Langfuse issues a warning. The notes describe that warning without quantifying how many records might be affected or claiming that filtered rows are repaired.
+First, applications call the package’s register function to obtain the tracing provider. The returned provider no longer has its own register method, so setup code must account for that changed interface. Next, custom span processors must come from the underlying tracing package and accept an options object. Phoenix also re-exports the batch and simple processor classes. A processor handles spans before they reach an exporter.
 
-For Topics setup, teams can filter the traces used in the setup flow, and non-transient model-test failures are logged. These are selected operational changes from a broader release that also adds an external HTTP code-evaluation dispatcher. The release notes do not describe that dispatcher’s deployment requirements or provide a measured improvement in evaluation accuracy.
+The migration changes configuration behavior as well: register no longer applies environment variables for sampling, span limits, attribute limits or batch processing. The release raises the minimum Node.js runtime and links a migration guide. Evaluation code that supplies its own tracing provider must use a compatible provider too. These are compatibility requirements, rather than a claim that upgrading automatically preserves an application’s previous telemetry settings.
 
-Why it matters: For Langfuse operators: inspect known cache outcomes and investigate warnings before treating score views as complete.
+Why it matters: For Phoenix JavaScript users: review the migration guide, verify processor and sampling configuration, and confirm a known operation appears in the stored trace.
 
-![Langfuse records prompt-cache outcomes on request traces](/edition-images/2026-11-11/langfuse-cache-outcomes.webp)
+![Phoenix changes tracing setup to record spans from updated applications](/edition-images/2026-11-12/phoenix-tracing-migration.webp)
+
+## Rystic exposes controllable API state for agent tests
+
+Source: Rystic founders · Hacker News — https://news.ycombinator.com/item?id=50448400
+Published: 2026-11-11
+Channel: hn
+
+Rystic builds local simulators of third-party APIs, including Slack, GitHub and Linear. Its founders describe them as controllable substitutes for real services when testing application code or running agent evaluations. Their starting problem is verification: generating code is fast, while shared sandboxes, account setup and manual interactions make repeatable integration checks difficult.
+
+First, a developer sets the simulator’s state. Then the test exercises the integration, with options to inject faults, add latency, use multiple actors or control rate limiting. Finally, the developer can inspect the resulting state. The announcement links a demonstration of running evaluations against the Slack simulator. These controls make a test environment adjustable; they do not prove that an agent will behave correctly against the real service.
+
+The founders say they build simulators by testing documented behavior, probing APIs and collecting traces to reconstruct state transitions. They report checking several hundred multistep workflows, running nightly checks for drift and sharing failing tests with customers. Each simulator has a fidelity card describing its match to the real API. Those are bounded compatibility claims, rather than proof of complete equivalence.
+
+Why it matters: For agent evaluation teams: inspect fidelity cards and failing workflows before using a simulator as a substitute for a production integration.
+
+![Rystic exposes controllable API state for agent tests](/edition-images/2026-11-12/rystic-controlled-tests.webp)
+
+## AWS normalizes agent traces before comparing evaluation results
+
+Source: Amazon Web Services — https://aws.amazon.com/blogs/machine-learning/uaef-a-framework-agnostic-system-for-closed-loop-evaluation-of-ai-agents/
+Published: 2026-11-11
+Channel: news
+
+AWS’s Universal Agent Evaluation Framework is an open-source system for testing AI agents across supported frameworks. Frameworks record messages, tool calls and handoffs differently, which can tie evaluation logic to one implementation and complicate comparisons after a change.
+
+First, an adapter converts the execution record into a common trace format. The same scoring engine then applies selected metrics to that record. It combines deterministic checks with model-based judges across dimensions including tool use, response quality and performance. Tests that need reference answers are skipped when those answers are absent. Tool-call checks need expected tools, ordering and arguments.
+
+For comparisons over time, persisted experiments keep summary metadata in DynamoDB and full results in object storage. Reviewers can compare shared metrics against a baseline. Judge responses must cite text present in the scored content; unsupported evidence is rejected. AWS cautions that judge scores are evaluation signals and should not gate security controls. The library and deployable web interface share the engine.
+
+Why it matters: For teams evaluating agents across frameworks: validate adapter coverage and references before comparing scores.
+
+![AWS normalizes agent traces before comparing evaluation results](/edition-images/2026-11-12/aws-common-evaluation-trace.webp)
+
+## Dynatrace’s SRE Agent shows evidence behind incident recommendations
+
+Source: Dynatrace — https://www.dynatrace.com/news/blog/the-sre-agent-is-generally-available-investigation-and-triage-start-the-moment-a-problem-is-detected/
+Published: 2026-11-11
+Channel: news
+
+Dynatrace’s SRE Agent is an incident-investigation agent that works inside configurable operational workflows. Its general-availability announcement focuses on the delay between an alert and understanding what failed, who is affected and which team should respond. Dynatrace says the agent exposes supporting evidence and what it checked and ruled out.
+
+First, Dynatrace identifies a problem and its root cause. The agent starts from that finding, then examines related logs, events, deployments and metrics, follows service dependencies and checks earlier problems. It returns an analysis, affected services and users, and remediation recommendations. The workflow applies configured urgency rules and ownership data to decide where the result goes.
+
+Operators can annotate a problem, open a ticket, notify a team or prepare a proposed fix for approval. The announcement separates the agent’s investigation from the workflow’s defined triggers and subsequent actions. It recommends starting with owned services and critical problems, comparing the analysis with the team’s own findings, and widening the scope after review. Claims about investigations completing within minutes are vendor claims; the illustrative checkout incident is not an independently verified production result.
+
+Why it matters: For teams adopting investigation agents: compare recommendations with their cited evidence and keep consequential fixes behind the intended approval step.
+
+![Dynatrace’s SRE Agent shows evidence behind incident recommendations](/edition-images/2026-11-12/dynatrace-evidence-review.webp)
 
 ---
 
