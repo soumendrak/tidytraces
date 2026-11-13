@@ -1,89 +1,25 @@
-# AI Observability Daily — 2026-11-12
+# AI Observability Daily — 2026-11-13
 
 By Soumendra Kumar Sahoo
 
 Canonical: https://tidytraces.com/
-Coverage window: 2026-11-11
+Coverage window: 2026-11-12
 
-## Llmtee keeps usage logging off the model request path
+## OpenTelemetry checks agent-written instrumentation against a shared registry
 
-Source: garritfra · Hacker News — https://news.ycombinator.com/item?id=50451943
-Published: 2026-11-11
-Channel: hn
-
-Llmtee is a proxy that sits between an application and a language-model provider to record tokens, estimated cost, latency and time to first token. Its developer says existing logging options required extra services or changes to application code. This alternative uses a changed base URL and a local SQLite database.
-
-First, the proxy forwards a streaming response chunk by chunk while sending a copy to a usage parser. Next, it batches database writes away from the request path. According to the first-party announcement, requests continue even if SQLite is slow or unavailable. That design separates serving a response from saving its usage record; it does not establish that every record survives a storage failure.
-
-The proxy also enforces daily and monthly budgets per key. Later requests receive a provider-shaped rate-limit error after the limit is exceeded, but the request that crosses the limit still completes. Prices come from a table embedded at build time. The developer explicitly excludes evaluations, prompt management, routing, fallbacks and caching, and asks for feedback on budget semantics and future native provider support.
-
-Why it matters: For teams considering Llmtee: test storage outages and budget-crossing requests before relying on its usage records or spending limits.
-
-![Llmtee keeps usage logging off the model request path](/edition-images/2026-11-12/llmtee-request-logging.webp)
-
-## Phoenix changes tracing setup to record spans from updated applications
-
-Source: Arize Phoenix · GitHub — https://github.com/Arize-ai/phoenix/releases/tag/%40arizeai/phoenix-otel%403.0.0
-Published: 2026-11-11
-Channel: github
-
-Arize Phoenix is an AI observability platform for inspecting application traces and evaluation results. Its JavaScript tracing package moves to an updated OpenTelemetry tracing implementation so applications using that implementation can record spans after initialization. A span is the record of one operation within a trace.
-
-First, applications call the package’s register function to obtain the tracing provider. The returned provider no longer has its own register method, so setup code must account for that changed interface. Next, custom span processors must come from the underlying tracing package and accept an options object. Phoenix also re-exports the batch and simple processor classes. A processor handles spans before they reach an exporter.
-
-The migration changes configuration behavior as well: register no longer applies environment variables for sampling, span limits, attribute limits or batch processing. The release raises the minimum Node.js runtime and links a migration guide. Evaluation code that supplies its own tracing provider must use a compatible provider too. These are compatibility requirements, rather than a claim that upgrading automatically preserves an application’s previous telemetry settings.
-
-Why it matters: For Phoenix JavaScript users: review the migration guide, verify processor and sampling configuration, and confirm a known operation appears in the stored trace.
-
-![Phoenix changes tracing setup to record spans from updated applications](/edition-images/2026-11-12/phoenix-tracing-migration.webp)
-
-## Rystic exposes controllable API state for agent tests
-
-Source: Rystic founders · Hacker News — https://news.ycombinator.com/item?id=50448400
-Published: 2026-11-11
-Channel: hn
-
-Rystic builds local simulators of third-party APIs, including Slack, GitHub and Linear. Its founders describe them as controllable substitutes for real services when testing application code or running agent evaluations. Their starting problem is verification: generating code is fast, while shared sandboxes, account setup and manual interactions make repeatable integration checks difficult.
-
-First, a developer sets the simulator’s state. Then the test exercises the integration, with options to inject faults, add latency, use multiple actors or control rate limiting. Finally, the developer can inspect the resulting state. The announcement links a demonstration of running evaluations against the Slack simulator. These controls make a test environment adjustable; they do not prove that an agent will behave correctly against the real service.
-
-The founders say they build simulators by testing documented behavior, probing APIs and collecting traces to reconstruct state transitions. They report checking several hundred multistep workflows, running nightly checks for drift and sharing failing tests with customers. Each simulator has a fidelity card describing its match to the real API. Those are bounded compatibility claims, rather than proof of complete equivalence.
-
-Why it matters: For agent evaluation teams: inspect fidelity cards and failing workflows before using a simulator as a substitute for a production integration.
-
-![Rystic exposes controllable API state for agent tests](/edition-images/2026-11-12/rystic-controlled-tests.webp)
-
-## AWS normalizes agent traces before comparing evaluation results
-
-Source: Amazon Web Services — https://aws.amazon.com/blogs/machine-learning/uaef-a-framework-agnostic-system-for-closed-loop-evaluation-of-ai-agents/
-Published: 2026-11-11
+Source: OpenTelemetry — https://opentelemetry.io/blog/2026/agent-harness-genai-instrumentation/
+Published: 2026-11-12
 Channel: news
 
-AWS’s Universal Agent Evaluation Framework is an open-source system for testing AI agents across supported frameworks. Frameworks record messages, tool calls and handoffs differently, which can tie evaluation logic to one implementation and complicate comparisons after a change.
+OpenTelemetry defines shared ways to record application activity. An engineering report from Alibaba Cloud describes a harness that uses agents to build instrumentation for generative AI frameworks. Instrumentation records operations as spans, the individual steps within a trace. Choosing where those steps begin and end, and mapping their data consistently, requires framework knowledge.
 
-First, an adapter converts the execution record into a common trace format. The same scoring engine then applies selected metrics to that record. It combines deterministic checks with model-based judges across dimensions including tool use, response quality and performance. Tests that need reference answers are skipped when those answers are absent. Tool-call checks need expected tools, ordering and arguments.
+First, research agents inspect public hooks and callbacks. A reviewed execution plan fixes the instrumentation points before coding begins. Agents then implement that plan using shared utilities and run code review and unit tests. Next, framework examples run in a Kubernetes test cluster, and Weaver compares their emitted telemetry with a registry of shared definitions. A violation returns the work for repair; passing checks lead to a sustained runtime test for memory leaks and regressions.
 
-For comparisons over time, persisted experiments keep summary metadata in DynamoDB and full results in object storage. Reviewers can compare shared metrics against a baseline. Judge responses must cite text present in the scored content; unsupported evidence is rejected. AWS cautions that judge scores are evaluation signals and should not gate security controls. The library and deployable web interface share the engine.
+The authors replaced an earlier model-based conformance reviewer because it sometimes approved invalid output. Registry checks still cannot establish that framework operations were mapped correctly, so human review remains necessary. Attribute-coverage measurements also run separately without blocking builds. The authors report human-reviewed plugins in LoongSuite and ongoing work to bring them into OpenTelemetry’s Python GenAI project. Instrumentation cannot recover execution details a framework does not expose.
 
-Why it matters: For teams evaluating agents across frameworks: validate adapter coverage and references before comparing scores.
+Why it matters: Framework maintainers can separate registry conformance from lifecycle coverage and runtime testing. Keep human review of instrumentation points even when generated code passes automated checks.
 
-![AWS normalizes agent traces before comparing evaluation results](/edition-images/2026-11-12/aws-common-evaluation-trace.webp)
-
-## Dynatrace’s SRE Agent shows evidence behind incident recommendations
-
-Source: Dynatrace — https://www.dynatrace.com/news/blog/the-sre-agent-is-generally-available-investigation-and-triage-start-the-moment-a-problem-is-detected/
-Published: 2026-11-11
-Channel: news
-
-Dynatrace’s SRE Agent is an incident-investigation agent that works inside configurable operational workflows. Its general-availability announcement focuses on the delay between an alert and understanding what failed, who is affected and which team should respond. Dynatrace says the agent exposes supporting evidence and what it checked and ruled out.
-
-First, Dynatrace identifies a problem and its root cause. The agent starts from that finding, then examines related logs, events, deployments and metrics, follows service dependencies and checks earlier problems. It returns an analysis, affected services and users, and remediation recommendations. The workflow applies configured urgency rules and ownership data to decide where the result goes.
-
-Operators can annotate a problem, open a ticket, notify a team or prepare a proposed fix for approval. The announcement separates the agent’s investigation from the workflow’s defined triggers and subsequent actions. It recommends starting with owned services and critical problems, comparing the analysis with the team’s own findings, and widening the scope after review. Claims about investigations completing within minutes are vendor claims; the illustrative checkout incident is not an independently verified production result.
-
-Why it matters: For teams adopting investigation agents: compare recommendations with their cited evidence and keep consequential fixes behind the intended approval step.
-
-![Dynatrace’s SRE Agent shows evidence behind incident recommendations](/edition-images/2026-11-12/dynatrace-evidence-review.webp)
+![OpenTelemetry checks agent-written instrumentation against a shared registry](/edition-images/2026-11-13/otel-harness.webp)
 
 ---
 
