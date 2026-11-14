@@ -1,25 +1,87 @@
-# AI Observability Daily — 2026-11-13
+# AI Observability Daily — 2026-11-14
 
 By Soumendra Kumar Sahoo
 
 Canonical: https://tidytraces.com/
-Coverage window: 2026-11-12
+Coverage window: 2026-11-13
 
-## OpenTelemetry checks agent-written instrumentation against a shared registry
+## An evaluation guide checks model judges against human labels
 
-Source: OpenTelemetry — https://opentelemetry.io/blog/2026/agent-harness-genai-instrumentation/
-Published: 2026-11-12
+Source: Machine Learning Mastery — https://machinelearningmastery.com/the-complete-guide-to-llm-evaluation/
+Published: 2026-11-13
+Channel: hn
+
+Machine Learning Mastery’s guide describes evaluation as a repeatable way to compare language-model applications using test inputs, scoring rules, and a history of results. Reading a few plausible answers can miss regressions after a prompt, model, or retrieval change. The guide distinguishes quality comparisons from binary checks that protect a release, such as whether an answer has valid structure.
+
+First, use ordinary code for criteria that have clear rules. For subjective judgments, give a model a written rubric, the evidence it may use, and a strict output format. Then label a sample of outputs by hand and compare those labels with the judge’s decisions. The guide recommends an agreement statistic that discounts matches expected by chance, because a judge that always passes answers can look accurate on an easy dataset.
+
+For comparisons between two answers, swap their positions and inspect disagreements. For agents, check whether the task was completed before diagnosing tool choice, arguments, and unnecessary loops. Finally, rerun the judge’s labeled test set when its prompt or underlying model changes; calibration is itself a regression-testing task.
+
+Why it matters: Engineers relying on model judges should maintain human-labeled checks for the judge itself and investigate disagreement before treating a score as a release signal.
+
+![An evaluation guide checks model judges against human labels](/edition-images/2026-11-14/judge-calibration.webp)
+
+## Anthropic recommends grading whole conversations and checking the grader
+
+Source: Anthropic — https://www.anthropic.com/research/building-strong-safety-evaluations
+Published: 2026-11-13
 Channel: news
 
-OpenTelemetry defines shared ways to record application activity. An engineering report from Alibaba Cloud describes a harness that uses agents to build instrumentation for generative AI frameworks. Instrumentation records operations as spans, the individual steps within a trace. Choosing where those steps begin and end, and mapping their data consistently, requires framework knowledge.
+Anthropic, the developer of Claude, describes how it builds evaluations of whether a model responds appropriately in situations that could cause harm. A refusal count can be misleading: a useful response sometimes requires engaging carefully rather than declining every request. Single-message tests can also miss risks that emerge only as a conversation develops.
 
-First, research agents inspect public hooks and callbacks. A reviewed execution plan fixes the instrumentation points before coding begins. Agents then implement that plan using shared utilities and run code review and unit tests. Next, framework examples run in a Kubernetes test cluster, and Weaver compares their emitted telemetry with a registry of shared definitions. A violation returns the work for repair; passing checks lead to a sustained runtime test for memory leaks and regressions.
+First, domain experts define the behavior to measure and write scenarios with user goals, tactics, and varied characteristics. A separate model then plays the user, reacting to the tested assistant after a fixed opening message. A grader reads the complete exchange against a rubric for that risk area; one inappropriate turn fails the conversation.
 
-The authors replaced an earlier model-based conformance reviewer because it sometimes approved invalid output. Registry checks still cannot establish that framework operations were mapped correctly, so human review remains necessary. Attribute-coverage measurements also run separately without blocking builds. The authors report human-reviewed plugins in LoongSuite and ongoing work to bring them into OpenTelemetry’s Python GenAI project. Instrumentation cannot recover execution details a framework does not expose.
+The guidance also treats the grader as a possible source of failure. Human reviewers should label transcripts without seeing its verdicts, then compare agreement. Broken grading should flag and exclude affected items rather than silently assign scores. Teams should specify their analysis before examining results, repeat noisy tests, and report uncertainty and configuration details. These are recommendations drawn from Anthropic’s experience, not proof that following them eliminates model risk.
 
-Why it matters: Framework maintainers can separate registry conformance from lifecycle coverage and runtime testing. Keep human review of instrumentation points even when generated code passes automated checks.
+Why it matters: Safety-evaluation owners should test complete conversations, verify graders against independent human labels, and keep run settings comparable before interpreting a score change.
 
-![OpenTelemetry checks agent-written instrumentation against a shared registry](/edition-images/2026-11-13/otel-harness.webp)
+![Anthropic recommends grading whole conversations and checking the grader](/edition-images/2026-11-14/safety-evaluation.webp)
+
+## Langfuse adds Gemini decision models to evaluators
+
+Source: Langfuse — https://langfuse.com/changelog/2026-11-13-gemini-decision-model-evaluators
+Published: 2026-11-13
+Channel: news
+
+Langfuse is an AI observability and evaluation platform that records and scores application behavior. Its decision-model evaluators can now use Google’s Gemini Decisions API. First, select a Google AI Studio connection and the supported decision model in the evaluator. Then configure a Choice, Score, or Yes / no question. Each question writes a score with its probabilities and confidence.
+
+The announcement suggests checking answers against a refund policy, routing conversations for review, or grading helpfulness against a rubric. Google bills input tokens only for these decisions. Vertex AI connections are not yet supported for this evaluation integration.
+
+Why it matters: Teams testing this evaluator should use Google AI Studio credentials and validate its decisions on their own rubric before relying on the saved confidence values.
+
+![Langfuse adds Gemini decision models to evaluators](/edition-images/2026-11-14/gemini-evaluator.webp)
+
+## Langfuse connects topic views to filtered traces
+
+Source: Langfuse — https://github.com/langfuse/langfuse/releases/tag/v4.80.0
+Published: 2026-11-13
+Channel: github
+
+Langfuse is an open-source platform for tracing and evaluating AI applications. Its latest stable release changes how topic analysis connects to the underlying tracing table. The release notes describe both new filters and fixes to topic assignment, where an incorrect view can make it harder to find the records behind a summary.
+
+First, the tracing table can show topics as a column and filter records by topic. Opening a topic now uses that topic filter instead of a list of trace identifiers. Next, fixes assign new summaries to every matching rule’s map and filter summary rows using each rule’s assignment. A separate correction shows a one-off scan’s own state rather than the empty state intended for a live map.
+
+The release also pages and resumes batch observation evaluations and makes the TypeSafe client for decision-model evaluations fail fast on rate limits. These are specific release-note changes, without published measurements of their effect on throughput or accuracy. The notes also list gateway and authentication work; those changes do not establish that topic classification itself has become more accurate.
+
+Why it matters: Teams using topic scans should check that a topic opens the expected trace subset and that overlapping rules produce the expected summary assignments after upgrading.
+
+![Langfuse connects topic views to filtered traces](/edition-images/2026-11-14/langfuse-topic-traces.webp)
+
+## Phoenix preserves zero token prices and rejects invalid cost inputs
+
+Source: Arize AI — https://github.com/Arize-ai/phoenix/releases/tag/arize-phoenix-v21.1.0
+Published: 2026-11-13
+Channel: github
+
+Arize Phoenix is an open-source platform for observing and evaluating AI applications. Its stable release includes corrections to cost tracking, where token counts and per-token prices are inputs to reported spending. The notes distinguish a legitimate zero price from invalid numerical values rather than treating all unusual inputs alike.
+
+First, model synchronization and cost-per-token handling retain zero-dollar rates. Next, changes to model settings reject negative token rates, and token-count parsing ignores values that cannot represent a finite number. The release also refreshes built-in token prices. These are separate changes to price data and input handling; the notes do not provide a measured change in billing accuracy.
+
+On the tracing side, Phoenix preserves reasoning-token counts and renamed cache-write token counts from generative AI spans. A span records one operation within a trace. Another fix keeps spans with a NUL character in descriptive values when using PostgreSQL. Finally, the spans table can show the model, giving reviewers another field to inspect alongside those records. The release notes describe the fixes but do not quantify how many existing traces or cost records were affected.
+
+Why it matters: Phoenix operators should check zero-priced models, invalid rate rejection and token-field retention against their own telemetry before comparing cost reports across an upgrade.
+
+![Phoenix preserves zero token prices and rejects invalid cost inputs](/edition-images/2026-11-14/phoenix-cost-inputs.webp)
 
 ---
 
