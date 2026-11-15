@@ -1,231 +1,142 @@
 {
-  "date": "2026-11-14",
-  "story_window": "2026-11-13",
-  "dek": "Judge calibration, full-conversation safety tests, a decision-model integration, and fixes to topic tracing and AI cost inputs.",
+  "date": "2026-11-15",
+  "story_window": "2026-11-14",
+  "dek": "Endpoint visibility, cached-token accounting, and human feedback workflows for AI systems.",
   "stories": [
     {
-      "title": "An evaluation guide checks model judges against human labels",
-      "url": "https://machinelearningmastery.com/the-complete-guide-to-llm-evaluation/",
-      "publisher": "Machine Learning Mastery",
-      "published": "2026-11-13",
-      "category_key": "evals",
-      "summary": "A practical guide separates application quality from release checks, then explains how to test whether an automated judge is measuring the intended behavior.",
+      "title": "OpenInference records where OpenAI-compatible requests actually go",
+      "url": "https://github.com/Arize-ai/openinference/releases/tag/%40arizeai/openinference-instrumentation-openai%404.5.0",
+      "publisher": "Arize AI · OpenInference",
+      "published": "2026-11-14",
+      "category_key": "observability",
+      "summary": "The OpenAI instrumentation records endpoint host and port even when a gateway or self-hosted proxy prevents provider identification.",
       "body": [
-        "Machine Learning Mastery’s guide describes evaluation as a repeatable way to compare language-model applications using test inputs, scoring rules, and a history of results. Reading a few plausible answers can miss regressions after a prompt, model, or retrieval change. The guide distinguishes quality comparisons from binary checks that protect a release, such as whether an answer has valid structure.",
-        "First, use ordinary code for criteria that have clear rules. For subjective judgments, give a model a written rubric, the evidence it may use, and a strict output format. Then label a sample of outputs by hand and compare those labels with the judge’s decisions. The guide recommends an agreement statistic that discounts matches expected by chance, because a judge that always passes answers can look accurate on an easy dataset.",
-        "For comparisons between two answers, swap their positions and inspect disagreements. For agents, check whether the task was completed before diagnosing tool choice, arguments, and unnecessary loops. Finally, rerun the judge’s labeled test set when its prompt or underlying model changes; calibration is itself a regression-testing task."
+        "OpenInference’s OpenAI instrumentation records information about model requests in trace spans, the records of individual operations. Its release addresses a visibility gap: a call through a gateway or self-hosted proxy can have no identifiable model provider, leaving its destination unclear.",
+        "The instrumentation now reads the client’s base URL and records its host and port as server.address and server.port. It includes hosts without a recognized provider, so destination evidence remains available when llm.provider cannot be inferred. Only host and port are recorded; URL paths and query parameters are excluded."
       ],
-      "format": "full",
-      "takeaway": "Engineers relying on model judges should maintain human-labeled checks for the judge itself and investigate disagreement before treating a score as a release signal.",
-      "image": "/edition-images/2026-11-14/judge-calibration.webp",
+      "format": "brief",
+      "brief_reason": "The primary release contains one narrowly scoped instrumentation change; a longer story would add unsupported implementation detail.",
+      "takeaway": "For teams routing compatible model calls through gateways: check destination attributes alongside provider attribution when investigating routing.",
+      "image": "/edition-images/2026-11-15/openinference-endpoint.webp",
       "image_width": 1440,
-      "image_height": 960,
+      "image_height": 737,
       "image_provenance": {
         "kind": "generated-editorial",
         "generator": "built-in-imagegen",
-        "prompt": "Use case: infographic-diagram. Asset type: standalone newspaper editorial infographic PNG. Style: warm ivory newsprint, dark ink, restrained teal accents, engraved editorial linework, generous spacing, landscape 3:2, large readable type. Use only the exact text specified. No logos, screenshots, invented metrics, dates, version numbers, footer, captions or watermark. Explain human calibration of an automated answer judge, based on https://machinelearningmastery.com/the-complete-guide-to-llm-evaluation/. Title: \"Check the judge against people\". Three connected elements with labels: \"Same sample of answers\", then split into two parallel boxes \"Human labels\" and \"Model judge\", merging into \"Compare agreement\". Final small callout: \"Inspect disagreements; revise the rubric\". The parallel graders must receive the same sample independently. Show papers, a person with a pencil, and a simple mechanical judge symbol. No statistical chart or accuracy claim.",
+        "prompt": "Use case: infographic-diagram. Create a standalone landscape newspaper infographic on warm cream paper with dark ink, muted teal arrows and rust accents, generous spacing, large readable serif title and simple hand-engraved symbols. Explain one source-supported change in OpenInference: OpenAI-compatible client base URL supplies server.address and server.port, even for an unrecognized gateway or proxy; paths and query parameters are excluded. Title verbatim: \"Trace the request destination\". Three connected elements labelled \"Client base URL\", \"Host + port\", \"Trace span\". Under the final element: \"Even when provider is unknown\". Small separate crossed-out labels: \"Path\" and \"Query\". No other claims, logos, screenshots, numerical metrics, footer, or watermark.",
         "based_on": [
-          "https://machinelearningmastery.com/the-complete-guide-to-llm-evaluation/"
+          "https://github.com/Arize-ai/openinference/releases/tag/%40arizeai/openinference-instrumentation-openai%404.5.0"
         ],
         "reviewed": true,
-        "sha256": "0cd92544903a1b2d6d8ed1a1f32bd6a52edd22f3ffa3cf24f068672f41f880b3",
+        "sha256": "a25495f553402cb25d4378ac61a7272fe7e9750df858ad366a0549e48968fce7",
         "optimization": {
           "format": "webp",
           "quality": 82,
           "max_width": 1440,
-          "source_sha256": "1ddb5f7afd9c9d61baa0af2f32226e6873708b3fa7a5e14a392675b795e5f6f6"
+          "source_sha256": "f6df462088e6f595307d6079b3afa0b61d9f01f205867c4c103b920529dda28f"
         }
       },
-      "source": "hn",
+      "source": "github",
       "interest_score": 8,
-      "hn_id": "50482300",
-      "comments": "https://news.ycombinator.com/item?id=50482300",
-      "score_reason": "Detailed, implementable guidance on judge calibration and component diagnosis; methodological advice rather than new measured performance.",
-      "dedupe_key": "article:machinelearningmastery.com/the-complete-guide-to-llm-evaluation",
+      "score_reason": "A concrete trace-coverage improvement for gateways and self-hosted endpoints.",
+      "dedupe_key": "release:Arize-ai/openinference:@arizeai/openinference-instrumentation-openai@4.5.0",
       "source_evidence": {
-        "url": "https://machinelearningmastery.com/the-complete-guide-to-llm-evaluation/",
-        "publication_date": "2026-11-13",
-        "raw_date": "2026-11-13T11:00:00+00:00",
-        "method": "Original article article:published_time matches its visible author publication label; HN API confirms discovery only. Modification dates are not used."
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/%40arizeai/openinference-instrumentation-openai%404.5.0",
+        "publication_date": "2026-11-14",
+        "raw_date": "2026-11-14T00:53:10Z",
+        "method": "Official GitHub releases API published_at; draft:false and prerelease:false confirmed in primary-1.txt."
       }
     },
     {
-      "title": "Anthropic recommends grading whole conversations and checking the grader",
-      "url": "https://www.anthropic.com/research/building-strong-safety-evaluations",
-      "publisher": "Anthropic",
-      "published": "2026-11-13",
-      "category_key": "evals",
-      "summary": "Anthropic’s safety-evaluation guidance connects realistic conversation tests with grader calibration, reproducible settings, and uncertainty reporting.",
+      "title": "Telemetry.dev separates cached-token reporting before calculating costs",
+      "url": "https://telemetry.dev/blog/llm-cost-monitoring-account-for-cached-tokens",
+      "publisher": "telemetry.dev",
+      "published": "2026-11-14",
+      "category_key": "observability",
+      "summary": "A cost-monitoring guide maps provider usage into separate input and cache buckets, then checks priced calls against the invoice.",
       "body": [
-        "Anthropic, the developer of Claude, describes how it builds evaluations of whether a model responds appropriately in situations that could cause harm. A refusal count can be misleading: a useful response sometimes requires engaging carefully rather than declining every request. Single-message tests can also miss risks that emerge only as a conversation develops.",
-        "First, domain experts define the behavior to measure and write scenarios with user goals, tactics, and varied characteristics. A separate model then plays the user, reacting to the tested assistant after a fixed opening message. A grader reads the complete exchange against a rubric for that risk area; one inappropriate turn fails the conversation.",
-        "The guidance also treats the grader as a possible source of failure. Human reviewers should label transcripts without seeing its verdicts, then compare agreement. Broken grading should flag and exclude affected items rather than silently assign scores. Teams should specify their analysis before examining results, repeat noisy tests, and report uncertainty and configuration details. These are recommendations drawn from Anthropic’s experience, not proof that following them eliminates model risk."
+        "Telemetry.dev is an AI observability service that traces model calls, tool operations and retrievals using OpenTelemetry, a standard for collecting telemetry. Its cost-monitoring guide explains why prompt caching can make token dashboards disagree with invoices: providers report cached input using different conventions, so a shared summing rule can count tokens twice or miss them.",
+        "The guide first maps raw usage into uncached input, cache reads and cache writes. It describes OpenAI and Gemini cache hits as included in input totals, while Anthropic reports cache activity separately. Each bucket then receives the applicable model rate, with output priced separately. The article cautions that explicit Gemini caches also incur storage costs outside per-call token fields.",
+        "Next, retain raw usage beside normalized counts on each span, the record of a call, so calculations can be corrected later. Mark missing usage as unknown rather than zero. Finally, compare a known window of priced calls with the matching invoice. Cache hit rate alone establishes neither savings nor the full bill; rates and reporting fields still need checking for the model in use."
       ],
       "format": "full",
-      "takeaway": "Safety-evaluation owners should test complete conversations, verify graders against independent human labels, and keep run settings comparable before interpreting a score change.",
-      "image": "/edition-images/2026-11-14/safety-evaluation.webp",
+      "takeaway": "For engineers maintaining model-cost dashboards: validate provider-specific normalization against invoices before treating cache hit rate as a spending result.",
+      "image": "/edition-images/2026-11-15/cached-token-accounting.webp",
       "image_width": 1440,
-      "image_height": 960,
+      "image_height": 737,
       "image_provenance": {
         "kind": "generated-editorial",
         "generator": "built-in-imagegen",
-        "prompt": "Use case: infographic-diagram. Asset type: standalone newspaper editorial infographic PNG. Style: warm ivory newsprint, dark ink, restrained teal accents, engraved editorial linework, generous spacing, landscape 3:2, large readable type. Use only the exact text specified. No logos, screenshots, invented metrics, dates, version numbers, footer, captions or watermark. Explain Anthropic’s full-conversation safety-evaluation mechanism based on https://www.anthropic.com/research/building-strong-safety-evaluations. Title: \"Grade the whole conversation\". Four connected elements: \"Expert scenario\", \"Simulated user\", \"Tested assistant\", \"Whole-conversation grader\". Show a back-and-forth pair of arrows between simulated user and tested assistant, then collected transcript delivered to grader. Under grader one clear callout: \"One inappropriate turn fails the conversation\". Source facts: experts define scenarios, a separate model simulates the user, and the grader applies a risk-specific rubric to the full transcript. No invented dialogue.",
+        "prompt": "Use case: infographic-diagram. Standalone landscape newspaper infographic, warm cream paper, dark ink, restrained teal and rust, engraved editorial symbols, very readable large labels and generous space. Source-supported idea: normalize provider token usage into uncached input, cache reads and cache writes before pricing, retain raw usage, and compare priced calls with the invoice. Render title exactly \"Normalize tokens before pricing\". Left box \"Raw provider usage\" branches into three central boxes \"Uncached input\", \"Cache reads\", \"Cache writes\". These converge into \"Apply model rates\", then \"Check invoice\". A small note exactly \"Keep raw usage for later checks\". This is conceptual accounting guidance, no numeric savings, no provider-specific formulas, no logos, screenshots, footer or watermark.",
         "based_on": [
-          "https://www.anthropic.com/research/building-strong-safety-evaluations"
+          "https://telemetry.dev/blog/llm-cost-monitoring-account-for-cached-tokens"
         ],
         "reviewed": true,
-        "sha256": "46dc7c868b5dd7a381a000d1ebc36818ea6a600615df1d714e73891ff4f17024",
+        "sha256": "bfdf8d02b873947ef02433fcca956d7f0ac254571283a20bf6512a0e5deb06fe",
         "optimization": {
           "format": "webp",
           "quality": 82,
           "max_width": 1440,
-          "source_sha256": "85774ce9b5f9902cb77bbf42ccc03127b55fff8dc12639b1800663084243a91b"
+          "source_sha256": "229c07c2d10716fc7da73e8c96eeee9d81398460fd6feb2dc2ccd7f7fd14e700"
         }
       },
       "source": "news",
       "interest_score": 8,
-      "score_reason": "Primary operational guidance covering realistic safety tests, grader failures, calibration and reproducibility, with explicit methodological limits.",
-      "dedupe_key": "article:anthropic.com/research/building-strong-safety-evaluations",
+      "score_reason": "Concrete accounting and validation guidance directly relevant to AI cost telemetry; no measured savings claimed.",
+      "dedupe_key": "article:telemetry.dev/blog/llm-cost-monitoring-account-for-cached-tokens",
       "source_evidence": {
-        "url": "https://www.anthropic.com/research/building-strong-safety-evaluations",
-        "publication_date": "2026-11-13",
-        "raw_date": "2026-11-13T00:00:00.000Z",
-        "method": "Original article:published_time and JSON-LD datePublished agree with visible time datetime=2026-11-13. dateModified is ignored."
+        "url": "https://telemetry.dev/blog/llm-cost-monitoring-account-for-cached-tokens",
+        "publication_date": "2026-11-14",
+        "raw_date": "2026-11-14T10:04:54.716Z",
+        "method": "Original article JSON-LD datePublished, corroborated by visible author/date line and official dated blog listing; dateModified not used."
       }
     },
     {
-      "title": "Langfuse adds Gemini decision models to evaluators",
-      "url": "https://langfuse.com/changelog/2026-11-13-gemini-decision-model-evaluators",
-      "publisher": "Langfuse",
-      "published": "2026-11-13",
+      "title": "LangChain groups agent work around tasks people can review together",
+      "url": "https://www.langchain.com/blog/goal-engineering",
+      "publisher": "LangChain",
+      "published": "2026-11-14",
       "category_key": "evals",
-      "summary": "Decision-model evaluators can use a Google AI Studio connection and save probabilities and confidence alongside each score. Vertex AI connections are not supported for this evaluator.",
+      "summary": "A practitioner case study describes reorganizing sales agents around similar work so human feedback transfers across accounts.",
       "body": [
-        "Langfuse is an AI observability and evaluation platform that records and scores application behavior. Its decision-model evaluators can now use Google’s Gemini Decisions API. First, select a Google AI Studio connection and the supported decision model in the evaluator. Then configure a Choice, Score, or Yes / no question. Each question writes a score with its probabilities and confidence.",
-        "The announcement suggests checking answers against a refund policy, routing conversations for review, or grading helpfulness against a rubric. Google bills input tokens only for these decisions. Vertex AI connections are not yet supported for this evaluation integration."
+        "Actively AI builds agents for sales teams. In a LangChain article coauthored with its researchers, the company describes changing how those agents divide their work so salespeople can review outputs and provide useful feedback more easily. The focus is human evaluation of subjective work, rather than a new tracing feature.",
+        "The original design assigned an agent to each prospective customer account. Each agent handled several kinds of work, and reviewable actions arrived at different times. The authors report that this forced salespeople to switch between agents and made it awkward to share lessons about doing the same job across accounts.",
+        "The replacement groups agents into motions: recurring jobs such as outreach or early deal progression. First, similar tasks sit together for review. Then feedback about a seller’s preferences can inform other tasks within that motion. Background agents still gather account information, which the working agents retrieve as needed. The authors argue that aligning agent scope with review makes feedback easier to collect. This is a qualitative practitioner account, without a controlled performance comparison."
       ],
-      "format": "brief",
-      "brief_reason": "The primary changelog is a compact integration announcement: supported connection, question types, score metadata, billing and an explicit unsupported connection. A longer story would repeat those facts.",
-      "takeaway": "Teams testing this evaluator should use Google AI Studio credentials and validate its decisions on their own rubric before relying on the saved confidence values.",
-      "image": "/edition-images/2026-11-14/gemini-evaluator.webp",
+      "format": "full",
+      "takeaway": "For teams designing human evaluation workflows: examine whether reviewers can assess similar agent actions together and reuse the resulting feedback.",
+      "image": "/edition-images/2026-11-15/agent-feedback-scope.webp",
       "image_width": 1440,
-      "image_height": 960,
+      "image_height": 737,
       "image_provenance": {
         "kind": "generated-editorial",
         "generator": "built-in-imagegen",
-        "prompt": "Use case: infographic-diagram. Asset type: standalone newspaper editorial infographic PNG. Style: warm ivory newsprint, dark ink, restrained teal accents, engraved editorial linework, generous spacing, landscape 3:2, large readable type. Use only the exact text specified. No logos, screenshots, invented metrics, dates, version numbers, footer, captions or watermark. Explain the narrow supported connection for Langfuse decision-model evaluation, based on https://langfuse.com/changelog/2026-11-13-gemini-decision-model-evaluators. Title: \"A decision becomes a saved score\". Three connected boxes: \"Google AI Studio connection\", \"Choice, Score, or Yes / no\", \"Score + probabilities + confidence\". Draw a simple key, a checklist, and a saved record as icons. Separate small constraint note: \"Vertex AI connections not supported yet\". Do not imply that all gateway connections work for this evaluator. No performance claims.",
+        "prompt": "Use case: infographic-diagram. Standalone landscape newspaper editorial infographic on warm cream paper with dark ink, restrained teal and rust accents, engraved simple icons and large readable typography. Explain the source-supported Actively AI workflow described by LangChain: group similar sales tasks into a motion, review those tasks together, and transfer feedback within that motion; account context is gathered separately. Exact title \"Group work to improve feedback\". Three large connected panels labelled \"Similar sales tasks\", \"Review together\", \"Reuse feedback\". A smaller supporting box below the first panel labelled \"Account context\" with one arrow upward. Under title small text \"Actively AI practitioner workflow\". No performance numbers, no assertion of measured improvement, no logos, fake screenshots, footer or watermark.",
         "based_on": [
-          "https://langfuse.com/changelog/2026-11-13-gemini-decision-model-evaluators"
+          "https://www.langchain.com/blog/goal-engineering"
         ],
         "reviewed": true,
-        "sha256": "400eae4e2b5c15d95818b0f4713aeec5a8afe0aac956465a0ff7fe7edec12d7d",
+        "sha256": "a2eec8e7e09eb83400e2c60093f5a903d5fe6126cefb47cea11467c9b1b0cdd8",
         "optimization": {
           "format": "webp",
           "quality": 82,
           "max_width": 1440,
-          "source_sha256": "8841ed36169a6cb523647f06a0479464cc870d6223250123c1a2bb5cdfca1901"
+          "source_sha256": "7a8742ece920e642e7d3f9cb4366512942e16b75bb6c5ea60814df60a6f8b68d"
         }
       },
       "source": "news",
       "interest_score": 7,
-      "score_reason": "Concrete but narrow evaluator integration with clearly stated connection and billing constraints; no comparative accuracy evidence.",
-      "dedupe_key": "article:langfuse.com/changelog/2026-11-13-gemini-decision-model-evaluators",
+      "score_reason": "Relevant human-feedback workflow with a concrete case study, but qualitative claims without comparative measurements.",
+      "dedupe_key": "article:langchain.com/blog/goal-engineering",
       "source_evidence": {
-        "url": "https://langfuse.com/changelog/2026-11-13-gemini-decision-model-evaluators",
-        "publication_date": "2026-11-13",
-        "raw_date": "2026-11-13",
-        "method": "Original changelog visibly labels publication November 13, 2026 beneath its changelog navigation; raw_date is the ISO representation of that explicit publisher label, not a URL or modification date."
-      }
-    },
-    {
-      "title": "Langfuse connects topic views to filtered traces",
-      "url": "https://github.com/langfuse/langfuse/releases/tag/v4.80.0",
-      "publisher": "Langfuse",
-      "published": "2026-11-13",
-      "category_key": "observability",
-      "summary": "The release adds a topic column and topic filtering to tracing, fixes topic navigation, and makes batch evaluation work resume across pages.",
-      "body": [
-        "Langfuse is an open-source platform for tracing and evaluating AI applications. Its latest stable release changes how topic analysis connects to the underlying tracing table. The release notes describe both new filters and fixes to topic assignment, where an incorrect view can make it harder to find the records behind a summary.",
-        "First, the tracing table can show topics as a column and filter records by topic. Opening a topic now uses that topic filter instead of a list of trace identifiers. Next, fixes assign new summaries to every matching rule’s map and filter summary rows using each rule’s assignment. A separate correction shows a one-off scan’s own state rather than the empty state intended for a live map.",
-        "The release also pages and resumes batch observation evaluations and makes the TypeSafe client for decision-model evaluations fail fast on rate limits. These are specific release-note changes, without published measurements of their effect on throughput or accuracy. The notes also list gateway and authentication work; those changes do not establish that topic classification itself has become more accurate."
-      ],
-      "format": "full",
-      "takeaway": "Teams using topic scans should check that a topic opens the expected trace subset and that overlapping rules produce the expected summary assignments after upgrading.",
-      "image": "/edition-images/2026-11-14/langfuse-topic-traces.webp",
-      "image_width": 1440,
-      "image_height": 960,
-      "image_provenance": {
-        "kind": "generated-editorial",
-        "generator": "built-in-imagegen",
-        "prompt": "Use case: infographic-diagram. Asset type: standalone newspaper editorial infographic PNG. Style: warm ivory newsprint, dark ink, restrained teal accents, engraved editorial linework, generous spacing, landscape 3:2, large readable type. Use only the exact text specified. No logos, screenshots, invented metrics, dates, version numbers, footer, captions or watermark. Explain Langfuse topic-to-trace navigation, based on https://github.com/langfuse/langfuse/releases/tag/v4.80.0. Title: \"From a topic to its traces\". Three connected elements with exact labels: \"Open a topic\", \"Apply topic filter\", \"Inspect matching traces\". Depict a topic folder, a filter funnel, and a stack of trace records. Separate small note: \"Tracing table can show a topic column\". This is a conceptual workflow of documented UI features; do not invent a screenshot, matching accuracy, or automatic diagnosis.",
-        "based_on": [
-          "https://github.com/langfuse/langfuse/releases/tag/v4.80.0"
-        ],
-        "reviewed": true,
-        "sha256": "2b695ab8aa4967b5653f5f131e3041b16e656122f43de828f774fb0b4a94d4ff",
-        "optimization": {
-          "format": "webp",
-          "quality": 82,
-          "max_width": 1440,
-          "source_sha256": "68942a9267e12c48f902ba4bcf6d1683aff99baf1212aa59b2e6222c3eea8c81"
-        }
-      },
-      "source": "github",
-      "interest_score": 8,
-      "score_reason": "Concrete fixes to the connection between topic summaries, trace filtering and evaluation processing; no unsupported performance claims.",
-      "dedupe_key": "release:langfuse/langfuse:v4.80.0",
-      "source_evidence": {
-        "url": "https://github.com/langfuse/langfuse/releases/tag/v4.80.0",
-        "publication_date": "2026-11-13",
-        "raw_date": "2026-11-13T10:32:14Z",
-        "method": "GitHub release API published_at verified directly; draft:false and prerelease:false. Release body is the source for selected changes."
-      }
-    },
-    {
-      "title": "Phoenix preserves zero token prices and rejects invalid cost inputs",
-      "url": "https://github.com/Arize-ai/phoenix/releases/tag/arize-phoenix-v21.1.0",
-      "publisher": "Arize AI",
-      "published": "2026-11-13",
-      "category_key": "observability",
-      "summary": "Phoenix corrects cost-input handling, preserves more token usage fields, and keeps PostgreSQL spans whose descriptive values contain a NUL character.",
-      "body": [
-        "Arize Phoenix is an open-source platform for observing and evaluating AI applications. Its stable release includes corrections to cost tracking, where token counts and per-token prices are inputs to reported spending. The notes distinguish a legitimate zero price from invalid numerical values rather than treating all unusual inputs alike.",
-        "First, model synchronization and cost-per-token handling retain zero-dollar rates. Next, changes to model settings reject negative token rates, and token-count parsing ignores values that cannot represent a finite number. The release also refreshes built-in token prices. These are separate changes to price data and input handling; the notes do not provide a measured change in billing accuracy.",
-        "On the tracing side, Phoenix preserves reasoning-token counts and renamed cache-write token counts from generative AI spans. A span records one operation within a trace. Another fix keeps spans with a NUL character in descriptive values when using PostgreSQL. Finally, the spans table can show the model, giving reviewers another field to inspect alongside those records. The release notes describe the fixes but do not quantify how many existing traces or cost records were affected."
-      ],
-      "format": "full",
-      "takeaway": "Phoenix operators should check zero-priced models, invalid rate rejection and token-field retention against their own telemetry before comparing cost reports across an upgrade.",
-      "image": "/edition-images/2026-11-14/phoenix-cost-inputs.webp",
-      "image_width": 1440,
-      "image_height": 960,
-      "image_provenance": {
-        "kind": "generated-editorial",
-        "generator": "built-in-imagegen",
-        "prompt": "Use case: infographic-diagram. Asset type: standalone newspaper editorial infographic PNG. Style: warm ivory newsprint, dark ink, restrained teal accents, engraved editorial linework, generous spacing, landscape 3:2, large readable type. Use only the exact text specified. No logos, screenshots, invented metrics, dates, version numbers, footer, captions or watermark. Explain three Phoenix cost-input reliability corrections, based on https://github.com/Arize-ai/phoenix/releases/tag/arize-phoenix-v21.1.0. Title: \"Keep valid prices, reject invalid inputs\". Three clearly separated panels: \"Zero price\" with \"Keep\", \"Negative rate\" with \"Reject\", and \"Non-finite token count\" with \"Ignore\". Show zero as a plain 0, a minus sign on a price tag, and an infinity symbol on a token counter. Keep the non-finite example conceptual; do not claim infinite usage was observed. Source facts: zero-dollar rates retained in model sync and cost-per-token; negative rates rejected in model mutations; non-finite token counts ignored during parsing. No before/after spending totals.",
-        "based_on": [
-          "https://github.com/Arize-ai/phoenix/releases/tag/arize-phoenix-v21.1.0"
-        ],
-        "reviewed": true,
-        "sha256": "09abd2235198b2ed26805df72d0f3ae69b60d484a40809a0a64a4fa8be8c3d9e",
-        "optimization": {
-          "format": "webp",
-          "quality": 82,
-          "max_width": 1440,
-          "source_sha256": "e299c495ca0e10514376aeb5944888ef3accbb402932d9b49222f456236190a0"
-        }
-      },
-      "source": "github",
-      "interest_score": 8,
-      "score_reason": "Concrete telemetry and cost-input reliability fixes with direct relevance to AI spending investigations and record retention.",
-      "dedupe_key": "release:arize-ai/phoenix:arize-phoenix-v21.1.0",
-      "source_evidence": {
-        "url": "https://github.com/Arize-ai/phoenix/releases/tag/arize-phoenix-v21.1.0",
-        "publication_date": "2026-11-13",
-        "raw_date": "2026-11-13T06:26:01Z",
-        "method": "GitHub release API published_at verified directly; draft:false and prerelease:false. Release notes identify the cost and tracing changes."
+        "url": "https://www.langchain.com/blog/goal-engineering",
+        "publication_date": "2026-11-14",
+        "raw_date": "2026-11-14T16:00:00.000Z",
+        "method": "Original article JSON-LD datePublished, confirmed against visible November 14, 2026 publication line; dateModified not used."
       }
     }
   ],
+  "edition": "AI Observability Daily",
   "research": {
     "status": "complete",
     "completed_sources": [
@@ -245,337 +156,53 @@
       "https://www.digitalocean.com/blog",
       "https://www.splunk.com/en_us/blog/observability.html",
       "https://www.dynatrace.com/news/",
-      "https://www.anthropic.com/research/building-strong-safety-evaluations",
-      "https://langfuse.com/changelog/2026-11-13-gemini-decision-model-evaluators",
-      "https://www.langchain.com/blog/context-engineering-challenges-late-2026",
-      "https://langfuse.com/changelog/2026-11-13-ai-gateway-key-model-restrictions",
-      "https://langfuse.com/changelog/2026-11-13-ai-gateway-vertex-ai",
-      "https://www.dynatrace.com/news/blog/what-dynatrace-and-microsoft-are-bringing-to-the-ai-era-at-microsoft-ignite-2026/",
-      "https://www.anthropic.com/research",
-      "https://help.splunk.com/en/splunk-observability-cloud/release-notes/release-notes-overview",
-      "https://www.splunk.com/en_us/blog/observability.html?sort=latest"
+      "https://telemetry.dev/blog",
+      "https://telemetry.dev/blog/llm-cost-monitoring-account-for-cached-tokens",
+      "https://www.langchain.com/blog/goal-engineering"
     ],
     "excluded": [
       {
-        "url": "https://github.com/langfuse/langfuse/tree/main/ai-gateway",
-        "hn_id": "50484682",
-        "reason": "Same gateway beta announcement already covered on 2026-11-05; publisher launch predates the window. First-party HN submission is a cross-post, not a new event."
+        "url": "https://news.ycombinator.com/item?id=50502344",
+        "reason": "Anecdotal Ask HN discussion of model behavior, without an operational evaluation method or concrete observability change."
       },
       {
-        "url": "https://news.ycombinator.com/item?id=50489240",
-        "hn_id": "50489240",
-        "reason": "General opinion about AI-assisted programming, not concrete AI-observability reporting."
+        "url": "https://www.pcmag.com/news/microsoft-patent-describes-using-your-idle-gaming-pc-to-train-ai",
+        "reason": "Idle gaming-computer training patent; outside AI observability and evaluation operations."
       },
       {
-        "url": "https://news.ycombinator.com/item?id=50491841",
-        "hn_id": "50491841",
-        "reason": "First-party benchmark feedback request reviewed; selectively omitted because the post mainly asks for testing credits and feedback rather than detailing a new evaluation mechanism."
+        "url": "https://github.com/deepseek-ai/DeepEP-Ascend",
+        "reason": "Training/inference hardware implementation; no concrete observability or evaluation workflow established."
       },
       {
         "url": "https://thinkingmachines.ai/blog/end-to-end-4-bit-training/",
-        "hn_id": "50490618",
-        "reason": "Model training technique rather than AI tracing, telemetry or operational evaluation."
+        "reason": "Model training precision research; outside the AI observability beat."
       },
       {
-        "url": "https://www.youtube.com/watch?v=SXnxZuntM0w",
-        "hn_id": "50489143",
-        "reason": "Board-game entertainment rather than AI observability."
+        "url": "https://www.realgoodai.org/real-rating",
+        "reason": "Primary page is self-reported AI-use disclosure for creative works, not runtime telemetry or model evaluation; no original day evidence established."
       },
       {
-        "url": "https://www.perplexity.ai/hub/blog/perplexity-decider",
-        "hn_id": "50488464",
-        "reason": "Model training and general decision-model announcement selectively omitted; the independently verified Langfuse evaluator integration provides a narrower operator-focused story."
+        "url": "https://getorty.work",
+        "reason": "Lead qualification application, not observability of AI systems."
       },
       {
-        "url": "https://portofcontext.com",
-        "hn_id": "50487905",
-        "reason": "First-party context gateway announcement reviewed; selectively omitted as context delivery and task-cost optimization rather than selected telemetry or evaluation tooling."
+        "url": "https://github.com/Rookweld/FieldRook",
+        "reason": "Windows troubleshooting workstation with optional AI; no concrete monitoring or evaluation of the AI itself."
       },
       {
-        "url": "https://bonwa.ai",
-        "hn_id": "50485648",
-        "reason": "Website visibility product rather than runtime AI observability."
+        "url": "https://gammapdf.com/",
+        "reason": "PDF reading and annotation product, not AI observability."
       },
       {
-        "url": "https://notes.archie-hall.com/p/drawing-the-line-on-ai-writing-literally",
-        "hn_id": "50483800",
-        "reason": "AI writing commentary outside the observability beat."
+        "url": "https://github.com/langwatch/langwatch/releases/tag/ksuid%40v2.0.3",
+        "reason": "Stable release confirmed, but identifier timestamp byte-order fix does not establish concrete AI observability impact in this source."
       },
       {
-        "url": "https://edawise.com/deccy-framework/",
-        "hn_id": "50483376",
-        "reason": "Software specification and decision management rather than selected runtime observability or evaluations."
-      },
-      {
-        "url": "https://www.perplexity.ai/hub/blog/perplexity-decider",
-        "hn_id": "50481786",
-        "reason": "Duplicate HN cross-post of the same Perplexity Decider URL; not a distinct event. Model announcement selectively omitted."
-      },
-      {
-        "url": "https://wonderchat.io/",
-        "hn_id": "50479411",
-        "reason": "Customer support helpdesk launch rather than an AI-observability product change."
-      },
-      {
-        "url": "https://chatpanel.net/",
-        "hn_id": "50479186",
-        "reason": "Meeting note-taking product rather than AI observability."
-      },
-      {
-        "url": "https://www.langchain.com/blog/context-engineering-challenges-late-2026",
-        "reason": "Index displays November 13 but primary article JSON-LD datePublished is 2026-11-02T16:51:00.000Z. Excluded for original publication outside window; do not substitute the index date."
-      },
-      {
-        "url": "https://langfuse.com/changelog/2026-11-13-ai-gateway-key-model-restrictions",
-        "reason": "Verified dated changelog; selectively omitted to avoid another narrow gateway item alongside the broader Langfuse release. Retained release story covers substantively different topic/tracing fixes, not this feature."
-      },
-      {
-        "url": "https://langfuse.com/changelog/2026-11-13-ai-gateway-vertex-ai",
-        "reason": "Verified dated changelog reviewed; selectively omitted narrow gateway provider addition. Evaluator story explicitly retains its separate unsupported-Vertex constraint."
-      },
-      {
-        "url": "https://www.dynatrace.com/news/blog/what-dynatrace-and-microsoft-are-bringing-to-the-ai-era-at-microsoft-ignite-2026/",
-        "reason": "Primary datePublished 2026-11-13T17:36:17+00:00 verified. Selectively omitted event-promotion overview with overlapping MCP and Azure telemetry themes rather than a selected implementation report."
+        "url": "https://codex.danielvaughan.com/2026/04/16/codex-cli-opentelemetry-observability-tracing-agent-sessions/",
+        "reason": "Search result explicitly identifies an April original publication with a November update; modification is not publication."
       }
     ],
-    "source_counts": {
-      "hn_candidates": 14,
-      "github_repositories": 8,
-      "github_releases_checked": 704,
-      "github_window_releases": 2,
-      "configured_news_surfaces": 11,
-      "retained": {
-        "hn": 1,
-        "news": 2,
-        "github": 2
-      }
-    },
-    "checks": {
-      "hn": {
-        "status": "complete",
-        "queries": [
-          {
-            "query": "observability",
-            "url": "https://hn.algolia.com/api/v1/search_by_date?query=observability&tags=story&numericFilters=created_at_i%3E%3D1794528000%2Ccreated_at_i%3C1794614400&hitsPerPage=100&page=0",
-            "nbPages": 1,
-            "ids": [
-              "50484682"
-            ]
-          },
-          {
-            "query": "LLM evaluation",
-            "url": "https://hn.algolia.com/api/v1/search_by_date?query=LLM+evaluation&tags=story&numericFilters=created_at_i%3E%3D1794528000%2Ccreated_at_i%3C1794614400&hitsPerPage=100&page=0",
-            "nbPages": 1,
-            "ids": [
-              "50489240",
-              "50482300"
-            ]
-          },
-          {
-            "query": "AI tracing",
-            "url": "https://hn.algolia.com/api/v1/search_by_date?query=AI+tracing&tags=story&numericFilters=created_at_i%3E%3D1794528000%2Ccreated_at_i%3C1794614400&hitsPerPage=100&page=0",
-            "nbPages": 1,
-            "ids": [
-              "50491841",
-              "50490618",
-              "50489143",
-              "50488464",
-              "50487905",
-              "50485648",
-              "50484682",
-              "50483800",
-              "50483376",
-              "50481786",
-              "50479411",
-              "50479186"
-            ]
-          },
-          {
-            "query": "agent telemetry",
-            "url": "https://hn.algolia.com/api/v1/search_by_date?query=agent+telemetry&tags=story&numericFilters=created_at_i%3E%3D1794528000%2Ccreated_at_i%3C1794614400&hitsPerPage=100&page=0",
-            "nbPages": 0,
-            "ids": []
-          },
-          {
-            "query": "langfuse",
-            "url": "https://hn.algolia.com/api/v1/search_by_date?query=langfuse&tags=story&numericFilters=created_at_i%3E%3D1794528000%2Ccreated_at_i%3C1794614400&hitsPerPage=100&page=0",
-            "nbPages": 1,
-            "ids": [
-              "50484682"
-            ]
-          }
-        ],
-        "official_item_ids": [
-          "50484682",
-          "50489240",
-          "50482300",
-          "50491841",
-          "50490618",
-          "50489143",
-          "50488464",
-          "50487905",
-          "50485648",
-          "50483800",
-          "50483376",
-          "50481786",
-          "50479411",
-          "50479186"
-        ],
-        "note": "All discovery pages exhausted (zero or one page per query); all 14 unique official HN items read. Original article publication independently verified for retained guide."
-      },
-      "github": {
-        "status": "complete",
-        "repositories": [
-          {
-            "url": "https://api.github.com/repos/langfuse/langfuse/releases?per_page=100",
-            "count": 100,
-            "matches": [
-              {
-                "url": "https://github.com/langfuse/langfuse/releases/tag/v4.80.0",
-                "published_at": "2026-11-13T10:32:14Z",
-                "draft": false,
-                "prerelease": false
-              }
-            ]
-          },
-          {
-            "url": "https://api.github.com/repos/Arize-ai/phoenix/releases?per_page=100",
-            "count": 100,
-            "matches": [
-              {
-                "url": "https://github.com/Arize-ai/phoenix/releases/tag/arize-phoenix-v21.1.0",
-                "published_at": "2026-11-13T06:26:01Z",
-                "draft": false,
-                "prerelease": false
-              }
-            ]
-          },
-          {
-            "url": "https://api.github.com/repos/Arize-ai/openinference/releases?per_page=100",
-            "count": 100,
-            "matches": []
-          },
-          {
-            "url": "https://api.github.com/repos/langchain-ai/langsmith-sdk/releases?per_page=100",
-            "count": 100,
-            "matches": []
-          },
-          {
-            "url": "https://api.github.com/repos/braintrustdata/braintrust-sdk/releases?per_page=100",
-            "count": 100,
-            "matches": []
-          },
-          {
-            "url": "https://api.github.com/repos/wandb/weave/releases?per_page=100",
-            "count": 100,
-            "matches": []
-          },
-          {
-            "url": "https://api.github.com/repos/langwatch/langwatch/releases?per_page=100",
-            "count": 100,
-            "matches": []
-          },
-          {
-            "url": "https://api.github.com/repos/Helicone/helicone/releases?per_page=100",
-            "count": 4,
-            "matches": []
-          }
-        ],
-        "note": "Latest 100 releases per configured repository (Helicone returned four); stable releases only. This is the configured watchlist, not global GitHub coverage."
-      },
-      "news": {
-        "status": "complete",
-        "surface_checks": [
-          {
-            "url": "https://arize.com/blog/",
-            "status": 200,
-            "file": "https___arize_com_blog_.html",
-            "date_mentions": []
-          },
-          {
-            "url": "https://langfuse.com/blog",
-            "status": 200,
-            "file": "https___langfuse_com_blog.html",
-            "date_mentions": [
-              "text-primary\\\",\\\"children\\\":\\\"View All\\\"}]}]]}],[\\\"$\\\",\\\"div\\\",null,{\\\"className\\\":\\\"flex flex-col gap-2\\\",\\\"children\\\":[[\\\"$\\\",\\\"$La7\\\",\\\"/changelog/2026-11-13-ai-gateway-key-model-restrictions\\\",{\\\"href\\\":\\\"/changelog/2026-11-13-ai-gateway-key-model-restrictions\\\",\\\"className\\\":\\\"block px-2 w-full hover:bg-surface-bg\\\",\\\"children\\\":[\\\"$\\\",\\\"div\\\",null,{\\\"c",
-              "t-underline-position:from-font] text-left no-underline group-hover:text-text-primary\\\",\\\"children\\\":\\\"1 day ago\\\"}]]}]}],[\\\"$\\\",\\\"$La7\\\",\\\"/changelog/2026-11-13-gemini-decision-model-evaluators\\\",{\\\"href\\\":\\\"/changelog/2026-11-13-gemini-decision-model-evaluators\\\",\\\"className\\\":\\\"block px-2 w-full hover:bg-surface-bg\\\",\\\"children\\\":[\\\"$\\\",\\\"div\\\",null,{\\\"cla",
-              "t-underline-position:from-font] text-left no-underline group-hover:text-text-primary\\\",\\\"children\\\":\\\"1 day ago\\\"}]]}]}],[\\\"$\\\",\\\"$La7\\\",\\\"/changelog/2026-11-13-ai-gateway-vertex-ai\\\",{\\\"href\\\":\\\"/changelog/2026-11-13-ai-gateway-vertex-ai\\\",\\\"className\\\":\\\"block px-2 w-full hover:bg-surface-bg\\\",\\\"children\\\":[\\\"$\\\",\\\"div\\\",null,{\\\"className\\\":\\\"flex flex-col"
-            ]
-          },
-          {
-            "url": "https://www.langchain.com/blog",
-            "status": 200,
-            "file": "https___www_langchain_com_blog.html",
-            "date_mentions": [
-              "-name-item w-dyn-item\"><div class=\"t-paragraph-3-rg text-c-blue-light-500\">Harrison Chase</div></div></div></div><div class=\"t-label-2-rg date-color\">November 13, 2026</div></div></div><div class=\"blog-read-time\"><img src=\"https://cdn.prod.website-files.com/65b8cd72835ceeacd4449a53/69cd1fd0002272ce39bf1241_Icon-6.svg\" loading=\"lazy\" alt=\"\" class=\"icon-14-14\"/",
-              "<!DOCTYPE html><!-- Last Published: Fri Nov 13 2026 16:08:14 GMT+0000 (Coordinated Universal Time) --><html data-wf-domain=\"www.langchain.com\" data-wf-page=\"69cbbe270c8a2cc7773455e7\" data-wf-site=\"65b8cd72835ceeacd4449a53\" data-wf-intellimize-cus"
-            ]
-          },
-          {
-            "url": "https://www.braintrust.dev/blog",
-            "status": 200,
-            "file": "https___www_braintrust_dev_blog.html",
-            "date_mentions": []
-          },
-          {
-            "url": "https://opentelemetry.io/blog/",
-            "status": 200,
-            "file": "https___opentelemetry_io_blog_.html",
-            "date_mentions": []
-          },
-          {
-            "url": "https://www.elastic.co/observability-labs/blog",
-            "status": 200,
-            "file": "https___www_elastic_co_observability_labs_blog.html",
-            "date_mentions": []
-          },
-          {
-            "url": "https://www.datadoghq.com/blog/",
-            "status": 200,
-            "file": "https___www_datadoghq_com_blog_.html",
-            "date_mentions": []
-          },
-          {
-            "url": "https://www.honeycomb.io/blog/",
-            "status": 200,
-            "file": "https___www_honeycomb_io_blog_.html",
-            "date_mentions": []
-          },
-          {
-            "url": "https://www.digitalocean.com/blog",
-            "status": 200,
-            "file": "https___www_digitalocean_com_blog.html",
-            "date_mentions": []
-          },
-          {
-            "url": "https://www.splunk.com/en_us/blog/observability.html",
-            "error": "HTTP Error 403: Forbidden"
-          },
-          {
-            "url": "https://www.dynatrace.com/news/",
-            "status": 200,
-            "file": "https___www_dynatrace_com_news_.html",
-            "date_mentions": [
-              "                        <time class=\"feeditem__date published updated dt-published\" datetime=\"2026-11-13T17:36:17+00:00\">",
-              "              November 13, 2026"
-            ]
-          }
-        ],
-        "access_resolution": {
-          "anthropic": "Initial HTTP 403 recovered with browser User-Agent; both canonical and trailing-slash primary pages returned HTTP 200. Original publication metadata and visible time agree.",
-          "splunk": "Initial HTTP 403 recovered with query URL; HTTP 200 and web access both show the dynamic No results shell. Supplemented with exact-date scoped search and official release-note overview, whose latest listed release is November 12. No claim that this shell exposes every blog article."
-        },
-        "searches": [
-          "\"2026-11-13\" \"observability\"",
-          "\"November 13, 2026\" \"evaluation\" AI",
-          "\"2026-11-13\" site:langfuse.com",
-          "site:anthropic.com \"Building strong safety evaluations\"",
-          "site:splunk.com/en_us/blog/observability \"November 13, 2026\""
-        ],
-        "note": "Configured publisher surfaces checked first, then exact-date searches and primary article/changelog follow-up. Scoped editorial sweep, not exhaustive web coverage."
-      }
-    },
-    "note": "Frozen edition 2026-11-14 / news day 2026-11-13. All 31 existing issues and 161 historical stories loaded and compared by URLs, normalized events and narratives. No existing edition for this publication date. Supplied candidates retained unchanged; equivalent read-only HN and GitHub discovery requests were logged inside the permitted run directory instead of running fetch:sources, which would write outside it. Five distinct built-in imagegen calls; original PNGs preserved, optimized final WebPs visually reviewed and hashed. Four full stories and one source-specific brief independently reviewed out of order. Outer runner owns formal draft/asset validation, tests, build, promotion, Git changes and publication; none performed here."
+    "note": "Scoped official-source sweep, not exhaustive web coverage. Used supplied discovery artifact rather than rerunning a command that writes outside the authorized run directory. All eight HN items independently confirmed through official API; supplied discovery records checks of eight GitHub watchlist repositories. Both release candidates verified through official release APIs. All eleven configured News surfaces fetched successfully and saved as news-N.html; Dynatrace web-tool timeouts recovered through direct HTTP. Supplementary exact-date searches led to telemetry.dev. Reviewed all 32 historical issue files (166 stories), canonical URL/event cross-posts, standalone story clarity, independent reverse-order reading, supported claims and image labels. No dateModified or HN resurfacing time used as publication evidence."
   },
   "name": "Tidy Traces — AI Observability Daily",
   "canonical_url": "https://tidytraces.com/"
