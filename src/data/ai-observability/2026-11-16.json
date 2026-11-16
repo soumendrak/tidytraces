@@ -1,0 +1,174 @@
+{
+  "date": "2026-11-16",
+  "story_window": "2026-11-15",
+  "dek": "A proposed synthetic-data exercise checks whether agent traces expose failures and support repeatable evaluation.",
+  "stories": [
+    {
+      "title": "A proposed trace test checks agent failures and hidden data",
+      "url": "https://editorialge.com/ai-agent-observability-tools/",
+      "publisher": "Editorialge",
+      "published": "2026-11-15",
+      "category_key": "observability",
+      "summary": "Editorialge proposes testing observability tools with the same synthetic workflow, including a failed tool call and an incorrect answer.",
+      "body": [
+        "Agent observability tools record the steps between a request and an answer. Editorialge’s comparison proposes a practical exercise for checking whether that record actually supports investigation. A trace can help explain execution, but it does not establish that an answer is correct or a customer’s task is complete.",
+        "First, the guide suggests using synthetic data in one representative workflow: retrieve a policy, call a test interface, and summarize the result. Check whether the model request, retrieval, and tool operation appear as connected steps. Then deliberately fail the tool operation and inspect whether its error and duration are visible without exposing credentials.",
+        "Next, check that reviewers can identify the prompt, model, and application used. Capture an incorrect answer that appeared to succeed and see whether it can become a repeatable evaluation. Finally, inspect retained data, access permissions, and expected volume costs. This is a proposed test plan, with no measured comparison results."
+      ],
+      "format": "full",
+      "takeaway": "Teams comparing trace tools can use a shared synthetic failure case to check coverage before expanding instrumentation.",
+      "image": "/edition-images/2026-11-16/trace-test.webp",
+      "image_width": 1440,
+      "image_height": 960,
+      "image_provenance": {
+        "kind": "generated-editorial",
+        "generator": "built-in-imagegen",
+        "prompt": "Use case: infographic-diagram\nAsset type: standalone PNG newspaper story infographic.\nPrimary request: illustrate Editorialge’s proposed synthetic-data test for agent observability. Source: https://editorialge.com/ai-agent-observability-tools/ . This is a proposed exercise, not measured results or a product screenshot. Source-supported mechanism: run one synthetic workflow, deliberately fail a tool call, inspect recorded error and duration without credentials, capture an incorrect answer as a repeatable evaluation, check retained data and access.\nStyle: warm cream newsprint, dark ink line illustration, restrained rust-red accent, generous spacing, serif title, large readable labels. Landscape 3:2 composition, four connected illustrated elements with clean arrows. No logos or invented metrics.\nText verbatim, only these labels: Title \"Test what the trace reveals\"; subtitle \"Proposed exercise • synthetic data\"; four panels \"Run a workflow\", \"Fail a tool call\", \"Inspect the evidence\", \"Check data access\". Small annotation under panel three: \"Error • duration • answer\". Show a simple document and tool, a broken tool symbol, a magnifying glass on a trace record, and a locked data cabinet. All arrows left to right, no claim that tracing proves correctness. No footer, no watermark, no extra text.",
+        "based_on": [
+          "https://editorialge.com/ai-agent-observability-tools/"
+        ],
+        "reviewed": true,
+        "sha256": "84f862bc9ae91d8178faafd1ce3858230aae061272e9266d57c162575d916346",
+        "optimization": {
+          "format": "webp",
+          "quality": 82,
+          "max_width": 1440,
+          "source_sha256": "414e09bb55f155b3f31e88079169a75e0b54cb7297045d0269be11f4ae40b366"
+        }
+      },
+      "source": "news",
+      "interest_score": 6,
+      "dedupe_key": "article:editorialge.com/ai-agent-observability-tools",
+      "score_reason": "A concrete proposed trace-verification exercise; no original benchmark or demonstrated product change.",
+      "source_evidence": {
+        "url": "https://editorialge.com/ai-agent-observability-tools/",
+        "publication_date": "2026-11-15",
+        "raw_date": "2026-11-15T06:52:48+00:00",
+        "method": "Original publisher JSON-LD datePublished agrees with the visible publication date; dateModified was not used. Saved primary-editorialge.html."
+      }
+    }
+  ],
+  "research": {
+    "status": "complete",
+    "completed_sources": [
+      "hn",
+      "news",
+      "github"
+    ],
+    "checked_urls": [
+      "https://arize.com/blog/",
+      "https://langfuse.com/blog",
+      "https://www.langchain.com/blog",
+      "https://www.braintrust.dev/blog",
+      "https://opentelemetry.io/blog/",
+      "https://www.elastic.co/observability-labs/blog",
+      "https://www.datadoghq.com/blog/",
+      "https://www.honeycomb.io/blog/",
+      "https://www.digitalocean.com/blog",
+      "https://www.splunk.com/en_us/blog/observability.html",
+      "https://www.dynatrace.com/news/",
+      "https://langfuse.com/changelog",
+      "https://www.dynatrace.com/news/blog/",
+      "https://editorialge.com/ai-agent-observability-tools/",
+      "https://ones.com/blog/what-software-tools-can-teams-use-to-track-ai-agent-evaluation-findings-in-2026/",
+      "https://infrabase.ai/blog/llm-observability-tools-compared",
+      "https://sobalabs.ai/blog/most-used-llm-eval-and-tracing-tools/",
+      "https://arize.com/blog/how-to-test-a-new-model-in-your-agent/",
+      "https://arize.com/blog/phoenix-automatic-model-pricing-updates/",
+      "https://www.datadoghq.com/blog/ai/introducing-scout-sre-specialized-model-bits-ai/",
+      "https://www.datadoghq.com/blog/kubernetes-processes-datadog-mcp-server/",
+      "https://www.splunk.com/en_us/blog/observability/splunk-observability-at-cisco-live.html"
+    ],
+    "excluded": [
+      {
+        "url": "https://github.com/zk4x/skamandros",
+        "hn_id": "50509698",
+        "reason": "Hardware driver and kernel compiler, without AI-observability-specific instrumentation or evaluation."
+      },
+      {
+        "url": "https://www.youtube.com/watch?v=HxdQawDIlnU",
+        "hn_id": "50509386",
+        "reason": "Walking-route animation; unrelated to the beat."
+      },
+      {
+        "url": "https://www.wiyomi.com/",
+        "hn_id": "50509047",
+        "reason": "Local video creation agent, without observability or evaluation implementation."
+      },
+      {
+        "url": "https://news.ycombinator.com/item?id=50508220",
+        "hn_id": "50508220",
+        "reason": "Assistant personality discussion; no concrete observability mechanism."
+      },
+      {
+        "url": "https://thealliance.ai/projects/tapestry",
+        "hn_id": "50508131",
+        "reason": "Foundation-model training consortium, outside the AI observability beat."
+      },
+      {
+        "url": "https://medium.com/@smoking2man/when-ai-knows-more-than-it-can-offer-how-training-turns-an-intelligent-assistant-into-a-generator-7e700f05163e",
+        "hn_id": "50507918",
+        "reason": "General training/assistant behavior essay; primary page returned HTTP 403, original date unverified. Excluded, not used as evidence."
+      },
+      {
+        "url": "https://borretti.me/article/taking-ai-seriously",
+        "hn_id": "50505795",
+        "reason": "Primary essay read; general AI progress argument, outside AI observability."
+      },
+      {
+        "url": "https://news.ycombinator.com/item?id=50505744",
+        "hn_id": "50505744",
+        "reason": "Memory-layer market discussion, without concrete telemetry or evaluation findings."
+      },
+      {
+        "url": "https://videocardz.com/newz/microsoft-could-pay-gamers-for-using-spare-gpu-capacity-to-train-ai",
+        "hn_id": "50502675",
+        "reason": "GPU utilization/training patent report, outside the AI observability beat."
+      },
+      {
+        "url": "https://ones.com/blog/what-software-tools-can-teams-use-to-track-ai-agent-evaluation-findings-in-2026/",
+        "reason": "Conflicting primary dates: visible November 15 but datePublished and time datetime 2026-11-14T21:04:47+00:00. Excluded under strict date gate."
+      },
+      {
+        "url": "https://infrabase.ai/blog/llm-observability-tools-compared",
+        "reason": "Original publication March 28; November 15 is explicitly an update."
+      },
+      {
+        "url": "https://sobalabs.ai/blog/most-used-llm-eval-and-tracing-tools/",
+        "reason": "Original publication November 3; later fetched statistics are not a new publication."
+      },
+      {
+        "url": "https://arize.com/blog/how-to-test-a-new-model-in-your-agent/",
+        "reason": "JSON-LD datePublished 2026-11-05T08:00:51-08:00, outside window."
+      },
+      {
+        "url": "https://arize.com/blog/phoenix-automatic-model-pricing-updates/",
+        "reason": "JSON-LD datePublished 2026-11-02T07:00:40-08:00, outside window."
+      },
+      {
+        "url": "https://www.datadoghq.com/blog/ai/introducing-scout-sre-specialized-model-bits-ai/",
+        "reason": "datePublished 2026-10-15T00:00:00.000Z, outside window."
+      },
+      {
+        "url": "https://www.datadoghq.com/blog/kubernetes-processes-datadog-mcp-server/",
+        "reason": "datePublished 2026-11-09T00:00:00.000Z, outside window."
+      },
+      {
+        "url": "https://www.splunk.com/en_us/blog/observability/splunk-observability-at-cisco-live.html",
+        "reason": "Primary page explicitly November 10, outside window."
+      }
+    ],
+    "note": "Scoped sweep, not exhaustive. Read all 33 existing issues before selection; compared URLs, headlines and original events. HN: refreshed all configured queries and official API submissions, nine excluded. GitHub: refreshed eight configured watchlist repositories, 704 release records checked, zero stable in-window releases. News: all eleven configured official surfaces fetched HTTP 200 and reviewed; targeted exact-date searches followed to original pages. Retained only Editorialge’s original proposed synthetic-data test, not its third-party tool feature assertions or rankings. Visible publication and JSON-LD datePublished agree. Discovery script was copied into run evidence with only path resolution/output destination adjusted, so discovery outputs stay within the authorized run directory. Builds, automated validators, promotion, Git and publication are reserved for outer runner.",
+    "source_counts": {
+      "hn_candidates": 9,
+      "github_releases_checked": 704,
+      "github_candidates": 0,
+      "news_surfaces": 11,
+      "retained": {
+        "hn": 0,
+        "news": 1,
+        "github": 0
+      }
+    }
+  }
+}

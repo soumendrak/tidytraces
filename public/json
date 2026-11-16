@@ -1,142 +1,53 @@
 {
-  "date": "2026-11-15",
-  "story_window": "2026-11-14",
-  "dek": "Endpoint visibility, cached-token accounting, and human feedback workflows for AI systems.",
+  "date": "2026-11-16",
+  "story_window": "2026-11-15",
+  "dek": "A proposed synthetic-data exercise checks whether agent traces expose failures and support repeatable evaluation.",
   "stories": [
     {
-      "title": "OpenInference records where OpenAI-compatible requests actually go",
-      "url": "https://github.com/Arize-ai/openinference/releases/tag/%40arizeai/openinference-instrumentation-openai%404.5.0",
-      "publisher": "Arize AI · OpenInference",
-      "published": "2026-11-14",
+      "title": "A proposed trace test checks agent failures and hidden data",
+      "url": "https://editorialge.com/ai-agent-observability-tools/",
+      "publisher": "Editorialge",
+      "published": "2026-11-15",
       "category_key": "observability",
-      "summary": "The OpenAI instrumentation records endpoint host and port even when a gateway or self-hosted proxy prevents provider identification.",
+      "summary": "Editorialge proposes testing observability tools with the same synthetic workflow, including a failed tool call and an incorrect answer.",
       "body": [
-        "OpenInference’s OpenAI instrumentation records information about model requests in trace spans, the records of individual operations. Its release addresses a visibility gap: a call through a gateway or self-hosted proxy can have no identifiable model provider, leaving its destination unclear.",
-        "The instrumentation now reads the client’s base URL and records its host and port as server.address and server.port. It includes hosts without a recognized provider, so destination evidence remains available when llm.provider cannot be inferred. Only host and port are recorded; URL paths and query parameters are excluded."
-      ],
-      "format": "brief",
-      "brief_reason": "The primary release contains one narrowly scoped instrumentation change; a longer story would add unsupported implementation detail.",
-      "takeaway": "For teams routing compatible model calls through gateways: check destination attributes alongside provider attribution when investigating routing.",
-      "image": "/edition-images/2026-11-15/openinference-endpoint.webp",
-      "image_width": 1440,
-      "image_height": 737,
-      "image_provenance": {
-        "kind": "generated-editorial",
-        "generator": "built-in-imagegen",
-        "prompt": "Use case: infographic-diagram. Create a standalone landscape newspaper infographic on warm cream paper with dark ink, muted teal arrows and rust accents, generous spacing, large readable serif title and simple hand-engraved symbols. Explain one source-supported change in OpenInference: OpenAI-compatible client base URL supplies server.address and server.port, even for an unrecognized gateway or proxy; paths and query parameters are excluded. Title verbatim: \"Trace the request destination\". Three connected elements labelled \"Client base URL\", \"Host + port\", \"Trace span\". Under the final element: \"Even when provider is unknown\". Small separate crossed-out labels: \"Path\" and \"Query\". No other claims, logos, screenshots, numerical metrics, footer, or watermark.",
-        "based_on": [
-          "https://github.com/Arize-ai/openinference/releases/tag/%40arizeai/openinference-instrumentation-openai%404.5.0"
-        ],
-        "reviewed": true,
-        "sha256": "a25495f553402cb25d4378ac61a7272fe7e9750df858ad366a0549e48968fce7",
-        "optimization": {
-          "format": "webp",
-          "quality": 82,
-          "max_width": 1440,
-          "source_sha256": "f6df462088e6f595307d6079b3afa0b61d9f01f205867c4c103b920529dda28f"
-        }
-      },
-      "source": "github",
-      "interest_score": 8,
-      "score_reason": "A concrete trace-coverage improvement for gateways and self-hosted endpoints.",
-      "dedupe_key": "release:Arize-ai/openinference:@arizeai/openinference-instrumentation-openai@4.5.0",
-      "source_evidence": {
-        "url": "https://github.com/Arize-ai/openinference/releases/tag/%40arizeai/openinference-instrumentation-openai%404.5.0",
-        "publication_date": "2026-11-14",
-        "raw_date": "2026-11-14T00:53:10Z",
-        "method": "Official GitHub releases API published_at; draft:false and prerelease:false confirmed in primary-1.txt."
-      }
-    },
-    {
-      "title": "Telemetry.dev separates cached-token reporting before calculating costs",
-      "url": "https://telemetry.dev/blog/llm-cost-monitoring-account-for-cached-tokens",
-      "publisher": "telemetry.dev",
-      "published": "2026-11-14",
-      "category_key": "observability",
-      "summary": "A cost-monitoring guide maps provider usage into separate input and cache buckets, then checks priced calls against the invoice.",
-      "body": [
-        "Telemetry.dev is an AI observability service that traces model calls, tool operations and retrievals using OpenTelemetry, a standard for collecting telemetry. Its cost-monitoring guide explains why prompt caching can make token dashboards disagree with invoices: providers report cached input using different conventions, so a shared summing rule can count tokens twice or miss them.",
-        "The guide first maps raw usage into uncached input, cache reads and cache writes. It describes OpenAI and Gemini cache hits as included in input totals, while Anthropic reports cache activity separately. Each bucket then receives the applicable model rate, with output priced separately. The article cautions that explicit Gemini caches also incur storage costs outside per-call token fields.",
-        "Next, retain raw usage beside normalized counts on each span, the record of a call, so calculations can be corrected later. Mark missing usage as unknown rather than zero. Finally, compare a known window of priced calls with the matching invoice. Cache hit rate alone establishes neither savings nor the full bill; rates and reporting fields still need checking for the model in use."
+        "Agent observability tools record the steps between a request and an answer. Editorialge’s comparison proposes a practical exercise for checking whether that record actually supports investigation. A trace can help explain execution, but it does not establish that an answer is correct or a customer’s task is complete.",
+        "First, the guide suggests using synthetic data in one representative workflow: retrieve a policy, call a test interface, and summarize the result. Check whether the model request, retrieval, and tool operation appear as connected steps. Then deliberately fail the tool operation and inspect whether its error and duration are visible without exposing credentials.",
+        "Next, check that reviewers can identify the prompt, model, and application used. Capture an incorrect answer that appeared to succeed and see whether it can become a repeatable evaluation. Finally, inspect retained data, access permissions, and expected volume costs. This is a proposed test plan, with no measured comparison results."
       ],
       "format": "full",
-      "takeaway": "For engineers maintaining model-cost dashboards: validate provider-specific normalization against invoices before treating cache hit rate as a spending result.",
-      "image": "/edition-images/2026-11-15/cached-token-accounting.webp",
+      "takeaway": "Teams comparing trace tools can use a shared synthetic failure case to check coverage before expanding instrumentation.",
+      "image": "/edition-images/2026-11-16/trace-test.webp",
       "image_width": 1440,
-      "image_height": 737,
+      "image_height": 960,
       "image_provenance": {
         "kind": "generated-editorial",
         "generator": "built-in-imagegen",
-        "prompt": "Use case: infographic-diagram. Standalone landscape newspaper infographic, warm cream paper, dark ink, restrained teal and rust, engraved editorial symbols, very readable large labels and generous space. Source-supported idea: normalize provider token usage into uncached input, cache reads and cache writes before pricing, retain raw usage, and compare priced calls with the invoice. Render title exactly \"Normalize tokens before pricing\". Left box \"Raw provider usage\" branches into three central boxes \"Uncached input\", \"Cache reads\", \"Cache writes\". These converge into \"Apply model rates\", then \"Check invoice\". A small note exactly \"Keep raw usage for later checks\". This is conceptual accounting guidance, no numeric savings, no provider-specific formulas, no logos, screenshots, footer or watermark.",
+        "prompt": "Use case: infographic-diagram\nAsset type: standalone PNG newspaper story infographic.\nPrimary request: illustrate Editorialge’s proposed synthetic-data test for agent observability. Source: https://editorialge.com/ai-agent-observability-tools/ . This is a proposed exercise, not measured results or a product screenshot. Source-supported mechanism: run one synthetic workflow, deliberately fail a tool call, inspect recorded error and duration without credentials, capture an incorrect answer as a repeatable evaluation, check retained data and access.\nStyle: warm cream newsprint, dark ink line illustration, restrained rust-red accent, generous spacing, serif title, large readable labels. Landscape 3:2 composition, four connected illustrated elements with clean arrows. No logos or invented metrics.\nText verbatim, only these labels: Title \"Test what the trace reveals\"; subtitle \"Proposed exercise • synthetic data\"; four panels \"Run a workflow\", \"Fail a tool call\", \"Inspect the evidence\", \"Check data access\". Small annotation under panel three: \"Error • duration • answer\". Show a simple document and tool, a broken tool symbol, a magnifying glass on a trace record, and a locked data cabinet. All arrows left to right, no claim that tracing proves correctness. No footer, no watermark, no extra text.",
         "based_on": [
-          "https://telemetry.dev/blog/llm-cost-monitoring-account-for-cached-tokens"
+          "https://editorialge.com/ai-agent-observability-tools/"
         ],
         "reviewed": true,
-        "sha256": "bfdf8d02b873947ef02433fcca956d7f0ac254571283a20bf6512a0e5deb06fe",
+        "sha256": "84f862bc9ae91d8178faafd1ce3858230aae061272e9266d57c162575d916346",
         "optimization": {
           "format": "webp",
           "quality": 82,
           "max_width": 1440,
-          "source_sha256": "229c07c2d10716fc7da73e8c96eeee9d81398460fd6feb2dc2ccd7f7fd14e700"
+          "source_sha256": "414e09bb55f155b3f31e88079169a75e0b54cb7297045d0269be11f4ae40b366"
         }
       },
       "source": "news",
-      "interest_score": 8,
-      "score_reason": "Concrete accounting and validation guidance directly relevant to AI cost telemetry; no measured savings claimed.",
-      "dedupe_key": "article:telemetry.dev/blog/llm-cost-monitoring-account-for-cached-tokens",
+      "interest_score": 6,
+      "dedupe_key": "article:editorialge.com/ai-agent-observability-tools",
+      "score_reason": "A concrete proposed trace-verification exercise; no original benchmark or demonstrated product change.",
       "source_evidence": {
-        "url": "https://telemetry.dev/blog/llm-cost-monitoring-account-for-cached-tokens",
-        "publication_date": "2026-11-14",
-        "raw_date": "2026-11-14T10:04:54.716Z",
-        "method": "Original article JSON-LD datePublished, corroborated by visible author/date line and official dated blog listing; dateModified not used."
-      }
-    },
-    {
-      "title": "LangChain groups agent work around tasks people can review together",
-      "url": "https://www.langchain.com/blog/goal-engineering",
-      "publisher": "LangChain",
-      "published": "2026-11-14",
-      "category_key": "evals",
-      "summary": "A practitioner case study describes reorganizing sales agents around similar work so human feedback transfers across accounts.",
-      "body": [
-        "Actively AI builds agents for sales teams. In a LangChain article coauthored with its researchers, the company describes changing how those agents divide their work so salespeople can review outputs and provide useful feedback more easily. The focus is human evaluation of subjective work, rather than a new tracing feature.",
-        "The original design assigned an agent to each prospective customer account. Each agent handled several kinds of work, and reviewable actions arrived at different times. The authors report that this forced salespeople to switch between agents and made it awkward to share lessons about doing the same job across accounts.",
-        "The replacement groups agents into motions: recurring jobs such as outreach or early deal progression. First, similar tasks sit together for review. Then feedback about a seller’s preferences can inform other tasks within that motion. Background agents still gather account information, which the working agents retrieve as needed. The authors argue that aligning agent scope with review makes feedback easier to collect. This is a qualitative practitioner account, without a controlled performance comparison."
-      ],
-      "format": "full",
-      "takeaway": "For teams designing human evaluation workflows: examine whether reviewers can assess similar agent actions together and reuse the resulting feedback.",
-      "image": "/edition-images/2026-11-15/agent-feedback-scope.webp",
-      "image_width": 1440,
-      "image_height": 737,
-      "image_provenance": {
-        "kind": "generated-editorial",
-        "generator": "built-in-imagegen",
-        "prompt": "Use case: infographic-diagram. Standalone landscape newspaper editorial infographic on warm cream paper with dark ink, restrained teal and rust accents, engraved simple icons and large readable typography. Explain the source-supported Actively AI workflow described by LangChain: group similar sales tasks into a motion, review those tasks together, and transfer feedback within that motion; account context is gathered separately. Exact title \"Group work to improve feedback\". Three large connected panels labelled \"Similar sales tasks\", \"Review together\", \"Reuse feedback\". A smaller supporting box below the first panel labelled \"Account context\" with one arrow upward. Under title small text \"Actively AI practitioner workflow\". No performance numbers, no assertion of measured improvement, no logos, fake screenshots, footer or watermark.",
-        "based_on": [
-          "https://www.langchain.com/blog/goal-engineering"
-        ],
-        "reviewed": true,
-        "sha256": "a2eec8e7e09eb83400e2c60093f5a903d5fe6126cefb47cea11467c9b1b0cdd8",
-        "optimization": {
-          "format": "webp",
-          "quality": 82,
-          "max_width": 1440,
-          "source_sha256": "7a8742ece920e642e7d3f9cb4366512942e16b75bb6c5ea60814df60a6f8b68d"
-        }
-      },
-      "source": "news",
-      "interest_score": 7,
-      "score_reason": "Relevant human-feedback workflow with a concrete case study, but qualitative claims without comparative measurements.",
-      "dedupe_key": "article:langchain.com/blog/goal-engineering",
-      "source_evidence": {
-        "url": "https://www.langchain.com/blog/goal-engineering",
-        "publication_date": "2026-11-14",
-        "raw_date": "2026-11-14T16:00:00.000Z",
-        "method": "Original article JSON-LD datePublished, confirmed against visible November 14, 2026 publication line; dateModified not used."
+        "url": "https://editorialge.com/ai-agent-observability-tools/",
+        "publication_date": "2026-11-15",
+        "raw_date": "2026-11-15T06:52:48+00:00",
+        "method": "Original publisher JSON-LD datePublished agrees with the visible publication date; dateModified was not used. Saved primary-editorialge.html."
       }
     }
   ],
-  "edition": "AI Observability Daily",
   "research": {
     "status": "complete",
     "completed_sources": [
@@ -156,53 +67,109 @@
       "https://www.digitalocean.com/blog",
       "https://www.splunk.com/en_us/blog/observability.html",
       "https://www.dynatrace.com/news/",
-      "https://telemetry.dev/blog",
-      "https://telemetry.dev/blog/llm-cost-monitoring-account-for-cached-tokens",
-      "https://www.langchain.com/blog/goal-engineering"
+      "https://langfuse.com/changelog",
+      "https://www.dynatrace.com/news/blog/",
+      "https://editorialge.com/ai-agent-observability-tools/",
+      "https://ones.com/blog/what-software-tools-can-teams-use-to-track-ai-agent-evaluation-findings-in-2026/",
+      "https://infrabase.ai/blog/llm-observability-tools-compared",
+      "https://sobalabs.ai/blog/most-used-llm-eval-and-tracing-tools/",
+      "https://arize.com/blog/how-to-test-a-new-model-in-your-agent/",
+      "https://arize.com/blog/phoenix-automatic-model-pricing-updates/",
+      "https://www.datadoghq.com/blog/ai/introducing-scout-sre-specialized-model-bits-ai/",
+      "https://www.datadoghq.com/blog/kubernetes-processes-datadog-mcp-server/",
+      "https://www.splunk.com/en_us/blog/observability/splunk-observability-at-cisco-live.html"
     ],
     "excluded": [
       {
-        "url": "https://news.ycombinator.com/item?id=50502344",
-        "reason": "Anecdotal Ask HN discussion of model behavior, without an operational evaluation method or concrete observability change."
+        "url": "https://github.com/zk4x/skamandros",
+        "hn_id": "50509698",
+        "reason": "Hardware driver and kernel compiler, without AI-observability-specific instrumentation or evaluation."
       },
       {
-        "url": "https://www.pcmag.com/news/microsoft-patent-describes-using-your-idle-gaming-pc-to-train-ai",
-        "reason": "Idle gaming-computer training patent; outside AI observability and evaluation operations."
+        "url": "https://www.youtube.com/watch?v=HxdQawDIlnU",
+        "hn_id": "50509386",
+        "reason": "Walking-route animation; unrelated to the beat."
       },
       {
-        "url": "https://github.com/deepseek-ai/DeepEP-Ascend",
-        "reason": "Training/inference hardware implementation; no concrete observability or evaluation workflow established."
+        "url": "https://www.wiyomi.com/",
+        "hn_id": "50509047",
+        "reason": "Local video creation agent, without observability or evaluation implementation."
       },
       {
-        "url": "https://thinkingmachines.ai/blog/end-to-end-4-bit-training/",
-        "reason": "Model training precision research; outside the AI observability beat."
+        "url": "https://news.ycombinator.com/item?id=50508220",
+        "hn_id": "50508220",
+        "reason": "Assistant personality discussion; no concrete observability mechanism."
       },
       {
-        "url": "https://www.realgoodai.org/real-rating",
-        "reason": "Primary page is self-reported AI-use disclosure for creative works, not runtime telemetry or model evaluation; no original day evidence established."
+        "url": "https://thealliance.ai/projects/tapestry",
+        "hn_id": "50508131",
+        "reason": "Foundation-model training consortium, outside the AI observability beat."
       },
       {
-        "url": "https://getorty.work",
-        "reason": "Lead qualification application, not observability of AI systems."
+        "url": "https://medium.com/@smoking2man/when-ai-knows-more-than-it-can-offer-how-training-turns-an-intelligent-assistant-into-a-generator-7e700f05163e",
+        "hn_id": "50507918",
+        "reason": "General training/assistant behavior essay; primary page returned HTTP 403, original date unverified. Excluded, not used as evidence."
       },
       {
-        "url": "https://github.com/Rookweld/FieldRook",
-        "reason": "Windows troubleshooting workstation with optional AI; no concrete monitoring or evaluation of the AI itself."
+        "url": "https://borretti.me/article/taking-ai-seriously",
+        "hn_id": "50505795",
+        "reason": "Primary essay read; general AI progress argument, outside AI observability."
       },
       {
-        "url": "https://gammapdf.com/",
-        "reason": "PDF reading and annotation product, not AI observability."
+        "url": "https://news.ycombinator.com/item?id=50505744",
+        "hn_id": "50505744",
+        "reason": "Memory-layer market discussion, without concrete telemetry or evaluation findings."
       },
       {
-        "url": "https://github.com/langwatch/langwatch/releases/tag/ksuid%40v2.0.3",
-        "reason": "Stable release confirmed, but identifier timestamp byte-order fix does not establish concrete AI observability impact in this source."
+        "url": "https://videocardz.com/newz/microsoft-could-pay-gamers-for-using-spare-gpu-capacity-to-train-ai",
+        "hn_id": "50502675",
+        "reason": "GPU utilization/training patent report, outside the AI observability beat."
       },
       {
-        "url": "https://codex.danielvaughan.com/2026/04/16/codex-cli-opentelemetry-observability-tracing-agent-sessions/",
-        "reason": "Search result explicitly identifies an April original publication with a November update; modification is not publication."
+        "url": "https://ones.com/blog/what-software-tools-can-teams-use-to-track-ai-agent-evaluation-findings-in-2026/",
+        "reason": "Conflicting primary dates: visible November 15 but datePublished and time datetime 2026-11-14T21:04:47+00:00. Excluded under strict date gate."
+      },
+      {
+        "url": "https://infrabase.ai/blog/llm-observability-tools-compared",
+        "reason": "Original publication March 28; November 15 is explicitly an update."
+      },
+      {
+        "url": "https://sobalabs.ai/blog/most-used-llm-eval-and-tracing-tools/",
+        "reason": "Original publication November 3; later fetched statistics are not a new publication."
+      },
+      {
+        "url": "https://arize.com/blog/how-to-test-a-new-model-in-your-agent/",
+        "reason": "JSON-LD datePublished 2026-11-05T08:00:51-08:00, outside window."
+      },
+      {
+        "url": "https://arize.com/blog/phoenix-automatic-model-pricing-updates/",
+        "reason": "JSON-LD datePublished 2026-11-02T07:00:40-08:00, outside window."
+      },
+      {
+        "url": "https://www.datadoghq.com/blog/ai/introducing-scout-sre-specialized-model-bits-ai/",
+        "reason": "datePublished 2026-10-15T00:00:00.000Z, outside window."
+      },
+      {
+        "url": "https://www.datadoghq.com/blog/kubernetes-processes-datadog-mcp-server/",
+        "reason": "datePublished 2026-11-09T00:00:00.000Z, outside window."
+      },
+      {
+        "url": "https://www.splunk.com/en_us/blog/observability/splunk-observability-at-cisco-live.html",
+        "reason": "Primary page explicitly November 10, outside window."
       }
     ],
-    "note": "Scoped official-source sweep, not exhaustive web coverage. Used supplied discovery artifact rather than rerunning a command that writes outside the authorized run directory. All eight HN items independently confirmed through official API; supplied discovery records checks of eight GitHub watchlist repositories. Both release candidates verified through official release APIs. All eleven configured News surfaces fetched successfully and saved as news-N.html; Dynatrace web-tool timeouts recovered through direct HTTP. Supplementary exact-date searches led to telemetry.dev. Reviewed all 32 historical issue files (166 stories), canonical URL/event cross-posts, standalone story clarity, independent reverse-order reading, supported claims and image labels. No dateModified or HN resurfacing time used as publication evidence."
+    "note": "Scoped sweep, not exhaustive. Read all 33 existing issues before selection; compared URLs, headlines and original events. HN: refreshed all configured queries and official API submissions, nine excluded. GitHub: refreshed eight configured watchlist repositories, 704 release records checked, zero stable in-window releases. News: all eleven configured official surfaces fetched HTTP 200 and reviewed; targeted exact-date searches followed to original pages. Retained only Editorialge’s original proposed synthetic-data test, not its third-party tool feature assertions or rankings. Visible publication and JSON-LD datePublished agree. Discovery script was copied into run evidence with only path resolution/output destination adjusted, so discovery outputs stay within the authorized run directory. Builds, automated validators, promotion, Git and publication are reserved for outer runner.",
+    "source_counts": {
+      "hn_candidates": 9,
+      "github_releases_checked": 704,
+      "github_candidates": 0,
+      "news_surfaces": 11,
+      "retained": {
+        "hn": 0,
+        "news": 1,
+        "github": 0
+      }
+    }
   },
   "name": "Tidy Traces — AI Observability Daily",
   "canonical_url": "https://tidytraces.com/"

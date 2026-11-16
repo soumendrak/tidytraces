@@ -1,55 +1,25 @@
-# AI Observability Daily — 2026-11-15
+# AI Observability Daily — 2026-11-16
 
 By Soumendra Kumar Sahoo
 
 Canonical: https://tidytraces.com/
-Coverage window: 2026-11-14
+Coverage window: 2026-11-15
 
-## OpenInference records where OpenAI-compatible requests actually go
+## A proposed trace test checks agent failures and hidden data
 
-Source: Arize AI · OpenInference — https://github.com/Arize-ai/openinference/releases/tag/%40arizeai/openinference-instrumentation-openai%404.5.0
-Published: 2026-11-14
-Channel: github
-
-OpenInference’s OpenAI instrumentation records information about model requests in trace spans, the records of individual operations. Its release addresses a visibility gap: a call through a gateway or self-hosted proxy can have no identifiable model provider, leaving its destination unclear.
-
-The instrumentation now reads the client’s base URL and records its host and port as server.address and server.port. It includes hosts without a recognized provider, so destination evidence remains available when llm.provider cannot be inferred. Only host and port are recorded; URL paths and query parameters are excluded.
-
-Why it matters: For teams routing compatible model calls through gateways: check destination attributes alongside provider attribution when investigating routing.
-
-![OpenInference records where OpenAI-compatible requests actually go](/edition-images/2026-11-15/openinference-endpoint.webp)
-
-## Telemetry.dev separates cached-token reporting before calculating costs
-
-Source: telemetry.dev — https://telemetry.dev/blog/llm-cost-monitoring-account-for-cached-tokens
-Published: 2026-11-14
+Source: Editorialge — https://editorialge.com/ai-agent-observability-tools/
+Published: 2026-11-15
 Channel: news
 
-Telemetry.dev is an AI observability service that traces model calls, tool operations and retrievals using OpenTelemetry, a standard for collecting telemetry. Its cost-monitoring guide explains why prompt caching can make token dashboards disagree with invoices: providers report cached input using different conventions, so a shared summing rule can count tokens twice or miss them.
+Agent observability tools record the steps between a request and an answer. Editorialge’s comparison proposes a practical exercise for checking whether that record actually supports investigation. A trace can help explain execution, but it does not establish that an answer is correct or a customer’s task is complete.
 
-The guide first maps raw usage into uncached input, cache reads and cache writes. It describes OpenAI and Gemini cache hits as included in input totals, while Anthropic reports cache activity separately. Each bucket then receives the applicable model rate, with output priced separately. The article cautions that explicit Gemini caches also incur storage costs outside per-call token fields.
+First, the guide suggests using synthetic data in one representative workflow: retrieve a policy, call a test interface, and summarize the result. Check whether the model request, retrieval, and tool operation appear as connected steps. Then deliberately fail the tool operation and inspect whether its error and duration are visible without exposing credentials.
 
-Next, retain raw usage beside normalized counts on each span, the record of a call, so calculations can be corrected later. Mark missing usage as unknown rather than zero. Finally, compare a known window of priced calls with the matching invoice. Cache hit rate alone establishes neither savings nor the full bill; rates and reporting fields still need checking for the model in use.
+Next, check that reviewers can identify the prompt, model, and application used. Capture an incorrect answer that appeared to succeed and see whether it can become a repeatable evaluation. Finally, inspect retained data, access permissions, and expected volume costs. This is a proposed test plan, with no measured comparison results.
 
-Why it matters: For engineers maintaining model-cost dashboards: validate provider-specific normalization against invoices before treating cache hit rate as a spending result.
+Why it matters: Teams comparing trace tools can use a shared synthetic failure case to check coverage before expanding instrumentation.
 
-![Telemetry.dev separates cached-token reporting before calculating costs](/edition-images/2026-11-15/cached-token-accounting.webp)
-
-## LangChain groups agent work around tasks people can review together
-
-Source: LangChain — https://www.langchain.com/blog/goal-engineering
-Published: 2026-11-14
-Channel: news
-
-Actively AI builds agents for sales teams. In a LangChain article coauthored with its researchers, the company describes changing how those agents divide their work so salespeople can review outputs and provide useful feedback more easily. The focus is human evaluation of subjective work, rather than a new tracing feature.
-
-The original design assigned an agent to each prospective customer account. Each agent handled several kinds of work, and reviewable actions arrived at different times. The authors report that this forced salespeople to switch between agents and made it awkward to share lessons about doing the same job across accounts.
-
-The replacement groups agents into motions: recurring jobs such as outreach or early deal progression. First, similar tasks sit together for review. Then feedback about a seller’s preferences can inform other tasks within that motion. Background agents still gather account information, which the working agents retrieve as needed. The authors argue that aligning agent scope with review makes feedback easier to collect. This is a qualitative practitioner account, without a controlled performance comparison.
-
-Why it matters: For teams designing human evaluation workflows: examine whether reviewers can assess similar agent actions together and reuse the resulting feedback.
-
-![LangChain groups agent work around tasks people can review together](/edition-images/2026-11-15/agent-feedback-scope.webp)
+![A proposed trace test checks agent failures and hidden data](/edition-images/2026-11-16/trace-test.webp)
 
 ---
 
