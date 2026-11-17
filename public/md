@@ -1,25 +1,103 @@
-# AI Observability Daily — 2026-11-16
+# AI Observability Daily — 2026-11-17
 
 By Soumendra Kumar Sahoo
 
 Canonical: https://tidytraces.com/
-Coverage window: 2026-11-15
+Coverage window: 2026-11-16
 
-## A proposed trace test checks agent failures and hidden data
+## LangSmith groups traces and evaluations under an owned agent record
 
-Source: Editorialge — https://editorialge.com/ai-agent-observability-tools/
-Published: 2026-11-15
+Source: LangChain — https://www.langchain.com/blog/we-rebuilt-langsmith-around-the-agent
+Published: 2026-11-16
 Channel: news
 
-Agent observability tools record the steps between a request and an answer. Editorialge’s comparison proposes a practical exercise for checking whether that record actually supports investigation. A trace can help explain execution, but it does not establish that an answer is correct or a customer’s task is complete.
+LangSmith is an agent engineering platform for tracing, evaluating and running AI agents. LangChain has reorganized it around an agent record to address fragmented investigation workflows and unclear ownership. Previously, traces lived in flat projects, without an association between the same agent running in different environments.
 
-First, the guide suggests using synthetic data in one representative workflow: retrieve a policy, call a test interface, and summarize the result. Check whether the model request, retrieval, and tool operation appear as connected steps. Then deliberately fail the tool operation and inspect whether its error and duration are visible without exposing credentials.
+First, each agent receives an immutable identifier, a named owner and a type. Its local, development, staging and production environments then sit beneath that identity. Opening the record provides access to traces, evaluations, deployments and improvement issues. Cost and quality metrics roll up across environments, giving platform teams an owner to contact when spending changes.
 
-Next, check that reviewers can identify the prompt, model, and application used. Capture an incorrect answer that appeared to succeed and see whether it can become a repeatable evaluation. Finally, inspect retained data, access permissions, and expected volume costs. This is a proposed test plan, with no measured comparison results.
+Next, the agent type selects relevant dashboards and evaluation criteria. General-purpose and coding agents are supported; coding agents can connect a GitHub repository to track downstream outcomes such as merged changes. Agents can remain on external runtimes and send telemetry through the OpenTelemetry Protocol. LangChain says voice-specific types, organization-wide dashboards and identity-provider registration are planned; the centralized dashboards currently operate at workspace level.
 
-Why it matters: Teams comparing trace tools can use a shared synthetic failure case to check coverage before expanding instrumentation.
+Why it matters: Platform teams can check whether agent ownership and environment identity survive across their tracing and evaluation workflows.
 
-![A proposed trace test checks agent failures and hidden data](/edition-images/2026-11-16/trace-test.webp)
+![LangSmith groups traces and evaluations under an owned agent record](/edition-images/2026-11-17/agent-record.webp)
+
+## Dynatrace proposes stronger evidence as agents gain autonomy
+
+Source: Dynatrace — https://www.dynatrace.com/news/blog/evaluate-observe-act-a-practical-approach-to-operating-ai-agents-with-confidence/
+Published: 2026-11-16
+Channel: news
+
+Dynatrace is an observability platform that connects application and infrastructure behavior with production AI activity. Its new article, drawing on a Deloitte whitepaper, addresses a specific gap: an agent can respond successfully while choosing an inappropriate tool or producing an inaccurate answer. Service availability alone cannot establish that the task was handled correctly.
+
+First, the framework matches evidence to the agent’s autonomy. Advisory systems need usage, cost and output-quality checks. When AI output enters a process, teams add drift detection and business-outcome correlation. Agents that execute actions require decision traceability and guardrails; coordinating multiple agents calls for evidence that connects their activity.
+
+Next, teams connect retrieved context, decisions and actions with the surrounding services and infrastructure. The article positions Arize for evaluations and experiments, Dynatrace for production context, and Dynatrace Intelligence for investigation and supervised action. These are vendor descriptions, and the post explicitly says product integration is continuing. It recommends assessing readiness, designing controls, implementing a pilot and scaling only as confidence and control mature.
+
+Why it matters: Teams increasing agent permissions can define the evidence and escalation threshold for each step before granting more autonomy.
+
+![Dynatrace proposes stronger evidence as agents gain autonomy](/edition-images/2026-11-17/autonomy-evidence.webp)
+
+## Windows diagnostics can queue coding-agent usage for upload
+
+Source: Xusheng Li — https://xusheng.dev/posts/windows-coding-agent-telemetry/
+Published: 2026-11-16
+Channel: hn
+
+MissionControlAggregator is a Windows diagnostics component that records categories of application usage. Researcher Xusheng Li reports finding executable-name checks for coding agents and developer tools, then tracing those checks into persisted state and a diagnostic upload queue. The investigation concerns tool usage rather than the contents of an agent conversation.
+
+First, the component subscribes to existing Windows application events and Linux-subsystem execution events. A matching executable sets a slot in its state. It later converts those slots into bitsets in an Event Tracing for Windows report, a diagnostic event carrying which categories were observed. Li found no prompt text or source code in that report; its timestamps describe a collection window rather than time spent using an agent.
+
+Next, Li tested a command-shell copy named codex.exe and observed the corresponding bit in saved state and an emitted report. With optional diagnostic data enabled, the event appeared in the upload queue. The feature was active on the researcher’s virtual machine, but disabled in a baseline installation, so the findings do not establish universal activation. Li identifies the optional-diagnostics setting as the control for this upload path.
+
+Why it matters: Teams reviewing coding-agent telemetry should include operating-system diagnostics in their data inventory and verify local settings and feature state.
+
+![Windows diagnostics can queue coding-agent usage for upload](/edition-images/2026-11-17/agent-usage-privacy.webp)
+
+## Langfuse keeps reviewers on an item when a score save fails
+
+Source: Langfuse — https://github.com/langfuse/langfuse/releases/tag/v4.81.0
+Published: 2026-11-16
+Channel: github
+
+Langfuse is an open-source platform for tracing and evaluating AI applications. Its latest stable release includes a correction for human annotation queues, where reviewers work through application records and save scores. The release notes identify a failure case in that workflow: saving a completion score can fail.
+
+First, the annotation queue now keeps the reviewer on the current item when that save fails. This is a specific change to failure handling, rather than a claim that saves cannot fail. Next, the release fixes trace-page totals so they remain stable while users move through pages. It also changes score views to read trace attributes across all spans, the individual operation records that make up a trace.
+
+The same release adds filtering of event tables by numeric metadata values and filtering dataset items by status. These changes address how records are selected and reviewed, alongside the score-saving correction. The notes provide implementation changes without measurements of reviewer productivity, score accuracy or data-loss rates.
+
+Why it matters: Teams using human annotation queues can verify that a failed score save leaves the record available for review and retry.
+
+![Langfuse keeps reviewers on an item when a score save fails](/edition-images/2026-11-17/review-save.webp)
+
+## OpenInference keeps Portkey trace records open while streams are read
+
+Source: Arize AI / OpenInference — https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-portkey-v0.1.30
+Published: 2026-11-16
+Channel: github
+
+OpenInference supplies instrumentation that records AI operations for observability. Its Portkey integration fixes when a span, the record of one model operation, ends during a streamed response. Returning the stream from the request is not the end of reading its output.
+
+First, the integration returns a proxy around the stream. The proxy then ends the span when the stream is read, closed or dropped, allowing the record to include streamed output, token counts and iteration errors. The linked change covers both the Portkey chunk generator and its OpenAI stream representation.
+
+Why it matters: Portkey users can check completed trace records against consumed output and test early closure and iteration errors after upgrading.
+
+![OpenInference keeps Portkey trace records open while streams are read](/edition-images/2026-11-17/stream-span.webp)
+
+## LangWatch bounds a dependency to restore fresh Python imports
+
+Source: LangWatch — https://github.com/langwatch/langwatch/releases/tag/python-sdk%40v1.4.1
+Published: 2026-11-16
+Channel: github
+
+LangWatch is an AI observability platform with a Python software development kit for application integration. Its latest SDK hotfix addresses a failure before instrumentation can be used: a fresh installation could fail while importing LangWatch. The linked pull request reproduces the problem in a clean environment.
+
+First, the installation resolved a new major release of python-liquid, the template-library dependency. That library had removed UndefinedError, an exception class still imported by LangWatch’s prompt code. Because the declared dependency had no upper bound, a fresh installation could select the incompatible library and raise an import error.
+
+Next, the hotfix caps the dependency below the incompatible major and raises its minimum to a patched release. The maintainer reports that a fresh environment using the built wheel imported successfully, with dependency-range and prompt unit tests passing. The pull request also discloses that hosted end-to-end tests failed because their API key was invalid; those failures were not evidence that the installation fix had been tested against the hosted service.
+
+Why it matters: Teams rebuilding Python environments can check dependency resolution and a clean import before relying on their observability integration.
+
+![LangWatch bounds a dependency to restore fresh Python imports](/edition-images/2026-11-17/sdk-import.webp)
 
 ---
 
