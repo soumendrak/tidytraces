@@ -1,272 +1,137 @@
 {
-  "date": "2026-11-17",
-  "story_window": "2026-11-16",
-  "dek": "Owned agent records, evidence for autonomy, coding-agent telemetry privacy, and fixes for evaluation review, streamed traces and Python imports.",
+  "date": "2026-11-18",
+  "story_window": "2026-11-17",
+  "dek": "Trace privacy controls, connected AI telemetry and a safeguard against lost spans.",
   "stories": [
     {
-      "title": "LangSmith groups traces and evaluations under an owned agent record",
-      "url": "https://www.langchain.com/blog/we-rebuilt-langsmith-around-the-agent",
+      "title": "LangSmith restricts sensitive trace content by group and metadata",
+      "url": "https://www.langchain.com/blog/protect-sensitive-data-in-your-traces-new-controls-in-langsmith",
       "publisher": "LangChain",
-      "published": "2026-11-16",
+      "published": "2026-11-17",
       "category_key": "observability",
-      "summary": "LangSmith connects environments, traces and evaluation workflows through a persistent agent identity with a named owner.",
+      "summary": "Enterprise administrators can limit who sees trace inputs and outputs while allowing access to operational details, and set policies using groups and root-run metadata.",
       "body": [
-        "LangSmith is an agent engineering platform for tracing, evaluating and running AI agents. LangChain has reorganized it around an agent record to address fragmented investigation workflows and unclear ownership. Previously, traces lived in flat projects, without an association between the same agent running in different environments.",
-        "First, each agent receives an immutable identifier, a named owner and a type. Its local, development, staging and production environments then sit beneath that identity. Opening the record provides access to traces, evaluations, deployments and improvement issues. Cost and quality metrics roll up across environments, giving platform teams an owner to contact when spending changes.",
-        "Next, the agent type selects relevant dashboards and evaluation criteria. General-purpose and coding agents are supported; coding agents can connect a GitHub repository to track downstream outcomes such as merged changes. Agents can remain on external runtimes and send telemetry through the OpenTelemetry Protocol. LangChain says voice-specific types, organization-wide dashboards and identity-provider registration are planned; the centralized dashboards currently operate at workspace level."
+        "LangSmith is an agent engineering platform that records traces so developers can debug agent behavior. Those traces can contain customer messages and model responses alongside the run tree and timing information engineers need. LangChain says teams have had to choose between maintaining duplicate traces and workspaces or giving up visibility into production activity.",
+        "The new controls separate access to inputs and outputs from access to other trace data. First, administrators can allow engineers to inspect run trees, latency and token usage while restricting sensitive content. Next, they can organize users into groups and define permissions for each workspace, layered with existing role and attribute controls. Finally, trace-level policies can check metadata on the root run, such as a customer or user identifier, to determine which traces a person may access.",
+        "The company says the controls can be combined: for example, support staff could see content for their own customers while engineers inspect performance across traces without seeing inputs or outputs. Full traces remain stored in LangSmith, so these are access controls rather than redaction. The features are available on Enterprise plans."
       ],
       "format": "full",
-      "takeaway": "Platform teams can check whether agent ownership and environment identity survive across their tracing and evaluation workflows.",
-      "image": "/edition-images/2026-11-17/agent-record.webp",
+      "takeaway": "Teams using production traces with sensitive content can review their access policies and root metadata before widening debugging access.",
+      "image": "/edition-images/2026-11-18/langsmith.webp",
       "image_width": 1440,
       "image_height": 960,
       "image_provenance": {
         "kind": "generated-editorial",
         "generator": "built-in-imagegen",
-        "prompt": "Use case: infographic-diagram\nAsset type: standalone PNG editorial newspaper infographic.\nSource: https://www.langchain.com/blog/we-rebuilt-langsmith-around-the-agent\nSource-supported facts: An agent record contains owner, immutable ID and type. Development, staging and production environments belong under that record; traces and evaluations connect to it.\nComposition: landscape 3:2, generous whitespace, short readable labels, one clear concept. Warm cream newsprint, dark ink hand-drawn linework, restrained rust-red accent, large serif headline, clean typography.\nText verbatim: Central card: \"Agent record\" and \"Owner • ID • Type\". Three linked lower cards: \"Development\", \"Staging\", \"Production\". Bottom text: \"Traces and evaluations across environments\".\nConstraints: A hierarchy, not a temporal workflow. Do not depict organization-wide dashboards or identity-provider integration as available. No logos, no fake screenshots, no invented metrics. No footer, watermark or extra text.",
+        "prompt": "Create a landscape newspaper editorial infographic on LangSmith trace access controls, based on https://www.langchain.com/blog/protect-sensitive-data-in-your-traces-new-controls-in-langsmith. Show one trace splitting into two views: an engineer sees run tree and latency, while an authorized reviewer can see inputs and outputs. A simple policy gate uses group permissions and root metadata. Warm newsprint, dark ink, restrained teal, spacious, clean typography. Exact short labels: 'One trace', 'Access policy', 'Run tree and latency', 'Inputs and outputs'. No numerical claims, no logos, no watermark, no footer.",
         "based_on": [
-          "https://www.langchain.com/blog/we-rebuilt-langsmith-around-the-agent"
+          "https://www.langchain.com/blog/protect-sensitive-data-in-your-traces-new-controls-in-langsmith"
         ],
         "reviewed": true,
-        "sha256": "48f1e5e296b630ff4e135c33989381c742593f91930c97377cee2505cd2263d5",
+        "sha256": "4d8a8c192bded0b2b238bd52a607fa57ebbbfa5249334e3029b80fa39cc9be56",
         "optimization": {
           "format": "webp",
           "quality": 82,
           "max_width": 1440,
-          "source_sha256": "14598963343fa796cbd070bc62e443542bdb2629e4f6635eff7c7944248e0abc"
+          "source_sha256": "aa75f54fce64c23e98529ee8d56734c4735b089323c75a2e14e37a9ff8780853"
         }
       },
       "source": "news",
       "interest_score": 8,
-      "score_reason": "A concrete data-model change links agent ownership, traces and evaluation across environments, with explicit roadmap limits.",
-      "dedupe_key": "article:langchain.com/blog/we-rebuilt-langsmith-around-the-agent",
+      "dedupe_key": "article:langchain.com/protect-sensitive-data-in-your-traces-new-controls-in-langsmith",
+      "score_reason": "Concrete trace privacy controls address a production debugging tradeoff, with Enterprise availability.",
       "source_evidence": {
-        "url": "https://www.langchain.com/blog/we-rebuilt-langsmith-around-the-agent",
-        "publication_date": "2026-11-16",
-        "raw_date": "2026-11-16T18:00:00.000Z",
-        "method": "Original publisher JSON-LD datePublished matches visible November 16 publication; primary-0.html."
+        "url": "https://www.langchain.com/blog/protect-sensitive-data-in-your-traces-new-controls-in-langsmith",
+        "publication_date": "2026-11-17",
+        "raw_date": "2026-11-17",
+        "method": "Original LangChain article displays November 17, 2026 as its publication date."
       }
     },
     {
-      "title": "Dynatrace proposes stronger evidence as agents gain autonomy",
-      "url": "https://www.dynatrace.com/news/blog/evaluate-observe-act-a-practical-approach-to-operating-ai-agents-with-confidence/",
-      "publisher": "Dynatrace",
-      "published": "2026-11-16",
+      "title": "Logz.io connects AI request timelines with infrastructure telemetry",
+      "url": "https://logz.io/news-posts/ai-observability/",
+      "publisher": "Logz.io",
+      "published": "2026-11-17",
       "category_key": "observability",
-      "summary": "A Deloitte and Dynatrace framework connects agent decisions with production context and increases oversight requirements as autonomy grows.",
+      "summary": "A new AI observability capability connects model, retrieval and tool steps to the logs, traces and infrastructure behind a run.",
       "body": [
-        "Dynatrace is an observability platform that connects application and infrastructure behavior with production AI activity. Its new article, drawing on a Deloitte whitepaper, addresses a specific gap: an agent can respond successfully while choosing an inappropriate tool or producing an inaccurate answer. Service availability alone cannot establish that the task was handled correctly.",
-        "First, the framework matches evidence to the agent’s autonomy. Advisory systems need usage, cost and output-quality checks. When AI output enters a process, teams add drift detection and business-outcome correlation. Agents that execute actions require decision traceability and guardrails; coordinating multiple agents calls for evidence that connects their activity.",
-        "Next, teams connect retrieved context, decisions and actions with the surrounding services and infrastructure. The article positions Arize for evaluations and experiments, Dynatrace for production context, and Dynatrace Intelligence for investigation and supervised action. These are vendor descriptions, and the post explicitly says product integration is continuing. It recommends assessing readiness, designing controls, implementing a pilot and scaling only as confidence and control mature."
+        "Logz.io is an observability platform for examining logs, metrics and traces. It has announced an AI observability capability for teams operating agents and language model applications. The company says a slow or incorrect agent response can originate in a retrieval store, downstream service or infrastructure, leaving engineers to assemble the explanation across separate systems.",
+        "The proposed workflow starts with an AI request shown as a searchable, filterable trace. An engineer can open the run as a timeline and inspect the inputs and outputs of model, retrieval and tool steps, alongside the associated logs, backend traces and infrastructure. The announcement also describes a comparison of groups of runs to surface attributes shared by failures, token counts for steps and runs, and alerts through an account's existing alerting setup.",
+        "Logz.io says the capability ingests OpenTelemetry Protocol and OpenLLMetry data, allowing teams already using the latter to send their existing instrumentation without adopting a proprietary software development kit. The announcement describes product capabilities and the company's own use, but supplies no independent performance measurements. Customers can request access."
       ],
       "format": "full",
-      "takeaway": "Teams increasing agent permissions can define the evidence and escalation threshold for each step before granting more autonomy.",
-      "image": "/edition-images/2026-11-17/autonomy-evidence.webp",
+      "takeaway": "Teams already sending compatible telemetry can assess whether linking agent steps to infrastructure helps their investigations, subject to access availability.",
+      "image": "/edition-images/2026-11-18/logzio.webp",
       "image_width": 1440,
-      "image_height": 960,
+      "image_height": 737,
       "image_provenance": {
         "kind": "generated-editorial",
         "generator": "built-in-imagegen",
-        "prompt": "Use case: infographic-diagram\nAsset type: standalone PNG editorial newspaper infographic.\nSource: https://www.dynatrace.com/news/blog/evaluate-observe-act-a-practical-approach-to-operating-ai-agents-with-confidence/\nSource-supported facts: A framework recommends usage, cost and quality for advisory agents; drift and business outcomes for embedded AI; decision traceability and guardrails for agents acting; cross-agent evidence for multiple agents.\nComposition: landscape 3:2, generous whitespace, short readable labels, one clear concept. Warm cream newsprint, dark ink hand-drawn linework, restrained rust-red accent, large serif headline, clean typography.\nText verbatim: Title \"Match evidence to autonomy\". Four ascending steps: \"Advises\" / \"Usage • cost • quality\"; \"Enters a process\" / \"Drift • outcomes\"; \"Takes action\" / \"Decisions • guardrails\"; \"Coordinates agents\" / \"Cross-agent evidence\". Subtitle \"Recommended framework\".\nConstraints: Show a recommendation, not measured product results or completed integration. No logos, no fake screenshots, no invented metrics. No footer, watermark or extra text.",
+        "prompt": "Create a landscape newspaper editorial infographic based on https://logz.io/news-posts/ai-observability/. Illustrate a single AI request timeline connecting model, retrieval and tool steps with the underlying logs and infrastructure telemetry, conceptually showing where an engineer investigates a slow run. Warm newsprint, dark ink, restrained blue accent, spacious readable design. Exact short labels: 'AI request', 'Model', 'Retrieval', 'Tool', 'Logs and infrastructure'. No metrics, invented details, logos, footer or watermark.",
         "based_on": [
-          "https://www.dynatrace.com/news/blog/evaluate-observe-act-a-practical-approach-to-operating-ai-agents-with-confidence/"
+          "https://logz.io/news-posts/ai-observability/"
         ],
         "reviewed": true,
-        "sha256": "92fa52dadb6dbcd7af9aae64e353c6d0839bede97efa8c053e945d3361fdf9bd",
+        "sha256": "d3f3139c1fc2fb2bbd7a6cf65a8ea837de5941e754151cfdd60bebed63fffb35",
         "optimization": {
           "format": "webp",
           "quality": 82,
           "max_width": 1440,
-          "source_sha256": "87a63fbcdcb4a1967776cbd5bc291621589152a36e1ac5267fd112d827528cf4"
+          "source_sha256": "1c851858697648e1a19070c11902daf8b77e74d01a3ab5e1503b5a845051cb8b"
         }
       },
       "source": "news",
-      "interest_score": 7,
-      "score_reason": "A concrete operating framework, but vendor guidance rather than measured evidence of integration or improved outcomes.",
-      "dedupe_key": "article:dynatrace.com/news/blog/evaluate-observe-act-a-practical-approach-to-operating-ai-agents-with-confidence",
-      "source_evidence": {
-        "url": "https://www.dynatrace.com/news/blog/evaluate-observe-act-a-practical-approach-to-operating-ai-agents-with-confidence/",
-        "publication_date": "2026-11-16",
-        "raw_date": "2026-11-16T21:55:44+00:00",
-        "method": "Original publisher JSON-LD datePublished agrees with visible publication; primary-2.html."
-      }
-    },
-    {
-      "title": "Windows diagnostics can queue coding-agent usage for upload",
-      "url": "https://xusheng.dev/posts/windows-coding-agent-telemetry/",
-      "publisher": "Xusheng Li",
-      "published": "2026-11-16",
-      "category_key": "observability",
-      "summary": "A firsthand investigation follows executable-name matches into a diagnostic report and upload queue, with important limits on what was observed.",
-      "body": [
-        "MissionControlAggregator is a Windows diagnostics component that records categories of application usage. Researcher Xusheng Li reports finding executable-name checks for coding agents and developer tools, then tracing those checks into persisted state and a diagnostic upload queue. The investigation concerns tool usage rather than the contents of an agent conversation.",
-        "First, the component subscribes to existing Windows application events and Linux-subsystem execution events. A matching executable sets a slot in its state. It later converts those slots into bitsets in an Event Tracing for Windows report, a diagnostic event carrying which categories were observed. Li found no prompt text or source code in that report; its timestamps describe a collection window rather than time spent using an agent.",
-        "Next, Li tested a command-shell copy named codex.exe and observed the corresponding bit in saved state and an emitted report. With optional diagnostic data enabled, the event appeared in the upload queue. The feature was active on the researcher’s virtual machine, but disabled in a baseline installation, so the findings do not establish universal activation. Li identifies the optional-diagnostics setting as the control for this upload path."
-      ],
-      "format": "full",
-      "takeaway": "Teams reviewing coding-agent telemetry should include operating-system diagnostics in their data inventory and verify local settings and feature state.",
-      "image": "/edition-images/2026-11-17/agent-usage-privacy.webp",
-      "image_width": 1440,
-      "image_height": 960,
-      "image_provenance": {
-        "kind": "generated-editorial",
-        "generator": "built-in-imagegen",
-        "prompt": "Use case: infographic-diagram\nAsset type: standalone PNG editorial newspaper infographic.\nSource: https://xusheng.dev/posts/windows-coding-agent-telemetry/\nSource-supported facts: In the researcher’s test, executable-name matching sets an agent-usage bit, saves state, emits a diagnostic event and reaches an upload queue when optional diagnostics is enabled. No prompt content was found in this report. Activation varied across installations.\nComposition: landscape 3:2, generous whitespace, short readable labels, one clear concept. Warm cream newsprint, dark ink hand-drawn linework, restrained rust-red accent, large serif headline, clean typography.\nText verbatim: Title \"How agent usage reaches diagnostics\". Four panels: \"Name match\", \"Saved usage bit\", \"Diagnostic report\", \"Upload queue\". Gate before last panel: \"Optional diagnostics enabled\". Bottom note: \"Observed in a local test; activation varies\".\nConstraints: No claim that every Windows installation has this active. No actual prompts, source code or secrets depicted. No logos, no fake screenshots, no invented metrics. No footer, watermark or extra text.",
-        "based_on": [
-          "https://xusheng.dev/posts/windows-coding-agent-telemetry/"
-        ],
-        "reviewed": true,
-        "sha256": "8d232e597ce140420fbc957c50010dd038b9712ec8f655685e78fb5818a540e8",
-        "optimization": {
-          "format": "webp",
-          "quality": 82,
-          "max_width": 1440,
-          "source_sha256": "a5891d5bb19f4a54f992f1ccbfb69f3a2333d672125c7c964a64b63d9caaa072"
-        }
-      },
-      "source": "hn",
       "interest_score": 8,
-      "hn_id": "50524736",
-      "comments": "https://news.ycombinator.com/item?id=50524736",
-      "score_reason": "Firsthand code analysis and a reproducible local test trace privacy-relevant agent-usage telemetry, with activation limits preserved.",
-      "dedupe_key": "article:xusheng.dev/posts/windows-coding-agent-telemetry",
+      "dedupe_key": "announcement:logz.io:ai-observability",
+      "score_reason": "Directly relevant new telemetry workflow; claims are from the vendor announcement.",
       "source_evidence": {
-        "url": "https://xusheng.dev/posts/windows-coding-agent-telemetry/",
-        "publication_date": "2026-11-16",
-        "raw_date": "2026-11-16T00:00:00-05:00",
-        "method": "Primary article itemprop datePublished and article:published_time match the visible publication day; page-21.html. Official HN API confirmed discovery."
+        "url": "https://logz.io/news-posts/ai-observability/",
+        "publication_date": "2026-11-17",
+        "raw_date": "2026-11-17",
+        "method": "Original company announcement explicitly says November 17, 2026 and announces the capability today."
       }
     },
     {
-      "title": "Langfuse keeps reviewers on an item when a score save fails",
-      "url": "https://github.com/langfuse/langfuse/releases/tag/v4.81.0",
-      "publisher": "Langfuse",
-      "published": "2026-11-16",
-      "category_key": "evals",
-      "summary": "Langfuse fixes annotation-queue behavior after a failed score save and corrects related trace and metrics views.",
+      "title": "Phoenix rejects a tracing configuration that could silently drop spans",
+      "url": "https://github.com/Arize-ai/phoenix/releases/tag/%40arizeai/phoenix-otel%403.1.0",
+      "publisher": "Arize Phoenix",
+      "published": "2026-11-17",
+      "category_key": "observability",
+      "summary": "Phoenix tracing helpers now reject a positional exporter argument and warn when certain environment settings are ignored.",
       "body": [
-        "Langfuse is an open-source platform for tracing and evaluating AI applications. Its latest stable release includes a correction for human annotation queues, where reviewers work through application records and save scores. The release notes identify a failure case in that workflow: saving a completion score can fail.",
-        "First, the annotation queue now keeps the reviewer on the current item when that save fails. This is a specific change to failure handling, rather than a claim that saves cannot fail. Next, the release fixes trace-page totals so they remain stable while users move through pages. It also changes score views to read trace attributes across all spans, the individual operation records that make up a trace.",
-        "The same release adds filtering of event tables by numeric metadata values and filtering dataset items by status. These changes address how records are selected and reviewed, alongside the score-saving correction. The notes provide implementation changes without measurements of reviewer productivity, score accuracy or data-loss rates."
+        "Arize Phoenix is an open-source platform for observing and evaluating AI applications. Its tracing package helps configure OpenTelemetry, which records operations as spans. The release notes describe a configuration mistake that could drop every span silently when an exporter was passed positionally to a span processor instead of inside an options object.",
+        "The updated batch and simple processors now throw a type error for that positional form, making the mistake visible. The registration helper also accepts a sampler, which controls which traces are recorded, and span limits, and re-exports several sampler implementations. It warns once per applicable environment variable when settings for sampling, spans, attributes or batch processing are set but the corresponding option is not configured in code, because the underlying OpenTelemetry JavaScript release ignores those variables. For batch settings with custom processors, the warning comes from the re-exported batch processor. The release notes do not report how many deployments encountered the issue."
       ],
       "format": "full",
-      "takeaway": "Teams using human annotation queues can verify that a failed score save leaves the record available for review and retry.",
-      "image": "/edition-images/2026-11-17/review-save.webp",
+      "takeaway": "JavaScript teams upgrading Phoenix tracing should check processor construction and heed warnings about ignored telemetry settings.",
+      "image": "/edition-images/2026-11-18/phoenix.webp",
       "image_width": 1440,
       "image_height": 960,
       "image_provenance": {
         "kind": "generated-editorial",
         "generator": "built-in-imagegen",
-        "prompt": "Use case: infographic-diagram\nAsset type: standalone PNG editorial newspaper infographic.\nSource: https://github.com/langfuse/langfuse/releases/tag/v4.81.0\nSource-supported facts: Langfuse annotation queues now stay on the current record when a completion score save fails. A released bug fix, no measured accuracy or performance claim.\nComposition: landscape 3:2, generous whitespace, short readable labels, one clear concept. Warm cream newsprint, dark ink hand-drawn linework, restrained rust-red accent, large serif headline, clean typography.\nText verbatim: Title \"A failed save should keep your place\". Three elements: \"Review item\", \"Score save fails\", \"Stay on current item\". Left-to-right arrows. Draw the same simple document icon in first and last panels; a restrained red warning symbol in middle.\nConstraints: Do not imply automatic retry or guaranteed storage. No numeric scores, fabricated interfaces or product screenshots. No logos, no fake screenshots, no invented metrics. No footer, watermark or extra text.",
+        "prompt": "Create a landscape newspaper infographic based on https://github.com/Arize-ai/phoenix/releases/tag/%40arizeai/phoenix-otel%403.1.0. Explain one change: a tracing span processor now rejects an incorrectly supplied exporter argument with an error rather than silently dropping spans. Conceptual comparison, no claim about measured results. Warm newsprint, dark ink, restrained red and teal, large readable type, simple arrows. Exact labels: 'Exporter argument', 'Old: spans dropped', 'Now: configuration error'. No other technical claims, numbers, logos, footer or watermark.",
         "based_on": [
-          "https://github.com/langfuse/langfuse/releases/tag/v4.81.0"
+          "https://github.com/Arize-ai/phoenix/releases/tag/%40arizeai/phoenix-otel%403.1.0"
         ],
         "reviewed": true,
-        "sha256": "f2b8b2f5b9fff86fb490992fe62a62d0b55e54cbccc9e763c29ba9ff8bf33e80",
+        "sha256": "63da9a1a9de6fcb8763a811be9984f0696be8bb9f2b481eed5ec38328e0cd6bb",
         "optimization": {
           "format": "webp",
           "quality": 82,
           "max_width": 1440,
-          "source_sha256": "b07e882a3104b14b4cc6f8c6a9a3fd9dc77228bcd226c149b2a625af9260a8c1"
+          "source_sha256": "954283d27d518c7af0ea984c3ee0acc49f964e8865bb98ac2029de5ed9b54939"
         }
       },
       "source": "github",
       "interest_score": 8,
-      "score_reason": "A concrete correction to human-evaluation failure handling, supported by related record-selection fixes.",
-      "dedupe_key": "release:langfuse/langfuse:v4.81.0",
+      "dedupe_key": "release:Arize-ai/phoenix:@arizeai/phoenix-otel@3.1.0",
+      "score_reason": "Explicitly catches a configuration error that could otherwise silently lose all spans.",
       "source_evidence": {
-        "url": "https://github.com/langfuse/langfuse/releases/tag/v4.81.0",
-        "publication_date": "2026-11-16",
-        "raw_date": "2026-11-16T16:26:13Z",
-        "method": "GitHub release API published_at; draft=false and prerelease=false. Saved releases.json."
-      }
-    },
-    {
-      "title": "OpenInference keeps Portkey trace records open while streams are read",
-      "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-portkey-v0.1.30",
-      "publisher": "Arize AI / OpenInference",
-      "published": "2026-11-16",
-      "category_key": "observability",
-      "summary": "The Portkey integration delays closing a model-operation record until the streamed response is consumed, closed or discarded.",
-      "body": [
-        "OpenInference supplies instrumentation that records AI operations for observability. Its Portkey integration fixes when a span, the record of one model operation, ends during a streamed response. Returning the stream from the request is not the end of reading its output.",
-        "First, the integration returns a proxy around the stream. The proxy then ends the span when the stream is read, closed or dropped, allowing the record to include streamed output, token counts and iteration errors. The linked change covers both the Portkey chunk generator and its OpenAI stream representation."
-      ],
-      "format": "brief",
-      "brief_reason": "The release contains one streaming-lifecycle fix; the linked primary pull request supports a compact mechanism explanation but no broader results.",
-      "takeaway": "Portkey users can check completed trace records against consumed output and test early closure and iteration errors after upgrading.",
-      "image": "/edition-images/2026-11-17/stream-span.webp",
-      "image_width": 1440,
-      "image_height": 960,
-      "image_provenance": {
-        "kind": "generated-editorial",
-        "generator": "built-in-imagegen",
-        "prompt": "Use case: infographic-diagram\nAsset type: standalone PNG editorial newspaper infographic.\nSource: https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-portkey-v0.1.30\nSource-supported facts: OpenInference Portkey instrumentation wraps a response stream in a proxy. It ends the operation record when the stream is read, closed or dropped so output, token counts and iteration errors can be captured.\nComposition: landscape 3:2, generous whitespace, short readable labels, one clear concept. Warm cream newsprint, dark ink hand-drawn linework, restrained rust-red accent, large serif headline, clean typography.\nText verbatim: Title \"Keep the trace open for the stream\". Main sequence: \"Return stream\" then \"Read stream\" then \"End span\". Under sequence a long bracket labeled \"Span: one model operation\". Note by final element: \"Read • closed • dropped\". Three small labels at bottom: \"Output\", \"Token counts\", \"Iteration errors\".\nConstraints: Show a conceptual lifecycle. No latency numbers or unsupported guarantee that every early termination has complete output. No logos, no fake screenshots, no invented metrics. No footer, watermark or extra text.",
-        "based_on": [
-          "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-portkey-v0.1.30"
-        ],
-        "reviewed": true,
-        "sha256": "9f4be1cd3b538c06f62fc48713edb03c41cef92086f54b24e38eaf4b37eb543f",
-        "optimization": {
-          "format": "webp",
-          "quality": 82,
-          "max_width": 1440,
-          "source_sha256": "fc154e13b16cb4012d9ecafc71f187fdf94ab56423f9417ff6262183801ec885"
-        }
-      },
-      "source": "github",
-      "interest_score": 8,
-      "score_reason": "A targeted lifecycle correction preserves streamed output, token counts and iteration errors in telemetry.",
-      "dedupe_key": "release:Arize-ai/openinference:python-openinference-instrumentation-portkey-v0.1.30",
-      "source_evidence": {
-        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-portkey-v0.1.30",
-        "publication_date": "2026-11-16",
-        "raw_date": "2026-11-16T23:45:43Z",
-        "method": "GitHub release API published_at; stable, non-draft release. Linked pull request supplies mechanism; releases.json and portkey-fix.txt."
-      }
-    },
-    {
-      "title": "LangWatch bounds a dependency to restore fresh Python imports",
-      "url": "https://github.com/langwatch/langwatch/releases/tag/python-sdk%40v1.4.1",
-      "publisher": "LangWatch",
-      "published": "2026-11-16",
-      "category_key": "observability",
-      "summary": "A Python SDK hotfix caps its template-library dependency after a removed exception class broke imports in fresh installations.",
-      "body": [
-        "LangWatch is an AI observability platform with a Python software development kit for application integration. Its latest SDK hotfix addresses a failure before instrumentation can be used: a fresh installation could fail while importing LangWatch. The linked pull request reproduces the problem in a clean environment.",
-        "First, the installation resolved a new major release of python-liquid, the template-library dependency. That library had removed UndefinedError, an exception class still imported by LangWatch’s prompt code. Because the declared dependency had no upper bound, a fresh installation could select the incompatible library and raise an import error.",
-        "Next, the hotfix caps the dependency below the incompatible major and raises its minimum to a patched release. The maintainer reports that a fresh environment using the built wheel imported successfully, with dependency-range and prompt unit tests passing. The pull request also discloses that hosted end-to-end tests failed because their API key was invalid; those failures were not evidence that the installation fix had been tested against the hosted service."
-      ],
-      "format": "full",
-      "takeaway": "Teams rebuilding Python environments can check dependency resolution and a clean import before relying on their observability integration.",
-      "image": "/edition-images/2026-11-17/sdk-import.webp",
-      "image_width": 1440,
-      "image_height": 960,
-      "image_provenance": {
-        "kind": "generated-editorial",
-        "generator": "built-in-imagegen",
-        "prompt": "Use case: infographic-diagram\nAsset type: standalone PNG editorial newspaper infographic.\nSource: https://github.com/langwatch/langwatch/releases/tag/python-sdk%40v1.4.1\nSource-supported facts: A fresh LangWatch Python installation resolved an incompatible python-liquid major where UndefinedError was removed. The hotfix bounds the dependency to a compatible range; maintainer’s clean import test passed.\nComposition: landscape 3:2, generous whitespace, short readable labels, one clear concept. Warm cream newsprint, dark ink hand-drawn linework, restrained rust-red accent, large serif headline, clean typography.\nText verbatim: Title \"Restore the import path\". Two rows: \"Unbounded dependency\" arrow \"Removed exception\" arrow \"Import fails\"; \"Bounded dependency\" arrow \"Compatible library\" arrow \"Import succeeds\". Subtitle \"LangWatch Python SDK\".\nConstraints: No version numbers. This depicts the maintainer’s import test, not a passed hosted end-to-end test. No logos, no fake screenshots, no invented metrics. No footer, watermark or extra text.",
-        "based_on": [
-          "https://github.com/langwatch/langwatch/releases/tag/python-sdk%40v1.4.1"
-        ],
-        "reviewed": true,
-        "sha256": "27171671509e43a6be7ca9bcf213e1e0ebef39bf62574b25625bf0efe4cb2a88",
-        "optimization": {
-          "format": "webp",
-          "quality": 82,
-          "max_width": 1440,
-          "source_sha256": "5ab85364984da03e6a9f7f2874ce3f041220147697f4eba7028cd3d4ed003be1"
-        }
-      },
-      "source": "github",
-      "interest_score": 7,
-      "score_reason": "A narrow installation repair with reproducible before-and-after import evidence and explicit end-to-end test limits.",
-      "dedupe_key": "release:langwatch/langwatch:python-sdk@v1.4.1",
-      "source_evidence": {
-        "url": "https://github.com/langwatch/langwatch/releases/tag/python-sdk%40v1.4.1",
-        "publication_date": "2026-11-16",
-        "raw_date": "2026-11-16T08:55:59Z",
-        "method": "GitHub release API published_at; stable, non-draft. Primary pull request contains clean-environment evidence; releases.json and langwatch-fix.txt."
+        "url": "https://github.com/Arize-ai/phoenix/releases/tag/%40arizeai/phoenix-otel%403.1.0",
+        "publication_date": "2026-11-17",
+        "raw_date": "2026-11-17T02:11:21Z",
+        "method": "GitHub release API published_at; draft and prerelease are both false."
       }
     }
   ],
@@ -289,175 +154,41 @@
       "https://www.digitalocean.com/blog",
       "https://www.splunk.com/en_us/blog/observability.html",
       "https://www.dynatrace.com/news/",
-      "https://langfuse.com/changelog",
-      "https://www.langchain.com/blog/we-rebuilt-langsmith-around-the-agent",
-      "https://www.dynatrace.com/news/blog/evaluate-observe-act-a-practical-approach-to-operating-ai-agents-with-confidence/",
-      "https://www.langchain.com/blog/from-tasks-to-goals",
-      "https://www.datadoghq.com/blog/auto-processing-log-pipelines/",
-      "https://www.datadoghq.com/blog/index.xml",
-      "https://www.splunk.com/en_us/blog.html"
+      "https://www.langchain.com/blog/protect-sensitive-data-in-your-traces-new-controls-in-langsmith",
+      "https://logz.io/news-posts/ai-observability/",
+      "https://techcommunity.microsoft.com/blog/agent-365-blog/whats-new-in-microsoft-agent-365-ignite-2026/4571753"
     ],
     "excluded": [
       {
-        "url": "https://signoz.io/blog/opentelemetry-ai-agent-observability/",
-        "reason": "Resurfaced guide: original publisher datePublished is 2026-10-19, not the HN submission day.",
-        "hn_id": "50515018"
+        "url": "https://news.ycombinator.com/item?id=50532373",
+        "reason": "Product-page submission lacks verified original publication evidence and a clear first-party Show HN launch."
       },
       {
-        "url": "https://github.com/DevDizzle/gammarips-harness",
-        "reason": "Options-trading harness and live market dataset, outside AI-observability-only scope; no original publication evidence establishing a new observability announcement.",
-        "hn_id": "50522439"
+        "url": "https://news.ycombinator.com/item?id=50536468",
+        "reason": "Agent-volume CI is outside the AI observability editorial scope."
       },
       {
-        "url": "https://www.cnn.com/2026/11/16/asia/south-korea-ai-glasses-cheating-intl-hnk",
-        "reason": "Examination anti-cheating policy, outside AI observability.",
-        "hn_id": "50521657"
+        "url": "https://github.com/Arize-ai/phoenix/releases/tag/%40arizeai/phoenix-client%408.0.1",
+        "reason": "Dependency-only update duplicates the substantive Phoenix instrumentation change."
       },
       {
-        "url": "https://www.youtube.com/watch?v=dtqK4oeLp70",
-        "reason": "Defense AI interview, outside AI observability.",
-        "hn_id": "50520568"
+        "url": "https://github.com/Arize-ai/phoenix/releases/tag/%40arizeai/phoenix-cli%401.22.1",
+        "reason": "Dependency-only update duplicates the substantive Phoenix instrumentation change."
       },
       {
-        "url": "https://blog.google/innovation-and-ai/infrastructure-and-cloud/google-cloud/training-performance-benchmarks-tpus/",
-        "reason": "Training hardware benchmark, not application tracing, evaluation or runtime observability.",
-        "hn_id": "50519931"
+        "url": "https://techcommunity.microsoft.com/blog/agent-365-blog/whats-new-in-microsoft-agent-365-ignite-2026/4571753",
+        "reason": "Primary page publication and update labels conflict; original date is uncertain."
       },
       {
-        "url": "https://economist.com/international/2026/11/13/teaching-kids-to-think-for-themselves-in-the-age-of-ai",
-        "reason": "Education essay outside beat; primary page HTTP 403. Not needed for the observability sweep.",
-        "hn_id": "50519271"
+        "url": "https://github.com/langfuse/langfuse/releases/tag/v4.82.0",
+        "reason": "Relevant incremental changes deferred in favor of more focused stories in this edition."
       },
       {
-        "url": "https://daventry.io/making-of",
-        "reason": "Browser game engine, outside AI observability.",
-        "hn_id": "50517319"
-      },
-      {
-        "url": "https://marketplace.visualstudio.com/items?itemName=prettywhale-ai.prettywhale",
-        "reason": "Data-pipeline generation extension, outside AI observability.",
-        "hn_id": "50517255"
-      },
-      {
-        "url": "https://news.ycombinator.com/item?id=50516186",
-        "reason": "AI burnout discussion, outside AI observability.",
-        "hn_id": "50516186"
-      },
-      {
-        "url": "https://openbutterfly.com",
-        "reason": "Data-center environmental-impact inventory, outside application-level AI observability.",
-        "hn_id": "50514264"
-      },
-      {
-        "url": "https://github.com/withcoral/coral",
-        "reason": "Agent gateway announcement reviewed; focused on reusable tools and policy execution rather than a distinct observability implementation. Not selected for this edition.",
-        "hn_id": "50517803"
-      },
-      {
-        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-semantic-conventions-v0.1.46",
-        "reason": "Broad shared convention/helper release notes reviewed; not selected as a separate story to avoid repeating the same shared changes across package announcements."
-      },
-      {
-        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-vertexai-v0.1.37",
-        "reason": "Broad shared convention/helper release notes reviewed; not selected as a separate story to avoid repeating the same shared changes across package announcements."
-      },
-      {
-        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-v0.1.79",
-        "reason": "Broad shared convention/helper release notes reviewed; not selected as a separate story to avoid repeating the same shared changes across package announcements."
-      },
-      {
-        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-typesafe-v0.1.13",
-        "reason": "Documentation reorganization only; no new operational instrumentation behavior in this package."
-      },
-      {
-        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-together-v0.1.21",
-        "reason": "Primary stable release reviewed; a narrower provider-specific instrumentation or example fix. Editorial selection prioritizes the separately retained Portkey stream-lifecycle fix rather than publishing every package release."
-      },
-      {
-        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-strands-agents-v0.1.20",
-        "reason": "Primary stable release reviewed; a narrower provider-specific instrumentation or example fix. Editorial selection prioritizes the separately retained Portkey stream-lifecycle fix rather than publishing every package release."
-      },
-      {
-        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-openai-v0.1.74",
-        "reason": "The endpoint-host recording feature already appeared in the JavaScript OpenInference story in the earlier November 15 edition; do not repeat the same change in a Python release."
-      },
-      {
-        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-openai-agents-v2.8.4",
-        "reason": "Documentation reorganization only; no new operational instrumentation behavior in this package."
-      },
-      {
-        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-mistralai-v2.3.6",
-        "reason": "Primary stable release reviewed; a narrower provider-specific instrumentation or example fix. Editorial selection prioritizes the separately retained Portkey stream-lifecycle fix rather than publishing every package release."
-      },
-      {
-        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-mcp-v2.1.5",
-        "reason": "Primary stable release reviewed; a narrower provider-specific instrumentation or example fix. Editorial selection prioritizes the separately retained Portkey stream-lifecycle fix rather than publishing every package release."
-      },
-      {
-        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-llama-index-v4.7.7",
-        "reason": "Primary stable release reviewed; a narrower provider-specific instrumentation or example fix. Editorial selection prioritizes the separately retained Portkey stream-lifecycle fix rather than publishing every package release."
-      },
-      {
-        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-langchain-v0.1.87",
-        "reason": "Primary stable release reviewed; a narrower provider-specific instrumentation or example fix. Editorial selection prioritizes the separately retained Portkey stream-lifecycle fix rather than publishing every package release."
-      },
-      {
-        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-dspy-v0.1.55",
-        "reason": "Primary stable release reviewed; a narrower provider-specific instrumentation or example fix. Editorial selection prioritizes the separately retained Portkey stream-lifecycle fix rather than publishing every package release."
-      },
-      {
-        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-anthropic-v3.3.6",
-        "reason": "Primary stable release reviewed; a narrower provider-specific instrumentation or example fix. Editorial selection prioritizes the separately retained Portkey stream-lifecycle fix rather than publishing every package release."
-      },
-      {
-        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-agno-v1.2.1",
-        "reason": "Documentation reorganization only; no new operational instrumentation behavior in this package."
-      },
-      {
-        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-agentspec-v0.1.22",
-        "reason": "Primary stable release reviewed; a narrower provider-specific instrumentation or example fix. Editorial selection prioritizes the separately retained Portkey stream-lifecycle fix rather than publishing every package release."
-      },
-      {
-        "url": "https://github.com/Arize-ai/openinference/releases/tag/java-openinference-semantic-conventions-v0.1.26",
-        "reason": "Broad shared convention/helper release notes reviewed; not selected as a separate story to avoid repeating the same shared changes across package announcements."
-      },
-      {
-        "url": "https://github.com/Arize-ai/openinference/releases/tag/go/openinference-semantic-conventions/v0.1.15",
-        "reason": "Broad shared convention/helper release notes reviewed; not selected as a separate story to avoid repeating the same shared changes across package announcements."
-      },
-      {
-        "url": "https://github.com/langwatch/langwatch/releases/tag/clickhouse-serverless-image%40v0.5.0",
-        "reason": "Backend resource and backup changes reviewed; narrower self-hosting infrastructure changes not selected for this AI-observability edition."
-      },
-      {
-        "url": "https://www.langchain.com/blog/from-tasks-to-goals",
-        "reason": "Original date verified, but largely conceptual agent-design guidance overlapping the previous goal-engineering coverage. Selected the distinct agent-record implementation instead."
-      },
-      {
-        "url": "https://www.datadoghq.com/blog/auto-processing-log-pipelines/",
-        "reason": "Original November 16 publication verified. General log-parsing automation; source uses a payments example and does not establish concrete operating-AI-system relevance."
-      },
-      {
-        "url": "https://opentelemetry.io/blog/",
-        "reason": "In-window community-award announcement is not an AI-observability implementation; agent-harness guide is from November 12 and previously covered."
-      },
-      {
-        "url": "https://www.splunk.com/en_us/blog/observability/rss.xml",
-        "reason": "Supplemental guessed feed returned 404. Official category and general index were accessible; category returned No results, and focused date search found no eligible primary article. No conclusion of exhaustive coverage."
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/%40arizeai/openinference-instrumentation-bedrock%400.5.9",
+        "reason": "Narrow model-name extraction fix deferred in this edition."
       }
     ],
-    "note": "Scoped sweep, not exhaustive. Read 34 historical editions containing 170 stories; reviewed candidate URLs, headlines and original events against history. Refreshed all five HN queries and official submission API records, and eight GitHub watchlist repositories using a copy of the repository fetch script with only import/config/output paths adjusted to preserve write boundaries. Saved refreshed candidates under discovery/. Verified each retained GitHub published_at with draft=false and prerelease=false. Read all eleven configured News surfaces, followed in-window LangChain and Dynatrace primary articles, checked Langfuse changelog, Datadog RSS and primary in-window log-processing article, and supplemented with exact-date focused searches. Splunk category returns No results; general index and focused search used as fallback. News date gate uses original datePublished, never modification fields. Excluded resurfacing and duplicate cross-language OpenInference endpoint feature. Six stories reviewed independently in reverse order for context, fact attribution, mechanism, caveats and separate takeaways. Langfuse story intentionally excludes previously covered Gemini evaluation and topic features and experimental disabled native ingestion. Tests, automated validation, builds, promotion, Git and publication reserved for the outer runner. All six original PNGs and final WebPs visually reviewed; converter metadata, byte sizes, dimensions and SHA-256 recorded. All WebPs are static, 1440 by 960, below 300 KB. Manual editorial review complete; automated validator/build deferred to outer runner.",
-    "source_counts": {
-      "hn_candidates": 12,
-      "github_candidates": 22,
-      "github_releases_checked": 704,
-      "news_surfaces": 11,
-      "retained": {
-        "hn": 1,
-        "news": 2,
-        "github": 3
-      }
-    }
+    "note": "Scoped review of ten supplied HN candidates, all seven same-day watchlist release candidates and the configured publisher surfaces, supplemented with focused news searches. Other HN submissions concern general AI, certification, infrastructure or unrelated products; remaining releases concern prompt tags or infrastructure maintenance. The Splunk index returned no results in the text view. This is not an exhaustive web sweep."
   },
   "name": "Tidy Traces — AI Observability Daily",
   "canonical_url": "https://tidytraces.com/"
