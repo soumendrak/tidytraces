@@ -1,55 +1,41 @@
-# AI Observability Daily — 2026-11-18
+# AI Observability Daily — 2026-11-19
 
 By Soumendra Kumar Sahoo
 
 Canonical: https://tidytraces.com/
-Coverage window: 2026-11-17
+Coverage window: 2026-11-18
 
-## LangSmith restricts sensitive trace content by group and metadata
+## Langfuse explains how its gateway records coding-agent calls without translating provider APIs
 
-Source: LangChain — https://www.langchain.com/blog/protect-sensitive-data-in-your-traces-new-controls-in-langsmith
-Published: 2026-11-17
-Channel: news
+Source: Langfuse — https://langfuse.com/blog/2026-11-11-building-the-langfuse-ai-gateway
+Published: 2026-11-18
+Channel: hn
 
-LangSmith is an agent engineering platform that records traces so developers can debug agent behavior. Those traces can contain customer messages and model responses alongside the run tree and timing information engineers need. LangChain says teams have had to choose between maintaining duplicate traces and workspaces or giving up visibility into production activity.
+Langfuse is an AI engineering platform for tracing and monitoring applications. Its gateway sits between coding agents and model providers, giving operators a way to record calls and see usage by key, user and team. The company says agent requests can be large, responses can remain open for minutes, and a gateway failure can interrupt the agents depending on it.
 
-The new controls separate access to inputs and outputs from access to other trace data. First, administrators can allow engineers to inspect run trees, latency and token usage while restricting sensitive content. Next, they can organize users into groups and define permissions for each workspace, layered with existing role and attribute controls. Finally, trace-level policies can check metadata on the root run, such as a customer or user identifier, to determine which traces a person may access.
+First, the gateway checks the key and model against the Langfuse control plane, caching the result. It forwards the provider's native API rather than translating between providers, then streams the response back. It batches traces for background ingestion so the response does not wait for them. Teams can choose usage-only records or full input and output capture; self-hosted administrators can turn recording off.
 
-The company says the controls can be combined: for example, support staff could see content for their own customers while engineers inspect performance across traces without seeing inputs or outputs. Full traces remain stored in LangSmith, so these are access controls rather than redaction. The features are available on Enterprise plans.
+Langfuse chose Rust and its asynchronous runtime to spread work across cores and budget memory during bursts. Its own comparison used a mock provider and one repeated streaming request, with different gateway configurations; the company calls the results directional rather than a ranking. Native APIs also mean changing providers is not as simple as changing a model name, and there is no automatic cross-provider fallback. The gateway is in public beta and can be self-hosted.
 
-Why it matters: Teams using production traces with sensitive content can review their access policies and root metadata before widening debugging access.
+Why it matters: Teams evaluating a model gateway can examine both trace capture settings and how provider-specific behavior is preserved.
 
-![LangSmith restricts sensitive trace content by group and metadata](/edition-images/2026-11-18/langsmith.webp)
+![Langfuse explains how its gateway records coding-agent calls without translating provider APIs](/edition-images/2026-11-19/langfuse.webp)
 
-## Logz.io connects AI request timelines with infrastructure telemetry
+## Phoenix fixes evaluator requests for Anthropic prompts with extended thinking
 
-Source: Logz.io — https://logz.io/news-posts/ai-observability/
-Published: 2026-11-17
-Channel: news
-
-Logz.io is an observability platform for examining logs, metrics and traces. It has announced an AI observability capability for teams operating agents and language model applications. The company says a slow or incorrect agent response can originate in a retrieval store, downstream service or infrastructure, leaving engineers to assemble the explanation across separate systems.
-
-The proposed workflow starts with an AI request shown as a searchable, filterable trace. An engineer can open the run as a timeline and inspect the inputs and outputs of model, retrieval and tool steps, alongside the associated logs, backend traces and infrastructure. The announcement also describes a comparison of groups of runs to surface attributes shared by failures, token counts for steps and runs, and alerts through an account's existing alerting setup.
-
-Logz.io says the capability ingests OpenTelemetry Protocol and OpenLLMetry data, allowing teams already using the latter to send their existing instrumentation without adopting a proprietary software development kit. The announcement describes product capabilities and the company's own use, but supplies no independent performance measurements. Customers can request access.
-
-Why it matters: Teams already sending compatible telemetry can assess whether linking agent steps to infrastructure helps their investigations, subject to access availability.
-
-![Logz.io connects AI request timelines with infrastructure telemetry](/edition-images/2026-11-18/logzio.webp)
-
-## Phoenix rejects a tracing configuration that could silently drop spans
-
-Source: Arize Phoenix — https://github.com/Arize-ai/phoenix/releases/tag/%40arizeai/phoenix-otel%403.1.0
-Published: 2026-11-17
+Source: Arize Phoenix — https://github.com/Arize-ai/phoenix/releases/tag/arize-phoenix-v21.2.0
+Published: 2026-11-18
 Channel: github
 
-Arize Phoenix is an open-source platform for observing and evaluating AI applications. Its tracing package helps configure OpenTelemetry, which records operations as spans. The release notes describe a configuration mistake that could drop every span silently when an exporter was passed positionally to a span processor instead of inside an options object.
+Arize Phoenix is an open-source platform for observing and evaluating AI applications. Its server-side language model evaluators use a model to assess outputs. The maintainers found that an Anthropic evaluator request could fail when its prompt enabled extended thinking: the evaluator forced a tool call, a combination the API rejected with a request error.
 
-The updated batch and simple processors now throw a type error for that positional form, making the mistake visible. The registration helper also accepts a sampler, which controls which traces are recorded, and span limits, and re-exports several sampler implementations. It warns once per applicable environment variable when settings for sampling, spans, attributes or batch processing are set but the corresponding option is not configured in code, because the underlying OpenTelemetry JavaScript release ignores those variables. For batch settings with custom processors, the warning comes from the re-exported batch processor. The release notes do not report how many deployments encountered the issue.
+The fix checks the invocation parameters before sending the evaluation request. When extended thinking is enabled, Phoenix now allows automatic tool choice and adds a system instruction naming the tool, instead of forcing the tool call. A thinking setting inside the extra request body takes precedence because that body is merged last. Adaptive or disabled thinking continues to use forced tool choice, which the maintainers say the API accepts.
 
-Why it matters: JavaScript teams upgrading Phoenix tracing should check processor construction and heed warnings about ignored telemetry settings.
+The change applies to the evaluator path; the playground still sends the user's chosen tool setting. The linked change reports live API checks of affected and unaffected configurations, but does not quantify how often users encountered the failure.
 
-![Phoenix rejects a tracing configuration that could silently drop spans](/edition-images/2026-11-18/phoenix.webp)
+Why it matters: Teams running Anthropic-based Phoenix evaluators can check whether extended-thinking configurations that previously failed now complete.
+
+![Phoenix fixes evaluator requests for Anthropic prompts with extended thinking](/edition-images/2026-11-19/phoenix.webp)
 
 ---
 
