@@ -1,0 +1,181 @@
+{
+  "date": "2026-11-20",
+  "story_window": "2026-11-19",
+  "dek": "Agent decision evaluation, a proposed observability acquisition and gateway spending controls.",
+  "stories": [
+    {
+      "title": "Langfuse recommends tracing the decisions agents make to stay silent",
+      "url": "https://langfuse.com/blog/2026-11-19-evaluating-proactive-agents",
+      "publisher": "Langfuse",
+      "published": "2026-11-19",
+      "category_key": "evals",
+      "summary": "A guide proposes evaluating when an agent acts, waits or stays silent, using recorded context and expected decisions.",
+      "body": [
+        "Langfuse is an AI engineering platform for tracing and evaluating applications. Its guide examines proactive agents: systems with a standing goal that watch for events and decide whether, when and how far to act. Unlike an ordinary chatbot answer, a decision to do nothing may never reach a person who can review it.",
+        "The guide recommends recording the triggering event, retrieved context, decision, scope of action and rationale in a trace, a record of the run. If a cheap filter precedes a more expensive judgment, record both stages so a missed alert can be traced to the filter or the later decision. Keep silent runs in the review sample too.",
+        "Next, build test cases from moments rather than questions: include the trigger, a snapshot of memory and instructions, and the expected decision with a reason. Sample flagged traces and silent runs, and compare cases where the same event meets different user contexts. The guide suggests tracking precision and recall separately, using signals such as dismissed suggestions and undone actions, and setting stricter thresholds for costly or hard-to-reverse actions. These are recommendations rather than measured results."
+      ],
+      "format": "full",
+      "takeaway": "Teams operating proactive agents can include silent decisions and their context in review datasets.",
+      "image": "/edition-images/2026-11-20/proactive.webp",
+      "image_width": 1440,
+      "image_height": 810,
+      "image_provenance": {
+        "kind": "generated-editorial",
+        "generator": "built-in-imagegen",
+        "prompt": "Create a warm newsprint editorial infographic about evaluating proactive AI agents: a conceptual sequence of an agent observing context, deciding whether to act, and reviewers assessing the decision and outcome. Dark ink, restrained blue, generous spacing, and three clear labels: Observe, Decide, Review. No invented metrics, logos, screenshots, footer or watermark. Landscape.",
+        "based_on": [
+          "https://langfuse.com/blog/2026-11-19-evaluating-proactive-agents"
+        ],
+        "reviewed": true,
+        "sha256": "703e56c0b4ccb08bf9fcceb80d95fc9fcc4aef6b241d20a5dbb4215f9828f311",
+        "optimization": {
+          "format": "webp",
+          "quality": 82,
+          "max_width": 1440,
+          "source_sha256": "df96f11c032d476d0a6837158e4d4b03f62458b09ebbd9839c540e864a9ce510"
+        }
+      },
+      "source": "hn",
+      "interest_score": 8,
+      "hn_id": "50563054",
+      "comments": "https://news.ycombinator.com/item?id=50563054",
+      "dedupe_key": "article:langfuse.com/blog/2026-11-19-evaluating-proactive-agents",
+      "score_reason": "Concrete guidance on trace coverage and evaluation of decisions that otherwise remain invisible.",
+      "source_evidence": {
+        "url": "https://langfuse.com/blog/2026-11-19-evaluating-proactive-agents",
+        "publication_date": "2026-11-19",
+        "raw_date": "2026-11-19",
+        "method": "Original publisher page displays November 19, 2026 as its article publication date."
+      }
+    },
+    {
+      "title": "Elastic agrees to acquire HoneyHive and plans to connect agent evaluations with operations",
+      "url": "https://www.elastic.co/blog/elastic-and-honeyhive",
+      "publisher": "Elastic",
+      "published": "2026-11-19",
+      "category_key": "observability",
+      "summary": "Elastic says it intends to bring HoneyHive tracing and evaluation workflows into its observability platform.",
+      "body": [
+        "HoneyHive is an AI observability and evaluation platform that traces agent workflows and helps teams test changes before deployment. Elastic, which provides search and analytics for applications and infrastructure, has announced an agreement to acquire it.",
+        "Elastic says an application can appear healthy even when an agent chooses the wrong tool or acts on bad information. HoneyHive provides detailed traces, offline evaluation and experimentation, as well as production monitoring and evaluation. These records can help teams examine how an agent behaved and whether it achieved its intended outcome.",
+        "The announced plan is to bring those agent-specific tracing and evaluation workflows into Elastic Observability, connecting agent behavior and quality with the operational context of supporting systems. Elastic describes this as an aim, not a feature already delivered. It says it intends to continue supporting existing HoneyHive customers during integration and plans to share a consolidated product roadmap in the coming months."
+      ],
+      "format": "full",
+      "takeaway": "Teams using either platform can watch the integration roadmap for details of how agent evidence and system telemetry will be connected.",
+      "image": "/edition-images/2026-11-20/elastic.webp",
+      "image_width": 1440,
+      "image_height": 960,
+      "image_provenance": {
+        "kind": "generated-editorial",
+        "generator": "built-in-imagegen",
+        "prompt": "Minimal editorial diagram on warm paper: two boxes, one labeled 'Agent traces and evaluations', the other labeled 'System operations context', each with an arrow to a third box labeled 'Planned combined view'. The diagram represents an announced future integration. Use ONLY those three labels and no other text. Dark ink, muted blue, generous whitespace, landscape. No logos, numerical claims, footer or watermark.",
+        "based_on": [
+          "https://www.elastic.co/blog/elastic-and-honeyhive"
+        ],
+        "reviewed": true,
+        "sha256": "c6664f3c84f9e60dd796ff5f120f4c822644a6d01f87373430054df47d819519",
+        "optimization": {
+          "format": "webp",
+          "quality": 82,
+          "max_width": 1440,
+          "source_sha256": "8a416e0e82bf9f4ae24d1fb2a7b228e216b8a3f8dc4ee10165a0b62159a59581"
+        }
+      },
+      "source": "news",
+      "interest_score": 8,
+      "dedupe_key": "announcement:elastic:honeyhive-acquisition",
+      "score_reason": "A consequential proposed combination of agent evaluation with infrastructure observability; integration remains planned.",
+      "source_evidence": {
+        "url": "https://www.elastic.co/blog/elastic-and-honeyhive",
+        "publication_date": "2026-11-19",
+        "raw_date": "2026-11-19",
+        "method": "Original publisher page displays November 19, 2026 as its article publication date."
+      }
+    },
+    {
+      "title": "Langfuse adds spending budgets to its AI gateway",
+      "url": "https://langfuse.com/changelog/2026-11-19-ai-gateway-budgets",
+      "publisher": "Langfuse",
+      "published": "2026-11-19",
+      "category_key": "observability",
+      "summary": "Gateway budgets can apply to individual keys, users or the organization; requests are rejected after a limit is reached until reset.",
+      "body": [
+        "Langfuse AI Gateway is a service for routing model requests while recording usage. Langfuse says teams can now set spending budgets for individual API keys, individual users and the entire organization. They can also set defaults for keys or users that have no individual budget.",
+        "Once a budget is reached, the gateway rejects requests until that budget resets. The announcement describes the available scopes and enforcement behavior, but does not give further operational detail about reset configuration or request handling."
+      ],
+      "format": "brief",
+      "brief_reason": "The original changelog entry describes budget scopes and rejection behavior but gives limited implementation detail.",
+      "takeaway": "Teams using the gateway can consider the availability impact of request rejection when setting spending limits.",
+      "image": "/edition-images/2026-11-20/budgets.webp",
+      "image_width": 1440,
+      "image_height": 960,
+      "image_provenance": {
+        "kind": "generated-editorial",
+        "generator": "built-in-imagegen",
+        "prompt": "Create a clean warm newsprint editorial infographic explaining Langfuse AI Gateway budgets. Show API key, user, and organization as three possible budget scopes leading to a spend limit; after reaching the limit, requests are rejected until the budget resets. Short readable labels only: 'Key', 'User', 'Organization', 'Budget reached', 'Requests rejected until reset'. Dark ink with restrained blue accent, landscape, no invented numbers, branding, screenshots, footer or watermark.",
+        "based_on": [
+          "https://langfuse.com/changelog/2026-11-19-ai-gateway-budgets"
+        ],
+        "reviewed": true,
+        "sha256": "b2d426479807ed6a53308cfc68a76a3350d35938ec2ad40c613a9f8d7da8133f",
+        "optimization": {
+          "format": "webp",
+          "quality": 82,
+          "max_width": 1440,
+          "source_sha256": "3c4c16915803b8fa8a2bb748a40043196624fed9f6c71b50666011becdfbcfc9"
+        }
+      },
+      "source": "news",
+      "interest_score": 7,
+      "dedupe_key": "article:langfuse.com/changelog/2026-11-19-ai-gateway-budgets",
+      "score_reason": "A concrete spending control with a narrow announcement and limited implementation detail.",
+      "source_evidence": {
+        "url": "https://langfuse.com/changelog/2026-11-19-ai-gateway-budgets",
+        "publication_date": "2026-11-19",
+        "raw_date": "2026-11-19",
+        "method": "Original publisher page displays November 19, 2026 as its article publication date."
+      }
+    }
+  ],
+  "research": {
+    "status": "complete",
+    "completed_sources": [
+      "hn",
+      "news",
+      "github"
+    ],
+    "checked_urls": [
+      "https://arize.com/blog/",
+      "https://langfuse.com/blog",
+      "https://www.langchain.com/blog",
+      "https://www.braintrust.dev/blog",
+      "https://opentelemetry.io/blog/",
+      "https://www.elastic.co/observability-labs/blog",
+      "https://www.datadoghq.com/blog/",
+      "https://www.honeycomb.io/blog/",
+      "https://www.digitalocean.com/blog",
+      "https://www.splunk.com/en_us/blog/observability.html",
+      "https://www.dynatrace.com/news/"
+    ],
+    "excluded": [
+      {
+        "url": "https://vllm.ai/blog/2026-09-29-disaggregated-serving-guide",
+        "reason": "Originally published outside the frozen window."
+      },
+      {
+        "url": "https://github.com/Arize-ai/openinference/releases",
+        "reason": "Reviewed watchlist releases; selected stories prioritize broader editorial relevance; routine dependency releases are omitted."
+      },
+      {
+        "url": "https://news.ycombinator.com/item?id=50561824",
+        "reason": "The first-party Show HN describes a general DevOps event log; AI access via MCP does not establish an AI observability use case."
+      },
+      {
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/%40arizeai/openinference-instrumentation-openai%404.6.0",
+        "reason": "Relevant release was reviewed but omitted in the scoped selection; it requires a separately sourced story and illustration."
+      }
+    ],
+    "note": "Scoped HN query, configured watchlist release and publisher-surface checks, supplemented by targeted searches; not an exhaustive web sweep."
+  }
+}
