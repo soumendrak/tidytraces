@@ -1,0 +1,404 @@
+{
+  "date": "2026-11-21",
+  "story_window": "2026-11-20",
+  "dek": "A Langfuse trace-view redesign, Phoenix cost tracking for more span types, OpenInference GenAI attributes, and agent-observability releases from Google, Dynatrace, Datadog and CloudWatch.",
+  "stories": [
+    {
+      "title": "Langfuse redesigns the trace view so large agent traces are easier to read",
+      "url": "https://langfuse.com/changelog/2026-11-20-redesigned-trace-view",
+      "publisher": "Langfuse",
+      "published": "2026-11-20",
+      "category_key": "observability",
+      "summary": "Langfuse shipped a redesigned trace view that shows the shape of a large agent run at a glance, focuses on the step being debugged, and keeps the same layout in the full page, the side peek, and on smaller screens.",
+      "body": [
+        "Langfuse is an open-source platform that records and evaluates what LLM applications and agents do, including traces of each step in a run. A trace is the record of one run and the observations inside it. The company says its trace view now looks different than it did a few months ago, but the redesign arrived in many small steps, so people may not have noticed each change.",
+        "Large agent traces can be hard to read: the overall shape of a long run gets lost, and the input, output, and metadata of the step you are debugging sit among a lot of surrounding clutter. Layouts can also change when you move from the full trace page to a side peek or to a smaller screen.",
+        "The new view addresses that in three ways. First, the Timeline and graph view show the shape of a large agent trace at a glance, so you can zoom into the step that matters. Then, the view focuses on the input, output, and metadata of the observation you are debugging, with less clutter around them. Finally, the same layout is used on the full trace page, in the side peek, and on smaller screens, so you do not have to relearn the page when you change context."
+      ],
+      "format": "full",
+      "takeaway": "If you debug long agent traces in Langfuse, open a recent large trace in the Timeline or graph view and confirm you can find the failing step, then check that the side peek still shows the same input, output, and metadata layout.",
+      "image": "/edition-images/2026-11-21/langfuse-trace.webp",
+      "source": "news",
+      "interest_score": 8,
+      "dedupe_key": "article:langfuse.com/changelog/2026-11-20-redesigned-trace-view",
+      "score_reason": "A primary-source product change that improves how operators inspect large agent traces, with concrete layout behavior.",
+      "source_evidence": {
+        "url": "https://langfuse.com/changelog/2026-11-20-redesigned-trace-view",
+        "publication_date": "2026-11-20",
+        "raw_date": "2026-11-20",
+        "method": "Official changelog page displays November 20, 2026 next to the title; the entry's front matter date is 2026-11-20 and the dated URL is listed on the changelog index."
+      },
+      "image_width": 1152,
+      "image_height": 864,
+      "image_provenance": {
+        "kind": "generated-editorial",
+        "generator": "built-in-imagegen",
+        "prompt": "Use case: infographic-diagram. Asset type: newspaper story infographic, a standalone PNG. Primary request: explain, conceptually, how Langfuse's redesigned trace view helps someone debug a large agent run. Source-supported facts only: Timeline and graph view show the shape of a large agent trace at a glance, then you zoom into the step that matters; the view focuses on the input, output, and metadata of the observation being debugged, with less clutter; the same layout is used on the full trace page, in the side peek, and on smaller screens. Title verbatim: \"See the shape, then the step\". Draw a simple three-step flow only, with short labels and no sample data. Labels verbatim: \"Large agent trace\", \"Timeline and graph view\", \"Zoom into one step\", \"Input, output, and metadata\", \"Same layout in the page, peek, and small screens\". Do not invent times, step numbers, model names, token counts, or example business text. Style: warm newsprint paper, dark charcoal ink, restrained teal and rust accents, serif heading, large perfectly legible labels, generous spacing, clean newspaper infographic. Composition: landscape about 4:3; a clear title and 3 to 5 labelled elements; readable at article width. Constraints: no invented metrics, no timestamps, no token counts, no model names, no fake screenshots, no unsupported product architecture, no unrelated logos, no \"AI-generated\" label, footer, watermark, or caption text; do not invent example prompts, revenues, or costs; preserve source versus editorial distinction.",
+        "based_on": [
+          "https://langfuse.com/changelog/2026-11-20-redesigned-trace-view"
+        ],
+        "reviewed": true,
+        "sha256": "cf3df0f114d101c30ec3e14b6f1e6bad8761b9ca5eab094a1c9e7e544329a591",
+        "optimization": {
+          "format": "webp",
+          "quality": 82,
+          "max_width": 1440,
+          "source_sha256": "f86409b7585ccf9f2cb93f56196e73132ec63b816e33fcff9cf1cc1986d0923d"
+        }
+      }
+    },
+    {
+      "title": "Phoenix starts pricing decision and embedding spans in cost tracking",
+      "url": "https://github.com/Arize-ai/phoenix/releases/tag/arize-phoenix-v22.0.0",
+      "publisher": "GitHub",
+      "published": "2026-11-20",
+      "category_key": "observability",
+      "summary": "A stable Phoenix server release adds cost calculation for decision spans and embedding spans, records model types in the cost manifest, and says no manual migration steps are required.",
+      "body": [
+        "Arize Phoenix is an open-source observability platform that records and evaluates the steps of LLM applications. Cost tracking in Phoenix uses token counts and per-token prices to report spending on traces. A stable server release extends that work to two more kinds of records that appear in traces: decision spans, which capture an individual model decision, and embedding spans, which capture an embedding operation that turns text into a numeric vector.",
+        "The release notes add cost calculation for both span types. They also put model types into the cost manifest and sync prices through LiteLLM, including Gemini models that LiteLLM lists only under a Gemini prefix. The generative model's type is exposed through GraphQL, the API used to query Phoenix, and a related fix makes that type immutable once it is set.",
+        "Phoenix's migration notes say no manual steps are needed: the server now calculates costs for decision and embedding spans. Operators who watch project and trace cost totals should confirm, after they upgrade, that decision and embedding work is included in those totals and that each model is classified as the type they expect."
+      ],
+      "format": "full",
+      "takeaway": "If you use Phoenix cost totals for agent or retrieval traffic, upgrade and compare a trace that includes decision or embedding work against the prior totals, and check that each generative model has the intended type.",
+      "image": "/edition-images/2026-11-21/phoenix-cost.webp",
+      "source": "github",
+      "interest_score": 8,
+      "dedupe_key": "release:Arize-ai/phoenix:arize-phoenix-v22.0.0",
+      "score_reason": "A stable release with a concrete cost-tracking implementation and an official migration note, relevant to operators who rely on spend totals.",
+      "source_evidence": {
+        "url": "https://github.com/Arize-ai/phoenix/releases/tag/arize-phoenix-v22.0.0",
+        "publication_date": "2026-11-20",
+        "raw_date": "2026-11-20T05:14:18Z",
+        "method": "GitHub API published_at 2026-11-20T05:14:18Z for the stable, non-draft, non-prerelease tag arize-phoenix-v22.0.0; confirmed on the release page and in the official migration notes."
+      },
+      "image_width": 1152,
+      "image_height": 864,
+      "image_provenance": {
+        "kind": "generated-editorial",
+        "generator": "built-in-imagegen",
+        "prompt": "Use case: infographic-diagram. Asset type: newspaper story infographic, a standalone PNG. Primary request: explain that Phoenix cost tracking now prices decision spans and embedding spans as well as ordinary language-model work. Source-supported facts only: Phoenix reports spending from token counts and per-token prices; a stable release adds cost calculation for decision spans and embedding spans; model types are recorded in the cost manifest and synced through LiteLLM; a model's type is exposed in GraphQL and is immutable once set; official migration notes say no manual steps are needed. Title verbatim: \"Price decisions and embeddings too\". Labels verbatim: \"Trace work\", \"Language-model spans\", \"Decision spans\", \"Embedding spans\", \"Cost totals, no manual migration\". Do not invent dollar amounts or leave stray punctuation in labels. Style: warm newsprint paper, dark charcoal ink, restrained teal and rust accents, serif heading, large perfectly legible labels, generous spacing, clean newspaper infographic. Composition: landscape about 4:3; a clear title and 3 to 5 labelled elements; readable at article width. Constraints: no invented metrics, no timestamps, no token counts, no model names, no fake screenshots, no unsupported product architecture, no unrelated logos, no \"AI-generated\" label, footer, watermark, or caption text; do not invent example prompts, revenues, or costs; preserve source versus editorial distinction.",
+        "based_on": [
+          "https://github.com/Arize-ai/phoenix/releases/tag/arize-phoenix-v22.0.0"
+        ],
+        "reviewed": true,
+        "sha256": "9fc6479b057fe81409929da0d6cc30c53a6bbd14eb7a443c20faefed1bcc7570",
+        "optimization": {
+          "format": "webp",
+          "quality": 82,
+          "max_width": 1440,
+          "source_sha256": "dfa15ba7ca8232eb2c99d49bd6828307324d78a4f189aad88edbe35d7c3e0963"
+        }
+      }
+    },
+    {
+      "title": "OpenInference can also write OpenTelemetry GenAI attributes on traces",
+      "url": "https://github.com/Arize-ai/openinference/releases/tag/%40arizeai/openinference-core%402.9.0",
+      "publisher": "GitHub",
+      "published": "2026-11-20",
+      "category_key": "observability",
+      "summary": "An experimental OpenInference option can add OpenTelemetry GenAI attributes to spans, derived at span end from already-masked OpenInference fields.",
+      "body": [
+        "OpenInference is an instrumentation library that records LLM and agent calls as trace spans, usually with its own attribute names. Some collectors and backends expect OpenTelemetry's GenAI semantic conventions, a shared set of gen_ai attribute names for model and agent telemetry, and may not see those fields on OpenInference spans alone.",
+        "A stable OpenInference core release adds an experimental option, enableGenAISemconv, and a matching environment variable, OPENINFERENCE_ENABLE_GENAI_SEMCONV. When the option is enabled, spans created through OITracer, OpenInference's tracer, also emit those GenAI attributes. The attributes are derived at the end of the span from the span's masked OpenInference attributes, so values that were already redacted stay redacted. The same conversion is also exported as a helper, getGenAIAttributes, for callers that need the mapped fields directly.",
+        "The notes describe the feature as experimental. Teams that need both OpenInference detail and GenAI-shaped attributes can turn the option on in a non-production tracer first and compare a sample span to confirm the mapped fields match what their collector expects."
+      ],
+      "format": "full",
+      "takeaway": "If your pipeline already stores OpenInference spans but a downstream tool looks for gen_ai attributes, enable the experimental option in a test tracer and compare one span before turning it on more widely.",
+      "image": "/edition-images/2026-11-21/openinference-genai.webp",
+      "source": "github",
+      "interest_score": 7,
+      "dedupe_key": "release:Arize-ai/openinference:@arizeai/openinference-core@2.9.0",
+      "score_reason": "A concrete instrumentation change, but it is experimental and relevant mainly to teams that already use OpenInference and GenAI-shaped collectors.",
+      "source_evidence": {
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/%40arizeai/openinference-core%402.9.0",
+        "publication_date": "2026-11-20",
+        "raw_date": "2026-11-20T21:31:05Z",
+        "method": "GitHub API published_at 2026-11-20T21:31:05Z for the stable, non-draft, non-prerelease @arizeai/openinference-core@2.9.0 release."
+      },
+      "image_width": 1152,
+      "image_height": 864,
+      "image_provenance": {
+        "kind": "generated-editorial",
+        "generator": "built-in-imagegen",
+        "prompt": "Use case: infographic-diagram. Asset type: newspaper story infographic, a standalone PNG. Primary request: explain the experimental OpenInference option that also writes OpenTelemetry GenAI attributes. Source-supported facts only: OpenInference spans usually use their own attribute names; an experimental option enableGenAISemconv, or the environment variable OPENINFERENCE_ENABLE_GENAI_SEMCONV, can be enabled; OITracer then also emits gen_ai attributes; those attributes are derived at span end from already masked OpenInference attributes; a helper getGenAIAttributes exports the same conversion. Title verbatim: \"Optional GenAI attributes\". Labels verbatim: \"OpenInference span\", \"Experimental option\", \"Masked attributes\", \"gen_ai fields at span end\", \"Collector that expects GenAI\". Do not invent example attribute values, model names, or sample prompts. Editorial guidance, explicitly conceptual: compare a sample span before enabling widely. Style: warm newsprint paper, dark charcoal ink, restrained teal and rust accents, serif heading, large perfectly legible labels, generous spacing, clean newspaper infographic. Composition: landscape about 4:3; a clear title and 3 to 5 labelled elements; readable at article width. Constraints: no invented metrics, no timestamps, no token counts, no model names, no fake screenshots, no unsupported product architecture, no unrelated logos, no \"AI-generated\" label, footer, watermark, or caption text; do not invent example prompts, revenues, or costs; preserve source versus editorial distinction.",
+        "based_on": [
+          "https://github.com/Arize-ai/openinference/releases/tag/%40arizeai/openinference-core%402.9.0"
+        ],
+        "reviewed": true,
+        "sha256": "d01b2d1d80ad9f32222a02099c66028f24ff5bf472994eb26dd1f8e83fbb86fa",
+        "optimization": {
+          "format": "webp",
+          "quality": 82,
+          "max_width": 1440,
+          "source_sha256": "6ecfd2d6e649ce59f25242ef930840b7ab0c859fdc37d078d1bb36ce99917a0d"
+        }
+      }
+    },
+    {
+      "title": "CloudWatch adds built-in dashboards for inference servers on EKS",
+      "url": "https://aws.amazon.com/about-aws/whats-new/2026/11/cloudwatch-eks-kubernetes-tools/",
+      "publisher": "Amazon Web Services",
+      "published": "2026-11-20",
+      "category_key": "observability",
+      "summary": "CloudWatch EKS Container Insights now includes built-in dashboards for open source tools, including inference servers, with queue, first-token, and cache metrics tagged to the pod, workload, and node.",
+      "body": [
+        "Amazon CloudWatch is AWS's monitoring service. AWS says EKS Container Insights, its monitoring for Amazon Elastic Kubernetes Service clusters, now includes built-in dashboards for open source tools on those clusters, including the inference servers vLLM, KServe, and SGLang, plus Karpenter, KEDA, Ray, and Knative Serving, without running Prometheus or Grafana yourself.",
+        "Monitoring starts automatically when you enable OpenTelemetry Container Insights. For AI inference workloads, you can see queued requests, time to first token, and key-value cache usage for each model server. For autoscaling, you can see which scalers are failing and how long the scale loop takes. CloudWatch tags every metric with its pod, workload, and node, so you can trace a slow model server to the node it runs on."
+      ],
+      "format": "brief",
+      "brief_reason": "The AWS what's-new post lists the new dashboards and inference metrics without further implementation detail.",
+      "takeaway": "If you already run inference servers on EKS with OpenTelemetry Container Insights, open the new dashboards and confirm that queue depth, time to first token, and cache usage appear for each model server, tagged to the correct node.",
+      "image": "/edition-images/2026-11-21/cloudwatch-eks.webp",
+      "source": "news",
+      "interest_score": 7,
+      "dedupe_key": "article:aws.amazon.com/about-aws/whats-new/2026/11/cloudwatch-eks-kubernetes-tools",
+      "score_reason": "A short official announcement with concrete inference metrics, but limited implementation depth.",
+      "source_evidence": {
+        "url": "https://aws.amazon.com/about-aws/whats-new/2026/11/cloudwatch-eks-kubernetes-tools/",
+        "publication_date": "2026-11-20",
+        "raw_date": "2026-11-20T20:47:00Z",
+        "method": "Original AWS what's-new page displays Posted on: Nov 20, 2026, with a publication timestamp of 2026-11-20T20:47:00Z."
+      },
+      "image_width": 1152,
+      "image_height": 864,
+      "image_provenance": {
+        "kind": "generated-editorial",
+        "generator": "built-in-imagegen",
+        "prompt": "Use case: infographic-diagram. Asset type: newspaper story infographic, a standalone PNG. Primary request: explain CloudWatch built-in dashboards for inference servers on EKS. Source-supported facts: EKS Container Insights can show dashboards for tools including vLLM, KServe, and SGLang without running Prometheus or Grafana yourself; monitoring starts when you enable OpenTelemetry Container Insights; for AI inference you can see queued requests, time to first token, and key-value cache usage for each model server; metrics are tagged with pod, workload, and node so you can trace a slow model server to its node. Title verbatim: \"Inference metrics, tagged to the node\". Labels verbatim: \"Enable OpenTelemetry Container Insights\", \"Model server\", \"Queued requests\", \"Time to first token\", \"Cache usage, tagged to the node\". Style: warm newsprint paper, dark charcoal ink, restrained teal and rust accents, serif heading, large perfectly legible labels, generous spacing, clean newspaper infographic. Composition: landscape about 4:3; a clear title and 3 to 5 labelled elements; readable at article width. Constraints: no invented metrics, no timestamps, no token counts, no model names, no fake screenshots, no unsupported product architecture, no unrelated logos, no \"AI-generated\" label, footer, watermark, or caption text; do not invent example prompts, revenues, or costs; preserve source versus editorial distinction.",
+        "based_on": [
+          "https://aws.amazon.com/about-aws/whats-new/2026/11/cloudwatch-eks-kubernetes-tools/"
+        ],
+        "reviewed": true,
+        "sha256": "7a708b73fdd74abf131de2ae19f7dbd3d78abaee57fcce5f84bee87ea3c712aa",
+        "optimization": {
+          "format": "webp",
+          "quality": 82,
+          "max_width": 1440,
+          "source_sha256": "1d1eebd07cbd0378c1b688ea7a4bd541504c41e180d98d87d2aedd34043ef219"
+        }
+      }
+    },
+    {
+      "title": "Google's Agent Anomaly Detection can watch agents that run outside Google Cloud",
+      "url": "https://developers.googleblog.com/agent-anomaly-detection-safeguarding-agents-across-other-clouds/",
+      "publisher": "Google Developers Blog",
+      "published": "2026-11-20",
+      "category_key": "agents",
+      "summary": "In a private preview, Agent Anomaly Detection can review OpenTelemetry traces from agents on other clouds, flagging behavioral drift such as scraping or coerced refunds without running inside the agent's runtime.",
+      "body": [
+        "Agent Anomaly Detection is a Google Cloud preview service that reviews an agent's traces and logs to flag behavior that drifts outside intended boundaries. Google says it is in private preview, including monitoring for agents that run outside Google Cloud. Telemetry, including the prompts and responses the service reads, goes to your Google Cloud project, while the agent's model and tool calls still run where the agent runs.",
+        "To enroll an agent elsewhere, you send OpenTelemetry traces and logs to Google Cloud, describe where the agent runs, and wait until it appears in the Monitored agents list, which the post says happens within thirty minutes. After you enable it, the service starts analyzing sessions. In a test on AWS Lambda, a shopper who checked a few items was not flagged, while a scraper paging through a catalog was flagged for cascading failures and resource exhaustion,. In a Microsoft Foundry test, sessions that pushed a customer-service agent into unverified refunds were flagged, including an order note that contained override instructions.",
+        "The post says that today this path supports agents built with Google's Agent Development Kit for Python, and that findings for agents outside Google Cloud appear only in the Agent Anomaly Detection console. To get started, Google asks teams to request access to the private preview."
+      ],
+      "format": "full",
+      "takeaway": "If you already run ADK agents outside Google Cloud and can send their traces there, request preview access and confirm that findings appear in the Agent Anomaly Detection console, remembering that this path is a preview and currently limited to ADK for Python.",
+      "image": "/edition-images/2026-11-21/google-aad.webp",
+      "source": "news",
+      "interest_score": 8,
+      "dedupe_key": "article:developers.googleblog.com/agent-anomaly-detection-safeguarding-agents-across-other-clouds",
+      "score_reason": "A primary-source description of a concrete cross-cloud monitoring path, with worked examples, clearly limited to a private preview and ADK for Python.",
+      "source_evidence": {
+        "url": "https://developers.googleblog.com/agent-anomaly-detection-safeguarding-agents-across-other-clouds/",
+        "publication_date": "2026-11-20",
+        "raw_date": "2026-11-20",
+        "method": "Original Google Developers Blog page displays NOV. 20, 2026 and JSON-LD datePublished of 2026-11-20."
+      },
+      "image_width": 1152,
+      "image_height": 864,
+      "image_provenance": {
+        "kind": "generated-editorial",
+        "generator": "built-in-imagegen",
+        "prompt": "Use case: infographic-diagram. Asset type: newspaper story infographic, a standalone PNG. Primary request: explain how Agent Anomaly Detection can review agents that run outside Google Cloud. Source-supported facts: the service is in private preview; it reviews traces and logs rather than the agent's runtime; telemetry including prompts and responses goes to a Google Cloud project; model and tool calls still run where the agent runs; after the agent appears in the Monitored agents list and is enabled, sessions are analyzed; a Lambda catalog scraper was flagged while a routine shopper was not; findings for agents outside Google Cloud appear only in the Agent Anomaly Detection console; today the path supports Agent Development Kit for Python. Title verbatim: \"Review agents from their traces\". Labels verbatim: \"Agent on another cloud\", \"OpenTelemetry traces and logs\", \"Google Cloud project\", \"Anomaly findings in the console\", \"Private preview, Python kit today\". Style: warm newsprint paper, dark charcoal ink, restrained teal and rust accents, serif heading, large perfectly legible labels, generous spacing, clean newspaper infographic. Composition: landscape about 4:3; a clear title and 3 to 5 labelled elements; readable at article width. Constraints: no invented metrics, no timestamps, no token counts, no model names, no fake screenshots, no unsupported product architecture, no unrelated logos, no \"AI-generated\" label, footer, watermark, or caption text; do not invent example prompts, revenues, or costs; preserve source versus editorial distinction.",
+        "based_on": [
+          "https://developers.googleblog.com/agent-anomaly-detection-safeguarding-agents-across-other-clouds/"
+        ],
+        "reviewed": true,
+        "sha256": "bbbe6ebf81a50a258c43182e7f07e49bb32be5959a336b1ab0a154279b61cc9d",
+        "optimization": {
+          "format": "webp",
+          "quality": 82,
+          "max_width": 1440,
+          "source_sha256": "30bf115f7ac117ef9cfc725d3b640995e8a2be528783813766737e2d97bc0fd4"
+        }
+      }
+    },
+    {
+      "title": "Dynatrace puts traces and cost signals into Gemini Enterprise workflows",
+      "url": "https://www.dynatrace.com/news/blog/dynatrace-and-google-cloud-deepen-partnership-to-bring-ai-observability-to-gemini-enterprise/",
+      "publisher": "Dynatrace",
+      "published": "2026-11-20",
+      "category_key": "observability",
+      "summary": "Dynatrace says it is bringing observability data, natural-language investigation, and token and latency signals into Gemini Enterprise agent workflows, with integrations available through Google Cloud Marketplace.",
+      "body": [
+        "Dynatrace is an observability platform that records traces, metrics, and logs across applications and infrastructure. A company blog says operating applications, agents, and workflows that use Google's Gemini models in production is harder than running a pilot: teams need to see how those systems behave, why they fail, what they cost, and how they affect customer experiences.",
+        "The expanded collaboration with Google Cloud, as Dynatrace describes it, has three parts. First, Dynatrace for Gemini Enterprise brings real-time observability data, Grail data, causal insights, and automation into Gemini Enterprise agent workflows, so teams can investigate issues in natural language without switching tools. The post says, for example, that an engineer can investigate a latency increase on an AI-enabled customer transaction and identify the models, agents, services, or infrastructure involved. Then, expanded observability for Gemini-enabled environments is meant to trace AI activity, monitor latency and token consumption, manage costs, and connect technical performance to business outcomes. Finally, the integrations are available through Google Cloud Marketplace.",
+        "The post also says agents in those workflows can access distributed traces, topology, business events, and root-cause insights, and that Dynatrace data is available in the Google Antigravity command-line tool. Arize, a Dynatrace company, is described as the AI-native tracing and evaluation layer, with Dynatrace covering applications, services, and infrastructure."
+      ],
+      "format": "full",
+      "takeaway": "If you run Gemini-enabled agents and already use Dynatrace or Google Cloud procurement, review the Marketplace listing and confirm whether traces, token use, and latency for those agents appear in the same investigation workflow the post describes; treat the operational claims as vendor-stated.",
+      "image": "/edition-images/2026-11-21/dynatrace-gemini.webp",
+      "source": "news",
+      "interest_score": 7,
+      "dedupe_key": "article:dynatrace.com/news/blog/dynatrace-and-google-cloud-deepen-partnership-to-bring-ai-observability-to-gemini-enterprise",
+      "score_reason": "On-beat and dated, but it is a partnership announcement whose capabilities are largely vendor-claimed rather than independently demonstrated.",
+      "source_evidence": {
+        "url": "https://www.dynatrace.com/news/blog/dynatrace-and-google-cloud-deepen-partnership-to-bring-ai-observability-to-gemini-enterprise/",
+        "publication_date": "2026-11-20",
+        "raw_date": "2026-11-20T20:11:20+00:00",
+        "method": "Original Dynatrace blog time element and JSON-LD datePublished are 2026-11-20T20:11:20+00:00, with a visible November 20, 2026 label."
+      },
+      "image_width": 1152,
+      "image_height": 864,
+      "image_provenance": {
+        "kind": "generated-editorial",
+        "generator": "built-in-imagegen",
+        "prompt": "Use case: infographic-diagram. Asset type: newspaper story infographic, a standalone PNG. Primary request: explain Dynatrace bringing observability into Gemini Enterprise agent workflows. Source-supported facts: teams need to see how Gemini-enabled systems behave, fail, and cost, and how they affect customers; Dynatrace for Gemini Enterprise brings observability data and natural-language investigation into those workflows; an example is investigating a latency increase and identifying models, agents, services, or infrastructure involved; expanded observability is meant to trace AI activity and monitor latency and token consumption; integrations are available through Google Cloud Marketplace. Title verbatim: \"Investigate Gemini agents in one place\". Labels verbatim: \"Gemini Enterprise workflow\", \"Traces and topology\", \"Latency and token use\", \"Natural-language investigation\", \"Available on Marketplace\". Editorial guidance, explicitly conceptual: these capabilities are described by the vendor. Style: warm newsprint paper, dark charcoal ink, restrained teal and rust accents, serif heading, large perfectly legible labels, generous spacing, clean newspaper infographic. Composition: landscape about 4:3; a clear title and 3 to 5 labelled elements; readable at article width. Constraints: no invented metrics, no timestamps, no token counts, no model names, no fake screenshots, no unsupported product architecture, no unrelated logos, no \"AI-generated\" label, footer, watermark, or caption text; do not invent example prompts, revenues, or costs; preserve source versus editorial distinction.",
+        "based_on": [
+          "https://www.dynatrace.com/news/blog/dynatrace-and-google-cloud-deepen-partnership-to-bring-ai-observability-to-gemini-enterprise/"
+        ],
+        "reviewed": true,
+        "sha256": "e649628ba8fc68703e3f5ebb5818ed59e35d81002c845074e1ae845bf89e893e",
+        "optimization": {
+          "format": "webp",
+          "quality": 82,
+          "max_width": 1440,
+          "source_sha256": "89c1c63f132ae9f6a18ada10a67ec2156920b8075516aff8b748413e95036a12"
+        }
+      }
+    },
+    {
+      "title": "Datadog lets AI agents draft and check telemetry pipelines, with limits on what they can change",
+      "url": "https://www.datadoghq.com/blog/observability-pipelines-mcp-server-ai-agents/",
+      "publisher": "Datadog",
+      "published": "2026-11-20",
+      "category_key": "observability",
+      "summary": "Observability Pipelines tools are generally available in the Datadog MCP Server, so agents can draft, validate, and inspect pipelines, but they cannot update or delete existing ones.",
+      "body": [
+        "Datadog Observability Pipelines is a product that collects, transforms, and routes logs and metrics in your own environment before they reach their destinations. Datadog says the work of onboarding a source, finding where events drop, validating a change, and measuring volume reduction is repetitive, and that an AI agent can help if it can see pipeline configurations and metrics.",
+        "The company says Observability Pipelines tools are now generally available in the Datadog MCP Server, a connector that lets agents in clients such as Claude Code, Cursor, Codex, and VS Code call Datadog tools. In the create-from-a-prompt flow, the agent first discovers available sources, processors, and destinations and their required fields, then validates the draft without creating or deploying anything, and finally creates a new pipeline that does not process data until you install the Observability Pipelines Worker for it. The same tools can describe a pipeline and query worker metrics, including events received and sent, intentional and unintentional discards, destination errors, and buffer size, to answer whether events are being dropped.",
+        "The toolset cannot update or delete existing pipelines. Creating a pipeline requires the Observability Pipelines Deploy permission, and the user who connects the agent also needs the matching MCP read or write permission. Datadog says your team still decides when a new pipeline starts processing data."
+      ],
+      "format": "full",
+      "takeaway": "If you already use Observability Pipelines, enable the toolset in a client under a read-only role first, ask the agent to describe a pipeline and its drop metrics, and only grant deploy permission after you have reviewed how new pipelines are created without changing existing ones.",
+      "image": "/edition-images/2026-11-21/datadog-pipelines.webp",
+      "source": "news",
+      "interest_score": 8,
+      "dedupe_key": "article:datadoghq.com/blog/observability-pipelines-mcp-server-ai-agents",
+      "score_reason": "A generally available toolset with a concrete workflow and explicit guardrails for operators who run telemetry pipelines.",
+      "source_evidence": {
+        "url": "https://www.datadoghq.com/blog/observability-pipelines-mcp-server-ai-agents/",
+        "publication_date": "2026-11-20",
+        "raw_date": "2026-11-20T00:00:00.000Z",
+        "method": "Original Datadog blog time element datetime=2026-11-20 and JSON-LD datePublished 2026-11-20T00:00:00.000Z, with a visible Nov 20, 2026 label."
+      },
+      "image_width": 1152,
+      "image_height": 864,
+      "image_provenance": {
+        "kind": "generated-editorial",
+        "generator": "built-in-imagegen",
+        "prompt": "Use case: infographic-diagram. Asset type: newspaper story infographic, a standalone PNG. Primary request: explain Datadog MCP tools that let an agent draft and check telemetry pipelines without changing existing ones. Source-supported facts: Observability Pipelines collect, transform, and route logs and metrics; tools are generally available in the Datadog MCP Server; the agent can discover components, validate a draft without deploying, and create a new pipeline; a new pipeline does not process data until you install the Worker; the toolset cannot update or delete existing pipelines; creating a pipeline requires Deploy permission. Title verbatim: \"Draft pipelines, do not rewrite them\". Labels verbatim: \"Describe the pipeline\", \"Validate without deploying\", \"Create a new pipeline\", \"Install the Worker to process data\", \"Existing pipelines stay unchanged\". Style: warm newsprint paper, dark charcoal ink, restrained teal and rust accents, serif heading, large perfectly legible labels, generous spacing, clean newspaper infographic. Composition: landscape about 4:3; a clear title and 3 to 5 labelled elements; readable at article width. Constraints: no invented metrics, no timestamps, no token counts, no model names, no fake screenshots, no unsupported product architecture, no unrelated logos, no \"AI-generated\" label, footer, watermark, or caption text; do not invent example prompts, revenues, or costs; preserve source versus editorial distinction.",
+        "based_on": [
+          "https://www.datadoghq.com/blog/observability-pipelines-mcp-server-ai-agents/"
+        ],
+        "reviewed": true,
+        "sha256": "257310a3fe10ddb849687dd343563a98aeeb86eb2b9c0c43f01ee0ce3655cd7d",
+        "optimization": {
+          "format": "webp",
+          "quality": 82,
+          "max_width": 1440,
+          "source_sha256": "9fb19f9282cedf1fc7f07dc7135b55adac57871f9a4f810f3dcc217cd428732d"
+        }
+      }
+    }
+  ],
+  "research": {
+    "status": "complete",
+    "completed_sources": [
+      "hn",
+      "news",
+      "github"
+    ],
+    "checked_urls": [
+      "https://arize.com/blog/",
+      "https://langfuse.com/blog",
+      "https://langfuse.com/changelog",
+      "https://www.langchain.com/blog",
+      "https://www.braintrust.dev/blog",
+      "https://opentelemetry.io/blog/",
+      "https://www.elastic.co/observability-labs/blog",
+      "https://www.datadoghq.com/blog/",
+      "https://www.honeycomb.io/blog/",
+      "https://www.digitalocean.com/blog",
+      "https://www.splunk.com/en_us/blog/observability.html",
+      "https://www.dynatrace.com/news/"
+    ],
+    "excluded": [
+      {
+        "url": "https://aws.amazon.com/blogs/mt/an-ai-observability-framework-for-your-agentic-applications/",
+        "reason": "Original publisher date label is 19 NOV 2026 (datePublished 2026-11-19T19:19:36-08:00), outside the frozen window."
+      },
+      {
+        "url": "https://langfuse.com/blog/2026-11-19-comfortable-with-being-uncomfortable",
+        "reason": "Original publication is 2026-11-19, outside the window; the dated changelog entry is covered separately."
+      },
+      {
+        "url": "https://langfuse.com/blog/2026-11-19-evaluating-proactive-agents",
+        "reason": "Originally published 2026-11-19 and already included in the 2026-11-20 edition."
+      },
+      {
+        "url": "https://langfuse.com/changelog/2026-11-19-ai-gateway-budgets",
+        "reason": "Originally published 2026-11-19 and already included in the 2026-11-20 edition."
+      },
+      {
+        "url": "https://github.com/Arize-ai/phoenix/releases/tag/arize-phoenix-v21.3.0",
+        "reason": "Stable same-day minor release with narrower incremental changes; the later stable server release is the selected Phoenix story."
+      },
+      {
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/%40arizeai/openinference-instrumentation-openai%404.7.0",
+        "reason": "Relevant but narrower instrumentation change on the same release train; the core GenAI attribute option is the selected OpenInference story."
+      },
+      {
+        "url": "https://trichroma.namirsab.dev/",
+        "reason": "HN candidate is a game; not AI observability."
+      },
+      {
+        "url": "https://board.blink.cash/",
+        "reason": "HN candidate is a trading-bot demo; not AI observability."
+      },
+      {
+        "url": "https://medcitynews.com/2026/11/who-should-make-medical-necessity-decisions-ai-insurers-or-treating-physicians/",
+        "reason": "Generic AI policy article; not AI observability."
+      },
+      {
+        "url": "https://arkviz.io",
+        "reason": "Architecture-diagram product; does not establish an AI observability use case."
+      },
+      {
+        "url": "https://www.gadgetreview.com/anthropic-stock-falls-about-9-on-first-full-trading-day-as-ai-stocks-slide",
+        "reason": "Generic AI market news; not the beat."
+      },
+      {
+        "url": "https://cherwellvalleymotorclub.app",
+        "reason": "Unrelated Show HN."
+      },
+      {
+        "url": "https://www.vaticin.ai",
+        "reason": "Agent trading competition; not AI observability."
+      },
+      {
+        "url": "https://twitter.com/DeepInsightLabs/status/2123721278112911860",
+        "reason": "Training-data market commentary; not AI observability."
+      },
+      {
+        "url": "https://thunderphone.com/blog/introducing-zeus",
+        "reason": "Voice-agent product launch; does not establish an observability or evaluation story."
+      },
+      {
+        "url": "https://langfuse.com/blog/2026-11-19-comfortable-with-being-uncomfortable#hn",
+        "reason": "HN discussion of a 2026-11-19 Langfuse design essay; original article date is outside the window."
+      }
+    ],
+    "note": "Scoped HN query, configured watchlist release and publisher-surface checks, supplemented by targeted searches; not an exhaustive web sweep. SigNoz feed had 291 /blog/ links and no new URLs versus seen.json; recent feed items were docs and FAQs, not new blog posts in the window."
+  }
+}
