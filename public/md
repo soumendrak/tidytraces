@@ -1,119 +1,41 @@
-# AI Observability Daily — 2026-11-21
+# AI Observability Daily — 2026-11-22
 
 By Soumendra Kumar Sahoo
 
 Canonical: https://tidytraces.com/
-Coverage window: 2026-11-20
+Coverage window: 2026-11-21
 
-## Langfuse redesigns the trace view so large agent traces are easier to read
+## Trace state versions to find overwritten agent work
 
-Source: Langfuse — https://langfuse.com/changelog/2026-11-20-redesigned-trace-view
-Published: 2026-11-20
+Source: telemetry.dev — https://telemetry.dev/blog/agent-state-tracing-debug-stale-writes
+Published: 2026-11-21
 Channel: news
 
-Langfuse is an open-source platform that records and evaluates what LLM applications and agents do, including traces of each step in a run. A trace is the record of one run and the observations inside it. The company says its trace view now looks different than it did a few months ago, but the redesign arrived in many small steps, so people may not have noticed each change.
+Telemetry.dev is an AI observability service that traces model calls, tools and retrievals. Its guide addresses a less visible failure in stateful agents: two runs can read the same checkpoint, then the later write can overwrite the first run's work. Individual operations may all appear successful, so ordinary latency and error signals need not reveal the lost update.
 
-Large agent traces can be hard to read: the overall shape of a long run gets lost, and the input, output, and metadata of the step you are debugging sit among a lot of surrounding clutter. Layouts can also change when you move from the full trace page to a side peek or to a smaller screen.
+The guide recommends recording a state version when the application loads it, on a span, a record of one operation within a trace. At commit time, the application records the expected version, current version and outcome. A conditional write rejects a commit if the stored version has changed. Engineers can then compare the two spans and search for another run on the same thread that committed between them. The example attribute names are application-defined, not automatic OpenTelemetry conventions.
 
-The new view addresses that in three ways. First, the Timeline and graph view show the shape of a large agent trace at a glance, so you can zoom into the step that matters. Then, the view focuses on the input, output, and metadata of the observation you are debugging, with less clutter around them. Finally, the same layout is used on the full trace page, in the side peek, and on smaller screens, so you do not have to relearn the page when you change context.
+The author describes serializing runs per thread or reloading and reconciling conflicting changes as possible responses. The instrumentation only detects paths that emit it, requires a usable version marker, and cannot establish whether the state itself is correct. A blind overwrite can still succeed even if recorded versions expose the mismatch.
 
-Why it matters: If you debug long agent traces in Langfuse, open a recent large trace in the Timeline or graph view and confirm you can find the failing step, then check that the side peek still shows the same input, output, and metadata layout.
+Why it matters: Engineers running concurrent stateful agents can instrument a critical read and commit path, then check whether their store actually rejects stale writes.
 
-![Langfuse redesigns the trace view so large agent traces are easier to read](/edition-images/2026-11-21/langfuse-trace.webp)
+![Trace state versions to find overwritten agent work](/edition-images/2026-11-22/state.webp)
 
-## Phoenix starts pricing decision and embedding spans in cost tracking
+## Phoenix prevents cancelled loader batches from freezing its server
 
-Source: GitHub — https://github.com/Arize-ai/phoenix/releases/tag/arize-phoenix-v22.0.0
-Published: 2026-11-20
+Source: GitHub — https://github.com/Arize-ai/phoenix/releases/tag/arize-phoenix-v22.0.1
+Published: 2026-11-21
 Channel: github
 
-Arize Phoenix is an open-source observability platform that records and evaluates the steps of LLM applications. Cost tracking in Phoenix uses token counts and per-token prices to report spending on traces. A stable server release extends that work to two more kinds of records that appear in traces: decision spans, which capture an individual model decision, and embedding spans, which capture an embedding operation that turns text into a numeric vector.
+Arize Phoenix is an open-source platform for tracing and evaluating AI applications. Its server release fixes a cancellation problem that could make the server stop responding while users inspect large traces. According to the change's maintainer, a failed field or a cancelled request could leave pages, API calls and health checks waiting while the server processed a large batch of pending lookups.
 
-The release notes add cost calculation for both span types. They also put model types into the cost manifest and sync prices through LiteLLM, including Gemini models that LiteLLM lists only under a Gemini prefix. The generative model's type is exposed through GraphQL, the API used to query Phoenix, and a related fix makes that type immutable once it is set.
+The pull request explains the cause: as each lookup was cancelled, the underlying loader checked the whole batch again. The fix substitutes a batch implementation that resumes its checks where the previous check stopped, so each lookup is checked approximately once. Phoenix installs the change when the application starts. Tests compare its database-read cancellation behavior with the original loader and check the work involved in large cancellations.
 
-Phoenix's migration notes say no manual steps are needed: the server now calculates costs for decision and embedding spans. Operators who watch project and trace cost totals should confirm, after they upgrade, that decision and embedding work is included in those totals and that each model is classified as the type they expect.
+The maintainer reports shorter health-check waits in direct tests, while noting that the freeze did not reproduce in a small browser trial. The change does not fix time spent building an ordinary large trace response or a separate upstream defect where cancellation can reach other callers sharing a cached key. A version guard in the tests prompts maintainers to reassess the patch when the underlying loader changes.
 
-Why it matters: If you use Phoenix cost totals for agent or retrieval traffic, upgrade and compare a trace that includes decision or embedding work against the prior totals, and check that each generative model has the intended type.
+Why it matters: Teams operating Phoenix with large traces should review the server release and check responsiveness during failed or cancelled trace loads.
 
-![Phoenix starts pricing decision and embedding spans in cost tracking](/edition-images/2026-11-21/phoenix-cost.webp)
-
-## OpenInference can also write OpenTelemetry GenAI attributes on traces
-
-Source: GitHub — https://github.com/Arize-ai/openinference/releases/tag/%40arizeai/openinference-core%402.9.0
-Published: 2026-11-20
-Channel: github
-
-OpenInference is an instrumentation library that records LLM and agent calls as trace spans, usually with its own attribute names. Some collectors and backends expect OpenTelemetry's GenAI semantic conventions, a shared set of gen_ai attribute names for model and agent telemetry, and may not see those fields on OpenInference spans alone.
-
-A stable OpenInference core release adds an experimental option, enableGenAISemconv, and a matching environment variable, OPENINFERENCE_ENABLE_GENAI_SEMCONV. When the option is enabled, spans created through OITracer, OpenInference's tracer, also emit those GenAI attributes. The attributes are derived at the end of the span from the span's masked OpenInference attributes, so values that were already redacted stay redacted. The same conversion is also exported as a helper, getGenAIAttributes, for callers that need the mapped fields directly.
-
-The notes describe the feature as experimental. Teams that need both OpenInference detail and GenAI-shaped attributes can turn the option on in a non-production tracer first and compare a sample span to confirm the mapped fields match what their collector expects.
-
-Why it matters: If your pipeline already stores OpenInference spans but a downstream tool looks for gen_ai attributes, enable the experimental option in a test tracer and compare one span before turning it on more widely.
-
-![OpenInference can also write OpenTelemetry GenAI attributes on traces](/edition-images/2026-11-21/openinference-genai.webp)
-
-## CloudWatch adds built-in dashboards for inference servers on EKS
-
-Source: Amazon Web Services — https://aws.amazon.com/about-aws/whats-new/2026/11/cloudwatch-eks-kubernetes-tools/
-Published: 2026-11-20
-Channel: news
-
-Amazon CloudWatch is AWS's monitoring service. AWS says EKS Container Insights, its monitoring for Amazon Elastic Kubernetes Service clusters, now includes built-in dashboards for open source tools on those clusters, including the inference servers vLLM, KServe, and SGLang, plus Karpenter, KEDA, Ray, and Knative Serving, without running Prometheus or Grafana yourself.
-
-Monitoring starts automatically when you enable OpenTelemetry Container Insights. For AI inference workloads, you can see queued requests, time to first token, and key-value cache usage for each model server. For autoscaling, you can see which scalers are failing and how long the scale loop takes. CloudWatch tags every metric with its pod, workload, and node, so you can trace a slow model server to the node it runs on.
-
-Why it matters: If you already run inference servers on EKS with OpenTelemetry Container Insights, open the new dashboards and confirm that queue depth, time to first token, and cache usage appear for each model server, tagged to the correct node.
-
-![CloudWatch adds built-in dashboards for inference servers on EKS](/edition-images/2026-11-21/cloudwatch-eks.webp)
-
-## Google's Agent Anomaly Detection can watch agents that run outside Google Cloud
-
-Source: Google Developers Blog — https://developers.googleblog.com/agent-anomaly-detection-safeguarding-agents-across-other-clouds/
-Published: 2026-11-20
-Channel: news
-
-Agent Anomaly Detection is a Google Cloud preview service that reviews an agent's traces and logs to flag behavior that drifts outside intended boundaries. Google says it is in private preview, including monitoring for agents that run outside Google Cloud. Telemetry, including the prompts and responses the service reads, goes to your Google Cloud project, while the agent's model and tool calls still run where the agent runs.
-
-To enroll an agent elsewhere, you send OpenTelemetry traces and logs to Google Cloud, describe where the agent runs, and wait until it appears in the Monitored agents list, which the post says happens within thirty minutes. After you enable it, the service starts analyzing sessions. In a test on AWS Lambda, a shopper who checked a few items was not flagged, while a scraper paging through a catalog was flagged for cascading failures and resource exhaustion,. In a Microsoft Foundry test, sessions that pushed a customer-service agent into unverified refunds were flagged, including an order note that contained override instructions.
-
-The post says that today this path supports agents built with Google's Agent Development Kit for Python, and that findings for agents outside Google Cloud appear only in the Agent Anomaly Detection console. To get started, Google asks teams to request access to the private preview.
-
-Why it matters: If you already run ADK agents outside Google Cloud and can send their traces there, request preview access and confirm that findings appear in the Agent Anomaly Detection console, remembering that this path is a preview and currently limited to ADK for Python.
-
-![Google's Agent Anomaly Detection can watch agents that run outside Google Cloud](/edition-images/2026-11-21/google-aad.webp)
-
-## Dynatrace puts traces and cost signals into Gemini Enterprise workflows
-
-Source: Dynatrace — https://www.dynatrace.com/news/blog/dynatrace-and-google-cloud-deepen-partnership-to-bring-ai-observability-to-gemini-enterprise/
-Published: 2026-11-20
-Channel: news
-
-Dynatrace is an observability platform that records traces, metrics, and logs across applications and infrastructure. A company blog says operating applications, agents, and workflows that use Google's Gemini models in production is harder than running a pilot: teams need to see how those systems behave, why they fail, what they cost, and how they affect customer experiences.
-
-The expanded collaboration with Google Cloud, as Dynatrace describes it, has three parts. First, Dynatrace for Gemini Enterprise brings real-time observability data, Grail data, causal insights, and automation into Gemini Enterprise agent workflows, so teams can investigate issues in natural language without switching tools. The post says, for example, that an engineer can investigate a latency increase on an AI-enabled customer transaction and identify the models, agents, services, or infrastructure involved. Then, expanded observability for Gemini-enabled environments is meant to trace AI activity, monitor latency and token consumption, manage costs, and connect technical performance to business outcomes. Finally, the integrations are available through Google Cloud Marketplace.
-
-The post also says agents in those workflows can access distributed traces, topology, business events, and root-cause insights, and that Dynatrace data is available in the Google Antigravity command-line tool. Arize, a Dynatrace company, is described as the AI-native tracing and evaluation layer, with Dynatrace covering applications, services, and infrastructure.
-
-Why it matters: If you run Gemini-enabled agents and already use Dynatrace or Google Cloud procurement, review the Marketplace listing and confirm whether traces, token use, and latency for those agents appear in the same investigation workflow the post describes; treat the operational claims as vendor-stated.
-
-![Dynatrace puts traces and cost signals into Gemini Enterprise workflows](/edition-images/2026-11-21/dynatrace-gemini.webp)
-
-## Datadog lets AI agents draft and check telemetry pipelines, with limits on what they can change
-
-Source: Datadog — https://www.datadoghq.com/blog/observability-pipelines-mcp-server-ai-agents/
-Published: 2026-11-20
-Channel: news
-
-Datadog Observability Pipelines is a product that collects, transforms, and routes logs and metrics in your own environment before they reach their destinations. Datadog says the work of onboarding a source, finding where events drop, validating a change, and measuring volume reduction is repetitive, and that an AI agent can help if it can see pipeline configurations and metrics.
-
-The company says Observability Pipelines tools are now generally available in the Datadog MCP Server, a connector that lets agents in clients such as Claude Code, Cursor, Codex, and VS Code call Datadog tools. In the create-from-a-prompt flow, the agent first discovers available sources, processors, and destinations and their required fields, then validates the draft without creating or deploying anything, and finally creates a new pipeline that does not process data until you install the Observability Pipelines Worker for it. The same tools can describe a pipeline and query worker metrics, including events received and sent, intentional and unintentional discards, destination errors, and buffer size, to answer whether events are being dropped.
-
-The toolset cannot update or delete existing pipelines. Creating a pipeline requires the Observability Pipelines Deploy permission, and the user who connects the agent also needs the matching MCP read or write permission. Datadog says your team still decides when a new pipeline starts processing data.
-
-Why it matters: If you already use Observability Pipelines, enable the toolset in a client under a read-only role first, ask the agent to describe a pipeline and its drop metrics, and only grant deploy permission after you have reviewed how new pipelines are created without changing existing ones.
-
-![Datadog lets AI agents draft and check telemetry pipelines, with limits on what they can change](/edition-images/2026-11-21/datadog-pipelines.webp)
+![Phoenix prevents cancelled loader batches from freezing its server](/edition-images/2026-11-22/phoenix.webp)
 
 ---
 

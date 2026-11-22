@@ -1,0 +1,162 @@
+{
+  "date": "2026-11-22",
+  "story_window": "2026-11-21",
+  "dek": "Tracing stale agent state and preventing cancelled Phoenix loader batches from freezing the server.",
+  "research": {
+    "status": "complete",
+    "completed_sources": [
+      "hn",
+      "news",
+      "github"
+    ],
+    "checked_urls": [
+      "https://arize.com/blog/",
+      "https://langfuse.com/blog",
+      "https://www.langchain.com/blog",
+      "https://www.braintrust.dev/blog",
+      "https://opentelemetry.io/blog/",
+      "https://www.elastic.co/observability-labs/blog",
+      "https://www.datadoghq.com/blog/",
+      "https://www.honeycomb.io/blog/",
+      "https://www.digitalocean.com/blog",
+      "https://www.splunk.com/en_us/blog/observability.html",
+      "https://www.dynatrace.com/news/",
+      "https://telemetry.dev/blog",
+      "https://telemetry.dev/blog/agent-state-tracing-debug-stale-writes",
+      "https://langfuse.com/changelog",
+      "https://arize.com/blog/reduce-the-cost-of-evals/",
+      "https://www.langchain.com/blog/knowledge-factory",
+      "https://learnetto.com/observe-ai-agents"
+    ],
+    "excluded": [
+      {
+        "url": "https://worldfoundry-demo.vercel.app/",
+        "reason": "Agent experience product does not establish an AI observability story in the discovery record."
+      },
+      {
+        "url": "https://github.com/DevDizzle/gammarips-harness",
+        "reason": "Options trading agent harness is outside the observability beat."
+      },
+      {
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-openai-v0.1.77",
+        "reason": "Release note only bumps a dependency minimum; the mass package bump does not establish a distinct operational change for readers."
+      },
+      {
+        "url": "https://learnetto.com/observe-ai-agents",
+        "reason": "General guide synthesizes existing primary sources; selected the more specific original state-conflict instrumentation guide for this edition."
+      },
+      {
+        "url": "https://www.langchain.com/blog/knowledge-factory",
+        "reason": "Harrison Chase essay on building a knowledge factory for agents; datePublished 2026-11-21T16:45:00.000Z is in window but the piece is not an AI observability product or operational change."
+      },
+      {
+        "url": "https://arize.com/blog/reduce-the-cost-of-evals/",
+        "reason": "On-beat eval-cost article, but publication calendar labels conflict: JSON-LD datePublished is 2026-11-20T17:22:44-08:00 while article:published_time is the same instant written as 2026-11-21T01:22:44+00:00. Exclude rather than choose the window-convenient date."
+      },
+      {
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/semantic-conventions-v0.0.1",
+        "reason": "New Weaver registry and language-package codegen; the release states existing public APIs are unchanged and there is no runtime tracing behavior change for operators."
+      },
+      {
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-beeai-v0.1.39",
+        "reason": "Narrow BeeAI instrumentor mapping of cache read/write token counts onto semantic-convention attributes, shipped in the same coordinated OpenInference release train."
+      },
+      {
+        "url": "https://github.com/Arize-ai/openinference/releases/tag/python-openinference-instrumentation-openai-agents-v2.8.7",
+        "reason": "Narrow instrumentor consistency fix so Chat Completions spans keep documented zero token counts, shipped in the same coordinated OpenInference release train."
+      }
+    ],
+    "note": "Scoped review of the supplied five-query HN and eight-repository GitHub discovery file, configured official news surfaces and targeted search. Eight HN candidates were outside the beat. Most OpenInference releases were a coordinated dependency bump of openinference-instrumentation; the BeeAI cache-token mapping, the OpenAI Agents zero-count consistency fix, and a new semantic-conventions registry with unchanged existing APIs were recorded separately and not selected. LangChain published a knowledge-factory essay that is off the observability beat. An Arize eval-cost article was excluded because its publisher calendar labels conflict across time zones. The Splunk listing rendered no results; a targeted site search supplemented it. This is not an exhaustive web sweep."
+  },
+  "stories": [
+    {
+      "title": "Trace state versions to find overwritten agent work",
+      "publisher": "telemetry.dev",
+      "url": "https://telemetry.dev/blog/agent-state-tracing-debug-stale-writes",
+      "published": "2026-11-21",
+      "source": "news",
+      "category_key": "agents",
+      "summary": "A tracing guide shows how to record state versions and commit outcomes to reveal concurrent agent runs that overwrite one another.",
+      "body": [
+        "Telemetry.dev is an AI observability service that traces model calls, tools and retrievals. Its guide addresses a less visible failure in stateful agents: two runs can read the same checkpoint, then the later write can overwrite the first run's work. Individual operations may all appear successful, so ordinary latency and error signals need not reveal the lost update.",
+        "The guide recommends recording a state version when the application loads it, on a span, a record of one operation within a trace. At commit time, the application records the expected version, current version and outcome. A conditional write rejects a commit if the stored version has changed. Engineers can then compare the two spans and search for another run on the same thread that committed between them. The example attribute names are application-defined, not automatic OpenTelemetry conventions.",
+        "The author describes serializing runs per thread or reloading and reconciling conflicting changes as possible responses. The instrumentation only detects paths that emit it, requires a usable version marker, and cannot establish whether the state itself is correct. A blind overwrite can still succeed even if recorded versions expose the mismatch."
+      ],
+      "format": "full",
+      "takeaway": "Engineers running concurrent stateful agents can instrument a critical read and commit path, then check whether their store actually rejects stale writes.",
+      "dedupe_key": "article:telemetry.dev/blog/agent-state-tracing-debug-stale-writes",
+      "interest_score": 8,
+      "score_reason": "A concrete, source-supported tracing method for diagnosing lost updates in stateful agents, with explicit limitations.",
+      "source_evidence": {
+        "url": "https://telemetry.dev/blog/agent-state-tracing-debug-stale-writes",
+        "publication_date": "2026-11-21",
+        "raw_date": "2026-11-21T10:03:21.641Z",
+        "method": "Original article time element and article:published_time agree with the visible publisher date."
+      },
+      "image": "/edition-images/2026-11-22/state.webp",
+      "image_width": 1440,
+      "image_height": 810,
+      "image_provenance": {
+        "kind": "generated-editorial",
+        "generator": "built-in-imagegen",
+        "prompt": "Create a newspaper editorial infographic about diagnosing stale agent state. Show a conceptual sequence: agent reads a state version, another run changes state, agent attempts a conditional commit, conflict is recorded in a trace. Use four clearly connected elements with concise labels 'Read state', 'State changes', 'Conditional commit', 'Record conflict'. Source: https://telemetry.dev/blog/agent-state-tracing-debug-stale-writes . Warm paper, black ink, muted rust accent, ample space, landscape. No numbers, logos, footer or watermark.",
+        "based_on": [
+          "https://telemetry.dev/blog/agent-state-tracing-debug-stale-writes"
+        ],
+        "reviewed": true,
+        "sha256": "c1c0529825a25ff2ed1157aada2609013d66c26de081cffa0472d716660a5a85",
+        "optimization": {
+          "format": "webp",
+          "quality": 82,
+          "max_width": 1440,
+          "source_sha256": "8939897d9e497568f7d5c1623b4b5c3cfd5df6e7a60830d9d964618bda1912d9"
+        }
+      }
+    },
+    {
+      "title": "Phoenix prevents cancelled loader batches from freezing its server",
+      "publisher": "GitHub",
+      "url": "https://github.com/Arize-ai/phoenix/releases/tag/arize-phoenix-v22.0.1",
+      "published": "2026-11-21",
+      "source": "github",
+      "category_key": "observability",
+      "summary": "A Phoenix server release changes how cancelled data-loader batches are checked, addressing a freeze that can affect trace pages and health checks.",
+      "body": [
+        "Arize Phoenix is an open-source platform for tracing and evaluating AI applications. Its server release fixes a cancellation problem that could make the server stop responding while users inspect large traces. According to the change's maintainer, a failed field or a cancelled request could leave pages, API calls and health checks waiting while the server processed a large batch of pending lookups.",
+        "The pull request explains the cause: as each lookup was cancelled, the underlying loader checked the whole batch again. The fix substitutes a batch implementation that resumes its checks where the previous check stopped, so each lookup is checked approximately once. Phoenix installs the change when the application starts. Tests compare its database-read cancellation behavior with the original loader and check the work involved in large cancellations.",
+        "The maintainer reports shorter health-check waits in direct tests, while noting that the freeze did not reproduce in a small browser trial. The change does not fix time spent building an ordinary large trace response or a separate upstream defect where cancellation can reach other callers sharing a cached key. A version guard in the tests prompts maintainers to reassess the patch when the underlying loader changes."
+      ],
+      "format": "full",
+      "takeaway": "Teams operating Phoenix with large traces should review the server release and check responsiveness during failed or cancelled trace loads.",
+      "dedupe_key": "release:Arize-ai/phoenix:arize-phoenix-v22.0.1",
+      "interest_score": 8,
+      "score_reason": "A server reliability fix directly affects access to AI traces, with measured behavior and clearly stated limits.",
+      "source_evidence": {
+        "url": "https://github.com/Arize-ai/phoenix/releases/tag/arize-phoenix-v22.0.1",
+        "publication_date": "2026-11-21",
+        "raw_date": "2026-11-21T20:28:01Z",
+        "method": "GitHub release API published_at for the stable, non-draft release; linked pull request documents mechanism and tests.",
+        "api_url": "https://api.github.com/repos/Arize-ai/phoenix/releases/tags/arize-phoenix-v22.0.1"
+      },
+      "image": "/edition-images/2026-11-22/phoenix.webp",
+      "image_width": 1440,
+      "image_height": 737,
+      "image_provenance": {
+        "kind": "generated-editorial",
+        "generator": "built-in-imagegen",
+        "prompt": "Create a clean editorial newspaper infographic explaining a Phoenix AI observability server fix. Source-supported concept: cancellation of many pending data-loader lookups repeatedly scanned a whole batch, blocking the server; the fix resumes checks from where the previous check stopped. Show a simple two-row conceptual comparison with labels 'Repeated scans' and 'One pass', visually conveying repeated revisits versus forward progress. Warm paper background, dark ink, restrained muted red accent, wide layout, spare legible typography. No numerical claims, logos, footer, or watermark.",
+        "based_on": [
+          "https://github.com/Arize-ai/phoenix/releases/tag/arize-phoenix-v22.0.1"
+        ],
+        "reviewed": true,
+        "sha256": "76d1d355f85a4ae5a6e3b907708acc91bae221a724ab48c8b2200ee975a38757",
+        "optimization": {
+          "format": "webp",
+          "quality": 82,
+          "max_width": 1440,
+          "source_sha256": "3037f25ef59a59e83d718da41b7aaa4ad632ec1899a355beb3974c4cf79fb5e7"
+        }
+      }
+    }
+  ]
+}
