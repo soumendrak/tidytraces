@@ -1,0 +1,105 @@
+{
+  "date": "2026-11-23",
+  "story_window": "2026-11-22",
+  "dek": "Connecting Claude agent traces with application and infrastructure telemetry.",
+  "stories": [
+    {
+      "title": "Groundcover connects Claude agent traces to application telemetry",
+      "url": "https://www.groundcover.com/blog/claude-platform-tracing-groundcover",
+      "publisher": "groundcover",
+      "published": "2026-11-22",
+      "category_key": "observability",
+      "summary": "Groundcover can ingest Claude Platform traces alongside application spans, with content controls and a public beta limitation.",
+      "body": [
+        "Groundcover is an observability platform that collects traces and infrastructure telemetry. Its new integration ingests Claude Platform traces so engineers can inspect model requests and agent tool use alongside the services those agents call. Groundcover says that previously the agent loop and the application infrastructure could live in separate views, making it harder to follow a request across them.",
+        "An administrator first adds a groundcover endpoint as a tracing destination in the Claude Console and selects the workspaces and content mode. The application exporter sends its own telemetry to the same endpoint. When the application passes trace context, the Claude platform’s spans—records of individual operations—nest under the application’s spans. Groundcover says its normalizer maps the incoming data into its existing AI views, where teams can inspect turns, model requests and tool calls together.",
+        "Full content includes prompts and responses; metadata-only mode retains details such as timing and token counts without that content. Groundcover says its pipeline can mask or remove fields before storage, and its customer-cloud deployment stores the data in the customer’s infrastructure. The platform tracing integration is a public beta; the company says Claude requests through Amazon Bedrock do not yet export platform spans."
+      ],
+      "format": "full",
+      "takeaway": "Teams operating Claude agents can check trace-context propagation and choose content capture and masking settings before using the combined view for debugging.",
+      "image": "/edition-images/2026-11-23/groundcover.webp",
+      "image_width": 1440,
+      "image_height": 737,
+      "image_provenance": {
+        "kind": "generated-editorial",
+        "generator": "built-in-imagegen",
+        "prompt": "Newspaper editorial infographic in warm newsprint and dark ink with restrained blue accents. Explain one source-supported tracing concept: an application span contains a Claude agent span, which contains model request and tool use spans, all connected by trace context. Show a simple nested timeline with only these short labels: 'Application', 'Claude agent', 'Model request', 'Tool use'. Clear, readable landscape composition; no numerical claims, no logos, no footer or watermark.",
+        "based_on": [
+          "https://www.groundcover.com/blog/claude-platform-tracing-groundcover"
+        ],
+        "reviewed": true,
+        "sha256": "f3f9e54e74fb880bfc68c35cf45660698c0ecd732149172f346f5537ce31c64b",
+        "optimization": {
+          "format": "webp",
+          "quality": 82,
+          "max_width": 1440,
+          "source_sha256": "3f679161f34cc464de08053805ca8ddaceb91f60af71015e9bcd10b4e87b29a2"
+        }
+      },
+      "source": "news",
+      "interest_score": 8,
+      "dedupe_key": "article:groundcover.com/blog/claude-platform-tracing-groundcover",
+      "score_reason": "A concrete integration joins agent activity with application traces, with documented privacy controls and platform limitations.",
+      "source_evidence": {
+        "url": "https://www.groundcover.com/blog/claude-platform-tracing-groundcover",
+        "publication_date": "2026-11-22",
+        "raw_date": "2026-11-22T18:20:21.453Z",
+        "method": "Original article JSON-LD datePublished and visible November 22 publication label agree."
+      }
+    }
+  ],
+  "research": {
+    "status": "complete",
+    "completed_sources": [
+      "hn",
+      "news",
+      "github"
+    ],
+    "checked_urls": [
+      "https://arize.com/blog/",
+      "https://langfuse.com/blog",
+      "https://www.langchain.com/blog",
+      "https://www.braintrust.dev/blog",
+      "https://opentelemetry.io/blog/",
+      "https://www.elastic.co/observability-labs/blog",
+      "https://www.datadoghq.com/blog/",
+      "https://www.honeycomb.io/blog/",
+      "https://www.digitalocean.com/blog",
+      "https://www.splunk.com/en_us/blog/observability.html",
+      "https://www.dynatrace.com/news/",
+      "https://bonfiresystems.com/blog",
+      "https://www.groundcover.com/blog/claude-platform-tracing-groundcover"
+    ],
+    "excluded": [
+      {
+        "url": "https://arxiv.org/abs/2606.14068",
+        "reason": "Paper originated in June and was resurfaced on HN; HN submission time does not establish a new publication."
+      },
+      {
+        "url": "https://www.taskless.io/",
+        "reason": "Coding-agent check automation, without a demonstrated AI observability story in the candidate."
+      },
+      {
+        "url": "https://github.com/langwatch/langwatch/releases/tag/mcp-server%40v3.2.0",
+        "reason": "Release notes date the underlying changes November 21; release overlaps earlier work and the later application release."
+      },
+      {
+        "url": "https://github.com/langwatch/langwatch/releases/tag/mcp-server%40v3.2.1",
+        "reason": "Prompt parameter preservation fix is also listed in the application release; narrow prompt management change."
+      },
+      {
+        "url": "https://github.com/langwatch/langwatch/releases/tag/langwatch%40v3.26.0",
+        "reason": "Several incremental trace and evaluation fixes are listed without sufficient release-note detail to establish a standalone operational explanation."
+      },
+      {
+        "url": "https://github.com/langwatch/langwatch/releases/tag/v3.26.0",
+        "reason": "Distribution assets for the same application release, not a separate announcement."
+      },
+      {
+        "url": "https://github.com/langwatch/langwatch/releases/tag/langwatch-3.26.0",
+        "reason": "Helm chart for the same application release, not a separate announcement."
+      }
+    ],
+    "note": "Scoped review of the supplied five-query HN candidates and eight-repository GitHub release discovery, configured official news listings and targeted searches. Other HN candidates concerned an AI training policy, betting, mathematical proof provenance, and banking rather than AI observability. Splunk listing returned no results; a targeted site search supplemented it. Not an exhaustive web sweep."
+  }
+}

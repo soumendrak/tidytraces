@@ -1,41 +1,25 @@
-# AI Observability Daily — 2026-11-22
+# AI Observability Daily — 2026-11-23
 
 By Soumendra Kumar Sahoo
 
 Canonical: https://tidytraces.com/
-Coverage window: 2026-11-21
+Coverage window: 2026-11-22
 
-## Trace state versions to find overwritten agent work
+## Groundcover connects Claude agent traces to application telemetry
 
-Source: telemetry.dev — https://telemetry.dev/blog/agent-state-tracing-debug-stale-writes
-Published: 2026-11-21
+Source: groundcover — https://www.groundcover.com/blog/claude-platform-tracing-groundcover
+Published: 2026-11-22
 Channel: news
 
-Telemetry.dev is an AI observability service that traces model calls, tools and retrievals. Its guide addresses a less visible failure in stateful agents: two runs can read the same checkpoint, then the later write can overwrite the first run's work. Individual operations may all appear successful, so ordinary latency and error signals need not reveal the lost update.
+Groundcover is an observability platform that collects traces and infrastructure telemetry. Its new integration ingests Claude Platform traces so engineers can inspect model requests and agent tool use alongside the services those agents call. Groundcover says that previously the agent loop and the application infrastructure could live in separate views, making it harder to follow a request across them.
 
-The guide recommends recording a state version when the application loads it, on a span, a record of one operation within a trace. At commit time, the application records the expected version, current version and outcome. A conditional write rejects a commit if the stored version has changed. Engineers can then compare the two spans and search for another run on the same thread that committed between them. The example attribute names are application-defined, not automatic OpenTelemetry conventions.
+An administrator first adds a groundcover endpoint as a tracing destination in the Claude Console and selects the workspaces and content mode. The application exporter sends its own telemetry to the same endpoint. When the application passes trace context, the Claude platform’s spans—records of individual operations—nest under the application’s spans. Groundcover says its normalizer maps the incoming data into its existing AI views, where teams can inspect turns, model requests and tool calls together.
 
-The author describes serializing runs per thread or reloading and reconciling conflicting changes as possible responses. The instrumentation only detects paths that emit it, requires a usable version marker, and cannot establish whether the state itself is correct. A blind overwrite can still succeed even if recorded versions expose the mismatch.
+Full content includes prompts and responses; metadata-only mode retains details such as timing and token counts without that content. Groundcover says its pipeline can mask or remove fields before storage, and its customer-cloud deployment stores the data in the customer’s infrastructure. The platform tracing integration is a public beta; the company says Claude requests through Amazon Bedrock do not yet export platform spans.
 
-Why it matters: Engineers running concurrent stateful agents can instrument a critical read and commit path, then check whether their store actually rejects stale writes.
+Why it matters: Teams operating Claude agents can check trace-context propagation and choose content capture and masking settings before using the combined view for debugging.
 
-![Trace state versions to find overwritten agent work](/edition-images/2026-11-22/state.webp)
-
-## Phoenix prevents cancelled loader batches from freezing its server
-
-Source: GitHub — https://github.com/Arize-ai/phoenix/releases/tag/arize-phoenix-v22.0.1
-Published: 2026-11-21
-Channel: github
-
-Arize Phoenix is an open-source platform for tracing and evaluating AI applications. Its server release fixes a cancellation problem that could make the server stop responding while users inspect large traces. According to the change's maintainer, a failed field or a cancelled request could leave pages, API calls and health checks waiting while the server processed a large batch of pending lookups.
-
-The pull request explains the cause: as each lookup was cancelled, the underlying loader checked the whole batch again. The fix substitutes a batch implementation that resumes its checks where the previous check stopped, so each lookup is checked approximately once. Phoenix installs the change when the application starts. Tests compare its database-read cancellation behavior with the original loader and check the work involved in large cancellations.
-
-The maintainer reports shorter health-check waits in direct tests, while noting that the freeze did not reproduce in a small browser trial. The change does not fix time spent building an ordinary large trace response or a separate upstream defect where cancellation can reach other callers sharing a cached key. A version guard in the tests prompts maintainers to reassess the patch when the underlying loader changes.
-
-Why it matters: Teams operating Phoenix with large traces should review the server release and check responsiveness during failed or cancelled trace loads.
-
-![Phoenix prevents cancelled loader batches from freezing its server](/edition-images/2026-11-22/phoenix.webp)
+![Groundcover connects Claude agent traces to application telemetry](/edition-images/2026-11-23/groundcover.webp)
 
 ---
 
