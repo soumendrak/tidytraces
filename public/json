@@ -1,50 +1,95 @@
 {
-  "date": "2026-11-23",
-  "story_window": "2026-11-22",
-  "dek": "Connecting Claude agent traces with application and infrastructure telemetry.",
+  "date": "2026-11-24",
+  "story_window": "2026-11-23",
+  "dek": "Inspect model calls in Elastic traces and see how much of a Phoenix evaluation was actually annotated.",
   "stories": [
     {
-      "title": "Groundcover connects Claude agent traces to application telemetry",
-      "url": "https://www.groundcover.com/blog/claude-platform-tracing-groundcover",
-      "publisher": "groundcover",
-      "published": "2026-11-22",
+      "title": "Elastic brings prompts and token counts into trace views",
+      "url": "https://www.elastic.co/observability-labs/blog/elastic-observability-9-6-apm-llm-tracing-ai-sre",
+      "publisher": "Elastic Observability Labs",
+      "published": "2026-11-23",
       "category_key": "observability",
-      "summary": "Groundcover can ingest Claude Platform traces alongside application spans, with content controls and a public beta limitation.",
+      "summary": "A technical preview adds model prompts, responses and token counts to Elastic's application traces using OpenTelemetry attributes.",
       "body": [
-        "Groundcover is an observability platform that collects traces and infrastructure telemetry. Its new integration ingests Claude Platform traces so engineers can inspect model requests and agent tool use alongside the services those agents call. Groundcover says that previously the agent loop and the application infrastructure could live in separate views, making it harder to follow a request across them.",
-        "An administrator first adds a groundcover endpoint as a tracing destination in the Claude Console and selects the workspaces and content mode. The application exporter sends its own telemetry to the same endpoint. When the application passes trace context, the Claude platform’s spans—records of individual operations—nest under the application’s spans. Groundcover says its normalizer maps the incoming data into its existing AI views, where teams can inspect turns, model requests and tool calls together.",
-        "Full content includes prompts and responses; metadata-only mode retains details such as timing and token counts without that content. Groundcover says its pipeline can mask or remove fields before storage, and its customer-cloud deployment stores the data in the customer’s infrastructure. The platform tracing integration is a public beta; the company says Claude requests through Amazon Bedrock do not yet export platform spans."
+        "Elastic Observability is a platform for inspecting application performance and traces. Its new technical preview brings language model details into the same trace view used to investigate application requests. Elastic describes the practical problem as finding which model call in a multi-step agent consumed tokens and which prompt produced that call.",
+        "A trace waterfall displays the operations in a request over time. In the preview, its rows show input and output token counts for each model span, a record of one operation. An engineer can select a span and open its GenAI tab in Elastic APM or Discover to inspect the system prompt, user messages and model response, alongside model, provider and token usage. Copy buttons are available for the conversation fields. This lets readers compare token usage in the waterfall before opening an individual call.",
+        "The view reads OpenTelemetry's generative AI attributes, so Elastic says compatible instrumentation can come from any provider following those conventions without a proprietary SDK. Conversation content specifically requires the newer OpenTelemetry span-attribute model identified in the announcement. Elastic labels the tracing capability a technical preview and says the complete set of newly announced features is available on Elastic Cloud."
       ],
       "format": "full",
-      "takeaway": "Teams operating Claude agents can check trace-context propagation and choose content capture and masking settings before using the combined view for debugging.",
-      "image": "/edition-images/2026-11-23/groundcover.webp",
+      "takeaway": "Teams investigating model usage in Elastic can check that their instrumentation emits the required attributes before relying on the preview's conversation and token views.",
+      "image": "/edition-images/2026-11-24/elastic.webp",
       "image_width": 1440,
-      "image_height": 737,
+      "image_height": 960,
       "image_provenance": {
         "kind": "generated-editorial",
         "generator": "built-in-imagegen",
-        "prompt": "Newspaper editorial infographic in warm newsprint and dark ink with restrained blue accents. Explain one source-supported tracing concept: an application span contains a Claude agent span, which contains model request and tool use spans, all connected by trace context. Show a simple nested timeline with only these short labels: 'Application', 'Claude agent', 'Model request', 'Tool use'. Clear, readable landscape composition; no numerical claims, no logos, no footer or watermark.",
+        "prompt": "Create a landscape newspaper editorial infographic on Elastic's preview of AI tracing, based on https://www.elastic.co/observability-labs/blog/elastic-observability-9-6-apm-llm-tracing-ai-sre. Explain a single concept: trace waterfall rows show input and output token counts for individual model calls, and selecting a call reveals prompt and response. Use warm newsprint, dark ink, restrained blue accent, clean readable labels 'Trace', 'Model call', 'Input tokens', 'Output tokens', 'Prompt and response'. No invented numbers, product logos, footer, or watermark.",
         "based_on": [
-          "https://www.groundcover.com/blog/claude-platform-tracing-groundcover"
+          "https://www.elastic.co/observability-labs/blog/elastic-observability-9-6-apm-llm-tracing-ai-sre"
         ],
         "reviewed": true,
-        "sha256": "f3f9e54e74fb880bfc68c35cf45660698c0ecd732149172f346f5537ce31c64b",
+        "sha256": "73541391506a3d01509a0aa9f07a093e8a1856a2af80e5917e3c9870b7ceaed0",
         "optimization": {
           "format": "webp",
           "quality": 82,
           "max_width": 1440,
-          "source_sha256": "3f679161f34cc464de08053805ca8ddaceb91f60af71015e9bcd10b4e87b29a2"
+          "source_sha256": "e0e69e05d3722fe6b95c16baa009bb2843b588161334e473f56fdb0b042047cd"
         }
       },
       "source": "news",
       "interest_score": 8,
-      "dedupe_key": "article:groundcover.com/blog/claude-platform-tracing-groundcover",
-      "score_reason": "A concrete integration joins agent activity with application traces, with documented privacy controls and platform limitations.",
+      "dedupe_key": "article:elastic.co/observability-labs/blog/elastic-observability-9-6-apm-llm-tracing-ai-sre",
+      "score_reason": "A concrete OpenTelemetry-based model trace view with clearly stated preview status and instrumentation constraints.",
       "source_evidence": {
-        "url": "https://www.groundcover.com/blog/claude-platform-tracing-groundcover",
-        "publication_date": "2026-11-22",
-        "raw_date": "2026-11-22T18:20:21.453Z",
-        "method": "Original article JSON-LD datePublished and visible November 22 publication label agree."
+        "url": "https://www.elastic.co/observability-labs/blog/elastic-observability-9-6-apm-llm-tracing-ai-sre",
+        "publication_date": "2026-11-23",
+        "raw_date": "2026-11-23T14:00:00.000Z",
+        "method": "Original publisher page JSON-LD datePublished and visible time element agree."
+      }
+    },
+    {
+      "title": "Phoenix reports evaluation coverage alongside acceptance results",
+      "url": "https://github.com/Arize-ai/phoenix/releases/tag/%40arizeai/phoenix-client%408.0.3",
+      "publisher": "GitHub",
+      "published": "2026-11-23",
+      "category_key": "evals",
+      "summary": "The Phoenix JavaScript client now reports how many eligible runs logged an annotation for each acceptance criterion.",
+      "body": [
+        "Arize Phoenix is an open-source platform for tracing and evaluating AI applications. Its JavaScript client now shows how broadly an acceptance criterion was recorded across an evaluation suite. A result based on only the runs with an annotation can otherwise be hard to interpret without knowing how many runs were eligible.",
+        "The release adds the number of non-skipped runs in the suite next to the number of runs that logged the criterion's annotation. The reporter presents both counts together as coverage. The release notes say the pass-or-fail calculation itself is unchanged: the criterion is still computed over the runs that recorded its annotation."
+      ],
+      "format": "brief",
+      "brief_reason": "The release note describes one narrow reporting change and does not provide enough source detail for a full-length account.",
+      "takeaway": "Engineers reviewing evaluation results can compare annotated and eligible runs before interpreting a criterion's outcome.",
+      "image": "/edition-images/2026-11-24/phoenix.webp",
+      "image_width": 1440,
+      "image_height": 960,
+      "image_provenance": {
+        "kind": "generated-editorial",
+        "generator": "built-in-imagegen",
+        "prompt": "Create a landscape newspaper editorial infographic for https://github.com/Arize-ai/phoenix/releases/tag/%40arizeai/phoenix-client%408.0.3. Show one source-supported concept: an evaluation criterion is calculated using the runs that recorded its annotation; coverage also shows that count alongside all eligible non-skipped runs. Use two simple nested groups labeled 'Eligible runs' and 'Runs with annotation', alongside label 'Criterion uses annotated runs'. Use warm newsprint, dark ink, restrained blue accent, ample spacing, no example numbers, logos, footer or watermark.",
+        "based_on": [
+          "https://github.com/Arize-ai/phoenix/releases/tag/%40arizeai/phoenix-client%408.0.3"
+        ],
+        "reviewed": true,
+        "sha256": "efa40a6a72f6b55f1d3c42ccc791d14fb7134f78aa63f0c9341732861f8bf03a",
+        "optimization": {
+          "format": "webp",
+          "quality": 82,
+          "max_width": 1440,
+          "source_sha256": "578c97f739d57cd60b574ef74cf1c710b1ed3e213612f7bff9e1083509cae03e"
+        }
+      },
+      "source": "github",
+      "interest_score": 8,
+      "dedupe_key": "release:Arize-ai/phoenix:@arizeai/phoenix-client@8.0.3",
+      "score_reason": "Coverage context directly affects interpretation of evaluation criteria while preserving the existing pass/fail calculation.",
+      "source_evidence": {
+        "url": "https://github.com/Arize-ai/phoenix/releases/tag/%40arizeai/phoenix-client%408.0.3",
+        "publication_date": "2026-11-23",
+        "raw_date": "2026-11-23T18:50:18Z",
+        "method": "GitHub release API published_at for the stable, non-draft release; release notes describe the change.",
+        "api_url": "https://api.github.com/repos/Arize-ai/phoenix/releases/tags/%40arizeai%2Fphoenix-client%408.0.3"
       }
     }
   ],
@@ -67,40 +112,36 @@
       "https://www.digitalocean.com/blog",
       "https://www.splunk.com/en_us/blog/observability.html",
       "https://www.dynatrace.com/news/",
-      "https://bonfiresystems.com/blog",
-      "https://www.groundcover.com/blog/claude-platform-tracing-groundcover"
+      "https://www.elastic.co/observability-labs/blog/elastic-observability-9-6-apm-llm-tracing-ai-sre",
+      "https://www.dynatrace.com/news/category/observability/"
     ],
     "excluded": [
       {
-        "url": "https://arxiv.org/abs/2606.14068",
-        "reason": "Paper originated in June and was resurfaced on HN; HN submission time does not establish a new publication."
+        "url": "https://www.snowflake.com/en/blog/engineering/observability-apis-agent-investigation-success/",
+        "reason": "The original Snowflake article is dated 2026-10-19; its HN submission is a resurfacing, not a new publication."
       },
       {
-        "url": "https://www.taskless.io/",
-        "reason": "Coding-agent check automation, without a demonstrated AI observability story in the candidate."
+        "url": "https://blobbyapp.com",
+        "reason": "Coding-agent file collision warning is a coordination utility, without a sufficiently concrete AI observability or evaluation story in the submission."
       },
       {
-        "url": "https://github.com/langwatch/langwatch/releases/tag/mcp-server%40v3.2.0",
-        "reason": "Release notes date the underlying changes November 21; release overlaps earlier work and the later application release."
+        "url": "https://github.com/Arize-ai/phoenix/releases/tag/%40arizeai/phoenix-cli%401.24.1",
+        "reason": "Dependency update for the same client change; not a separate announcement."
       },
       {
-        "url": "https://github.com/langwatch/langwatch/releases/tag/mcp-server%40v3.2.1",
-        "reason": "Prompt parameter preservation fix is also listed in the application release; narrow prompt management change."
+        "url": "https://github.com/langwatch/langwatch/releases/tag/v3.28.0",
+        "reason": "Distribution artifacts for the application release, not a separate event."
       },
       {
-        "url": "https://github.com/langwatch/langwatch/releases/tag/langwatch%40v3.26.0",
-        "reason": "Several incremental trace and evaluation fixes are listed without sufficient release-note detail to establish a standalone operational explanation."
+        "url": "https://github.com/langwatch/langwatch/releases/tag/v3.27.0",
+        "reason": "Distribution artifacts for the application release, not a separate event."
       },
       {
-        "url": "https://github.com/langwatch/langwatch/releases/tag/v3.26.0",
-        "reason": "Distribution assets for the same application release, not a separate announcement."
-      },
-      {
-        "url": "https://github.com/langwatch/langwatch/releases/tag/langwatch-3.26.0",
-        "reason": "Helm chart for the same application release, not a separate announcement."
+        "url": "https://www.dynatrace.com/news/blog/dynatrace-bindplane-named-a-leader-in-the-2026-gartner-magic-quadrant-for-observability-pipelines/",
+        "reason": "Vendor analyst-ranking announcement without a new AI observability capability."
       }
     ],
-    "note": "Scoped review of the supplied five-query HN candidates and eight-repository GitHub release discovery, configured official news listings and targeted searches. Other HN candidates concerned an AI training policy, betting, mathematical proof provenance, and banking rather than AI observability. Splunk listing returned no results; a targeted site search supplemented it. Not an exhaustive web sweep."
+    "note": "Scoped review of the supplied five-query HN discovery, all eight GitHub watchlist repositories and 11 release candidates, configured publisher listings, and targeted searches; not an exhaustive web sweep. Other HN candidates were unrelated to AI observability. Other GitHub releases were distribution artifacts or broad collections of incremental changes not selected for this issue. Splunk's listing returned no results and was supplemented with focused search."
   },
   "name": "Tidy Traces — AI Observability Daily",
   "canonical_url": "https://tidytraces.com/"

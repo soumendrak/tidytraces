@@ -1,25 +1,39 @@
-# AI Observability Daily — 2026-11-23
+# AI Observability Daily — 2026-11-24
 
 By Soumendra Kumar Sahoo
 
 Canonical: https://tidytraces.com/
-Coverage window: 2026-11-22
+Coverage window: 2026-11-23
 
-## Groundcover connects Claude agent traces to application telemetry
+## Elastic brings prompts and token counts into trace views
 
-Source: groundcover — https://www.groundcover.com/blog/claude-platform-tracing-groundcover
-Published: 2026-11-22
+Source: Elastic Observability Labs — https://www.elastic.co/observability-labs/blog/elastic-observability-9-6-apm-llm-tracing-ai-sre
+Published: 2026-11-23
 Channel: news
 
-Groundcover is an observability platform that collects traces and infrastructure telemetry. Its new integration ingests Claude Platform traces so engineers can inspect model requests and agent tool use alongside the services those agents call. Groundcover says that previously the agent loop and the application infrastructure could live in separate views, making it harder to follow a request across them.
+Elastic Observability is a platform for inspecting application performance and traces. Its new technical preview brings language model details into the same trace view used to investigate application requests. Elastic describes the practical problem as finding which model call in a multi-step agent consumed tokens and which prompt produced that call.
 
-An administrator first adds a groundcover endpoint as a tracing destination in the Claude Console and selects the workspaces and content mode. The application exporter sends its own telemetry to the same endpoint. When the application passes trace context, the Claude platform’s spans—records of individual operations—nest under the application’s spans. Groundcover says its normalizer maps the incoming data into its existing AI views, where teams can inspect turns, model requests and tool calls together.
+A trace waterfall displays the operations in a request over time. In the preview, its rows show input and output token counts for each model span, a record of one operation. An engineer can select a span and open its GenAI tab in Elastic APM or Discover to inspect the system prompt, user messages and model response, alongside model, provider and token usage. Copy buttons are available for the conversation fields. This lets readers compare token usage in the waterfall before opening an individual call.
 
-Full content includes prompts and responses; metadata-only mode retains details such as timing and token counts without that content. Groundcover says its pipeline can mask or remove fields before storage, and its customer-cloud deployment stores the data in the customer’s infrastructure. The platform tracing integration is a public beta; the company says Claude requests through Amazon Bedrock do not yet export platform spans.
+The view reads OpenTelemetry's generative AI attributes, so Elastic says compatible instrumentation can come from any provider following those conventions without a proprietary SDK. Conversation content specifically requires the newer OpenTelemetry span-attribute model identified in the announcement. Elastic labels the tracing capability a technical preview and says the complete set of newly announced features is available on Elastic Cloud.
 
-Why it matters: Teams operating Claude agents can check trace-context propagation and choose content capture and masking settings before using the combined view for debugging.
+Why it matters: Teams investigating model usage in Elastic can check that their instrumentation emits the required attributes before relying on the preview's conversation and token views.
 
-![Groundcover connects Claude agent traces to application telemetry](/edition-images/2026-11-23/groundcover.webp)
+![Elastic brings prompts and token counts into trace views](/edition-images/2026-11-24/elastic.webp)
+
+## Phoenix reports evaluation coverage alongside acceptance results
+
+Source: GitHub — https://github.com/Arize-ai/phoenix/releases/tag/%40arizeai/phoenix-client%408.0.3
+Published: 2026-11-23
+Channel: github
+
+Arize Phoenix is an open-source platform for tracing and evaluating AI applications. Its JavaScript client now shows how broadly an acceptance criterion was recorded across an evaluation suite. A result based on only the runs with an annotation can otherwise be hard to interpret without knowing how many runs were eligible.
+
+The release adds the number of non-skipped runs in the suite next to the number of runs that logged the criterion's annotation. The reporter presents both counts together as coverage. The release notes say the pass-or-fail calculation itself is unchanged: the criterion is still computed over the runs that recorded its annotation.
+
+Why it matters: Engineers reviewing evaluation results can compare annotated and eligible runs before interpreting a criterion's outcome.
+
+![Phoenix reports evaluation coverage alongside acceptance results](/edition-images/2026-11-24/phoenix.webp)
 
 ---
 
