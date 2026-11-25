@@ -1,0 +1,98 @@
+{
+  "date": "2026-11-25",
+  "story_window": "2026-11-24",
+  "dek": "Langfuse adds gated controls for testing evaluators against trace transcripts and setting trace rules.",
+  "stories": [
+    {
+      "title": "Langfuse adds controls to test evaluators on trace transcripts",
+      "url": "https://github.com/langfuse/langfuse/releases/tag/v4.86.0",
+      "publisher": "GitHub",
+      "published": "2026-11-24",
+      "category_key": "evals",
+      "summary": "A gated interface lets eligible Langfuse users test an evaluator against a trace transcript and connect it to a trace rule.",
+      "body": [
+        "Langfuse is an open-source platform for observing and evaluating AI applications. Its latest release adds an interface for testing evaluators against trace transcripts, alongside the existing choice of testing an individual observation. A trace records an application run, while an evaluator assesses selected information from it.",
+        "In evaluator setup, a user with access can switch the test sample from an observation to a trace. The trace sample opens an embedded detail view on its messages, and evaluator variables can be mapped to transcript threads. The existing evaluator test runs against that selection. Evaluator types that cannot run on a trace display the trace option as coming soon.",
+        "After saving an evaluator tested on a trace, the interface offers to create a trace rule or attach the evaluator to an existing one. The rule creation dialog also offers observation or trace scope; the scope is locked when editing a rule. Access depends on the existing trace-evaluation gate and evaluator or rule read permission. The implementation's pull request reports type checking and lint, but not a live run, so the release notes do not establish an operational performance result."
+      ],
+      "format": "full",
+      "takeaway": "Engineers evaluating multi-message AI runs can check whether their project has access before testing transcript-based evaluator rules.",
+      "image": "/edition-images/2026-11-25/trace-evals.webp",
+      "image_width": 1440,
+      "image_height": 737,
+      "image_provenance": {
+        "kind": "generated-editorial",
+        "generator": "built-in-imagegen",
+        "prompt": "Create a landscape newspaper editorial infographic about Langfuse trace transcript evaluation. Show a simple three-step sequence: a trace transcript, evaluator testing, and an evaluation rule. Use only these concise labels: 'Trace transcript', 'Test evaluator', 'Create trace rule'. Warm newsprint, dark ink, restrained blue, ample spacing, clean legible typography, conceptual diagram, no invented metrics, logos, footer or watermark.",
+        "based_on": [
+          "https://github.com/langfuse/langfuse/releases/tag/v4.86.0"
+        ],
+        "reviewed": true,
+        "sha256": "1f950dd577d2f503fe620d2dfea2cc8c5c7fe9405ff1ad7252f3e4b002b83d12",
+        "optimization": {
+          "format": "webp",
+          "quality": 82,
+          "max_width": 1440,
+          "source_sha256": "574377b7d4aa70f0a0c2e27b57d310eb38296a700ca8d28ddafdd0385cf70db8"
+        }
+      },
+      "source": "github",
+      "interest_score": 8,
+      "dedupe_key": "release:langfuse/langfuse:v4.86.0",
+      "score_reason": "The gated interface adds a concrete workflow for evaluating full trace transcripts; the implementation notes limit the available validation evidence.",
+      "source_evidence": {
+        "url": "https://github.com/langfuse/langfuse/releases/tag/v4.86.0",
+        "publication_date": "2026-11-24",
+        "raw_date": "2026-11-24T18:54:46Z",
+        "method": "GitHub release API published_at confirms a stable, non-draft release; the linked merged pull request 20741 describes the interface and testing limits.",
+        "api_url": "https://api.github.com/repos/langfuse/langfuse/releases/tags/v4.86.0"
+      }
+    }
+  ],
+  "edition": "AI Observability Daily",
+  "research": {
+    "status": "complete",
+    "completed_sources": [
+      "hn",
+      "news",
+      "github"
+    ],
+    "checked_urls": [
+      "https://arize.com/blog/",
+      "https://langfuse.com/blog",
+      "https://www.langchain.com/blog",
+      "https://www.braintrust.dev/blog",
+      "https://opentelemetry.io/blog/",
+      "https://www.elastic.co/observability-labs/blog",
+      "https://www.datadoghq.com/blog/",
+      "https://www.honeycomb.io/blog/",
+      "https://www.digitalocean.com/blog",
+      "https://www.splunk.com/en_us/blog/observability.html",
+      "https://www.dynatrace.com/news/",
+      "https://www.elastic.co/observability-labs/blog/aws-devops-agent-mcp-incident-triage"
+    ],
+    "excluded": [
+      {
+        "url": "https://news.ycombinator.com/item?id=50627927",
+        "reason": "Original Show HN announcement describes an early CLI in only a few sentences; narrower and less substantiated than the selected evaluator change."
+      },
+      {
+        "url": "https://news.ycombinator.com/item?id=50623636",
+        "reason": "Show HN submission has no first-party announcement text in the HN API, so its submission time alone does not establish original publication of the linked product."
+      },
+      {
+        "url": "https://github.com/langfuse/langfuse/releases/tag/v4.85.0",
+        "reason": "The server-side trace evaluation work is part of the same feature covered by the later release's user interface; avoid splitting one announcement across two stories."
+      },
+      {
+        "url": "https://www.elastic.co/observability-labs/blog/aws-devops-agent-mcp-incident-triage",
+        "reason": "Focuses on using an agent to investigate infrastructure incidents, rather than observability of AI systems."
+      },
+      {
+        "url": "https://www.splunk.com/en_us/blog/observability.html",
+        "reason": "The official blog index returned no rendered results; focused search and the publisher's newsroom were checked as supplements."
+      }
+    ],
+    "note": "Scoped discovery from the supplied HN and eight-repository GitHub candidate file, official news surfaces and focused searches; this is not an exhaustive web sweep. Existing issue files were checked for matching URLs, events and related announcements. The selected release's server-side precursor is not separately counted."
+  }
+}

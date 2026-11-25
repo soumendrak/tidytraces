@@ -1,39 +1,25 @@
-# AI Observability Daily — 2026-11-24
+# AI Observability Daily — 2026-11-25
 
 By Soumendra Kumar Sahoo
 
 Canonical: https://tidytraces.com/
-Coverage window: 2026-11-23
+Coverage window: 2026-11-24
 
-## Elastic brings prompts and token counts into trace views
+## Langfuse adds controls to test evaluators on trace transcripts
 
-Source: Elastic Observability Labs — https://www.elastic.co/observability-labs/blog/elastic-observability-9-6-apm-llm-tracing-ai-sre
-Published: 2026-11-23
-Channel: news
-
-Elastic Observability is a platform for inspecting application performance and traces. Its new technical preview brings language model details into the same trace view used to investigate application requests. Elastic describes the practical problem as finding which model call in a multi-step agent consumed tokens and which prompt produced that call.
-
-A trace waterfall displays the operations in a request over time. In the preview, its rows show input and output token counts for each model span, a record of one operation. An engineer can select a span and open its GenAI tab in Elastic APM or Discover to inspect the system prompt, user messages and model response, alongside model, provider and token usage. Copy buttons are available for the conversation fields. This lets readers compare token usage in the waterfall before opening an individual call.
-
-The view reads OpenTelemetry's generative AI attributes, so Elastic says compatible instrumentation can come from any provider following those conventions without a proprietary SDK. Conversation content specifically requires the newer OpenTelemetry span-attribute model identified in the announcement. Elastic labels the tracing capability a technical preview and says the complete set of newly announced features is available on Elastic Cloud.
-
-Why it matters: Teams investigating model usage in Elastic can check that their instrumentation emits the required attributes before relying on the preview's conversation and token views.
-
-![Elastic brings prompts and token counts into trace views](/edition-images/2026-11-24/elastic.webp)
-
-## Phoenix reports evaluation coverage alongside acceptance results
-
-Source: GitHub — https://github.com/Arize-ai/phoenix/releases/tag/%40arizeai/phoenix-client%408.0.3
-Published: 2026-11-23
+Source: GitHub — https://github.com/langfuse/langfuse/releases/tag/v4.86.0
+Published: 2026-11-24
 Channel: github
 
-Arize Phoenix is an open-source platform for tracing and evaluating AI applications. Its JavaScript client now shows how broadly an acceptance criterion was recorded across an evaluation suite. A result based on only the runs with an annotation can otherwise be hard to interpret without knowing how many runs were eligible.
+Langfuse is an open-source platform for observing and evaluating AI applications. Its latest release adds an interface for testing evaluators against trace transcripts, alongside the existing choice of testing an individual observation. A trace records an application run, while an evaluator assesses selected information from it.
 
-The release adds the number of non-skipped runs in the suite next to the number of runs that logged the criterion's annotation. The reporter presents both counts together as coverage. The release notes say the pass-or-fail calculation itself is unchanged: the criterion is still computed over the runs that recorded its annotation.
+In evaluator setup, a user with access can switch the test sample from an observation to a trace. The trace sample opens an embedded detail view on its messages, and evaluator variables can be mapped to transcript threads. The existing evaluator test runs against that selection. Evaluator types that cannot run on a trace display the trace option as coming soon.
 
-Why it matters: Engineers reviewing evaluation results can compare annotated and eligible runs before interpreting a criterion's outcome.
+After saving an evaluator tested on a trace, the interface offers to create a trace rule or attach the evaluator to an existing one. The rule creation dialog also offers observation or trace scope; the scope is locked when editing a rule. Access depends on the existing trace-evaluation gate and evaluator or rule read permission. The implementation's pull request reports type checking and lint, but not a live run, so the release notes do not establish an operational performance result.
 
-![Phoenix reports evaluation coverage alongside acceptance results](/edition-images/2026-11-24/phoenix.webp)
+Why it matters: Engineers evaluating multi-message AI runs can check whether their project has access before testing transcript-based evaluator rules.
+
+![Langfuse adds controls to test evaluators on trace transcripts](/edition-images/2026-11-25/trace-evals.webp)
 
 ---
 
