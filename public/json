@@ -1,55 +1,96 @@
 {
-  "date": "2026-11-25",
-  "story_window": "2026-11-24",
-  "dek": "Langfuse adds gated controls for testing evaluators against trace transcripts and setting trace rules.",
+  "date": "2026-11-26",
+  "story_window": "2026-11-25",
+  "dek": "Connecting queued agent traces and managing decision-model evaluators through an API.",
   "stories": [
     {
-      "title": "Langfuse adds controls to test evaluators on trace transcripts",
-      "url": "https://github.com/langfuse/langfuse/releases/tag/v4.86.0",
-      "publisher": "GitHub",
-      "published": "2026-11-24",
-      "category_key": "evals",
-      "summary": "A gated interface lets eligible Langfuse users test an evaluator against a trace transcript and connect it to a trace rule.",
+      "title": "Keep an AI agent trace connected across a message queue",
+      "url": "https://telemetry.dev/blog/agent-trace-context-across-message-queues",
+      "publisher": "telemetry.dev",
+      "published": "2026-11-25",
+      "category_key": "observability",
+      "summary": "A guide shows how to carry trace context in each message and connect batched receives without assigning the whole batch to one request.",
       "body": [
-        "Langfuse is an open-source platform for observing and evaluating AI applications. Its latest release adds an interface for testing evaluators against trace transcripts, alongside the existing choice of testing an individual observation. A trace records an application run, while an evaluator assesses selected information from it.",
-        "In evaluator setup, a user with access can switch the test sample from an observation to a trace. The trace sample opens an embedded detail view on its messages, and evaluator variables can be mapped to transcript threads. The existing evaluator test runs against that selection. Evaluator types that cannot run on a trace display the trace option as coming soon.",
-        "After saving an evaluator tested on a trace, the interface offers to create a trace rule or attach the evaluator to an existing one. The rule creation dialog also offers observation or trace scope; the scope is locked when editing a rule. Access depends on the existing trace-evaluation gate and evaluator or rule read permission. The implementation's pull request reports type checking and lint, but not a live run, so the release notes do not establish an operational performance result."
+        "OpenTelemetry is a framework for collecting traces, the connected records of operations in a software request. A telemetry.dev guide applies it to AI agents that run from message queues. When a producer sends work to a queue and a worker later picks it up, the agent's model and tool calls can appear as a disconnected trace if the message does not carry the original context.",
+        "The guide recommends first injecting trace context into each message's metadata while a producer span, a record of an operation, is active. The consumer then extracts the context separately for each message. For a batch, it links the receive span to each message context: one span cannot have multiple parents. Each message gets its own process span parented to its extracted context, with the agent run beneath it. The article recommends checking a batch of at least three messages in a trace viewer, because a single message can hide an incorrect batch parent. It also advises keeping prompts and secrets out of message metadata and checking for stripped headers or sampling when traces are missing."
       ],
       "format": "full",
-      "takeaway": "Engineers evaluating multi-message AI runs can check whether their project has access before testing transcript-based evaluator rules.",
-      "image": "/edition-images/2026-11-25/trace-evals.webp",
+      "takeaway": "Engineers running agents from queues can test a multi-message batch to check whether each run remains connected to its originating request.",
+      "image": "/edition-images/2026-11-26/queue.webp",
       "image_width": 1440,
       "image_height": 737,
       "image_provenance": {
         "kind": "generated-editorial",
         "generator": "built-in-imagegen",
-        "prompt": "Create a landscape newspaper editorial infographic about Langfuse trace transcript evaluation. Show a simple three-step sequence: a trace transcript, evaluator testing, and an evaluation rule. Use only these concise labels: 'Trace transcript', 'Test evaluator', 'Create trace rule'. Warm newsprint, dark ink, restrained blue, ample spacing, clean legible typography, conceptual diagram, no invented metrics, logos, footer or watermark.",
+        "prompt": "Create a landscape newspaper infographic on warm newsprint with dark ink and teal accents. Explain tracing an AI agent job through a message queue: a producer adds trace context to each message, a queue carries the messages, and a worker extracts each message's context. Show simple arrows and exactly these short labels: 'Producer', 'Context per message', 'Queue', 'Worker extracts context'. No logos, metrics, footer or watermark.",
         "based_on": [
-          "https://github.com/langfuse/langfuse/releases/tag/v4.86.0"
+          "https://telemetry.dev/blog/agent-trace-context-across-message-queues"
         ],
         "reviewed": true,
-        "sha256": "1f950dd577d2f503fe620d2dfea2cc8c5c7fe9405ff1ad7252f3e4b002b83d12",
+        "sha256": "558f28c984dfbdf0295924b2c9567c9ce48f78b47d1408f79879d96d8f557e9f",
         "optimization": {
           "format": "webp",
           "quality": 82,
           "max_width": 1440,
-          "source_sha256": "574377b7d4aa70f0a0c2e27b57d310eb38296a700ca8d28ddafdd0385cf70db8"
+          "source_sha256": "8ea165e6c4c5a708c02f47706ad8e86932bc66d3bfcc7dd2694eaf8276a66aab"
         }
       },
-      "source": "github",
+      "source": "news",
       "interest_score": 8,
-      "dedupe_key": "release:langfuse/langfuse:v4.86.0",
-      "score_reason": "The gated interface adds a concrete workflow for evaluating full trace transcripts; the implementation notes limit the available validation evidence.",
+      "dedupe_key": "article:telemetry.dev/blog/agent-trace-context-across-message-queues",
+      "score_reason": "Practical primary-source instrumentation guidance for a common trace continuity problem.",
       "source_evidence": {
-        "url": "https://github.com/langfuse/langfuse/releases/tag/v4.86.0",
-        "publication_date": "2026-11-24",
-        "raw_date": "2026-11-24T18:54:46Z",
-        "method": "GitHub release API published_at confirms a stable, non-draft release; the linked merged pull request 20741 describes the interface and testing limits.",
-        "api_url": "https://api.github.com/repos/langfuse/langfuse/releases/tags/v4.86.0"
+        "url": "https://telemetry.dev/blog/agent-trace-context-across-message-queues",
+        "publication_date": "2026-11-25",
+        "raw_date": "2026-11-25",
+        "method": "Original article displays November 25, 2026 beside the author."
+      }
+    },
+    {
+      "title": "Langfuse exposes decision-model evaluators through its public API",
+      "url": "https://langfuse.com/changelog/2026-11-25-decision-model-evaluators-api",
+      "publisher": "Langfuse",
+      "published": "2026-11-25",
+      "category_key": "evals",
+      "summary": "Teams can create, update and version decision-model evaluators through the public evaluator endpoints and attach them to evaluation rules.",
+      "body": [
+        "Langfuse is an AI observability and evaluation platform used to record and assess application behavior. Its decision-model evaluators can now be managed through the stable public evaluators API, alongside its model-judge and code evaluators. The change gives teams an API path for managing these evaluator definitions rather than relying solely on manual configuration.",
+        "To use it, create an evaluator with the decision-model type. Its definition includes questions and their allowed answers, a provider and decision model, and a mapping from observation data to named state keys used by the questions. Questions can use choices, ordered scores or boolean answers. Teams can then keep the definitions in version control and attach them to evaluation rules from a deployment pipeline, according to Langfuse. The announcement describes the management interface; it does not report an independent measurement of evaluator quality."
+      ],
+      "format": "brief",
+      "brief_reason": "The original changelog is a short product announcement with limited implementation detail and no measured results.",
+      "takeaway": "Teams maintaining evaluations in deployment pipelines can review whether evaluator definitions belong alongside their application configuration.",
+      "image": "/edition-images/2026-11-26/evaluator.webp",
+      "image_width": 1440,
+      "image_height": 737,
+      "image_provenance": {
+        "kind": "generated-editorial",
+        "generator": "built-in-imagegen",
+        "prompt": "Create a clean landscape newspaper infographic on warm newsprint with dark ink and restrained teal accents. Explain Langfuse decision-model evaluator configuration: three separate inputs labelled 'Questions', 'Model connection', and 'Observation mapping' converge on 'Evaluator', which connects to 'Evaluation rule'. Use only these concise labels, legible text and simple arrows. No invented metrics, logos, screenshots, footer or watermark.",
+        "based_on": [
+          "https://langfuse.com/changelog/2026-11-25-decision-model-evaluators-api"
+        ],
+        "reviewed": true,
+        "sha256": "2a3b38d22520f61f6c0b425861e8848038c24b7adf67f00ad1628bd975501a13",
+        "optimization": {
+          "format": "webp",
+          "quality": 82,
+          "max_width": 1440,
+          "source_sha256": "cab22b237063e8d2413586a42e07314c2d40790caff3da3acc61765d89681e6b"
+        }
+      },
+      "source": "news",
+      "interest_score": 7,
+      "dedupe_key": "article:langfuse.com/changelog/2026-11-25-decision-model-evaluators-api",
+      "score_reason": "A focused API workflow improvement for teams managing this evaluator type.",
+      "source_evidence": {
+        "url": "https://langfuse.com/changelog/2026-11-25-decision-model-evaluators-api",
+        "publication_date": "2026-11-25",
+        "raw_date": "2026-11-25",
+        "method": "Original Langfuse changelog displays November 25, 2026 as its publication date."
       }
     }
   ],
-  "edition": "AI Observability Daily",
   "research": {
     "status": "complete",
     "completed_sources": [
@@ -60,6 +101,8 @@
     "checked_urls": [
       "https://arize.com/blog/",
       "https://langfuse.com/blog",
+      "https://langfuse.com/changelog/2026-11-25-decision-model-evaluators-api",
+      "https://langfuse.com/changelog/2026-11-25-ai-gateway-budget-warnings-and-resets",
       "https://www.langchain.com/blog",
       "https://www.braintrust.dev/blog",
       "https://opentelemetry.io/blog/",
@@ -69,31 +112,31 @@
       "https://www.digitalocean.com/blog",
       "https://www.splunk.com/en_us/blog/observability.html",
       "https://www.dynatrace.com/news/",
-      "https://www.elastic.co/observability-labs/blog/aws-devops-agent-mcp-incident-triage"
+      "https://telemetry.dev/blog/agent-trace-context-across-message-queues"
     ],
     "excluded": [
       {
-        "url": "https://news.ycombinator.com/item?id=50627927",
-        "reason": "Original Show HN announcement describes an early CLI in only a few sentences; narrower and less substantiated than the selected evaluator change."
+        "url": "https://www.elastic.co/observability-labs/blog/elastic-streams-telemetry-pipeline-s3",
+        "reason": "Original publication November 10; HN submission is a resurfacing."
       },
       {
-        "url": "https://news.ycombinator.com/item?id=50623636",
-        "reason": "Show HN submission has no first-party announcement text in the HN API, so its submission time alone does not establish original publication of the linked product."
+        "url": "https://stackoverflow.blog/2026/11/20/trying-to-get-our-arms-around-ai-efficiency/",
+        "reason": "Original publication outside the window."
       },
       {
-        "url": "https://github.com/langfuse/langfuse/releases/tag/v4.85.0",
-        "reason": "The server-side trace evaluation work is part of the same feature covered by the later release's user interface; avoid splitting one announcement across two stories."
+        "url": "https://github.com/langwatch/langwatch/releases/tag/v3.29.0",
+        "reason": "Packaging release without substantive change notes; related to the application release."
       },
       {
-        "url": "https://www.elastic.co/observability-labs/blog/aws-devops-agent-mcp-incident-triage",
-        "reason": "Focuses on using an agent to investigate infrastructure incidents, rather than observability of AI systems."
+        "url": "https://github.com/langwatch/langwatch/releases/tag/langwatch-3.29.0",
+        "reason": "Helm chart packaging release; no substantive change notes."
       },
       {
-        "url": "https://www.splunk.com/en_us/blog/observability.html",
-        "reason": "The official blog index returned no rendered results; focused search and the publisher's newsroom were checked as supplements."
+        "url": "https://github.com/langwatch/langwatch/releases/tag/langwatch%40v3.29.0",
+        "reason": "Release contains multiple changes; linked pull request for the evaluation gate timed out, leaving insufficient detail for a standalone story."
       }
     ],
-    "note": "Scoped discovery from the supplied HN and eight-repository GitHub candidate file, official news surfaces and focused searches; this is not an exhaustive web sweep. Existing issue files were checked for matching URLs, events and related announcements. The selected release's server-side precursor is not separately counted."
+    "note": "Scoped configured-source and focused primary-source search, not an exhaustive web sweep. HN discovery returned 14 candidates, largely outside the beat; GitHub watchlist returned three LangWatch release entries. Splunk's index returned no rendered results. Budget-warning announcement is a separate candidate not selected for this issue."
   },
   "name": "Tidy Traces — AI Observability Daily",
   "canonical_url": "https://tidytraces.com/"

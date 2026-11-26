@@ -1,25 +1,37 @@
-# AI Observability Daily — 2026-11-25
+# AI Observability Daily — 2026-11-26
 
 By Soumendra Kumar Sahoo
 
 Canonical: https://tidytraces.com/
-Coverage window: 2026-11-24
+Coverage window: 2026-11-25
 
-## Langfuse adds controls to test evaluators on trace transcripts
+## Keep an AI agent trace connected across a message queue
 
-Source: GitHub — https://github.com/langfuse/langfuse/releases/tag/v4.86.0
-Published: 2026-11-24
-Channel: github
+Source: telemetry.dev — https://telemetry.dev/blog/agent-trace-context-across-message-queues
+Published: 2026-11-25
+Channel: news
 
-Langfuse is an open-source platform for observing and evaluating AI applications. Its latest release adds an interface for testing evaluators against trace transcripts, alongside the existing choice of testing an individual observation. A trace records an application run, while an evaluator assesses selected information from it.
+OpenTelemetry is a framework for collecting traces, the connected records of operations in a software request. A telemetry.dev guide applies it to AI agents that run from message queues. When a producer sends work to a queue and a worker later picks it up, the agent's model and tool calls can appear as a disconnected trace if the message does not carry the original context.
 
-In evaluator setup, a user with access can switch the test sample from an observation to a trace. The trace sample opens an embedded detail view on its messages, and evaluator variables can be mapped to transcript threads. The existing evaluator test runs against that selection. Evaluator types that cannot run on a trace display the trace option as coming soon.
+The guide recommends first injecting trace context into each message's metadata while a producer span, a record of an operation, is active. The consumer then extracts the context separately for each message. For a batch, it links the receive span to each message context: one span cannot have multiple parents. Each message gets its own process span parented to its extracted context, with the agent run beneath it. The article recommends checking a batch of at least three messages in a trace viewer, because a single message can hide an incorrect batch parent. It also advises keeping prompts and secrets out of message metadata and checking for stripped headers or sampling when traces are missing.
 
-After saving an evaluator tested on a trace, the interface offers to create a trace rule or attach the evaluator to an existing one. The rule creation dialog also offers observation or trace scope; the scope is locked when editing a rule. Access depends on the existing trace-evaluation gate and evaluator or rule read permission. The implementation's pull request reports type checking and lint, but not a live run, so the release notes do not establish an operational performance result.
+Why it matters: Engineers running agents from queues can test a multi-message batch to check whether each run remains connected to its originating request.
 
-Why it matters: Engineers evaluating multi-message AI runs can check whether their project has access before testing transcript-based evaluator rules.
+![Keep an AI agent trace connected across a message queue](/edition-images/2026-11-26/queue.webp)
 
-![Langfuse adds controls to test evaluators on trace transcripts](/edition-images/2026-11-25/trace-evals.webp)
+## Langfuse exposes decision-model evaluators through its public API
+
+Source: Langfuse — https://langfuse.com/changelog/2026-11-25-decision-model-evaluators-api
+Published: 2026-11-25
+Channel: news
+
+Langfuse is an AI observability and evaluation platform used to record and assess application behavior. Its decision-model evaluators can now be managed through the stable public evaluators API, alongside its model-judge and code evaluators. The change gives teams an API path for managing these evaluator definitions rather than relying solely on manual configuration.
+
+To use it, create an evaluator with the decision-model type. Its definition includes questions and their allowed answers, a provider and decision model, and a mapping from observation data to named state keys used by the questions. Questions can use choices, ordered scores or boolean answers. Teams can then keep the definitions in version control and attach them to evaluation rules from a deployment pipeline, according to Langfuse. The announcement describes the management interface; it does not report an independent measurement of evaluator quality.
+
+Why it matters: Teams maintaining evaluations in deployment pipelines can review whether evaluator definitions belong alongside their application configuration.
+
+![Langfuse exposes decision-model evaluators through its public API](/edition-images/2026-11-26/evaluator.webp)
 
 ---
 
