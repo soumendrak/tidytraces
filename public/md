@@ -1,37 +1,49 @@
-# AI Observability Daily — 2026-11-26
+# AI Observability Daily — 2026-11-27
 
 By Soumendra Kumar Sahoo
 
 Canonical: https://tidytraces.com/
-Coverage window: 2026-11-25
+Coverage window: 2026-11-26
 
-## Keep an AI agent trace connected across a message queue
+## Evalkit groups agent traces to build evaluation cases
 
-Source: telemetry.dev — https://telemetry.dev/blog/agent-trace-context-across-message-queues
-Published: 2026-11-25
-Channel: news
+Source: Evalkit — https://news.ycombinator.com/item?id=50655285
+Published: 2026-11-26
+Channel: hn
 
-OpenTelemetry is a framework for collecting traces, the connected records of operations in a software request. A telemetry.dev guide applies it to AI agents that run from message queues. When a producer sends work to a queue and a worker later picks it up, the agent's model and tool calls can appear as a disconnected trace if the message does not carry the original context.
+Evalkit is an open-source framework for improving AI agents through evaluations, or repeatable checks of their behavior. Its creators say teams can record traces of agent runs in existing tools, but often have to assemble their own process for turning failures into tests and tracking regressions.
 
-The guide recommends first injecting trace context into each message's metadata while a producer span, a record of an operation, is active. The consumer then extracts the context separately for each message. For a batch, it links the receive span to each message context: one span cannot have multiple parents. Each message gets its own process span parented to its extracted context, with the agent run beneath it. The article recommends checking a batch of at least three messages in a trace viewer, because a single message can hide an incorrect batch parent. It also advises keeping prompts and secrets out of message metadata and checking for stripped headers or sampling when traces are missing.
+The first-party announcement describes a workflow that starts by mining traces and grouping similar ones into issue buckets. An expert can review the resulting cases using plain-English rubrics, rather than writing a structured JSON rubric. The cases can then be rerun as datasets to establish baseline scores or internal benchmarks. The creators say they continue to use self-hosted Phoenix as a trace database and designed Evalkit so a coding agent can perform much of the workflow. They describe one internal use in which an issue bucket led to suggested cases and merged changes, along with reductions in failures, token use and time. Those figures are the creators' account of one use, not an independent comparison. The project is early, and its creators say they are still adding features.
 
-Why it matters: Engineers running agents from queues can test a multi-message batch to check whether each run remains connected to its originating request.
+Why it matters: Teams that already collect agent traces can examine whether grouping and expert-reviewed cases fit their evaluation process.
 
-![Keep an AI agent trace connected across a message queue](/edition-images/2026-11-26/queue.webp)
+![Evalkit groups agent traces to build evaluation cases](/edition-images/2026-11-27/evalkit-v3.webp)
 
-## Langfuse exposes decision-model evaluators through its public API
+## Langfuse adds controls for public trace sharing
 
-Source: Langfuse — https://langfuse.com/changelog/2026-11-25-decision-model-evaluators-api
-Published: 2026-11-25
-Channel: news
+Source: Langfuse — https://github.com/langfuse/langfuse/releases/tag/v4.88.0
+Published: 2026-11-26
+Channel: github
 
-Langfuse is an AI observability and evaluation platform used to record and assess application behavior. Its decision-model evaluators can now be managed through the stable public evaluators API, alongside its model-judge and code evaluators. The change gives teams an API path for managing these evaluator definitions rather than relying solely on manual configuration.
+Langfuse is an AI observability platform that records traces of application activity and groups related activity into sessions. Its release adds controls for organizations and instances to disable public sharing of those records. The change addresses the case where a team wants to stop public links from granting access without rewriting the individual records' saved sharing flags.
 
-To use it, create an evaluator with the decision-model type. Its definition includes questions and their allowed answers, a provider and decision model, and a mapping from observation data to named state keys used by the questions. Questions can use choices, ordered scores or boolean answers. Teams can then keep the definitions in version control and attach them to evaluation rules from a deployment pipeline, according to Langfuse. The announcement describes the management interface; it does not report an independent measurement of evaluator quality.
+An organization owner or administrator can turn off public sharing in the organization settings. Access checks then ignore stored public flags, existing public links no longer grant access, and attempts to publish are rejected. The flags remain stored: turning sharing back on can make previously shared records reachable again, so the interface asks for confirmation. The associated change also describes an instance environment variable that forces the restriction across organizations, subject to a self-hosted enterprise entitlement. Organization-level restrictions also require an eligible entitlement to turn on; a saved restriction continues to apply after a downgrade. The public API still returns the stored public value, and the change does not add a public API for the setting.
 
-Why it matters: Teams maintaining evaluations in deployment pipelines can review whether evaluator definitions belong alongside their application configuration.
+Why it matters: Teams sharing traces should review the entitlement and re-enablement behavior before relying on the control.
 
-![Langfuse exposes decision-model evaluators through its public API](/edition-images/2026-11-26/evaluator.webp)
+![Langfuse adds controls for public trace sharing](/edition-images/2026-11-27/langfuse-v2.webp)
+
+## Phoenix adds an API endpoint to retrieve one span
+
+Source: Arize Phoenix — https://github.com/Arize-ai/phoenix/releases/tag/arize-phoenix-v22.1.0
+Published: 2026-11-26
+Channel: github
+
+Phoenix is an open-source platform for tracing and evaluating AI applications. A span is the record of one operation within a trace. Its latest release adds an API endpoint for retrieving one span by identifier, giving clients a direct way to request a specific operation record. A caller supplies the span identifier in the endpoint path and sends a GET request. The release notes identify the new endpoint but do not describe a measured performance improvement or a broader change to trace collection.
+
+Why it matters: Engineers integrating with Phoenix can check the endpoint when they need a specific span by identifier.
+
+![Phoenix adds an API endpoint to retrieve one span](/edition-images/2026-11-27/phoenix-v2.webp)
 
 ---
 
