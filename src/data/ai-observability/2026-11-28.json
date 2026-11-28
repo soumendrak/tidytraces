@@ -1,0 +1,173 @@
+{
+  "date": "2026-11-28",
+  "story_window": "2026-11-27",
+  "dek": "AI observability updates on trace privacy, shared model pricing and evaluation using agent runs.",
+  "stories": [
+    {
+      "title": "Langfuse adds guardrails that redact sensitive content before trace capture",
+      "url": "https://langfuse.com/changelog/2026-11-27-ai-gateway-guardrails",
+      "publisher": "Langfuse",
+      "published": "2026-11-27",
+      "category_key": "observability",
+      "summary": "Gateway guardrails can block, redact or log detected content in model requests and responses. Redaction occurs before full trace capture.",
+      "body": [
+        "Langfuse is an AI engineering platform that traces and evaluates model applications. Its AI Gateway now offers guardrails for sensitive content in requests and model responses. Teams can configure detection for personal information, secrets, prompt injection and custom patterns, or connect an existing Amazon Bedrock guardrail.",
+        "A matching rule can block traffic, replace sensitive text with a label, or log matches for monitoring. Langfuse says replacement happens before the content is forwarded or returned and before full trace capture. Rules can apply across an organization, or they can target particular users and API keys. A rule can cover the latest turn, the full input, the model output, or both. The announcement describes configurable controls. It does not report detection accuracy."
+      ],
+      "format": "brief",
+      "brief_reason": "The dated changelog describes configuration and behavior but provides no detection measurements or further implementation details.",
+      "takeaway": "Teams capturing model traffic should check rule scope and test redaction with representative sensitive inputs before relying on the resulting traces.",
+      "image": "/edition-images/2026-11-28/guardrails-revised.webp",
+      "image_width": 1440,
+      "image_height": 737,
+      "image_provenance": {
+        "kind": "generated-editorial",
+        "generator": "built-in-imagegen",
+        "prompt": "Landscape newspaper infographic, warm newsprint dark ink, simple diagram of privacy protection in Langfuse gateway. Show arrow from 'Request or response' to 'Detect sensitive content' and then three SEPARATE parallel arrows to three alternatives 'Block', 'Redact', 'Log'. No arrows between alternatives. Add label 'Redaction before full trace capture'. Use only those exact words, no extra writing, logos or watermark.",
+        "based_on": [
+          "https://langfuse.com/changelog/2026-11-27-ai-gateway-guardrails"
+        ],
+        "reviewed": true,
+        "sha256": "adc8d58426f6cc43751dc6b5a2d012f591957bc78458595fb39999fbb469112e",
+        "optimization": {
+          "format": "webp",
+          "quality": 82,
+          "max_width": 1440,
+          "source_sha256": "466f25ff155bafd5fcbb4253565c2022aa3cd218be06fd264f3ecf18a5b83786"
+        }
+      },
+      "source": "news",
+      "interest_score": 8,
+      "dedupe_key": "article:langfuse.com/changelog/2026-11-27-ai-gateway-guardrails",
+      "score_reason": "Concrete trace privacy controls with configurable coverage and an explicit redaction order.",
+      "source_evidence": {
+        "url": "https://langfuse.com/changelog/2026-11-27-ai-gateway-guardrails",
+        "publication_date": "2026-11-27",
+        "raw_date": "2026-11-27",
+        "method": "Langfuse changelog Markdown front matter has date: 2026-11-27, and the HTML page displays November 27, 2026."
+      }
+    },
+    {
+      "title": "Langfuse shares model pricing definitions across projects",
+      "url": "https://langfuse.com/changelog/2026-11-27-organization-model-definitions",
+      "publisher": "Langfuse",
+      "published": "2026-11-27",
+      "category_key": "observability",
+      "summary": "Organization administrators can define model prices once for cost inference across projects, with project-level overrides.",
+      "body": [
+        "Langfuse is an AI engineering platform that traces model applications and helps teams measure their costs. Organization owners and administrators can now define model prices once for every project, rather than repeat custom definitions in each project. Shared definitions can use custom or negotiated rates, or start from a cloned Langfuse default.",
+        "When Langfuse resolves a model for cost inference, it checks project definitions first, then organization definitions, then Langfuse defaults. A team can clone an organization definition into a project to override it there. Organization definitions can also be synchronized through the Organization Models API. The project Models API now returns a scope field for each model and deprecates its earlier managed-model flag. The changelog does not claim that changing a definition alters provider billing."
+      ],
+      "format": "brief",
+      "brief_reason": "The changelog is a concise product update describing pricing scope, precedence and API changes without additional operational results.",
+      "takeaway": "Teams comparing inferred model costs across projects should check shared rates and any project overrides against their actual contracts.",
+      "image": "/edition-images/2026-11-28/pricing.webp",
+      "image_width": 1440,
+      "image_height": 737,
+      "image_provenance": {
+        "kind": "generated-editorial",
+        "generator": "built-in-imagegen",
+        "prompt": "Landscape newspaper infographic on warm paper with dark ink and restrained rust accent. Show Langfuse model pricing resolution precedence as three stacked items pointing toward inferred cost. Exact labels only: 'Model pricing precedence', 'Project definition', 'Organization definition', 'Langfuse default', 'Inferred cost'. The project takes precedence over organization, which takes precedence over default. Clear arrows and readable typography; no extra text, logos, footer or watermark.",
+        "based_on": [
+          "https://langfuse.com/changelog/2026-11-27-organization-model-definitions"
+        ],
+        "reviewed": true,
+        "sha256": "703dc31d3fddd8d08163f3678ea07bc7eb78aed1eb846f93824490abeb34f6ae",
+        "optimization": {
+          "format": "webp",
+          "quality": 82,
+          "max_width": 1440,
+          "source_sha256": "cc4d3895ad1a1ce7d6338bddc4642f309bb694a530871ebbf5b4b32fddd7a120"
+        }
+      },
+      "source": "news",
+      "interest_score": 7,
+      "dedupe_key": "article:langfuse.com/changelog/2026-11-27-organization-model-definitions",
+      "score_reason": "A focused cost-attribution configuration improvement for organizations with multiple projects.",
+      "source_evidence": {
+        "url": "https://langfuse.com/changelog/2026-11-27-organization-model-definitions",
+        "publication_date": "2026-11-27",
+        "raw_date": "2026-11-27",
+        "method": "Langfuse changelog Markdown front matter has date: 2026-11-27, and the HTML page displays November 27, 2026."
+      }
+    },
+    {
+      "title": "Railtown plans model comparisons using data from agent runs",
+      "url": "https://www.newsfilecorp.com/release/326088",
+      "publisher": "Railtown AI · Newsfile",
+      "published": "2026-11-27",
+      "category_key": "evals",
+      "summary": "The company says its forthcoming evaluation capability will compare alternative models against historical agent workloads.",
+      "body": [
+        "Railtown AI builds agent development and observability tools, including the Conductr cloud platform. It has announced on-demand model evaluation capabilities intended to help teams assess alternative models against the quality and reliability needs of an application. The company says its observability technology can run locally or through Conductr and provides visibility into agent execution during development and production.",
+        "The proposed evaluation uses historical execution data captured from real agent runs. Teams can use the comparison to investigate whether a smaller model or a different deployment environment is suitable for a workload. The announced options include commercial cloud models, Apple on-device models, and Apple's Private Cloud Compute where available. They also include open-weight models hosted on infrastructure that the user controls. Railtown also describes combining the capability with its open-source Railtracks Swift agent development kit for Apple developers.",
+        "The announcement does not provide benchmark results or a detailed evaluation procedure, so its cost and quality benefits remain company expectations. Railtown expects to make the capability available soon and says it plans a technical blog demonstrating its use."
+      ],
+      "format": "full",
+      "takeaway": "Teams considering model substitutions can watch for the technical guide and compare alternatives against their own quality and reliability requirements.",
+      "image": "/edition-images/2026-11-28/railtown-evaluation-revised.webp",
+      "image_width": 1440,
+      "image_height": 737,
+      "image_provenance": {
+        "kind": "generated-editorial",
+        "generator": "built-in-imagegen",
+        "prompt": "Newspaper infographic, warm paper and dark ink with restrained rust accent, landscape. Conceptual comparison: historical agent execution data supports evaluation of alternative models against application quality and reliability requirements. Use only these exact words in the image: 'From agent runs to model evaluation', 'Historical execution data', 'Alternative models', 'Quality and reliability'. Connect the first two elements to the third. Simple legible typography; no extra text, figures, claims, logos or watermarks.",
+        "based_on": [
+          "https://www.newsfilecorp.com/release/326088"
+        ],
+        "reviewed": true,
+        "sha256": "b1fd247383762d431c82a292520b9521018e5faed8ca414483b87e5d73841f60",
+        "optimization": {
+          "format": "webp",
+          "quality": 82,
+          "max_width": 1440,
+          "source_sha256": "58e3eec6db7862c9a1197daf680024c24ffbb42014b074aa94431c9b8f080905"
+        }
+      },
+      "source": "news",
+      "interest_score": 7,
+      "dedupe_key": "announcement:railtown:model-evaluation-agent-workloads",
+      "score_reason": "Directly relevant evaluation capability, tempered by forthcoming availability and limited technical evidence.",
+      "source_evidence": {
+        "url": "https://www.newsfilecorp.com/release/326088",
+        "publication_date": "2026-11-27",
+        "raw_date": "2026-11-27T07:00:00-05:00",
+        "method": "Company-issued Newsfile release has a November 27 dateline; Newsfile's company index lists 7:00 AM EST."
+      }
+    }
+  ],
+  "research": {
+    "status": "complete",
+    "completed_sources": [
+      "hn",
+      "news",
+      "github"
+    ],
+    "checked_urls": [
+      "https://arize.com/blog/",
+      "https://langfuse.com/blog",
+      "https://langfuse.com/changelog",
+      "https://www.langchain.com/blog",
+      "https://www.braintrust.dev/blog",
+      "https://opentelemetry.io/blog/",
+      "https://www.elastic.co/observability-labs/blog",
+      "https://www.datadoghq.com/blog/",
+      "https://www.honeycomb.io/blog/",
+      "https://www.digitalocean.com/blog",
+      "https://www.splunk.com/en_us/blog/observability.html",
+      "https://www.dynatrace.com/news/",
+      "https://www.newsfilecorp.com/release/326088"
+    ],
+    "excluded": [
+      {
+        "url": "https://medium.com/@linuxjedi2000/the-missing-layer-in-linux-observability-historical-operating-system-state-1eb53ce53eba",
+        "reason": "General operating system observability without a concrete AI operations connection in the candidate."
+      },
+      {
+        "url": "https://github.com/legend-of-alan/ghostmode",
+        "reason": "Agent token reduction tool rather than an observability or evaluation announcement."
+      }
+    ],
+    "note": "Scoped sweep of the supplied HN candidates, eight GitHub watchlist release checks and official publisher surfaces, supplemented by exact-date searches. The supplied discovery file reports no GitHub release candidates; its HN candidates yielded no eligible stories. Splunk's index returned no results, so it was supplemented by a focused search. No exhaustive web coverage is claimed."
+  }
+}
